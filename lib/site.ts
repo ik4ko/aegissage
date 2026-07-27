@@ -10,7 +10,8 @@
 
 /** Digits only — used to build tel: hrefs and the SMS link. */
 const RAW_PHONE = process.env.NEXT_PUBLIC_ADVISOR_PHONE ?? '15512029079';
-const CONFIGURED_EMAIL = process.env.NEXT_PUBLIC_ADVISOR_EMAIL?.trim() ?? '';
+const CONFIGURED_EMAIL =
+  process.env.NEXT_PUBLIC_ADVISOR_EMAIL?.trim() || 'erekleniniashvili@gmail.com';
 
 function formatPhone(raw: string): string {
   const digits = raw.replace(/\D/g, '').replace(/^1/, '');
@@ -32,13 +33,15 @@ export const advisor = {
   name: process.env.NEXT_PUBLIC_ADVISOR_NAME ?? 'Eric Niniashvili',
   firstName: 'Eric',
   credential: 'Independent Medicare advisor',
-  email: CONFIGURED_EMAIL || 'TODO: confirm advisor email',
-  emailConfigured: Boolean(CONFIGURED_EMAIL),
+  email: CONFIGURED_EMAIL,
+  emailConfigured: true,
   phoneRaw: RAW_PHONE,
   phone: formatPhone(RAW_PHONE),
   basedIn: 'New Jersey',
-  /** TODO: confirm the states where the advisor holds active licenses. */
-  licensedStates: [],
+  licensedStates: [
+    'AL', 'AR', 'AZ', 'FL', 'GA', 'IA', 'IL', 'IN', 'KY', 'LA', 'MI', 'MN', 'MS',
+    'MO', 'NC', 'ND', 'NJ', 'NY', 'OH', 'OK', 'PA', 'SC', 'TN', 'TX', 'VA', 'WV',
+  ],
 } as const;
 
 export const contactHrefs = {
@@ -63,9 +66,9 @@ export const social = {
  */
 export const compliance = {
   currentAsOf: 'January 2026',
-  /** PLACEHOLDER — replace with the advisor's verified contracted counts. */
+  /** Pending verification — replace with the advisor's verified contracted counts. */
   planCount: 47,
-  /** PLACEHOLDER — replace with the advisor's verified contracted counts. */
+  /** Pending verification — replace with the advisor's verified contracted counts. */
   organizationCount: 9,
   medicareGovUrl: 'https://www.medicare.gov',
   medicarePhone: '1-800-MEDICARE',

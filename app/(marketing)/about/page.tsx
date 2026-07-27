@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/json-ld';
 import { advisor, site } from '@/lib/site';
+import { licensedStates } from '@/lib/states';
 import { breadcrumbJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -61,7 +62,7 @@ export default function AboutPage() {
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-base text-ink-soft">
               <span className="flex items-center gap-2">
                 <BadgeCheck className="h-5 w-5 text-sage" aria-hidden="true" />
-                Licensing details: TODO
+                Licensed in {licensedStates.length} states
               </span>
               <span className="flex items-center gap-2">
                 <BadgeCheck className="h-5 w-5 text-sage" aria-hidden="true" />
@@ -182,23 +183,19 @@ export default function AboutPage() {
             Service area and licensing
           </h2>
           <p className="mt-3 max-w-2xl text-lg text-ink-soft">
-            I serve people in New Jersey, New York City, and Philadelphia. The complete list
-            of Eric's licensed states is TODO and will be added after it is confirmed.
+            I serve people in New Jersey, New York City, and Philadelphia, and hold active
+            health licenses in {licensedStates.length} states.
           </p>
           </Reveal>
 
           <ul className="mt-8 flex flex-wrap gap-2.5">
-            {[
-              ['New Jersey', '/medicare-new-jersey'],
-              ['New York City', '/medicare-new-york-city'],
-              ['Philadelphia', '/medicare-philadelphia'],
-            ].map(([name, href]) => (
-              <li key={href}>
+            {licensedStates.map((state) => (
+              <li key={state.code}>
                 <Link
-                  href={href}
+                  href={`/plans/${state.slug}`}
                   className="flex min-h-touch items-center rounded-xl border-2 border-line bg-cream px-4 text-base font-semibold text-ink-soft transition-colors hover:border-navy/50 hover:text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
                 >
-                  {name}
+                  {state.name}
                 </Link>
               </li>
             ))}

@@ -72,7 +72,7 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
             </div>
 
             <aside className="not-prose mt-10 rounded-2xl border border-ember/30 bg-ember-soft p-5 text-base leading-relaxed text-ink">
-              <strong>Before launch:</strong> {location.todo}
+              <strong>Before launch:</strong> {location.verificationNote}
             </aside>
           </article>
 

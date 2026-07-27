@@ -1,3 +1,5 @@
+import { advisor } from './site';
+
 export type StateInfo = {
   slug: string;
   code: string;
@@ -51,8 +53,14 @@ export const planStates: StateInfo[] = ALL_STATES
     note: NOTES[code] ?? FALLBACK_NOTE,
   }));
 
-/** Verified licensing data is intentionally empty until the advisor confirms it. */
-export const licensedStates: StateInfo[] = [];
+export const licensedStates: StateInfo[] = ALL_STATES
+  .filter(([code]) => (advisor.licensedStates as readonly string[]).includes(code))
+  .map(([code, name]) => ({
+    code,
+    name,
+    slug: name.toLowerCase().replace(/\s+/g, '-'),
+    note: NOTES[code] ?? FALLBACK_NOTE,
+  }));
 
 export function getStateBySlug(slug: string): StateInfo | undefined {
   return planStates.find((s) => s.slug === slug);

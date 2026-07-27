@@ -168,8 +168,8 @@ export default function HomePage() {
                 label: 'New Jersey, New York City, and Philadelphia.',
               },
               {
-                stat: 'Licensing TODO',
-                label: 'Licensed states will be listed after Eric confirms them.',
+                stat: '26 states',
+                label: 'Active health licenses across the listed states.',
               },
               {
                 stat: 'One person',

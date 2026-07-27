@@ -1,4 +1,5 @@
 import { advisor, site, social } from './site';
+import { licensedStates } from './states';
 
 const phone = `+${advisor.phoneRaw.replace(/\D/g, '')}`;
 const businessImage =
@@ -6,10 +7,13 @@ const businessImage =
   `&kicker=${encodeURIComponent('Medicare guidance')}` +
   `&subtitle=${encodeURIComponent(site.description)}`;
 
+const licensedAreas = licensedStates.map((state) => ({
+  '@type': 'State',
+  name: state.name,
+}));
+
 const serviceAreas = [
-  { '@type': 'State', name: 'New Jersey' },
-  { '@type': 'State', name: 'New York' },
-  { '@type': 'State', name: 'Pennsylvania' },
+  ...licensedAreas,
   { '@type': 'City', name: 'New York City', containedInPlace: { '@type': 'State', name: 'New York' } },
   { '@type': 'City', name: 'Philadelphia', containedInPlace: { '@type': 'State', name: 'Pennsylvania' } },
 ];
@@ -37,7 +41,7 @@ export function siteJsonLd() {
           contactType: 'customer support',
           telephone: phone,
           ...(advisor.emailConfigured ? { email: advisor.email } : {}),
-          areaServed: ['US-NJ', 'US-NY', 'US-PA'],
+          areaServed: licensedStates.map((state) => `US-${state.code}`),
           availableLanguage: 'English',
         },
       },

@@ -12,7 +12,7 @@
 
 ## Service area
 
-AegisSage serves Medicare-eligible people in New Jersey, New York City, and Philadelphia. Plan availability and provider networks are local and should be checked by ZIP code and county. Additional state plan pages are educational; the advisor's licensed states are TODO until confirmed.
+AegisSage serves Medicare-eligible people in New Jersey, New York City, and Philadelphia. Plan availability and provider networks are local and should be checked by ZIP code and county. Additional state plan pages are educational; the advisor is licensed in the 26 states listed below.
 
 ## Key pages
 
@@ -20,9 +20,9 @@ AegisSage serves Medicare-eligible people in New Jersey, New York City, and Phil
 - [Articles](https://aegissage.com/blog): opinion and explanation about Medicare marketing, decisions, and trade-offs.
 - [Medicare News & Updates](https://aegissage.com/news): short deadline and rule-change updates.
 - [Plan pages](https://aegissage.com/plans): state-level enrollment and availability mechanics.
-- [Medicare in New Jersey](https://aegissage.com/medicare-new-jersey): local county and move considerations, with launch TODOs clearly marked.
-- [Medicare in New York City](https://aegissage.com/medicare-new-york-city): borough, network, and service-area considerations, with launch TODOs clearly marked.
-- [Medicare in Philadelphia](https://aegissage.com/medicare-philadelphia): city/county and suburban service-area considerations, with launch TODOs clearly marked.
+- [Medicare in New Jersey](https://aegissage.com/medicare-new-jersey): local county and move considerations, with launch verification details clearly marked.
+- [Medicare in New York City](https://aegissage.com/medicare-new-york-city): borough, network, and service-area considerations, with launch verification details clearly marked.
+- [Medicare in Philadelphia](https://aegissage.com/medicare-philadelphia): city/county and suburban service-area considerations, with launch verification details clearly marked.
 - [About](https://aegissage.com/about): how the advisor works and the current licensing information.
 - [Contact](https://aegissage.com/contact): phone, text, email, and contact form.
 - [YouTube](https://www.youtube.com/@65MAPD): Medicare videos from Eric.
@@ -32,10 +32,9 @@ AegisSage serves Medicare-eligible people in New Jersey, New York City, and Phil
 
 ## Advisor credentials
 
-The advisor's confirmed public name is Eric Niniashvili, with Eric used in casual copy. The phone is 551-202-9079. The public email and licensed states are still TODO and must be confirmed before treating them as facts.
+The advisor's confirmed public name is Eric Niniashvili, with Eric used in casual copy. The phone is 551-202-9079 and the public email is erekleniniashvili@gmail.com.
 
-- TODO: confirm public email.
-- TODO: confirm licensed states.
+- Licensed states: Alabama, Arkansas, Arizona, Florida, Georgia, Iowa, Illinois, Indiana, Kentucky, Louisiana, Michigan, Minnesota, Mississippi, Missouri, North Carolina, North Dakota, New Jersey, New York, Ohio, Oklahoma, Pennsylvania, South Carolina, Tennessee, Texas, Virginia, and West Virginia.
 
 ## Content and citation guidance
 

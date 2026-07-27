@@ -15,17 +15,17 @@ deployed on Vercel.
 
 ## Before this goes live
 
-Two launch details remain open. Neither requires a code change.
+One launch detail remains open. It does not require a code change.
 
-**1. Confirm the remaining advisor details in `lib/site.ts`.** The public name
-is Eric Niniashvili, the phone is `(551) 202-9079`, and the email and licensed
-states are marked TODO until confirmed. Every configured value can be set by an
-environment variable; see `.env.example`.
+**1. Review the advisor details in `lib/site.ts`.** The public name is Eric
+Niniashvili, the phone is `(551) 202-9079`, the email is
+`erekleniniashvili@gmail.com`, and the 26 licensed states are listed there.
+Every configured value can be set by an environment variable; see `.env.example`.
 
 **2. Have a human review `components/marketing/disclaimer-footer.tsx`.** It
 holds the required CMS TPMO disclosure and is the only place that language
 exists. Its header carries the reviewer checklist. **The plan and organization
-counts in `compliance` (`lib/site.ts`) are placeholders** and must match the
+counts in `compliance` (`lib/site.ts`) are pending verification** and must match the
 advisor's actual contracts before launch.
 
 **3. Wire the alert credentials.** `NOTIFY_EMAIL_TO` and `NOTIFY_SMS_TO` are
