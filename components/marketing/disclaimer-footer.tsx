@@ -66,8 +66,8 @@ export function DisclaimerFooter() {
           {/* (2) Non-government entity statement. */}
           <p>
             {site.name} is not connected with or endorsed by the United States government or the
-            federal Medicare program. {advisor.name} is a licensed independent insurance agent
-            (NPN {advisor.npn}) and may receive compensation from the plans he represents.
+            federal Medicare program. {advisor.name} is an independent Medicare advisor and may
+            receive compensation from the plans he represents.
             Enrollment in a plan is never a condition of receiving information or guidance.
           </p>
 

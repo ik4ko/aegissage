@@ -5,7 +5,7 @@ import { TrustBar } from '@/components/marketing/trust-bar';
 import { JsonLd } from '@/components/seo/json-ld';
 import { Badge } from '@/components/ui/badge';
 import { breadcrumbJsonLd } from '@/lib/seo';
-import { licensedStates } from '@/lib/states';
+import { planStates } from '@/lib/states';
 import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -45,7 +45,7 @@ export default function PlansPage() {
           Choose your state
         </h2>
         <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {licensedStates.map((state) => (
+          {planStates.map((state) => (
             <li key={state.code}>
               <Link
                 href={`/plans/${state.slug}`}

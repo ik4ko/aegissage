@@ -3,15 +3,14 @@
  * licensing facts.
  *
  * ─────────────────────────────────────────────────────────────────────────
- *  BEFORE LAUNCH: every value marked PLACEHOLDER must be replaced with the
- *  advisor's real details. Nothing else in the codebase hardcodes a name,
- *  phone number, email address or NPN — change it here and it changes
- *  everywhere, including OG images, schema.org markup and tel:/mailto: links.
+ *  Keep public advisor identity and contact details here. Nothing else in the
+ *  codebase should hardcode a name, phone number or email address.
  * ─────────────────────────────────────────────────────────────────────────
  */
 
 /** Digits only — used to build tel: hrefs and the SMS link. */
-const RAW_PHONE = process.env.NEXT_PUBLIC_ADVISOR_PHONE ?? '19085550142'; // PLACEHOLDER
+const RAW_PHONE = process.env.NEXT_PUBLIC_ADVISOR_PHONE ?? '15512029079';
+const CONFIGURED_EMAIL = process.env.NEXT_PUBLIC_ADVISOR_EMAIL?.trim() ?? '';
 
 function formatPhone(raw: string): string {
   const digits = raw.replace(/\D/g, '').replace(/^1/, '');
@@ -25,34 +24,32 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aegissage.com',
   tagline: 'Straight answers about Medicare, from someone who picks up the phone.',
   description:
-    'Independent Medicare guidance from a licensed advisor in New Jersey, serving 20+ states. Plain-English guides, a free eligibility check, and a real person you can call or text.',
+    'Independent Medicare guidance for people in New Jersey, New York City, and Philadelphia. Plain-English guides, a free eligibility check, and a real person you can call or text.',
+  serviceArea: 'New Jersey, New York City, and Philadelphia',
 } as const;
 
 export const advisor = {
-  /** PLACEHOLDER */
-  name: process.env.NEXT_PUBLIC_ADVISOR_NAME ?? 'Daniel Reyes',
-  /** PLACEHOLDER */
-  credential: 'Licensed Independent Medicare Advisor',
-  /** PLACEHOLDER — National Producer Number. Must be the advisor's real NPN. */
-  npn: process.env.NEXT_PUBLIC_ADVISOR_NPN ?? '19204471',
-  /** PLACEHOLDER */
-  email: process.env.NEXT_PUBLIC_ADVISOR_EMAIL ?? 'dan@aegissage.com',
+  name: process.env.NEXT_PUBLIC_ADVISOR_NAME ?? 'Eric Niniashvili',
+  firstName: 'Eric',
+  credential: 'Independent Medicare advisor',
+  email: CONFIGURED_EMAIL || 'TODO: confirm advisor email',
+  emailConfigured: Boolean(CONFIGURED_EMAIL),
   phoneRaw: RAW_PHONE,
   phone: formatPhone(RAW_PHONE),
-  basedIn: 'Westfield, New Jersey',
-  yearsLicensed: 11,
-  /** Every state where the advisor holds an active health license. */
-  licensedStates: [
-    'NJ', 'NY', 'PA', 'CT', 'DE', 'MD', 'VA', 'NC', 'SC', 'GA',
-    'FL', 'OH', 'MI', 'IN', 'TN', 'TX', 'AZ', 'NV', 'CO', 'CA',
-    'MA', 'RI',
-  ],
+  basedIn: 'New Jersey',
+  /** TODO: confirm the states where the advisor holds active licenses. */
+  licensedStates: [],
 } as const;
 
 export const contactHrefs = {
   tel: `tel:+${advisor.phoneRaw.replace(/\D/g, '')}`,
   sms: `sms:+${advisor.phoneRaw.replace(/\D/g, '')}`,
-  mailto: `mailto:${advisor.email}`,
+  mailto: advisor.emailConfigured ? `mailto:${advisor.email}` : '#contact-email',
+} as const;
+
+export const social = {
+  youtube: 'https://www.youtube.com/@65MAPD',
+  instagram: 'https://www.instagram.com/aegissage',
 } as const;
 
 /**

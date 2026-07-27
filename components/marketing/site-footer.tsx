@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { Mail, MessageSquareText, Phone } from 'lucide-react';
 import { advisor, contactHrefs, nav, site } from '@/lib/site';
-import { licensedStates } from '@/lib/states';
+import { planStates } from '@/lib/states';
 import { ShieldMark } from './site-header';
+import { SocialLinks } from './social-links';
 
 export function SiteFooter() {
   return (
@@ -17,6 +18,7 @@ export function SiteFooter() {
             Independent Medicare guidance from {advisor.basedIn}. No call centers, no
             hand-offs — you get me.
           </p>
+          <SocialLinks className="mt-5" />
         </div>
 
         <div>
@@ -74,10 +76,10 @@ export function SiteFooter() {
 
         <div>
           <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-ink-faint">
-            Licensed in
+            Plan pages
           </h2>
           <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1.5">
-            {licensedStates.map((state) => (
+            {planStates.map((state) => (
               <li key={state.code}>
                 <Link
                   href={`/plans/${state.slug}`}
@@ -93,8 +95,7 @@ export function SiteFooter() {
 
       <div className="border-t border-line">
         <p className="container py-6 text-sm text-ink-faint">
-          © {new Date().getFullYear()} {site.name}. {advisor.name}, {advisor.credential}, NPN{' '}
-          {advisor.npn}.
+          © {new Date().getFullYear()} {site.name}. {advisor.firstName}, {advisor.credential}.
         </p>
       </div>
     </footer>

@@ -5,8 +5,8 @@ import { advisor } from '@/lib/site';
 
 /**
  * The recurring "talk to a person" block. Trust signals sit inside the same
- * card as the buttons by design — the rule is that a license badge, a photo
- * and a real phone number appear next to every CTA, not only on About.
+ * card as the buttons by design — the advisor, a photo and a real phone number
+ * appear next to every CTA, not only on About.
  */
 export function CtaBand({
   where,
@@ -35,9 +35,7 @@ export function CtaBand({
               <AdvisorAvatar size={60} />
               <div>
                 <p className="font-display text-lg font-semibold text-white">{advisor.name}</p>
-                <p className="text-sm text-white/70">
-                  NPN {advisor.npn} · {advisor.yearsLicensed} years licensed
-                </p>
+                <p className="text-sm text-white/70">{advisor.credential}</p>
               </div>
             </div>
             <p className="mt-5 text-base leading-relaxed text-white/80">

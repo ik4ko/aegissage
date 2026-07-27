@@ -15,14 +15,12 @@ deployed on Vercel.
 
 ## Before this goes live
 
-Three things must happen. None of them are code changes, and all three are
-still open.
+Two launch details remain open. Neither requires a code change.
 
-**1. Replace every PLACEHOLDER in `lib/site.ts`.** That file is the single
-source of truth for the advisor's name, NPN, phone, email and licensed states.
-**The current values are fictional** — `Daniel Reyes`, NPN `19204471`,
-`(908) 555-0142`, `dan@aegissage.com`. Every one can be set by an environment
-variable instead of editing the file; see `.env.example`.
+**1. Confirm the remaining advisor details in `lib/site.ts`.** The public name
+is Eric Niniashvili, the phone is `(551) 202-9079`, and the email and licensed
+states are marked TODO until confirmed. Every configured value can be set by an
+environment variable; see `.env.example`.
 
 **2. Have a human review `components/marketing/disclaimer-footer.tsx`.** It
 holds the required CMS TPMO disclosure and is the only place that language
@@ -242,7 +240,7 @@ their adult child.
 - Every tap target clears **48×48** (`h-touch`).
 - Nothing depends on hover — the glossary uses a click popover, not a tooltip.
 - One question per screen in both quizzes. Never a long form on one page.
-- A trust signal — photo, NPN, phone number — sits next to every CTA.
+- A trust signal — photo, advisor name, phone number — sits next to every CTA.
 - No autoplaying media. Zoom is never disabled.
 
 Verified with axe-core (WCAG 2.1 A/AA + best-practice) across every page and

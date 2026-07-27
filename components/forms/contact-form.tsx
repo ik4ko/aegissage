@@ -196,7 +196,7 @@ export function ContactForm({
             type="tel"
             inputMode="tel"
             autoComplete="tel"
-            placeholder="(908) 555-0142"
+          placeholder="(551) 202-9079"
             invalid={Boolean(errors.phone)}
             aria-describedby={errors.phone ? `${source}-phone-error` : undefined}
             {...register('phone')}

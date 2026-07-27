@@ -9,7 +9,7 @@ import { ArticleCard } from '@/components/marketing/article-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/json-ld';
-import { getStateBySlug, licensedStates } from '@/lib/states';
+import { getStateBySlug, planStates } from '@/lib/states';
 import { getArticles } from '@/lib/content';
 import { advisor, site } from '@/lib/site';
 import { breadcrumbJsonLd } from '@/lib/seo';
@@ -29,7 +29,7 @@ import { breadcrumbJsonLd } from '@/lib/seo';
 type Params = { state: string };
 
 export function generateStaticParams(): Params[] {
-  return licensedStates.map((state) => ({ state: state.slug }));
+  return planStates.map((state) => ({ state: state.slug }));
 }
 
 export const dynamicParams = false;
@@ -74,7 +74,7 @@ export default async function StatePage({ params }: { params: Promise<Params> })
   if (!state) notFound();
 
   const guides = getArticles('medicare-basics').slice(0, 3);
-  const others = licensedStates.filter((s) => s.slug !== state.slug);
+  const others = planStates.filter((s) => s.slug !== state.slug);
 
   return (
     <>

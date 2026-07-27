@@ -8,7 +8,7 @@ import { advisor } from '@/lib/site';
 /**
  * The homepage hook. Built around the person, not a funnel: a claim someone
  * would actually say out loud, then the two fastest ways to reach him, with
- * the licensing proof sitting directly under the buttons.
+ * the contact details sitting directly under the buttons.
  */
 export function Hero() {
   return (
@@ -24,7 +24,7 @@ export function Hero() {
           <div className="animate-fade-up">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
               <Clock className="h-4 w-4" aria-hidden="true" />
-              Independent · {advisor.licensedStates.length} states · No call center
+              Independent · NJ · NYC · Philadelphia · No call center
             </p>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl lg:text-6xl">
@@ -33,8 +33,8 @@ export function Hero() {
             </h1>
 
             <p className="mt-6 max-w-xl text-lg text-ink-soft sm:text-xl">
-              I am {advisor.name.split(' ')[0]} — a licensed independent advisor in{' '}
-              {advisor.basedIn}. I spend most of my day undoing what a mailer or a
+              I am {advisor.firstName} — an independent Medicare advisor serving{' '}
+              New Jersey, New York City, and Philadelphia. I spend most of my day undoing what a mailer or a
               commercial told someone. Ask me anything, in plain English, before you
               decide anything.
             </p>
@@ -68,7 +68,7 @@ function HeroCard() {
         <div>
           <p className="font-display text-xl font-semibold text-ink">{advisor.name}</p>
           <p className="text-sm text-ink-faint">
-            {advisor.credential} · NPN {advisor.npn}
+            {advisor.credential}
           </p>
         </div>
       </div>

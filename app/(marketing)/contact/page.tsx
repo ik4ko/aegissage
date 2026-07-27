@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ContactForm } from '@/components/forms/contact-form';
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { TrustBar } from '@/components/marketing/trust-bar';
+import { SocialLinks } from '@/components/marketing/social-links';
 import { JsonLd } from '@/components/seo/json-ld';
 import { breadcrumbJsonLd } from '@/lib/seo';
 import { advisor, site } from '@/lib/site';
@@ -35,6 +36,7 @@ export default function ContactPage() {
               not the right person to help, I will say so.
             </p>
             <ContactActions where="contact-hero" className="mt-8" size="lg" />
+            <SocialLinks className="mt-5" />
           </div>
           <TrustBar className="mt-9 max-w-3xl" />
         </div>

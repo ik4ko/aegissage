@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { BadgeCheck, MapPin, ShieldCheck } from 'lucide-react';
+import { BadgeCheck, MapPin } from 'lucide-react';
 import { advisor } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
@@ -26,16 +26,12 @@ export function TrustBar({ className }: { className?: string }) {
 
       <ul className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-soft">
         <li className="flex items-center gap-2">
-          <ShieldCheck className="h-5 w-5 text-sage" aria-hidden="true" />
-          NPN {advisor.npn}
-        </li>
-        <li className="flex items-center gap-2">
           <BadgeCheck className="h-5 w-5 text-sage" aria-hidden="true" />
-          Licensed in {advisor.licensedStates.length} states
+          Licensing details: TODO
         </li>
         <li className="flex items-center gap-2">
           <MapPin className="h-5 w-5 text-sage" aria-hidden="true" />
-          {advisor.basedIn}
+          NJ · NYC · Philadelphia
         </li>
       </ul>
     </div>

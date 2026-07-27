@@ -1,5 +1,4 @@
-import { advisor, site } from './site';
-import { licensedStates } from './states';
+import { advisor, site, social } from './site';
 
 const phone = `+${advisor.phoneRaw.replace(/\D/g, '')}`;
 const businessImage =
@@ -15,6 +14,8 @@ const serviceAreas = [
   { '@type': 'City', name: 'Philadelphia', containedInPlace: { '@type': 'State', name: 'Pennsylvania' } },
 ];
 
+const sameAs = [social.youtube, social.instagram];
+
 export function siteJsonLd() {
   return {
     '@context': 'https://schema.org',
@@ -27,14 +28,15 @@ export function siteJsonLd() {
         logo: `${site.url}/icon.svg`,
         description: site.description,
         telephone: phone,
-        email: advisor.email,
+        ...(advisor.emailConfigured ? { email: advisor.email } : {}),
+        sameAs,
         areaServed: serviceAreas,
         employee: { '@id': `${site.url}#advisor` },
         contactPoint: {
           '@type': 'ContactPoint',
           contactType: 'customer support',
           telephone: phone,
-          email: advisor.email,
+          ...(advisor.emailConfigured ? { email: advisor.email } : {}),
           areaServed: ['US-NJ', 'US-NY', 'US-PA'],
           availableLanguage: 'English',
         },
@@ -44,15 +46,11 @@ export function siteJsonLd() {
         '@id': `${site.url}#advisor`,
         name: advisor.name,
         jobTitle: advisor.credential,
-        identifier: {
-          '@type': 'PropertyValue',
-          propertyID: 'National Producer Number',
-          value: advisor.npn,
-        },
         telephone: phone,
-        email: advisor.email,
+        ...(advisor.emailConfigured ? { email: advisor.email } : {}),
+        sameAs,
         url: `${site.url}/about`,
-        areaServed: licensedStates.map((state) => ({ '@type': 'State', name: state.name })),
+        areaServed: serviceAreas,
         worksFor: { '@id': `${site.url}#organization` },
       },
       {
@@ -62,13 +60,8 @@ export function siteJsonLd() {
         url: site.url,
         image: businessImage,
         telephone: phone,
-        email: advisor.email,
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: 'Westfield',
-          addressRegion: 'NJ',
-          addressCountry: 'US',
-        },
+        ...(advisor.emailConfigured ? { email: advisor.email } : {}),
+        sameAs,
         areaServed: serviceAreas,
         parentOrganization: { '@id': `${site.url}#organization` },
       },

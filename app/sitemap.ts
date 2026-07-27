@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getAllArticles } from '@/lib/content';
-import { licensedStates } from '@/lib/states';
+import { planStates } from '@/lib/states';
 import { site } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -70,7 +70,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const states: MetadataRoute.Sitemap = licensedStates.map((state) => ({
+  const states: MetadataRoute.Sitemap = planStates.map((state) => ({
     url: `${site.url}/plans/${state.slug}`,
     lastModified: now,
     changeFrequency: 'monthly',

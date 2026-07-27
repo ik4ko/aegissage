@@ -194,7 +194,7 @@ export async function GET(req: NextRequest) {
                 {advisor.name}
               </span>
               <span style={{ fontSize: 21, color: BRAND.inkSoft }}>
-                {advisor.credential} · NPN {advisor.npn}
+                {advisor.credential}
               </span>
             </div>
             <span

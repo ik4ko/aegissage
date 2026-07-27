@@ -12,6 +12,7 @@ import { TrustBar } from '@/components/marketing/trust-bar';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { ArticleCard } from '@/components/marketing/article-card';
 import { NewsCard } from '@/components/marketing/news-card';
+import { SocialLinks } from '@/components/marketing/social-links';
 import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { Button } from '@/components/ui/button';
 import { getArticles, getLatestNews } from '@/lib/content';
@@ -163,12 +164,12 @@ export default function HomePage() {
           <RevealGroup as="ul" className="grid gap-4 sm:grid-cols-2 lg:content-start">
             {[
               {
-                stat: `${advisor.yearsLicensed} years`,
-                label: 'Licensed and doing this full time.',
+                stat: '3 areas',
+                label: 'New Jersey, New York City, and Philadelphia.',
               },
               {
-                stat: `${advisor.licensedStates.length} states`,
-                label: 'Active health licenses, so a move does not mean a new agent.',
+                stat: 'Licensing TODO',
+                label: 'Licensed states will be listed after Eric confirms them.',
               },
               {
                 stat: 'One person',
@@ -231,6 +232,24 @@ export default function HomePage() {
           </div>
         </section>
       ) : null}
+
+      <section className="border-t border-line bg-paper">
+        <div className="container py-14 sm:py-16">
+          <Reveal className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
+              More from Eric
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-[-0.03em] text-ink sm:text-4xl">
+              Short Medicare explanations, wherever you watch.
+            </h2>
+            <p className="mt-4 text-lg leading-relaxed text-ink-soft">
+              Watch the latest videos on YouTube or follow AegisSage on Instagram. The links
+              open in a new tab, so you can come back to the guides whenever you need them.
+            </p>
+            <SocialLinks className="mt-6" />
+          </Reveal>
+        </div>
+      </section>
 
       <CtaBand where="home-cta" />
     </>

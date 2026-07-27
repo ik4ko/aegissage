@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BadgeCheck, MapPin, Phone, ShieldCheck } from 'lucide-react';
+import { BadgeCheck, MapPin, Phone } from 'lucide-react';
 import { AdvisorAvatar } from '@/components/marketing/trust-bar';
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { CtaBand } from '@/components/marketing/cta-band';
@@ -11,16 +11,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/json-ld';
 import { advisor, site } from '@/lib/site';
-import { licensedStates } from '@/lib/states';
 import { breadcrumbJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: `About ${advisor.name}`,
-  description: `${advisor.name} is a licensed independent Medicare advisor based in ${advisor.basedIn}, serving ${advisor.licensedStates.length} states. Here is who he is and how he works.`,
+  description: `${advisor.name} provides independent Medicare guidance in New Jersey, New York City, and Philadelphia. Here is who he is and how he works.`,
   alternates: { canonical: '/about' },
   openGraph: {
     title: `About ${advisor.name} — ${site.name}`,
-    description: `Licensed independent Medicare advisor in ${advisor.basedIn}. NPN ${advisor.npn}.`,
+    description: `Independent Medicare guidance from ${advisor.name} in New Jersey, New York City, and Philadelphia.`,
     images: [
       {
         url: `/api/og?title=${encodeURIComponent(`Meet ${advisor.name}`)}&kicker=${encodeURIComponent('The person behind the phone number')}&subtitle=${encodeURIComponent(`Licensed independent Medicare advisor · ${advisor.basedIn}`)}`,
@@ -49,23 +48,24 @@ export default function AboutPage() {
             <Badge tone="ember">The person behind the phone number</Badge>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.035em] text-ink sm:text-5xl">
-              Hi — I am {advisor.name}.
+              Hi — I am {advisor.firstName}.
             </h1>
 
             <p className="mt-6 max-w-2xl text-xl leading-relaxed text-ink-soft">
-              I am a licensed independent Medicare advisor in {advisor.basedIn}. If you
+              I am an independent Medicare advisor serving New Jersey, New York City, and
+              Philadelphia. If you
               landed here from a video, this is the page where you decide whether I am
               worth your time. Fair enough. Here is the honest version.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-base text-ink-soft">
               <span className="flex items-center gap-2">
-                <ShieldCheck className="h-5 w-5 text-sage" aria-hidden="true" />
-                NPN {advisor.npn}
+                <BadgeCheck className="h-5 w-5 text-sage" aria-hidden="true" />
+                Licensing details: TODO
               </span>
               <span className="flex items-center gap-2">
                 <BadgeCheck className="h-5 w-5 text-sage" aria-hidden="true" />
-                {advisor.yearsLicensed} years licensed
+                Independent Medicare guidance
               </span>
               <span className="flex items-center gap-2">
                 <MapPin className="h-5 w-5 text-sage" aria-hidden="true" />
@@ -179,23 +179,26 @@ export default function AboutPage() {
         <div className="container py-14 sm:py-16">
           <Reveal>
           <h2 className="font-display text-3xl font-bold tracking-[-0.03em] text-ink">
-            Where I am licensed
+            Service area and licensing
           </h2>
           <p className="mt-3 max-w-2xl text-lg text-ink-soft">
-            {advisor.licensedStates.length} active health licenses. If you move — or if you
-            are helping a parent who lives somewhere else — there is a good chance I can
-            still help.
+            I serve people in New Jersey, New York City, and Philadelphia. The complete list
+            of Eric's licensed states is TODO and will be added after it is confirmed.
           </p>
           </Reveal>
 
           <ul className="mt-8 flex flex-wrap gap-2.5">
-            {licensedStates.map((state) => (
-              <li key={state.code}>
+            {[
+              ['New Jersey', '/medicare-new-jersey'],
+              ['New York City', '/medicare-new-york-city'],
+              ['Philadelphia', '/medicare-philadelphia'],
+            ].map(([name, href]) => (
+              <li key={href}>
                 <Link
-                  href={`/plans/${state.slug}`}
+                  href={href}
                   className="flex min-h-touch items-center rounded-xl border-2 border-line bg-cream px-4 text-base font-semibold text-ink-soft transition-colors hover:border-navy/50 hover:text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
                 >
-                  {state.name}
+                  {name}
                 </Link>
               </li>
             ))}
