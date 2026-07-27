@@ -53,7 +53,7 @@ export const locationLandings: LocationLanding[] = [
     intro:
       'Philadelphia sits beside several suburban counties, but Medicare plan service areas do not follow a simple city-versus-suburb assumption. Your Philadelphia ZIP code, doctors, prescriptions, and county determine what is worth comparing.',
     localFocus: [
-      'Crossing from Philadelphia County into Montgomery, Delaware, Bucks, or Chester County can change the plans and networks available to you. A move across the metro area deserves a fresh coverage check.',
+      'Crossing from Philadelphia County into Montgomery, Bucks, or Chester County can change the plans and networks available to you. A move across the metro area deserves a fresh coverage check.',
       'For people who use health systems on both sides of the city line, network details deserve more attention than a commercial’s monthly-premium promise.',
       'Verification needed: add verified Philadelphia-area county availability and provider-network examples after the advisor confirms the current-year facts.',
     ],

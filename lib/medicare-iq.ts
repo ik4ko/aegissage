@@ -216,7 +216,7 @@ export const IQ_ROUNDS: IqRound[] = [
         question: 'You can always switch from Medicare Advantage back to Original Medicare with a Medigap policy.',
         options: ['Myth', 'Fact'],
         answer: 0,
-        why: 'Myth. Returning to Original Medicare is allowed, but buying a Medigap policy at that point usually means medical underwriting, and an insurer can decline you. A few states — New York and Connecticut among them — are exceptions.',
+        why: 'Myth. Returning to Original Medicare is allowed, but buying a Medigap policy at that point usually means medical underwriting, and an insurer can decline you. A few states have rules that make this easier, but the details depend on where you live.',
       },
     ],
   },
