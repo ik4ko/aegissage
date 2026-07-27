@@ -78,7 +78,8 @@ export const compliance = {
 export const nav = [
   { href: '/medicare-basics', label: 'Medicare Basics' },
   { href: '/tools/eligibility-check', label: 'Eligibility Check' },
-  { href: '/tools/plan-comparison', label: 'Compare Coverage' },
+  { href: '/tools/medicare-iq', label: 'Medicare IQ' },
+  { href: '/news', label: 'News' },
   { href: '/blog', label: 'Articles' },
   { href: '/about', label: 'About' },
 ] as const;

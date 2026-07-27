@@ -1,12 +1,20 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { ArrowRight, CalendarClock, Compass, MessageCircleQuestion } from 'lucide-react';
+import {
+  ArrowRight,
+  Brain,
+  CalendarClock,
+  Compass,
+  MessageCircleQuestion,
+} from 'lucide-react';
 import { Hero } from '@/components/marketing/hero';
 import { TrustBar } from '@/components/marketing/trust-bar';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { ArticleCard } from '@/components/marketing/article-card';
+import { NewsCard } from '@/components/marketing/news-card';
+import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { Button } from '@/components/ui/button';
-import { getArticles } from '@/lib/content';
+import { getArticles, getLatestNews } from '@/lib/content';
 import { advisor, site } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -22,6 +30,13 @@ const TOOLS = [
     kicker: '2 minutes',
     title: 'Which enrollment window is yours?',
     body: 'Five questions, one per screen. Tells you which deadline applies to your situation and what it costs to miss it. No email required.',
+  },
+  {
+    href: '/tools/medicare-iq',
+    icon: Brain,
+    kicker: 'New questions every visit',
+    title: 'Test your Medicare IQ',
+    body: 'A short trivia round with rotating question sets. You find out why after every answer. Most people score lower than they expect.',
   },
   {
     href: '/tools/plan-comparison',
@@ -42,56 +57,88 @@ const TOOLS = [
 export default function HomePage() {
   const guides = getArticles('medicare-basics').slice(0, 3);
   const posts = getArticles('blog').slice(0, 2);
+  const news = getLatestNews(3);
 
   return (
     <>
       <Hero />
 
       <section className="container -mt-4 pb-4">
-        <TrustBar />
+        <Reveal>
+          <TrustBar />
+        </Reveal>
       </section>
 
-      {/* ── Tools ─────────────────────────────────────────────────────── */}
-      <section className="container py-14 sm:py-20">
-        <SectionHeading
-          kicker="Start without talking to anyone"
-          title="Answer your own question first"
-          body="You should be able to get a long way on your own. These are the same tools I walk people through on the phone."
-        />
+      {/* ── News ──────────────────────────────────────────────────────── */}
+      {news.length > 0 ? (
+        <section className="container py-14 sm:py-16">
+          <Reveal className="flex flex-wrap items-end justify-between gap-4">
+            <SectionHeading
+              kicker="Latest"
+              title="What is worth knowing this week"
+              body="Short updates, posted often — deadlines coming up, rules that changed, and the myth I heard most this week."
+            />
+            <Button asChild variant="ghost" size="md">
+              <Link href="/news">All updates →</Link>
+            </Button>
+          </Reveal>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {TOOLS.map(({ href, icon: Icon, kicker, title, body }) => (
-            <Link
-              key={href}
-              href={href}
-              className="group flex flex-col rounded-2xl border border-line bg-paper p-7 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lift focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
-            >
-              <span className="grid h-12 w-12 place-items-center rounded-xl bg-navy-soft text-navy">
-                <Icon className="h-6 w-6" aria-hidden="true" />
-              </span>
-              <span className="mt-5 text-sm font-semibold uppercase tracking-[0.12em] text-ember-deep">
-                {kicker}
-              </span>
-              <h3 className="mt-2 font-display text-xl font-bold tracking-[-0.02em] text-ink">
-                {title}
-              </h3>
-              <p className="mt-3 flex-1 text-base leading-relaxed text-ink-soft">{body}</p>
-              <span className="mt-5 inline-flex items-center gap-1.5 font-semibold text-navy">
-                Open it
-                <ArrowRight
-                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                  aria-hidden="true"
-                />
-              </span>
-            </Link>
-          ))}
+          <RevealGroup className="mt-9 grid gap-5 md:grid-cols-3">
+            {news.map((item) => (
+              <RevealItem key={item.href}>
+                <NewsCard item={item} from="home" className="h-full" />
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </section>
+      ) : null}
+
+      {/* ── Tools ─────────────────────────────────────────────────────── */}
+      <section className="border-y border-line bg-paper">
+        <div className="container py-14 sm:py-20">
+          <Reveal>
+            <SectionHeading
+              kicker="Start without talking to anyone"
+              title="Answer your own question first"
+              body="You should be able to get a long way on your own. These are the same tools I walk people through on the phone."
+            />
+          </Reveal>
+
+          <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {TOOLS.map(({ href, icon: Icon, kicker, title, body }) => (
+              <RevealItem key={href}>
+                <Link
+                  href={href}
+                  className="group flex h-full flex-col rounded-2xl border border-line bg-cream p-7 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lift focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+                >
+                  <span className="grid h-12 w-12 place-items-center rounded-xl bg-navy-soft text-navy">
+                    <Icon className="h-6 w-6" aria-hidden="true" />
+                  </span>
+                  <span className="mt-5 text-sm font-semibold uppercase tracking-[0.12em] text-ember-deep">
+                    {kicker}
+                  </span>
+                  <h3 className="mt-2 font-display text-xl font-bold tracking-[-0.02em] text-ink">
+                    {title}
+                  </h3>
+                  <p className="mt-3 flex-1 text-base leading-relaxed text-ink-soft">{body}</p>
+                  <span className="mt-5 inline-flex items-center gap-1.5 font-semibold text-navy">
+                    Open it
+                    <ArrowRight
+                      className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                      aria-hidden="true"
+                    />
+                  </span>
+                </Link>
+              </RevealItem>
+            ))}
+          </RevealGroup>
         </div>
       </section>
 
       {/* ── Point of view ─────────────────────────────────────────────── */}
-      <section className="border-y border-line bg-paper">
-        <div className="container grid gap-10 py-14 sm:py-20 lg:grid-cols-2 lg:gap-16">
-          <div>
+      <section className="container py-14 sm:py-20">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <Reveal direction="left">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
               Why this site exists
             </p>
@@ -111,9 +158,9 @@ export default function HomePage() {
             <Button asChild variant="navy" size="lg" className="mt-8">
               <Link href="/about">Read my story →</Link>
             </Button>
-          </div>
+          </Reveal>
 
-          <ul className="grid gap-4 sm:grid-cols-2 lg:content-start">
+          <RevealGroup as="ul" className="grid gap-4 sm:grid-cols-2 lg:content-start">
             {[
               {
                 stat: `${advisor.yearsLicensed} years`,
@@ -132,47 +179,55 @@ export default function HomePage() {
                 label: 'My help never costs you anything, and never requires enrolling.',
               },
             ].map((item) => (
-              <li key={item.stat} className="rounded-2xl border border-line bg-cream p-6">
+              <RevealItem as="li" key={item.stat} className="rounded-2xl border border-line bg-paper p-6">
                 <p className="font-display text-3xl font-bold tracking-[-0.02em] text-navy">
                   {item.stat}
                 </p>
                 <p className="mt-2 text-base leading-relaxed text-ink-soft">{item.label}</p>
-              </li>
+              </RevealItem>
             ))}
-          </ul>
+          </RevealGroup>
         </div>
       </section>
 
       {/* ── Library ───────────────────────────────────────────────────── */}
       {guides.length > 0 ? (
-        <section className="container py-14 sm:py-20">
-          <SectionHeading
-            kicker="The library"
-            title="The guides I actually send people"
-            body="Written the way I would explain it at a kitchen table. Share any of them with whoever else is helping you decide."
-          />
+        <section className="border-t border-line bg-paper">
+          <div className="container py-14 sm:py-20">
+            <Reveal>
+              <SectionHeading
+                kicker="The library"
+                title="The guides I actually send people"
+                body="Written the way I would explain it at a kitchen table. Share any of them with whoever else is helping you decide."
+              />
+            </Reveal>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {guides.map((article) => (
-              <ArticleCard key={article.href} article={article} />
-            ))}
-          </div>
-
-          {posts.length > 0 ? (
-            <div className="mt-5 grid gap-5 md:grid-cols-2">
-              {posts.map((article) => (
-                <ArticleCard key={article.href} article={article} />
+            <RevealGroup className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {guides.map((article) => (
+                <RevealItem key={article.href}>
+                  <ArticleCard article={article} className="h-full" />
+                </RevealItem>
               ))}
-            </div>
-          ) : null}
+            </RevealGroup>
 
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Button asChild variant="outline" size="lg">
-              <Link href="/medicare-basics">All Medicare basics</Link>
-            </Button>
-            <Button asChild variant="ghost" size="lg">
-              <Link href="/blog">Latest articles →</Link>
-            </Button>
+            {posts.length > 0 ? (
+              <RevealGroup className="mt-5 grid gap-5 md:grid-cols-2">
+                {posts.map((article) => (
+                  <RevealItem key={article.href}>
+                    <ArticleCard article={article} className="h-full" />
+                  </RevealItem>
+                ))}
+              </RevealGroup>
+            ) : null}
+
+            <Reveal className="mt-9 flex flex-wrap gap-3">
+              <Button asChild variant="outline" size="lg">
+                <Link href="/medicare-basics">All Medicare basics</Link>
+              </Button>
+              <Button asChild variant="ghost" size="lg">
+                <Link href="/blog">Latest articles →</Link>
+              </Button>
+            </Reveal>
           </div>
         </section>
       ) : null}

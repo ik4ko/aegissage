@@ -6,6 +6,7 @@ import { ShareBar } from './share-bar';
 import { TrustBar } from './trust-bar';
 import { ArticleCard } from './article-card';
 import { CtaBand } from './cta-band';
+import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { Badge } from '@/components/ui/badge';
 import { formatDate } from '@/lib/utils';
 import { advisor } from '@/lib/site';
@@ -81,15 +82,17 @@ export function ArticleLayout({
           <div className="mx-auto max-w-[68ch]">
             <ShareBar path={article.href} title={article.title} />
 
-            <div className="article-body mt-10">
+            <Reveal className="article-body mt-10">
               <Mdx source={article.body} />
-            </div>
+            </Reveal>
 
             <hr className="my-12 border-line" />
 
             <ShareBar path={article.href} title={article.title} />
 
-            <TrustBar className="mt-8" />
+            <Reveal>
+              <TrustBar className="mt-8" />
+            </Reveal>
           </div>
         </div>
       </article>
@@ -100,11 +103,13 @@ export function ArticleLayout({
             <h2 className="font-display text-2xl font-bold tracking-[-0.02em] text-ink sm:text-3xl">
               Read next
             </h2>
-            <div className="mt-8 grid gap-5 md:grid-cols-3">
+            <RevealGroup className="mt-8 grid gap-5 md:grid-cols-3">
               {related.map((item) => (
-                <ArticleCard key={item.href} article={item} />
+                <RevealItem key={item.href}>
+                  <ArticleCard article={item} className="h-full" />
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
           </div>
         </section>
       ) : null}

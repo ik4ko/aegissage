@@ -1,3 +1,4 @@
+import { Reveal } from '@/components/motion/reveal';
 import { ContactActions } from './contact-actions';
 import { AdvisorAvatar } from './trust-bar';
 import { advisor } from '@/lib/site';
@@ -18,7 +19,7 @@ export function CtaBand({
 }) {
   return (
     <section className="container py-14 sm:py-20">
-      <div className="overflow-hidden rounded-3xl border border-navy-deep/20 bg-navy-deep text-white shadow-lift">
+      <Reveal className="overflow-hidden rounded-3xl border border-navy-deep/20 bg-navy-deep text-white shadow-lift">
         <div className="grid gap-8 p-8 sm:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:p-12">
           <div>
             <h2 className="font-display text-3xl font-bold tracking-[-0.025em] sm:text-4xl">
@@ -45,7 +46,7 @@ export function CtaBand({
             </p>
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

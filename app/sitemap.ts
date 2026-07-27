@@ -16,9 +16,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${site.url}/tools/medicare-iq`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: `${site.url}/tools/plan-comparison`,
       lastModified: now,
       changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${site.url}/news`,
+      lastModified: now,
+      changeFrequency: 'daily',
       priority: 0.8,
     },
     {

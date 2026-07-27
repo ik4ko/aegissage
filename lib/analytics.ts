@@ -61,3 +61,26 @@ export function trackArticleRead(slug: string) {
 export function trackGlossaryOpen(term: string) {
   emit('glossary_open', { term });
 }
+
+// ── Medicare IQ ────────────────────────────────────────────────────────────
+// Round and question ids only. Scores are aggregate counts, never tied to a
+// visitor — the game's own progress lives in localStorage and never leaves
+// the browser.
+
+export function trackIqStart(roundId: string) {
+  emit('iq_start', { round: roundId });
+}
+
+/** Which questions people get wrong tells us what to write about next. */
+export function trackIqAnswer(roundId: string, questionId: string, correct: boolean) {
+  emit('iq_answer', { round: roundId, question: questionId, correct });
+}
+
+export function trackIqComplete(roundId: string, score: number, total: number) {
+  emit('iq_complete', { round: roundId, score, total });
+}
+
+/** Someone opened a news item from the homepage strip or the index. */
+export function trackNewsOpen(slug: string, from: 'home' | 'index') {
+  emit('news_open', { slug, from });
+}

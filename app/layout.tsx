@@ -14,12 +14,15 @@ const sans = Source_Sans_3({
   variable: '--font-sans',
 });
 
-// Fraunces is a variable font. Axes may only be requested when the weight
-// range is left variable, so no `weight` is pinned here.
+// Fraunces is a variable font, used only for headings.
+//
+// No optional axes are requested. An earlier revision pulled in SOFT and WONK,
+// which materially enlarges the font file — and nothing in the stylesheet ever
+// varies them, so it was paying for range it never used. Headings are the LCP
+// element on most pages here, so that weight showed up directly in the score.
 const display = Fraunces({
   subsets: ['latin'],
   display: 'swap',
-  axes: ['SOFT', 'WONK'],
   variable: '--font-display',
 });
 
@@ -61,6 +64,21 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${sans.variable} ${display.variable}`}>
+      <head>
+        {/*
+          Scroll-reveal elements are server-rendered in their hidden state.
+          Without JS they would never animate in, so force them visible. The
+          text is in the DOM either way — this only affects opacity/transform.
+        */}
+        <noscript>
+          {/* eslint-disable-next-line react/no-danger */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: '[data-reveal]{opacity:1!important;transform:none!important}',
+            }}
+          />
+        </noscript>
+      </head>
       <body className="flex min-h-dvh flex-col pb-[5.25rem] sm:pb-0">
         <a
           href="#main"

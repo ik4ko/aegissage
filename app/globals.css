@@ -21,6 +21,22 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+
+    /*
+     * Scroll-reveal backstop. <Reveal> already renders plain elements when
+     * usePrefersReducedMotion() is true, so in the normal case no [data-reveal]
+     * element exists here at all. This covers the pre-hydration frame and any
+     * future regression in that hook.
+     *
+     * It is deliberately redundant: a bug that leaves these at opacity 0 makes
+     * content invisible to reduced-motion users, which is the most damaging
+     * failure this site could ship. Do not remove this because "the JS handles
+     * it" — an earlier revision did exactly that and shipped invisible content.
+     */
+    [data-reveal] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
   }
 
   body {

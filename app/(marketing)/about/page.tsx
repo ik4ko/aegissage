@@ -5,6 +5,7 @@ import { AdvisorAvatar } from '@/components/marketing/trust-bar';
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { PullQuote } from '@/components/marketing/prose';
+import { Reveal } from '@/components/motion/reveal';
 import { ContactForm } from '@/components/forms/contact-form';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -91,7 +92,7 @@ export default function AboutPage() {
             <ContactActions where="about-hero" className="mt-9" size="xl" />
           </div>
 
-          <div className="lg:sticky lg:top-28">
+          <Reveal direction="right" className="lg:sticky lg:top-28">
             <div className="rounded-3xl border border-line bg-cream p-7 text-center shadow-card">
               <div className="flex justify-center">
                 <AdvisorAvatar size={148} priority />
@@ -106,13 +107,13 @@ export default function AboutPage() {
                 {advisor.phone}
               </a>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* ── Story ─────────────────────────────────────────────────────── */}
       <section className="container py-14 sm:py-20">
-        <div className="mx-auto max-w-[68ch] article-body">
+        <Reveal className="mx-auto max-w-[68ch] article-body">
           <h2>How I ended up doing this</h2>
           <p>
             My grandmother picked her Medicare coverage off a card that came in the mail.
@@ -186,12 +187,13 @@ export default function AboutPage() {
             document, and I have strong opinions about diner coffee. If we work together
             you will find out more than you wanted to about all three.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Licensing ─────────────────────────────────────────────────── */}
       <section className="border-y border-line bg-paper">
         <div className="container py-14 sm:py-16">
+          <Reveal>
           <h2 className="font-display text-3xl font-bold tracking-[-0.03em] text-ink">
             Where I am licensed
           </h2>
@@ -200,6 +202,7 @@ export default function AboutPage() {
             are helping a parent who lives somewhere else — there is a good chance I can
             still help.
           </p>
+          </Reveal>
 
           <ul className="mt-8 flex flex-wrap gap-2.5">
             {licensedStates.map((state) => (
@@ -222,13 +225,13 @@ export default function AboutPage() {
 
       {/* ── Contact ───────────────────────────────────────────────────── */}
       <section className="container py-14 sm:py-20">
-        <div className="mx-auto max-w-2xl">
+        <Reveal className="mx-auto max-w-2xl">
           <ContactForm
             source="about"
             heading="Ask me something"
             intro="No obligation, no pitch. If I am not the right person to help, I will tell you that too."
           />
-        </div>
+        </Reveal>
       </section>
 
       <CtaBand

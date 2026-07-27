@@ -3,7 +3,7 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import { readingTime } from './utils';
 
-export type Collection = 'medicare-basics' | 'blog';
+export type Collection = 'medicare-basics' | 'blog' | 'news';
 
 export type ArticleFrontmatter = {
   title: string;
@@ -29,6 +29,12 @@ export type Article = ArticleFrontmatter & {
 
 const CONTENT_ROOT = path.join(process.cwd(), 'content');
 
+const HREF_PREFIX: Record<Collection, string> = {
+  'medicare-basics': '/medicare-basics/',
+  blog: '/blog/',
+  news: '/news/',
+};
+
 function collectionDir(collection: Collection) {
   return path.join(CONTENT_ROOT, collection);
 }
@@ -51,7 +57,7 @@ function parseFile(collection: Collection, filename: string): Article {
     collection,
     body: content,
     minutes: readingTime(content),
-    href: collection === 'blog' ? `/blog/${slug}` : `/medicare-basics/${slug}`,
+    href: HREF_PREFIX[collection] + slug,
   };
 }
 
@@ -79,12 +85,23 @@ export function getArticle(collection: Collection, slug: string): Article | unde
 }
 
 export function getAllArticles(): Article[] {
-  return [...getArticles('medicare-basics'), ...getArticles('blog')];
+  return [
+    ...getArticles('medicare-basics'),
+    ...getArticles('blog'),
+    ...getArticles('news'),
+  ];
+}
+
+/** Most recent news items, newest first. */
+export function getLatestNews(limit = 3): Article[] {
+  return getArticles('news').slice(0, limit);
 }
 
 /** Up to `limit` other articles, preferring the same collection. */
 export function getRelated(article: Article, limit = 3): Article[] {
-  const pool = getAllArticles().filter((a) => a.href !== article.href);
+  const pool = getAllArticles().filter(
+    (a) => a.href !== article.href && a.collection !== 'news',
+  );
   pool.sort((a, b) => {
     const sameA = a.collection === article.collection ? 0 : 1;
     const sameB = b.collection === article.collection ? 0 : 1;
