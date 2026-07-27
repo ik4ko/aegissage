@@ -2,6 +2,10 @@ import { advisor, site } from './site';
 import { licensedStates } from './states';
 
 const phone = `+${advisor.phoneRaw.replace(/\D/g, '')}`;
+const businessImage =
+  `${site.url}/api/og?title=${encodeURIComponent(site.name)}` +
+  `&kicker=${encodeURIComponent('Medicare guidance')}` +
+  `&subtitle=${encodeURIComponent(site.description)}`;
 
 const serviceAreas = [
   { '@type': 'State', name: 'New Jersey' },
@@ -47,6 +51,7 @@ export function siteJsonLd() {
         },
         telephone: phone,
         email: advisor.email,
+        url: `${site.url}/about`,
         areaServed: licensedStates.map((state) => ({ '@type': 'State', name: state.name })),
         worksFor: { '@id': `${site.url}#organization` },
       },
@@ -55,7 +60,7 @@ export function siteJsonLd() {
         '@id': `${site.url}#localbusiness`,
         name: site.name,
         url: site.url,
-        image: `${site.url}/icon.svg`,
+        image: businessImage,
         telephone: phone,
         email: advisor.email,
         address: {

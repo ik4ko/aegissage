@@ -134,6 +134,8 @@ export function articleJsonLd(
   url: string,
   type: 'Article' | 'NewsArticle' = 'Article',
 ) {
+  const schemaDate = (value: string) =>
+    /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00Z` : value;
   const image =
     `${site.url}/api/og?title=${encodeURIComponent(article.title)}` +
     `&kicker=${encodeURIComponent(article.category)}` +
@@ -146,9 +148,9 @@ export function articleJsonLd(
     headline: article.title,
     description: article.description,
     image: [image],
-    datePublished: article.date,
-    dateModified: article.updated ?? article.date,
-    author: { '@id': `${site.url}#advisor` },
+    datePublished: schemaDate(article.date),
+    dateModified: schemaDate(article.updated ?? article.date),
+    author: { '@id': `${site.url}#advisor`, url: `${site.url}/about` },
     publisher: { '@id': `${site.url}#organization` },
     articleSection: article.category,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
