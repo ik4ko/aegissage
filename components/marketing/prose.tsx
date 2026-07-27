@@ -111,18 +111,16 @@ export function VideoEmbed({
   );
 }
 
-/** Numbered takeaways — the format that actually gets screenshotted and shared. */
-export function KeyPoints({ items }: { items: string[] }) {
+/**
+ * Numbered takeaways rendered from a plain markdown list.
+ *
+ * next-mdx-remote v6 blocks JavaScript expressions in MDX by default. That
+ * means expression-valued props such as `items={[...]}` arrive as undefined,
+ * so this component intentionally accepts markdown children instead.
+ * Numbering is provided by CSS counters in `.key-points`.
+ */
+export function KeyPoints({ children }: { children: React.ReactNode }) {
   return (
-    <ol className="my-8 space-y-4 border-y border-line py-7">
-      {items.map((item, i) => (
-        <li key={item} className="flex gap-4">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy font-display text-lg font-bold text-white">
-            {i + 1}
-          </span>
-          <span className="pt-1 text-base leading-relaxed text-ink">{item}</span>
-        </li>
-      ))}
-    </ol>
+    <div className="key-points my-8 border-y border-line py-7">{children}</div>
   );
 }

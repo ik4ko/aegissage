@@ -141,4 +141,23 @@
   .article-body :where(table:not([class])) td {
     @apply border-b border-line py-3 pr-4 align-top;
   }
+
+  /* Numbered takeaways rendered from markdown children in <KeyPoints>. */
+  .key-points ul,
+  .key-points ol {
+    @apply list-none space-y-4 pl-0;
+    counter-reset: key-point;
+  }
+
+  .key-points ul > li,
+  .key-points ol > li {
+    @apply relative pl-14 text-base leading-relaxed text-ink;
+    counter-increment: key-point;
+  }
+
+  .key-points ul > li::before,
+  .key-points ol > li::before {
+    content: counter(key-point);
+    @apply absolute left-0 top-0 grid h-9 w-9 place-items-center rounded-full bg-navy font-display text-lg font-bold text-white;
+  }
 }
