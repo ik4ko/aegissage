@@ -2,7 +2,10 @@ import type { Metadata } from 'next';
 import { ArticleCard } from '@/components/marketing/article-card';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { TrustBar } from '@/components/marketing/trust-bar';
+import { JsonLd } from '@/components/seo/json-ld';
 import { getArticles } from '@/lib/content';
+import { breadcrumbJsonLd } from '@/lib/seo';
+import { site } from '@/lib/site';
 
 const TITLE = 'Articles';
 const DESCRIPTION =
@@ -31,6 +34,12 @@ export default function BlogPage() {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', url: `${site.url}/` },
+          { name: TITLE, url: `${site.url}/blog` },
+        ])}
+      />
       <section className="border-b border-line bg-paper">
         <div className="container py-14 sm:py-20">
           <div className="max-w-3xl">

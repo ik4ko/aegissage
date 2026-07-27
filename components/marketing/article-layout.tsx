@@ -8,8 +8,10 @@ import { ArticleCard } from './article-card';
 import { CtaBand } from './cta-band';
 import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { Badge } from '@/components/ui/badge';
+import { JsonLd } from '@/components/seo/json-ld';
 import { formatDate } from '@/lib/utils';
-import { advisor } from '@/lib/site';
+import { breadcrumbJsonLd } from '@/lib/seo';
+import { advisor, site } from '@/lib/site';
 
 /**
  * Shared long-form layout for both content collections.
@@ -31,6 +33,13 @@ export function ArticleLayout({
 }) {
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', url: `${site.url}/` },
+          { name: backLabel, url: `${site.url}${backHref}` },
+          { name: article.title, url: `${site.url}${article.href}` },
+        ])}
+      />
       <article>
         <header className="border-b border-line bg-paper">
           {/* Same 68ch column as the body below, so the title block and the
@@ -120,19 +129,28 @@ export function ArticleLayout({
 }
 
 /** Article structured data, so search results show the byline and date. */
-export function articleJsonLd(article: Article, url: string) {
+export function articleJsonLd(
+  article: Article,
+  url: string,
+  type: 'Article' | 'NewsArticle' = 'Article',
+) {
+  const image =
+    `${site.url}/api/og?title=${encodeURIComponent(article.title)}` +
+    `&kicker=${encodeURIComponent(article.category)}` +
+    `&subtitle=${encodeURIComponent(article.description)}`;
+
   return {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': type,
+    '@id': `${url}#article`,
     headline: article.title,
     description: article.description,
+    image: [image],
     datePublished: article.date,
     dateModified: article.updated ?? article.date,
-    author: {
-      '@type': 'Person',
-      name: advisor.name,
-      jobTitle: advisor.credential,
-    },
-    mainEntityOfPage: url,
+    author: { '@id': `${site.url}#advisor` },
+    publisher: { '@id': `${site.url}#organization` },
+    articleSection: article.category,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
   };
 }

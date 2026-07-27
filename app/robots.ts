@@ -7,10 +7,29 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        // No public content lives under /api; the OG route is reached via
-        // meta tags, not crawled directly.
         disallow: ['/api/'],
       },
+      // Explicitly allow the major answer-engine and AI search crawlers while
+      // keeping private/server endpoints out of the crawl surface.
+      ...[
+        'GPTBot',
+        'ChatGPT-User',
+        'OAI-SearchBot',
+        'ClaudeBot',
+        'anthropic-ai',
+        'PerplexityBot',
+        'Google-Extended',
+        'GoogleOther',
+        'CCBot',
+        'Bytespider',
+        'Amazonbot',
+        'Applebot-Extended',
+        'DuckAssistBot',
+      ].map((userAgent) => ({
+        userAgent,
+        allow: '/',
+        disallow: ['/api/'],
+      })),
     ],
     sitemap: `${site.url}/sitemap.xml`,
     host: site.url,

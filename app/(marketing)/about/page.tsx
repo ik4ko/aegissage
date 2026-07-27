@@ -9,8 +9,10 @@ import { Reveal } from '@/components/motion/reveal';
 import { ContactForm } from '@/components/forms/contact-form';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { JsonLd } from '@/components/seo/json-ld';
 import { advisor, site } from '@/lib/site';
 import { licensedStates } from '@/lib/states';
+import { breadcrumbJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: `About ${advisor.name}`,
@@ -30,32 +32,14 @@ export const metadata: Metadata = {
   },
 };
 
-/** Schema.org markup so a social-referred visitor's search follow-up finds a real person. */
-function personJsonLd() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'InsuranceAgency',
-    name: site.name,
-    url: `${site.url}/about`,
-    telephone: `+${advisor.phoneRaw.replace(/\D/g, '')}`,
-    email: advisor.email,
-    areaServed: advisor.licensedStates.map((code) => ({ '@type': 'State', name: code })),
-    employee: {
-      '@type': 'Person',
-      name: advisor.name,
-      jobTitle: advisor.credential,
-      identifier: `NPN ${advisor.npn}`,
-    },
-  };
-}
-
 export default function AboutPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        // Static, locally-constructed object — no user input reaches this.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', url: `${site.url}/` },
+          { name: 'About', url: `${site.url}/about` },
+        ])}
       />
 
       {/* ── Intro ─────────────────────────────────────────────────────── */}
@@ -112,7 +96,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── Story ─────────────────────────────────────────────────────── */}
-      <section className="container py-14 sm:py-20">
+      <section id="contact" className="container py-14 sm:py-20">
         <Reveal className="mx-auto max-w-[68ch] article-body">
           <h2>How I ended up doing this</h2>
           <p>

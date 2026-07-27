@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { EligibilityQuiz } from '@/components/tools/eligibility-quiz';
+import { JsonLd } from '@/components/seo/json-ld';
 import { Badge } from '@/components/ui/badge';
+import { breadcrumbJsonLd } from '@/lib/seo';
+import { site } from '@/lib/site';
 
 const TITLE = 'Which Medicare enrollment window is yours?';
 const DESCRIPTION =
@@ -26,7 +29,14 @@ export const metadata: Metadata = {
 
 export default function EligibilityCheckPage() {
   return (
-    <div className="container py-12 sm:py-16">
+    <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', url: `${site.url}/` },
+          { name: 'Eligibility Check', url: `${site.url}/tools/eligibility-check` },
+        ])}
+      />
+      <div className="container py-12 sm:py-16">
       <div className="mx-auto max-w-2xl">
         <Badge tone="ember">Free · about 2 minutes</Badge>
         <h1 className="mt-4 font-display text-3xl font-bold tracking-[-0.035em] text-ink sm:text-4xl">
@@ -42,6 +52,7 @@ export default function EligibilityCheckPage() {
       <div className="mt-12">
         <EligibilityQuiz />
       </div>
-    </div>
+      </div>
+    </>
   );
 }

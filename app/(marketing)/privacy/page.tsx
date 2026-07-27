@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+import { JsonLd } from '@/components/seo/json-ld';
 import { advisor, compliance, site } from '@/lib/site';
+import { breadcrumbJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Privacy notice',
@@ -19,7 +21,14 @@ export const metadata: Metadata = {
  */
 export default function PrivacyPage() {
   return (
-    <div className="container py-14 sm:py-20">
+    <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', url: `${site.url}/` },
+          { name: 'Privacy notice', url: `${site.url}/privacy` },
+        ])}
+      />
+      <div className="container py-14 sm:py-20">
       <div className="mx-auto max-w-[68ch]">
         <h1 className="font-display text-4xl font-bold tracking-[-0.035em] text-ink sm:text-5xl">
           Privacy notice
@@ -94,6 +103,7 @@ export default function PrivacyPage() {
           </p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

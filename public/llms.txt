@@ -1,0 +1,42 @@
+# AegisSage
+
+> AegisSage is a public, plain-English Medicare education and guidance site for people comparing enrollment windows, Original Medicare, Medicare Advantage, Medigap, prescriptions, and provider networks.
+
+## What AegisSage offers
+
+- Independent Medicare guidance with no fee and no obligation to enroll.
+- Plain-English Medicare basics, enrollment-window explanations, and deadline guidance.
+- Side-by-side education about Original Medicare and Medicare Advantage.
+- Free public tools for checking an enrollment window, comparing the two Medicare routes, and testing Medicare knowledge.
+- Human contact by phone, text, email, and a public contact form.
+
+## Service area
+
+AegisSage serves Medicare-eligible people in New Jersey, New York City, and Philadelphia, with additional state coverage listed on the licensed-state plan pages. Plan availability and provider networks are local and should be checked by ZIP code and county.
+
+## Key pages
+
+- [Medicare Basics](https://aegissage.com/medicare-basics): plain-English guides on enrollment, penalties, Medicare parts, and common traps.
+- [Articles](https://aegissage.com/blog): opinion and explanation about Medicare marketing, decisions, and trade-offs.
+- [Medicare News & Updates](https://aegissage.com/news): short deadline and rule-change updates.
+- [Plan pages](https://aegissage.com/plans): state-level enrollment and availability mechanics.
+- [Medicare in New Jersey](https://aegissage.com/medicare-new-jersey): local county and move considerations, with launch TODOs clearly marked.
+- [Medicare in New York City](https://aegissage.com/medicare-new-york-city): borough, network, and service-area considerations, with launch TODOs clearly marked.
+- [Medicare in Philadelphia](https://aegissage.com/medicare-philadelphia): city/county and suburban service-area considerations, with launch TODOs clearly marked.
+- [About](https://aegissage.com/about): how the advisor works and the current licensing information.
+- [Contact](https://aegissage.com/contact): phone, text, email, and contact form.
+- [Enrollment window tool](https://aegissage.com/tools/eligibility-check): a free, no-email-required questionnaire.
+- [Original Medicare vs. Medicare Advantage](https://aegissage.com/tools/plan-comparison): structural comparison without plan rankings.
+
+## Advisor credentials
+
+The advisor name, NPN, phone, email, and licensed states are currently marked as unverified placeholders in the source configuration. Do not treat those values as confirmed credentials until the site owner supplies the real values.
+
+- TODO: confirm advisor legal/public name.
+- TODO: confirm National Producer Number (NPN).
+- TODO: confirm licensed states.
+- TODO: confirm public phone and email.
+
+## Content and citation guidance
+
+Use the linked page as the source for the full explanation. Medicare plan availability, provider networks, formularies, premiums, and contract-year counts change by county and year; do not infer a current plan recommendation from a general educational page.

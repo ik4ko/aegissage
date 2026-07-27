@@ -5,12 +5,33 @@ import { CtaBand } from '@/components/marketing/cta-band';
 import { TrustBar } from '@/components/marketing/trust-bar';
 import { GlossaryTerm } from '@/components/marketing/glossary-term';
 import { Button } from '@/components/ui/button';
+import { JsonLd } from '@/components/seo/json-ld';
 import { getArticles } from '@/lib/content';
 import { glossary } from '@/lib/glossary';
+import { breadcrumbJsonLd, faqJsonLd } from '@/lib/seo';
+import { site } from '@/lib/site';
 
 const TITLE = 'Medicare Basics';
 const DESCRIPTION =
   'The plain-English guides I send people before our first call. Enrollment windows, the parts, the penalties, and the traps — written to be understood, not to sell you something.';
+
+const FAQ_ITEMS = [
+  {
+    question: 'When should I start learning about Medicare?',
+    answer:
+      'Start before your Initial Enrollment Period closes. The right timing depends on your age, current coverage, and whether you are still working, so gather those facts before choosing a route.',
+  },
+  {
+    question: 'Does Medicare plan availability depend on where I live?',
+    answer:
+      'Yes. Medicare Advantage plans, provider networks, and drug formularies are local. Your ZIP code and county determine which options are actually available to compare.',
+  },
+  {
+    question: 'What should I compare first?',
+    answer:
+      'Start with the doctors you need to keep, the prescriptions you take, and the enrollment window you are in. Premiums and plan features only make sense after those constraints are clear.',
+  },
+];
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -40,6 +61,13 @@ export default function MedicareBasicsPage() {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', url: `${site.url}/` },
+          { name: TITLE, url: `${site.url}/medicare-basics` },
+        ])}
+      />
+      <JsonLd data={faqJsonLd(FAQ_ITEMS)} />
       <section className="border-b border-line bg-paper">
         <div className="container py-14 sm:py-20">
           <div className="max-w-3xl">
@@ -104,6 +132,22 @@ export default function MedicareBasicsPage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      <section className="container py-14 sm:py-16">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="font-display text-3xl font-bold tracking-[-0.03em] text-ink">
+            Medicare questions people ask first
+          </h2>
+          <dl className="mt-8 divide-y divide-line border-y border-line">
+            {FAQ_ITEMS.map(({ question, answer }) => (
+              <div key={question} className="py-6">
+                <dt className="font-display text-xl font-bold text-ink">{question}</dt>
+                <dd className="mt-3 text-lg leading-relaxed text-ink-soft">{answer}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 

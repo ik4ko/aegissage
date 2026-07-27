@@ -5,7 +5,9 @@ import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { StickyCta } from '@/components/marketing/sticky-cta';
 import { DisclaimerFooter } from '@/components/marketing/disclaimer-footer';
+import { JsonLd } from '@/components/seo/json-ld';
 import { advisor, site } from '@/lib/site';
+import { siteJsonLd } from '@/lib/seo';
 import './globals.css';
 
 const sans = Source_Sans_3({
@@ -65,6 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${sans.variable} ${display.variable}`}>
       <head>
+        <JsonLd data={siteJsonLd()} />
         {/*
           Scroll-reveal elements are server-rendered in their hidden state.
           Without JS they would never animate in, so force them visible. The

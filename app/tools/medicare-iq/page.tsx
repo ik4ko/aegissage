@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import { MedicareIqGame } from '@/components/tools/medicare-iq-game';
 import { CtaBand } from '@/components/marketing/cta-band';
+import { JsonLd } from '@/components/seo/json-ld';
 import { Badge } from '@/components/ui/badge';
 import { IQ_ROUNDS, roundById } from '@/lib/medicare-iq';
+import { breadcrumbJsonLd } from '@/lib/seo';
+import { site } from '@/lib/site';
 
 const TITLE = 'Medicare IQ — how much do you actually know?';
 const DESCRIPTION =
@@ -68,6 +71,12 @@ export async function generateMetadata({
 export default function MedicareIqPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', url: `${site.url}/` },
+          { name: 'Medicare IQ', url: `${site.url}/tools/medicare-iq` },
+        ])}
+      />
       <div className="container py-12 sm:py-16">
         <div className="mx-auto max-w-2xl">
           <Badge tone="ember">Free · about 2 minutes · {IQ_ROUNDS.length} rotating rounds</Badge>

@@ -9,9 +9,12 @@ import { NewsCard } from '@/components/marketing/news-card';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { Badge } from '@/components/ui/badge';
+import { JsonLd } from '@/components/seo/json-ld';
 import { getArticle, getArticles } from '@/lib/content';
 import { formatDate } from '@/lib/utils';
-import { advisor, site } from '@/lib/site';
+import { site } from '@/lib/site';
+import { articleJsonLd } from '@/components/marketing/article-layout';
+import { breadcrumbJsonLd } from '@/lib/seo';
 
 /**
  * A single news item.
@@ -75,22 +78,17 @@ export default async function NewsItemPage({ params }: { params: Promise<Params>
     .filter((n) => n.slug !== item.slug)
     .slice(0, 3);
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'NewsArticle',
-    headline: item.title,
-    description: item.description,
-    datePublished: item.date,
-    dateModified: item.updated ?? item.date,
-    author: { '@type': 'Person', name: advisor.name, jobTitle: advisor.credential },
-    mainEntityOfPage: `${site.url}${item.href}`,
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      <JsonLd
+        data={articleJsonLd(item, `${site.url}${item.href}`, 'NewsArticle')}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', url: `${site.url}/` },
+          { name: 'Medicare News & Updates', url: `${site.url}/news` },
+          { name: item.title, url: `${site.url}${item.href}` },
+        ])}
       />
 
       <article className="container py-12 sm:py-16">

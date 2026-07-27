@@ -5,7 +5,10 @@ import { CtaBand } from '@/components/marketing/cta-band';
 import { TrustBar } from '@/components/marketing/trust-bar';
 import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { Button } from '@/components/ui/button';
+import { JsonLd } from '@/components/seo/json-ld';
 import { getArticles } from '@/lib/content';
+import { breadcrumbJsonLd } from '@/lib/seo';
+import { site } from '@/lib/site';
 
 const TITLE = 'Medicare News & Updates';
 const DESCRIPTION =
@@ -37,6 +40,12 @@ export default function NewsPage() {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', url: `${site.url}/` },
+          { name: TITLE, url: `${site.url}/news` },
+        ])}
+      />
       <section className="border-b border-line bg-paper">
         <div className="container py-14 sm:py-20">
           <Reveal className="max-w-3xl">

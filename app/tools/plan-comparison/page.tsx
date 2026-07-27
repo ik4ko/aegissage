@@ -4,8 +4,11 @@ import { PlanComparisonTable } from '@/components/tools/plan-comparison-table';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { TrustBar } from '@/components/marketing/trust-bar';
 import { ShareBar } from '@/components/marketing/share-bar';
+import { JsonLd } from '@/components/seo/json-ld';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { breadcrumbJsonLd } from '@/lib/seo';
+import { site } from '@/lib/site';
 
 const TITLE = 'Original Medicare vs. Medicare Advantage, side by side';
 const DESCRIPTION =
@@ -32,6 +35,12 @@ export const metadata: Metadata = {
 export default function PlanComparisonPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', url: `${site.url}/` },
+          { name: 'Plan Comparison', url: `${site.url}/tools/plan-comparison` },
+        ])}
+      />
       <div className="container py-12 sm:py-16">
         <div className="max-w-3xl">
           <Badge tone="navy">Side by side</Badge>

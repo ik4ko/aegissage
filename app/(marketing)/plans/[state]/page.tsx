@@ -8,9 +8,11 @@ import { ContactForm } from '@/components/forms/contact-form';
 import { ArticleCard } from '@/components/marketing/article-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { JsonLd } from '@/components/seo/json-ld';
 import { getStateBySlug, licensedStates } from '@/lib/states';
 import { getArticles } from '@/lib/content';
 import { advisor, site } from '@/lib/site';
+import { breadcrumbJsonLd } from '@/lib/seo';
 
 /**
  * Programmatic SEO, one page per licensed state.
@@ -76,6 +78,13 @@ export default async function StatePage({ params }: { params: Promise<Params> })
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: 'Home', url: `${site.url}/` },
+          { name: 'Plan pages', url: `${site.url}/plans` },
+          { name: `Medicare in ${state.name}`, url: `${site.url}/plans/${state.slug}` },
+        ])}
+      />
       <section className="border-b border-line bg-paper">
         <div className="container py-14 sm:py-20">
           <div className="max-w-3xl">
