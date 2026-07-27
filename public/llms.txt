@@ -18,6 +18,7 @@ AegisSage serves Medicare-eligible people in New Jersey, New York City, and Phil
 
 - [Medicare Basics](https://aegissage.com/medicare-basics): plain-English guides on enrollment, penalties, Medicare parts, and common traps.
 - [Articles](https://aegissage.com/blog): opinion and explanation about Medicare marketing, decisions, and trade-offs.
+- [Videos](https://aegissage.com/videos): a growing library of plain-English Medicare explanations from Eric.
 - [Medicare News & Updates](https://aegissage.com/news): short deadline and rule-change updates.
 - [Plan pages](https://aegissage.com/plans): state-level enrollment and availability mechanics.
 - [Medicare in New Jersey](https://aegissage.com/medicare-new-jersey): local county and move considerations, with launch verification details clearly marked.

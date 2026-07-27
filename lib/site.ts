@@ -81,5 +81,6 @@ export const nav = [
   { href: '/tools/medicare-iq', label: 'Medicare IQ' },
   { href: '/news', label: 'News' },
   { href: '/blog', label: 'Articles' },
+  { href: '/videos', label: 'Videos' },
   { href: '/about', label: 'About' },
 ] as const;

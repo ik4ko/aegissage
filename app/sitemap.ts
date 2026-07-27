@@ -41,6 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     { url: `${site.url}/plans`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${site.url}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${site.url}/videos`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${site.url}/contact`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     {
       url: `${site.url}/medicare-new-jersey`,
