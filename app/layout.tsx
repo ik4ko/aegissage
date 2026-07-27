@@ -1,0 +1,91 @@
+import type { Metadata, Viewport } from 'next';
+import { Fraunces, Source_Sans_3 } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
+import { SiteHeader } from '@/components/marketing/site-header';
+import { SiteFooter } from '@/components/marketing/site-footer';
+import { StickyCta } from '@/components/marketing/sticky-cta';
+import { DisclaimerFooter } from '@/components/marketing/disclaimer-footer';
+import { advisor, site } from '@/lib/site';
+import './globals.css';
+
+const sans = Source_Sans_3({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+});
+
+// Fraunces is a variable font. Axes may only be requested when the weight
+// range is left variable, so no `weight` is pinned here.
+const display = Fraunces({
+  subsets: ['latin'],
+  display: 'swap',
+  axes: ['SOFT', 'WONK'],
+  variable: '--font-display',
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
+  title: {
+    default: `${site.name} — ${site.tagline}`,
+    template: `%s · ${site.name}`,
+  },
+  description: site.description,
+  applicationName: site.name,
+  authors: [{ name: advisor.name }],
+  openGraph: {
+    type: 'website',
+    siteName: site.name,
+    locale: 'en_US',
+    url: site.url,
+    title: `${site.name} — ${site.tagline}`,
+    description: site.description,
+    images: [{ url: '/api/og', width: 1200, height: 630, alt: site.name }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${site.name} — ${site.tagline}`,
+    description: site.description,
+    images: ['/api/og'],
+  },
+  robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#FBF8F3',
+  // Zoom is never disabled on this site — a large share of readers rely on it.
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className={`${sans.variable} ${display.variable}`}>
+      <body className="flex min-h-dvh flex-col pb-[5.25rem] sm:pb-0">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-xl focus:bg-navy focus:px-5 focus:py-3 focus:text-base focus:font-semibold focus:text-white"
+        >
+          Skip to main content
+        </a>
+
+        <SiteHeader />
+
+        <main id="main" className="flex-1">
+          {children}
+        </main>
+
+        <SiteFooter />
+
+        {/*
+          TPMO disclaimer is mounted here, once, for every route in the app.
+          Individual pages must never render their own copy of this text.
+        */}
+        <DisclaimerFooter />
+
+        <StickyCta />
+        <Analytics />
+      </body>
+    </html>
+  );
+}
