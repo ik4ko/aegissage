@@ -9,6 +9,7 @@ import { JsonLd } from '@/components/seo/json-ld';
 import { breadcrumbJsonLd } from '@/lib/seo';
 import { advisor, site } from '@/lib/site';
 import type { LocationLanding } from '@/lib/locations';
+import { Reveal } from '@/components/motion/reveal';
 
 export function LocationLandingPage({ location }: { location: LocationLanding }) {
   const url = `${site.url}/medicare-${location.slug}`;
@@ -24,7 +25,7 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
 
       <section className="border-b border-line bg-paper">
         <div className="container py-14 sm:py-20">
-          <div className="max-w-3xl">
+          <Reveal className="max-w-3xl">
             <Badge tone="navy">{location.region}</Badge>
             <h1 className="mt-4 font-display text-4xl font-bold tracking-[-0.035em] text-ink sm:text-5xl">
               Medicare in {location.name}
@@ -33,14 +34,16 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
               {location.intro}
             </p>
             <ContactActions where={`location-${location.slug}`} className="mt-8" size="lg" />
-          </div>
-          <TrustBar className="mt-9 max-w-3xl" />
+          </Reveal>
+          <Reveal>
+            <TrustBar className="mt-9 max-w-3xl" />
+          </Reveal>
         </div>
       </section>
 
       <section className="container py-14 sm:py-16">
         <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-          <article className="article-body max-w-[68ch]">
+          <Reveal as="article" className="article-body max-w-[68ch]">
             <h2>What is local about Medicare here</h2>
             {location.localFocus.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
@@ -74,16 +77,16 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
             <aside className="not-prose mt-10 rounded-2xl border border-ember/30 bg-ember-soft p-5 text-base leading-relaxed text-ink">
               <strong>Before launch:</strong> {location.verificationNote}
             </aside>
-          </article>
+          </Reveal>
 
-          <div className="lg:sticky lg:top-28 lg:self-start">
+          <Reveal className="lg:sticky lg:top-28 lg:self-start">
             <ContactForm
               source={`location-${location.slug}`}
               context={location.context}
               heading={`Talk about Medicare in ${location.shortName}`}
               intro={`Tell ${advisor.name.split(' ')[0]} your ZIP code, doctors, prescriptions, and what you are trying to decide.`}
             />
-          </div>
+          </Reveal>
         </div>
       </section>
 

@@ -42,6 +42,18 @@ export function trackQuizCompleted(answered: number) {
   emit('quiz_completed', { answered });
 }
 
+export function trackTriageStarted() {
+  emit('triage_started');
+}
+
+export function trackTriageStep(step: number, question: 'stage' | 'intent') {
+  emit('triage_step', { step, question });
+}
+
+export function trackTriageCompleted(intent: string) {
+  emit('triage_completed', { intent });
+}
+
 /** Contact form outcomes. `source` matches the payload's source field. */
 export function trackContactSubmit(source: string, status: 'success' | 'error') {
   emit('contact_submit', { source, status });

@@ -14,6 +14,8 @@ import { ArticleCard } from '@/components/marketing/article-card';
 import { NewsCard } from '@/components/marketing/news-card';
 import { SocialLinks } from '@/components/marketing/social-links';
 import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
+import { CountUp } from '@/components/motion/count-up';
+import { TriageFlow } from '@/components/tools/triage-flow';
 import { Button } from '@/components/ui/button';
 import { getArticles, getLatestNews } from '@/lib/content';
 import { advisor, site } from '@/lib/site';
@@ -136,6 +138,19 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="border-y border-navy-deep bg-navy-deep text-white">
+        <div className="container py-14 sm:py-20">
+          <Reveal className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-ember-soft">Not sure where to begin?</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-[-0.03em] sm:text-4xl">Answer two questions and I will point you to the right next step.</h2>
+            <p className="mt-4 text-lg leading-relaxed text-white/75">No plan recommendations, no data collection, and no pressure to contact me.</p>
+          </Reveal>
+          <Reveal className="mt-9">
+            <TriageFlow />
+          </Reveal>
+        </div>
+      </section>
+
       {/* ── Point of view ─────────────────────────────────────────────── */}
       <section className="container py-14 sm:py-20">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
@@ -164,11 +179,11 @@ export default function HomePage() {
           <RevealGroup as="ul" className="grid gap-4 sm:grid-cols-2 lg:content-start">
             {[
               {
-                stat: '3 areas',
+                stat: <CountUp value={3} suffix=" areas" />,
                 label: 'New Jersey, New York City, and Philadelphia.',
               },
               {
-                stat: '26 states',
+                stat: <CountUp value={26} suffix=" states" />,
                 label: 'Active health licenses across the listed states.',
               },
               {
@@ -180,7 +195,7 @@ export default function HomePage() {
                 label: 'My help never costs you anything, and never requires enrolling.',
               },
             ].map((item) => (
-              <RevealItem as="li" key={item.stat} className="rounded-2xl border border-line bg-paper p-6">
+              <RevealItem as="li" key={typeof item.stat === 'string' ? item.stat : item.label} className="rounded-2xl border border-line bg-paper p-6">
                 <p className="font-display text-3xl font-bold tracking-[-0.02em] text-navy">
                   {item.stat}
                 </p>

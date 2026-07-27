@@ -6,6 +6,7 @@ import { TrustBar } from '@/components/marketing/trust-bar';
 import { GlossaryTerm } from '@/components/marketing/glossary-term';
 import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/json-ld';
+import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { getArticles } from '@/lib/content';
 import { glossary } from '@/lib/glossary';
 import { breadcrumbJsonLd, faqJsonLd } from '@/lib/seo';
@@ -70,7 +71,7 @@ export default function MedicareBasicsPage() {
       <JsonLd data={faqJsonLd(FAQ_ITEMS)} />
       <section className="border-b border-line bg-paper">
         <div className="container py-14 sm:py-20">
-          <div className="max-w-3xl">
+          <Reveal className="max-w-3xl">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
               The library
             </p>
@@ -82,9 +83,11 @@ export default function MedicareBasicsPage() {
               that actually determine whether this goes well for you. Every piece of jargon
               on these pages is one tap from a plain definition.
             </p>
-          </div>
+          </Reveal>
 
-          <TrustBar className="mt-9 max-w-3xl" />
+          <Reveal>
+            <TrustBar className="mt-9 max-w-3xl" />
+          </Reveal>
         </div>
       </section>
 
@@ -92,26 +95,26 @@ export default function MedicareBasicsPage() {
         {articles.length === 0 ? (
           <p className="text-lg text-ink-soft">Guides are being written. Check back shortly.</p>
         ) : (
-          <div className="grid gap-5">
-            {lead ? <ArticleCard article={lead} featured headingLevel={2} /> : null}
+          <RevealGroup className="grid gap-5">
+            {lead ? <RevealItem><ArticleCard article={lead} featured headingLevel={2} /></RevealItem> : null}
             {rest.length > 0 ? (
               <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                 {rest.map((article) => (
-                  <ArticleCard key={article.href} article={article} headingLevel={2} />
+                  <RevealItem key={article.href}><ArticleCard article={article} headingLevel={2} /></RevealItem>
                 ))}
               </div>
             ) : null}
-          </div>
+          </RevealGroup>
         )}
 
-        <div className="mt-9 flex flex-wrap gap-3">
+        <Reveal className="mt-9 flex flex-wrap gap-3">
           <Button asChild size="lg">
             <Link href="/tools/eligibility-check">Check your enrollment window →</Link>
           </Button>
           <Button asChild variant="outline" size="lg">
             <Link href="/tools/plan-comparison">Compare the two routes</Link>
           </Button>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── Glossary ──────────────────────────────────────────────────── */}
@@ -140,7 +143,8 @@ export default function MedicareBasicsPage() {
           <h2 className="font-display text-3xl font-bold tracking-[-0.03em] text-ink">
             Medicare questions people ask first
           </h2>
-          <dl className="mt-8 divide-y divide-line border-y border-line">
+          <Reveal as="section" className="mt-8">
+          <dl className="divide-y divide-line border-y border-line">
             {FAQ_ITEMS.map(({ question, answer }) => (
               <div key={question} className="py-6">
                 <dt className="font-display text-xl font-bold text-ink">{question}</dt>
@@ -148,6 +152,7 @@ export default function MedicareBasicsPage() {
               </div>
             ))}
           </dl>
+          </Reveal>
         </div>
       </section>
 

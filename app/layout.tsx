@@ -82,7 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         </noscript>
       </head>
-      <body className="flex min-h-dvh flex-col pb-[5.25rem] sm:pb-0">
+      <body className="flex min-h-dvh flex-col pb-[5.25rem]">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-xl focus:bg-navy focus:px-5 focus:py-3 focus:text-base focus:font-semibold focus:text-white"
