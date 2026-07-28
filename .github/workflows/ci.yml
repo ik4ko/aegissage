@@ -1,0 +1,96 @@
+name: CI
+
+# Quality gates for the public AegisSage site.
+#
+# This site is the only place a visitor can reach Eric, and /api/contact is
+# its single write path — the one that stores a lead, alerts the advisor, and
+# hands off to the CRM bridge. A regression here is a lost enquiry from
+# someone trying to sort out their Medicare, so the gates below are blocking
+# rather than advisory.
+#
+# Deployment is Vercel's job. Nothing here deploys.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Blocking. The site currently lints clean apart from one known
+      # react-hooks warning, so there is no backlog to grandfather in — unlike
+      # the Agent Factory repo, this one can afford a hard gate from day one.
+      - name: Lint
+        run: npm run lint
+
+      - name: Production build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://www.aegissage.com
+
+      # The repo has no test framework; validate-site.mjs is the regression
+      # suite. It crawls every URL the sitemap advertises and asserts status
+      # codes, titles, a single h1, meta descriptions, canonicals, absolute
+      # og:image URLs, iframe accessible names, JSON-LD that parses, and
+      # internal link integrity.
+      - name: Route and link validation
+        run: |
+          set -euo pipefail
+          npx next start -p 3200 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          # Plain curl poll rather than a wait-on dependency: this needs no
+          # install and cannot drift with the package tree.
+          for i in $(seq 1 60); do
+            curl -fsS -o /dev/null http://localhost:3200/ && break
+            sleep 2
+          done
+          curl -fsS -o /dev/null http://localhost:3200/ || { echo "server never came up"; exit 1; }
+          BASE=http://localhost:3200 node scripts/validate-site.mjs
+        env:
+          NEXT_PUBLIC_SITE_URL: http://localhost:3200
+
+      - name: Dependency audit
+        run: npm audit --omit=dev
+
+      # Every bridge and notification secret is server-only by design. A hit
+      # here means one has been pulled into a client component and shipped to
+      # the browser.
+      - name: Assert no server secrets in client bundles
+        run: |
+          set -euo pipefail
+          FOUND=0
+          for NAME in SUPABASE_SERVICE_ROLE_KEY CRM_INGEST_SECRET CRM_INGEST_BYPASS_TOKEN \
+                      CRON_SECRET LEAD_HEALTH_TOKEN RESEND_API_KEY TWILIO_AUTH_TOKEN \
+                      TWILIO_ACCOUNT_SID NOTIFY_SMS_TO; do
+            if grep -rq "$NAME" .next/static 2>/dev/null; then
+              echo "::error::$NAME appears in a client bundle (.next/static)"
+              FOUND=1
+            fi
+          done
+          [ "$FOUND" -eq 0 ] && echo "OK: no server-only secret names in .next/static"
