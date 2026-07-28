@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { timingSafeEqual } from 'node:crypto';
 import { syncPendingLeads } from '@/lib/crm/dispatch';
+import { runLeadDigest } from '@/lib/notify/lead-digest';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -42,6 +43,25 @@ async function run(req: NextRequest) {
   try {
     const result = await syncPendingLeads(25);
 
+    /*
+      The digest runs here, after the drain, because this is the only cron
+      Vercel Hobby allows and the ordering matters: anything the sweep just
+      delivered must not then be reported as broken. It sends only when
+      something is actually wrong, and dedupes on its own, so a second cron
+      fire in the same window cannot produce a second email.
+
+      Its failure is swallowed deliberately. The drain is the important half
+      of this request, and an alerting problem must never make a working
+      delivery look like a failed one.
+    */
+    let digest: Awaited<ReturnType<typeof runLeadDigest>> | { error: string } | null = null;
+    try {
+      digest = await runLeadDigest();
+    } catch (err) {
+      console.error('[sync-leads] digest failed:', err);
+      digest = { error: 'digest_failed' };
+    }
+
     if (!result.configured) {
       return NextResponse.json({
         ok: true,
@@ -52,7 +72,7 @@ async function run(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({ ok: true, ...result });
+    return NextResponse.json({ ok: true, ...result, digest });
   } catch (err) {
     console.error('[sync-leads] worker failed:', err);
     return NextResponse.json({ error: 'Sync failed' }, { status: 500 });

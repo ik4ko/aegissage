@@ -48,6 +48,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # Pure-logic tests for digest selection and deduplication. Fast, no
+      # network, and the only guard against the alerting system either
+      # spamming the advisor or going silent when it should not.
+      - name: Digest logic tests
+        run: npm run test:digest
+
       - name: Production build
         run: npm run build
         env:

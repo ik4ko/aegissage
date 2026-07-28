@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "validate": "node scripts/validate-site.mjs"
+    "validate": "node scripts/validate-site.mjs",
+    "test:digest": "node scripts/test-digest.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
