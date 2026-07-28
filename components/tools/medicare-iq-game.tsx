@@ -47,11 +47,23 @@ export function MedicareIqGame() {
   const [isBest, setIsBest] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
-  // localStorage is client-only; read after mount so SSR and first paint match.
+  /*
+   * localStorage is client-only; read after mount so SSR and first paint match.
+   *
+   * react-hooks/set-state-in-effect is suppressed deliberately here. The rule
+   * is right in general, but this is the mount-only external-store read it
+   * cannot distinguish: the value does not exist during SSR, so seeding it
+   * from useState's initializer would render server and client differently and
+   * produce a hydration mismatch. Restructuring this to useSyncExternalStore
+   * would satisfy the rule, but it is a real refactor of a working, stateful
+   * tool and does not belong in a performance/SEO pass.
+   */
   useEffect(() => {
     const p = readProgress();
+    /* eslint-disable react-hooks/set-state-in-effect */
     setProgress(p);
     setRound(roundForPlay(p.plays));
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   useEffect(() => {

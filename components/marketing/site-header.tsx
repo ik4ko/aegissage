@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, Phone, X } from 'lucide-react';
@@ -11,9 +11,41 @@ import { cn } from '@/lib/utils';
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
-  // Route change closes the menu; without this the panel survives navigation.
-  useEffect(() => setOpen(false), [pathname]);
+  /**
+   * Route change closes the menu; without this the panel survives navigation.
+   *
+   * Adjusted during render rather than in an effect. Closing it in a
+   * `useEffect` meant the new route painted for one frame with the old menu
+   * still open, and it is the pattern React documents as "adjusting state
+   * when a prop changes" — the re-render happens before the browser paints.
+   */
+  const [menuPath, setMenuPath] = useState(pathname);
+  if (pathname !== menuPath) {
+    setMenuPath(pathname);
+    setOpen(false);
+  }
+
+  /**
+   * Escape closes the menu and returns focus to the toggle.
+   *
+   * This is a disclosure, not a modal dialog, so it deliberately does not trap
+   * focus — tabbing past the last link should continue into the page rather
+   * than cycle. But WCAG 2.2 expects a keyboard user to be able to dismiss
+   * what they opened without tabbing through it, and returning focus to the
+   * trigger is what keeps their place in the tab order.
+   */
+  useEffect(() => {
+    if (!open) return;
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== 'Escape') return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    }
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [open]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-cream/92 backdrop-blur">
@@ -62,6 +94,7 @@ export function SiteHeader() {
           </a>
 
           <button
+            ref={toggleRef}
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}

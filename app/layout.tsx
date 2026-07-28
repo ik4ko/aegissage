@@ -74,7 +74,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           text is in the DOM either way — this only affects opacity/transform.
         */}
         <noscript>
-          {/* eslint-disable-next-line react/no-danger */}
           <style
             dangerouslySetInnerHTML={{
               __html: '[data-reveal]{opacity:1!important;transform:none!important}',

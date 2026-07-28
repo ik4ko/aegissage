@@ -35,22 +35,73 @@ const NOTES: Record<string, string> = {
 const FALLBACK_NOTE =
   'Medicare rules are federal, but which plans are actually available to you is decided county by county. That is the first thing worth checking.';
 
-export const planStates: StateInfo[] = LICENSED_STATES
-  .map(([code, name]) => ({
-    code,
-    name,
-    slug: name.toLowerCase().replace(/\s+/g, '-'),
-    note: NOTES[code] ?? FALLBACK_NOTE,
-  }));
+/**
+ * ── Licensing guard ───────────────────────────────────────────────────────
+ * Every public surface that lists states — /plans, /plans/[state], the footer,
+ * the About page, the sitemap, schema `areaServed` and llms.txt — reads from
+ * this module. A state added here appears in all of them at once, including
+ * in JSON-LD, where claiming an unheld license is a real problem.
+ *
+ * These checks run at module load, which on this app means at build time
+ * (every consumer is server-rendered or statically generated). A mismatch
+ * fails `next build` loudly instead of shipping.
+ */
+const EXPECTED_LICENSED_COUNT = 26;
 
-export const licensedStates: StateInfo[] = LICENSED_STATES
-  .filter(([code]) => (advisor.licensedStates as readonly string[]).includes(code))
-  .map(([code, name]) => ({
-    code,
-    name,
-    slug: name.toLowerCase().replace(/\s+/g, '-'),
-    note: NOTES[code] ?? FALLBACK_NOTE,
-  }));
+function assertLicensing() {
+  const codes = LICENSED_STATES.map(([code]) => code);
+  const declared = advisor.licensedStates as readonly string[];
+
+  const duplicates = codes.filter((code, i) => codes.indexOf(code) !== i);
+  if (duplicates.length > 0) {
+    throw new Error(`lib/states.ts: duplicate state codes: ${duplicates.join(', ')}`);
+  }
+
+  const extra = codes.filter((code) => !declared.includes(code));
+  if (extra.length > 0) {
+    throw new Error(
+      `lib/states.ts lists states the advisor is not licensed in: ${extra.join(', ')}. ` +
+        'Remove them, or add them to advisor.licensedStates in lib/site.ts only if a ' +
+        'real license exists.',
+    );
+  }
+
+  const missing = declared.filter((code) => !codes.includes(code));
+  if (missing.length > 0) {
+    throw new Error(
+      `lib/states.ts is missing licensed states declared in lib/site.ts: ${missing.join(', ')}.`,
+    );
+  }
+
+  if (codes.length !== EXPECTED_LICENSED_COUNT) {
+    throw new Error(
+      `Expected exactly ${EXPECTED_LICENSED_COUNT} licensed states, found ${codes.length}. ` +
+        'If the advisor genuinely gained or lost a license, update ' +
+        'EXPECTED_LICENSED_COUNT deliberately — do not let this drift silently.',
+    );
+  }
+}
+
+assertLicensing();
+
+/**
+ * The 26 licensed states.
+ *
+ * `licensedStates` and `planStates` are the same list and are kept as two
+ * names only because both are imported across the app. They were previously
+ * built by two separate pipelines where one filtered against the other — a
+ * no-op that read as though the two could legitimately differ. They cannot:
+ * a plan page for a state the advisor is not licensed in has no reason to
+ * exist, and `assertLicensing()` above now enforces that.
+ */
+export const licensedStates: StateInfo[] = LICENSED_STATES.map(([code, name]) => ({
+  code,
+  name,
+  slug: name.toLowerCase().replace(/\s+/g, '-'),
+  note: NOTES[code] ?? FALLBACK_NOTE,
+}));
+
+export const planStates: StateInfo[] = licensedStates;
 
 export function getStateBySlug(slug: string): StateInfo | undefined {
   return planStates.find((s) => s.slug === slug);

@@ -25,8 +25,8 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aegissage.com',
   tagline: 'Straight answers about Medicare, from someone who picks up the phone.',
   description:
-    'Independent Medicare guidance for people in New Jersey, New York City, and Philadelphia. Plain-English guides, a free eligibility check, and a real person you can call or text.',
-  serviceArea: 'New Jersey, New York City, and Philadelphia',
+    'Independent Medicare guidance for people in Bergen County, New Jersey, New York City, and Philadelphia. Plain-English guides, a free eligibility check, and a real person you can call or text.',
+  serviceArea: 'Bergen County, New Jersey, New York City, and Philadelphia',
 } as const;
 
 export const advisor = {
@@ -37,7 +37,16 @@ export const advisor = {
   emailConfigured: true,
   phoneRaw: RAW_PHONE,
   phone: formatPhone(RAW_PHONE),
-  basedIn: 'New Jersey',
+  /**
+   * Where the advisor is based, at county granularity.
+   *
+   * This is deliberately a county, not a street address. No verified public
+   * address, office hours or Google Business Profile exists for this advisor,
+   * so nothing on this site may render a postal address, geo coordinates or
+   * opening hours. Stating the county of origin is a factual origin statement;
+   * it must never be presented as a walk-in office.
+   */
+  basedIn: 'Bergen County, New Jersey',
   licensedStates: [
     'AL', 'AR', 'AZ', 'FL', 'GA', 'IA', 'IL', 'IN', 'KY', 'LA', 'MI', 'MN', 'MS',
     'MO', 'NC', 'ND', 'NJ', 'NY', 'OH', 'OK', 'PA', 'SC', 'TN', 'TX', 'VA', 'WV',
@@ -66,14 +75,30 @@ export const social = {
  */
 export const compliance = {
   currentAsOf: 'January 2026',
-  /** Pending verification — replace with the advisor's verified contracted counts. */
-  planCount: 47,
-  /** Pending verification — replace with the advisor's verified contracted counts. */
-  organizationCount: 9,
   medicareGovUrl: 'https://www.medicare.gov',
   medicarePhone: '1-800-MEDICARE',
   medicareTty: '1-877-486-2048',
 } as const;
+
+/**
+ * ── Why there are no plan/organization counts here ────────────────────────
+ *
+ * CMS model TPMO language includes a sentence of the form "Currently we
+ * represent N organizations which offer M products in your area." Those two
+ * numbers are contract facts specific to this advisor and change every
+ * contract year. They were previously hardcoded to unverified placeholder
+ * values and rendered publicly on every page as a factual disclosure, which
+ * is worse than omitting them: a wrong count is an inaccurate CMS disclosure.
+ *
+ * The disclaimer now carries the required "we do not offer every plan
+ * available in your area" scope limitation and the required 1-800-MEDICARE /
+ * medicare.gov referral, without asserting a count that cannot be verified.
+ *
+ * TO RESTORE THE COUNTS: add `organizationCount` and `planCount` above with
+ * the advisor's verified contracted figures, then render them in
+ * <DisclaimerFooter />. Do not guess. Do not round. Re-verify annually
+ * alongside `currentAsOf`.
+ */
 
 export const nav = [
   { href: '/medicare-basics', label: 'Medicare Basics' },

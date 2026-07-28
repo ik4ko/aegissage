@@ -9,16 +9,21 @@ import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/json-ld';
 import { breadcrumbJsonLd } from '@/lib/seo';
 import { site, social } from '@/lib/site';
+import { getVideos } from '@/lib/videos';
 
-type VideoItem = {
-  youtubeId: string;
-  title: string;
-  description: string;
-};
+/**
+ * The registry lives in lib/videos.ts. It is empty on purpose — no VideoObject
+ * schema is emitted until real videos are actually embedded here.
+ */
+const videos = getVideos();
 
-// Add published videos here in one pass: ID, title, and plain-English description.
-// Keep this empty until Eric has real AegisSage videos to publish.
-const videos: VideoItem[] = [];
+const OG_IMAGE =
+  `${site.url}/api/og?title=${encodeURIComponent('Medicare videos from Eric')}` +
+  `&kicker=${encodeURIComponent('Watch and learn')}` +
+  `&subtitle=${encodeURIComponent('Plain-English guidance from AegisSage')}`;
+
+const DESCRIPTION =
+  'Plain-English Medicare explanations, enrollment guidance, and practical questions to ask before you choose a route.';
 
 export const metadata: Metadata = {
   title: 'Videos',
@@ -26,17 +31,24 @@ export const metadata: Metadata = {
     'Plain-English Medicare videos from Eric at AegisSage. New videos will be added here as they are published.',
   alternates: { canonical: '/videos' },
   openGraph: {
+    type: 'website',
     title: 'Medicare videos from Eric — AegisSage',
-    description:
-      'Plain-English Medicare explanations, enrollment guidance, and practical questions to ask before you choose a route.',
+    description: DESCRIPTION,
+    url: `${site.url}/videos`,
     images: [
       {
-        url: `/api/og?title=${encodeURIComponent('Medicare videos from Eric')}&kicker=${encodeURIComponent('Watch and learn')}&subtitle=${encodeURIComponent('Plain-English guidance from AegisSage')}`,
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
         alt: 'Medicare videos from Eric at AegisSage',
       },
     ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Medicare videos from Eric — AegisSage',
+    description: DESCRIPTION,
+    images: [OG_IMAGE],
   },
 };
 
@@ -52,7 +64,8 @@ export default function VideosPage() {
 
       <section className="border-b border-line bg-paper">
         <div className="container py-14 sm:py-20">
-          <Reveal className="max-w-3xl">
+          {/* Not wrapped in <Reveal>: this is the LCP block. See hero.tsx. */}
+          <div className="max-w-3xl">
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
               <Youtube className="h-5 w-5" aria-hidden="true" /> Watch and learn
             </p>
@@ -63,7 +76,7 @@ export default function VideosPage() {
               Short explanations for the questions people usually ask after a mailer,
               commercial, or enrollment deadline has them second-guessing everything.
             </p>
-          </Reveal>
+          </div>
           <TrustBar className="mt-9 max-w-3xl" />
         </div>
       </section>
@@ -100,6 +113,11 @@ export default function VideosPage() {
                 <h2 className="mt-5 font-display text-2xl font-bold tracking-[-0.02em] text-ink">
                   {video.title}
                 </h2>
+                {video.category || video.publishDate ? (
+                  <p className="mt-2 text-sm text-ink-faint">
+                    {[video.category, video.publishDate].filter(Boolean).join(' · ')}
+                  </p>
+                ) : null}
               </article>
             ))}
           </div>

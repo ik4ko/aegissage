@@ -12,23 +12,31 @@ import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/json-ld';
 import { advisor, site } from '@/lib/site';
 import { licensedStates } from '@/lib/states';
+import { locationLandings } from '@/lib/locations';
 import { breadcrumbJsonLd } from '@/lib/seo';
+
+const DESCRIPTION = `${advisor.name} provides independent Medicare guidance in ${site.serviceArea}. Here is who he is and how he works.`;
+const OG_IMAGE =
+  `${site.url}/api/og?title=${encodeURIComponent(`Meet ${advisor.name}`)}` +
+  `&kicker=${encodeURIComponent('The person behind the phone number')}` +
+  `&subtitle=${encodeURIComponent(`Licensed independent Medicare advisor · ${advisor.basedIn}`)}`;
 
 export const metadata: Metadata = {
   title: `About ${advisor.name}`,
-  description: `${advisor.name} provides independent Medicare guidance in New Jersey, New York City, and Philadelphia. Here is who he is and how he works.`,
+  description: DESCRIPTION,
   alternates: { canonical: '/about' },
   openGraph: {
+    type: 'profile',
     title: `About ${advisor.name} — ${site.name}`,
-    description: `Independent Medicare guidance from ${advisor.name} in New Jersey, New York City, and Philadelphia.`,
-    images: [
-      {
-        url: `/api/og?title=${encodeURIComponent(`Meet ${advisor.name}`)}&kicker=${encodeURIComponent('The person behind the phone number')}&subtitle=${encodeURIComponent(`Licensed independent Medicare advisor · ${advisor.basedIn}`)}`,
-        width: 1200,
-        height: 630,
-        alt: `About ${advisor.name}`,
-      },
-    ],
+    description: `Independent Medicare guidance from ${advisor.name} in ${site.serviceArea}.`,
+    url: `${site.url}/about`,
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `About ${advisor.name}` }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `About ${advisor.name} — ${site.name}`,
+    description: DESCRIPTION,
+    images: [OG_IMAGE],
   },
 };
 
@@ -45,7 +53,8 @@ export default function AboutPage() {
       {/* ── Intro ─────────────────────────────────────────────────────── */}
       <section className="border-b border-line bg-paper">
         <div className="container grid gap-10 py-14 sm:py-20 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-16">
-          <div className="animate-fade-up">
+          {/* Not animated: this is the LCP block. See the note in hero.tsx. */}
+          <div>
             <Badge tone="ember">The person behind the phone number</Badge>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.035em] text-ink sm:text-5xl">
@@ -53,8 +62,7 @@ export default function AboutPage() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-xl leading-relaxed text-ink-soft">
-              I am an independent Medicare advisor serving New Jersey, New York City, and
-              Philadelphia. If you
+              I am an independent Medicare advisor serving {site.serviceArea}. If you
               landed here from a video, this is the page where you decide whether I am
               worth your time. Fair enough. Here is the honest version.
             </p>
@@ -183,8 +191,20 @@ export default function AboutPage() {
             Service area and licensing
           </h2>
           <p className="mt-3 max-w-2xl text-lg text-ink-soft">
-            I serve people in New Jersey, New York City, and Philadelphia, and hold active
-            health licenses in {licensedStates.length} states.
+            I serve people in {site.serviceArea}, and hold active health licenses in{' '}
+            {licensedStates.length} states. Local pages:{' '}
+            {locationLandings.map((location, index) => (
+              <span key={location.slug}>
+                {index > 0 ? ', ' : ''}
+                <Link
+                  href={`/medicare-${location.slug}`}
+                  className="font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep"
+                >
+                  {location.name}
+                </Link>
+              </span>
+            ))}
+            .
           </p>
           </Reveal>
 

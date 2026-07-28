@@ -18,12 +18,32 @@ import { CountUp } from '@/components/motion/count-up';
 import { TriageFlow } from '@/components/tools/triage-flow';
 import { Button } from '@/components/ui/button';
 import { getArticles, getLatestNews } from '@/lib/content';
+import { locationLandings } from '@/lib/locations';
+import { licensedStates } from '@/lib/states';
 import { advisor, site } from '@/lib/site';
+
+const OG_IMAGE =
+  `${site.url}/api/og?title=${encodeURIComponent(site.tagline)}` +
+  `&kicker=${encodeURIComponent('Medicare, explained')}` +
+  `&subtitle=${encodeURIComponent(`Independent guidance across ${site.serviceArea}.`)}`;
 
 export const metadata: Metadata = {
   title: `${site.name} — ${site.tagline}`,
   description: site.description,
   alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    title: `${site.name} — ${site.tagline}`,
+    description: site.description,
+    url: `${site.url}/`,
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: site.name }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${site.name} — ${site.tagline}`,
+    description: site.description,
+    images: [OG_IMAGE],
+  },
 };
 
 const TOOLS = [
@@ -179,11 +199,11 @@ export default function HomePage() {
           <RevealGroup as="ul" className="grid gap-4 sm:grid-cols-2 lg:content-start">
             {[
               {
-                stat: <CountUp value={3} suffix=" areas" />,
-                label: 'New Jersey, New York City, and Philadelphia.',
+                stat: <CountUp value={locationLandings.length} suffix=" local areas" />,
+                label: 'Bergen County, New Jersey, New York City, and Philadelphia.',
               },
               {
-                stat: <CountUp value={26} suffix=" states" />,
+                stat: <CountUp value={licensedStates.length} suffix=" states" />,
                 label: 'Active health licenses across the listed states.',
               },
               {

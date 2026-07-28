@@ -12,3 +12,6 @@ build/
 next-env.d.ts
 
 .DS_Store
+
+# Graphify index output — local tooling artifact, not source.
+graphify-out/

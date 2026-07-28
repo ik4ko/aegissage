@@ -45,25 +45,27 @@ export async function generateMetadata({
 
   const title = `Medicare in ${state.name}`;
   const description = `How Medicare enrollment works in ${state.name}, and how to reach a licensed independent advisor who covers the state. ${state.note}`;
+  const ogImage =
+    `${site.url}/api/og?title=${encodeURIComponent(`Medicare in ${state.name}`)}` +
+    `&kicker=${encodeURIComponent(state.code)}` +
+    `&subtitle=${encodeURIComponent('Licensed here. Independent. Reachable by phone.')}`;
 
   return {
     title,
     description,
     alternates: { canonical: `/plans/${state.slug}` },
     openGraph: {
+      type: 'website',
       title: `${title} — ${site.name}`,
       description,
-      images: [
-        {
-          url:
-            `/api/og?title=${encodeURIComponent(`Medicare in ${state.name}`)}` +
-            `&kicker=${encodeURIComponent(state.code)}` +
-            `&subtitle=${encodeURIComponent('Licensed here. Independent. Reachable by phone.')}`,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
+      url: `${site.url}/plans/${state.slug}`,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} — ${site.name}`,
+      description,
+      images: [ogImage],
     },
   };
 }

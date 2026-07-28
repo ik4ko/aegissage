@@ -8,11 +8,31 @@ import { breadcrumbJsonLd } from '@/lib/seo';
 import { planStates } from '@/lib/states';
 import { site } from '@/lib/site';
 
+const TITLE = 'Medicare plan pages by state';
+const DESCRIPTION =
+  'State-by-state Medicare enrollment and plan-availability guidance for the states AegisSage serves.';
+const OG_IMAGE =
+  `${site.url}/api/og?title=${encodeURIComponent('Medicare guidance by state')}` +
+  `&kicker=${encodeURIComponent('State by state')}` +
+  `&subtitle=${encodeURIComponent('Enrollment rules are federal. Plan availability is local.')}`;
+
 export const metadata: Metadata = {
-  title: 'Medicare plan pages by state',
-  description:
-    'State-by-state Medicare enrollment and plan-availability guidance for the states AegisSage serves.',
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: '/plans' },
+  openGraph: {
+    type: 'website',
+    title: `${TITLE} · ${site.name}`,
+    description: DESCRIPTION,
+    url: `${site.url}/plans`,
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: TITLE }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${TITLE} · ${site.name}`,
+    description: DESCRIPTION,
+    images: [OG_IMAGE],
+  },
 };
 
 export default function PlansPage() {

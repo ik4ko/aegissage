@@ -77,9 +77,22 @@ export function PullQuote({
 }
 
 /**
- * Privacy-friendly, click-to-load video. Nothing autoplays and no third-party
- * frame is mounted until the reader asks for it, which also keeps it off the
- * critical path for Lighthouse.
+ * Embedded YouTube player.
+ *
+ * ── What this actually does ───────────────────────────────────────────────
+ * The iframe IS present in the markup from first render, with `loading="lazy"`
+ * so the browser defers the network fetch until the frame nears the viewport.
+ * It is not click-to-load: an earlier version of this comment claimed nothing
+ * was mounted until the reader asked for it, which was never true of the code
+ * below and would have been a misleading privacy claim.
+ *
+ * What is true: the youtube-nocookie.com host is used, `rel=0` keeps the
+ * end-card recommendations to the same channel, nothing autoplays, and a
+ * below-the-fold embed costs nothing until it is scrolled toward.
+ *
+ * The 16:9 wrapper reserves layout space before the frame loads, so an embed
+ * never shifts the page — the site currently measures CLS 0.000 and this is
+ * part of why.
  */
 export function VideoEmbed({
   youtubeId,

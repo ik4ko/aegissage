@@ -12,13 +12,50 @@ const licensedAreas = licensedStates.map((state) => ({
   name: state.name,
 }));
 
+/**
+ * Service areas.
+ *
+ * States come from lib/states.ts, so this can never drift from the licensed
+ * set. The three sub-state entries are the markets with their own landing
+ * pages, each nested under its state via `containedInPlace`.
+ *
+ * Bergen County appears as an AdministrativeArea the advisor SERVES. It is
+ * deliberately not an address, a `location`, or a `LocalBusiness` place:
+ * there is no verified public street address, no verified office hours and
+ * no Google Business Profile for this advisor, so nothing here may imply a
+ * walk-in location. Serving an area and having premises in it are different
+ * claims and only the first one is supported by evidence.
+ */
 const serviceAreas = [
   ...licensedAreas,
+  {
+    '@type': 'AdministrativeArea',
+    name: 'Bergen County',
+    containedInPlace: { '@type': 'State', name: 'New Jersey' },
+  },
   { '@type': 'City', name: 'New York City', containedInPlace: { '@type': 'State', name: 'New York' } },
   { '@type': 'City', name: 'Philadelphia', containedInPlace: { '@type': 'State', name: 'Pennsylvania' } },
 ];
 
 const sameAs = [social.youtube, social.instagram];
+
+/**
+ * Subject-matter coverage for the Person and Organization nodes.
+ *
+ * These are topics the site actually publishes substantive content about.
+ * They describe expertise, not products offered — no carrier, plan name or
+ * availability claim belongs in this list.
+ */
+const knowsAbout = [
+  'Medicare Advantage',
+  'Medicare Supplement Plans',
+  'Medigap',
+  'Medicare Part D',
+  'Dual-Eligible Special Needs Plans (D-SNP)',
+  'Medicare enrollment periods',
+  'Medicare provider networks',
+  'Medicare prescription formularies',
+];
 
 export function siteJsonLd() {
   return {
@@ -35,6 +72,7 @@ export function siteJsonLd() {
         ...(advisor.emailConfigured ? { email: advisor.email } : {}),
         sameAs,
         areaServed: serviceAreas,
+        knowsAbout,
         employee: { '@id': `${site.url}#advisor` },
         contactPoint: {
           '@type': 'ContactPoint',
@@ -55,6 +93,8 @@ export function siteJsonLd() {
         sameAs,
         url: `${site.url}/about`,
         areaServed: serviceAreas,
+        knowsAbout,
+        knowsLanguage: 'English',
         worksFor: { '@id': `${site.url}#organization` },
       },
       {
@@ -67,7 +107,18 @@ export function siteJsonLd() {
         ...(advisor.emailConfigured ? { email: advisor.email } : {}),
         sameAs,
         areaServed: serviceAreas,
+        knowsAbout,
         parentOrganization: { '@id': `${site.url}#organization` },
+        /*
+         * Intentionally absent: address, geo, openingHours(Specification),
+         * hasMap, priceRange, aggregateRating.
+         *
+         * Google's LocalBusiness guidance treats `address` as required, so
+         * this node will not by itself earn a local pack placement or a
+         * knowledge panel. That is the correct trade: a fabricated address
+         * would be worse than an incomplete node. Add these ONLY when a
+         * verified public NAP and Google Business Profile exist.
+         */
       },
       {
         '@type': 'WebSite',

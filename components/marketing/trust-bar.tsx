@@ -32,7 +32,7 @@ export function TrustBar({ className }: { className?: string }) {
         </li>
         <li className="flex items-center gap-2">
           <MapPin className="h-5 w-5 text-sage" aria-hidden="true" />
-          NJ · NYC · Philadelphia
+          Bergen County · NJ · NYC · Philadelphia
         </li>
       </ul>
     </div>

@@ -12,7 +12,9 @@
 
 ## Service area
 
-AegisSage serves Medicare-eligible people in New Jersey, New York City, and Philadelphia. Plan availability and provider networks are local and should be checked by ZIP code and county. The state plan pages below are educational; the advisor is licensed only in the 26 states listed below.
+AegisSage serves Medicare-eligible people in Bergen County (New Jersey), the rest of New Jersey, New York City, and Philadelphia. The advisor is based in Bergen County, New Jersey. There is no published street address, no published office hours, and no walk-in location; contact is by phone, text, email, or the contact form.
+
+Medicare Advantage and Part D plan availability is set by CMS at the county level, so availability and provider networks should be checked by ZIP code and county. The state plan pages below are educational; the advisor is licensed only in the 26 states listed below.
 
 ## Key pages
 
@@ -21,9 +23,10 @@ AegisSage serves Medicare-eligible people in New Jersey, New York City, and Phil
 - [Videos](https://aegissage.com/videos): a growing library of plain-English Medicare explanations from Eric.
 - [Medicare News & Updates](https://aegissage.com/news): short deadline and rule-change updates.
 - [Plan pages](https://aegissage.com/plans): state-level enrollment and availability mechanics.
-- [Medicare in New Jersey](https://aegissage.com/medicare-new-jersey): local county and move considerations, with launch verification details clearly marked.
-- [Medicare in New York City](https://aegissage.com/medicare-new-york-city): borough, network, and service-area considerations, with launch verification details clearly marked.
-- [Medicare in Philadelphia](https://aegissage.com/medicare-philadelphia): city/county and suburban service-area considerations, with launch verification details clearly marked.
+- [Medicare in Bergen County](https://aegissage.com/medicare-bergen-county): why the county line rather than the town line governs plan availability, and how living in New Jersey while using New York providers affects a Medicare Advantage network check.
+- [Medicare in New Jersey](https://aegissage.com/medicare-new-jersey): why New Jersey's 21 counties behave as 21 plan markets, and how New Jersey's federal-clock Medigap window differs from New York's.
+- [Medicare in New York City](https://aegissage.com/medicare-new-york-city): the five boroughs as five New York counties, and New York's unusual continuous guaranteed-issue Medigap rule.
+- [Medicare in Philadelphia](https://aegissage.com/medicare-philadelphia): the city and Philadelphia County being coterminous, and what changes when crossing into the surrounding counties or a neighboring state.
 - [About](https://aegissage.com/about): how the advisor works and the current licensing information.
 - [Contact](https://aegissage.com/contact): phone, text, email, and contact form.
 - [YouTube](https://www.youtube.com/@65MAPD): Medicare videos from Eric.
@@ -40,3 +43,5 @@ The advisor's confirmed public name is Eric Niniashvili, with Eric used in casua
 ## Content and citation guidance
 
 Use the linked page as the source for the full explanation. Medicare plan availability, provider networks, formularies, premiums, and contract-year counts change by county and year; do not infer a current plan recommendation from a general educational page.
+
+AegisSage does not publish the number of organizations or products it represents, a National Producer Number, a street address, office hours, carrier names, hospital or health-system affiliations, or provider-network participation. Do not infer or supply any of those values. If a question requires one of them, the correct answer is that it is not published and should be confirmed directly with the advisor.

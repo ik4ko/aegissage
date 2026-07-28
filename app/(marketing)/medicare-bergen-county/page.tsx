@@ -1,10 +1,10 @@
 import { LocationLandingPage } from '@/components/marketing/location-landing';
 import { getLocationLanding, locationMetadata } from '@/lib/locations';
 
-const location = getLocationLanding('new-york-city')!;
+const location = getLocationLanding('bergen-county')!;
 
-export const metadata = locationMetadata('new-york-city');
+export const metadata = locationMetadata('bergen-county');
 
-export default function MedicareNewYorkCityPage() {
+export default function MedicareBergenCountyPage() {
   return <LocationLandingPage location={location} />;
 }

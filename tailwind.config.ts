@@ -7,9 +7,19 @@ import type { Config } from 'tailwindcss';
  *  1. The primary reader is 65+ on a phone. Body copy starts at 19px, never
  *     below 18px, and every interactive target clears 48x48.
  *  2. Contrast is checked against the cream page background, not pure white.
- *     `ink` on `cream` is ~15:1 (AAA); `navy` on `cream` is ~9:1 (AAA);
- *     `ember` on `cream` is ~5:1 (AA), so ember is used for large text,
- *     borders and filled buttons — never for small body copy.
+ *     Measured ratios against `cream` (#FBF8F3):
+ *
+ *       ink       #12212F  15.43:1  AAA
+ *       ink-soft  #3A4A59   8.60:1  AAA
+ *       ink-faint #485665   7.09:1  AAA   (was #5B6B7A at 5.18:1 — AA only)
+ *       navy      #123E63  10.46:1  AAA
+ *       ember     #B4530A   4.74:1  AA    — large text, borders and filled
+ *                                           buttons only, never small body copy
+ *       ember-deep #8C3F06  7.01:1  AAA   — the one to use for small accent text
+ *
+ *     `ink-faint` was darkened to clear AAA for the timestamps, captions and
+ *     figure text it is used on. It still sits a clear step below `ink-soft`,
+ *     so the three-level text hierarchy is intact.
  */
 const config: Config = {
   darkMode: ['class'],
@@ -32,7 +42,7 @@ const config: Config = {
         ink: {
           DEFAULT: '#12212F',
           soft: '#3A4A59',
-          faint: '#5B6B7A',
+          faint: '#485665',
         },
         navy: {
           DEFAULT: '#123E63',

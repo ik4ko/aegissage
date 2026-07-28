@@ -3,12 +3,23 @@ import { ArrowRight, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ContactActions } from './contact-actions';
 import { AdvisorAvatar } from './trust-bar';
-import { advisor } from '@/lib/site';
+import { advisor, site } from '@/lib/site';
 
 /**
  * The homepage hook. Built around the person, not a funnel: a claim someone
  * would actually say out loud, then the two fastest ways to reach him, with
  * the contact details sitting directly under the buttons.
+ *
+ * ── Why the headline column does not animate ──────────────────────────────
+ * This block used `animate-fade-up`, which starts at `opacity: 0` and fills
+ * backwards. An element that is transparent is not a valid Largest
+ * Contentful Paint candidate, so the biggest above-the-fold text was excluded
+ * from LCP until the animation had run. Measured mobile LCP was ~3.0s with
+ * the animation and no network request finishing after 1.5s — the delay was
+ * entirely paint-side.
+ *
+ * The card below the headline still animates: it is lower in the column, it
+ * is not the LCP candidate, and the movement there costs nothing.
  */
 export function Hero() {
   return (
@@ -21,10 +32,10 @@ export function Hero() {
 
       <div className="container relative py-14 sm:py-20 lg:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-          <div className="animate-fade-up">
+          <div>
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
               <Clock className="h-4 w-4" aria-hidden="true" />
-              Independent · NJ · NYC · Philadelphia · No call center
+              Independent · Bergen County · NJ · NYC · Philadelphia
             </p>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl lg:text-6xl">
@@ -34,7 +45,7 @@ export function Hero() {
 
             <p className="mt-6 max-w-xl text-lg text-ink-soft sm:text-xl">
               I am {advisor.firstName} — an independent Medicare advisor serving{' '}
-              New Jersey, New York City, and Philadelphia. I spend most of my day undoing what a mailer or a
+              {site.serviceArea}. I spend most of my day undoing what a mailer or a
               commercial told someone. Ask me anything, in plain English, before you
               decide anything.
             </p>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Mail, MessageSquareText, Phone } from 'lucide-react';
 import { advisor, contactHrefs, nav, site } from '@/lib/site';
 import { planStates } from '@/lib/states';
+import { locationLandings } from '@/lib/locations';
 import { ShieldMark } from './site-header';
 import { SocialLinks } from './social-links';
 
@@ -76,6 +77,22 @@ export function SiteFooter() {
 
         <div>
           <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-ink-faint">
+            Local areas
+          </h2>
+          <ul className="mt-4 space-y-1">
+            {locationLandings.map((location) => (
+              <li key={location.slug}>
+                <Link
+                  href={`/medicare-${location.slug}`}
+                  className="flex min-h-touch items-center text-base text-ink-soft hover:text-navy"
+                >
+                  {location.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <h2 className="mt-8 text-sm font-semibold uppercase tracking-[0.12em] text-ink-faint">
             Plan pages
           </h2>
           <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1.5">
