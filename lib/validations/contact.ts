@@ -50,6 +50,18 @@ export const contactSchema = z
       errorMap: () => ({ message: 'Please check the box so I know it is okay to contact you.' }),
     }),
     /**
+     * Standalone SMS permission.
+     *
+     * Optional and defaulting to false. It must NEVER be derived from
+     * `phone` being present or from `preferredContact === 'text'` — a
+     * preference for texting is not consent to automated messaging, and
+     * treating it as such is the exact TCPA failure mode. The API route and
+     * lib/notify/sms.ts both re-check the stored value at send time.
+     */
+    consentSms: z.boolean().optional().default(false),
+    /** Standalone permission for future marketing/educational email. */
+    consentMarketing: z.boolean().optional().default(false),
+    /**
      * Honeypot — real people leave this empty. It deliberately accepts any
      * value: rejecting it here would return a validation error that tells a
      * bot exactly which field to stop filling. The API route checks it and

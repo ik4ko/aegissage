@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CheckCircle2, Loader2, Phone } from 'lucide-react';
@@ -9,7 +10,7 @@ import { Input, Textarea } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ContactActions } from '@/components/marketing/contact-actions';
-import { advisor, compliance } from '@/lib/site';
+import { advisor, compliance, site } from '@/lib/site';
 import { trackContactSubmit } from '@/lib/analytics';
 import { getAttribution } from '@/lib/attribution';
 import { cn } from '@/lib/utils';
@@ -58,7 +59,14 @@ export function ContactForm({
     formState: { errors },
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { preferredContact: 'phone', source, website: '' },
+    defaultValues: {
+      preferredContact: 'phone',
+      source,
+      website: '',
+      // Both start unticked. A pre-checked consent box is not consent.
+      consentSms: false,
+      consentMarketing: false,
+    },
   });
 
   const preferred = watch('preferredContact');
@@ -318,12 +326,95 @@ export function ContactForm({
             </span>
           </label>
 
+          {/*
+            ── OPTIONAL PERMISSIONS ─────────────────────────────────────────
+            Two separate, unticked boxes. Neither is required to submit, and
+            neither may be inferred from anything else on this form — a phone
+            number is not SMS consent, and "text me back" is not permission to
+            send automated messages. Do not merge these into the box above.
+          */}
+          <div className="mt-5 space-y-4 border-t border-line pt-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.1em] text-ink-faint">
+              Optional — you can leave these unchecked
+            </p>
+
+            <label className="flex cursor-pointer gap-4">
+              <span className="pt-0.5">
+                <Controller
+                  control={control}
+                  name="consentSms"
+                  render={({ field }) => (
+                    <Checkbox
+                      ref={field.ref}
+                      name={field.name}
+                      checked={field.value === true}
+                      onBlur={field.onBlur}
+                      onCheckedChange={(checked) => field.onChange(checked === true)}
+                      aria-describedby={`${source}-sms-detail`}
+                    />
+                  )}
+                />
+              </span>
+              <span className="text-base leading-relaxed text-ink">
+                You may send me text messages, including automated ones.
+                <span id={`${source}-sms-detail`} className="mt-1 block text-sm text-ink-soft">
+                  From {advisor.name} at {site.name}. Message frequency varies. Message and
+                  data rates may apply. Reply STOP to opt out or HELP for help at any time.
+                  You do not have to agree to this to get a reply.
+                </span>
+              </span>
+            </label>
+
+            <label className="flex cursor-pointer gap-4">
+              <span className="pt-0.5">
+                <Controller
+                  control={control}
+                  name="consentMarketing"
+                  render={({ field }) => (
+                    <Checkbox
+                      ref={field.ref}
+                      name={field.name}
+                      checked={field.value === true}
+                      onBlur={field.onBlur}
+                      onCheckedChange={(checked) => field.onChange(checked === true)}
+                    />
+                  )}
+                />
+              </span>
+              <span className="text-base leading-relaxed text-ink">
+                You may email me occasional Medicare deadline reminders and new guides.
+              </span>
+            </label>
+          </div>
+
           <p id={`${source}-consent-detail`} className="mt-4 text-sm leading-relaxed text-ink-soft">
             Submitting this form is a request for information, not an application, and it
-            does not enroll you in anything. There is no cost or obligation. Message and
-            data rates may apply to text messages, and you can ask me to stop at any time.
-            I do not sell or share your information with anyone. You can always compare
-            every option available to you at{' '}
+            does not enroll you in anything. There is no cost or obligation.
+          </p>
+
+          <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+            <strong className="font-semibold text-ink">Where this goes.</strong> Your
+            request is stored securely and routed into {advisor.firstName}&rsquo;s own
+            agency workflow so it is tracked, assigned and followed up rather than lost in
+            an inbox. It is used only to answer you and to keep a record of that
+            conversation. It is handled by {advisor.firstName} and, where needed, the
+            service providers that store the data and deliver his email or text replies.{' '}
+            <strong className="font-semibold text-ink">
+              I do not sell your information, and I do not share it with other agents,
+              agencies or lead buyers.
+            </strong>{' '}
+            You can ask me to delete it at any time. See the{' '}
+            <Link
+              href="/privacy"
+              className="font-semibold text-navy underline underline-offset-4"
+            >
+              privacy notice
+            </Link>{' '}
+            for the details.
+          </p>
+
+          <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+            You can always compare every option available to you at{' '}
             <a
               href={compliance.medicareGovUrl}
               target="_blank"

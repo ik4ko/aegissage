@@ -22,7 +22,21 @@ export type NotifyChannelResult = {
   channel: 'email' | 'sms';
   status: 'sent' | 'skipped' | 'failed';
   detail?: string;
+  /** Provider-side id, so a delivery can be traced in Resend/Twilio later. */
+  providerMessageId?: string;
 };
+
+/**
+ * NOTE ON THE SMS IN THIS FILE
+ *
+ * `sendSms` below alerts the ADVISOR about a new lead. It reads NOTIFY_SMS_TO
+ * — Eric's own number — and is an internal notification, so no consumer
+ * consent applies to it.
+ *
+ * It is not, and must never become, a path for texting the person who filled
+ * in the form. Client-facing SMS lives in lib/notify/sms.ts, behind an
+ * explicit consent check and an opt-out check. Keep the two separate.
+ */
 
 function summarize(payload: ContactPayload, meta: { submittedAt: string }) {
   const lines = [
@@ -71,7 +85,7 @@ async function sendEmail(text: string, payload: ContactPayload): Promise<NotifyC
 
   try {
     const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from,
       to: to.split(',').map((t) => t.trim()),
       replyTo: payload.email || undefined,
@@ -82,7 +96,7 @@ async function sendEmail(text: string, payload: ContactPayload): Promise<NotifyC
     if (error) {
       return { channel: 'email', status: 'failed', detail: error.message };
     }
-    return { channel: 'email', status: 'sent' };
+    return { channel: 'email', status: 'sent', providerMessageId: data?.id };
   } catch (err) {
     return {
       channel: 'email',

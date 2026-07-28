@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { contactSchema } from '@/lib/validations/contact';
 import { getServerSupabase } from '@/lib/supabase/server';
 import { sendContactAlert } from '@/lib/notify/send-contact-alert';
+import { enqueueLeadSync } from '@/lib/crm/outbox';
 import { advisor } from '@/lib/site';
 
 export const runtime = 'nodejs';
@@ -69,38 +70,158 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, persisted: false });
   }
 
-  const { error } = await supabase.from('contacts').insert({
-    name: payload.name,
-    email: payload.email || null,
-    phone: payload.phone || null,
-    zip: payload.zip || null,
-    topic: payload.topic ?? null,
-    preferred_contact: payload.preferredContact,
-    message: payload.message || null,
-    source: payload.source,
-    context: payload.context ?? null,
-    consent: true,
-    consent_text_version: CONSENT_TEXT_VERSION,
-    user_agent: req.headers.get('user-agent')?.slice(0, 500) ?? null,
-    ip_address: clientIp(req),
-  });
+  const now = new Date().toISOString();
 
-  if (error) {
-    console.error('[contact] Supabase insert failed:', error.message);
+  /*
+    Granular consent is recorded exactly as given.
+
+    `consent_sms` comes ONLY from its own unticked checkbox. It is never
+    derived from `phone` being present or from preferredContact === 'text'.
+    lib/notify/sms.ts re-reads this column at send time rather than trusting
+    any caller, so there is no path that texts someone who did not tick it.
+  */
+  const { data: inserted, error } = await supabase
+    .from('contacts')
+    .insert({
+      name: payload.name,
+      email: payload.email || null,
+      phone: payload.phone || null,
+      zip: payload.zip || null,
+      topic: payload.topic ?? null,
+      preferred_contact: payload.preferredContact,
+      message: payload.message || null,
+      source: payload.source,
+      context: payload.context ?? null,
+
+      consent: true,
+      consent_at: now,
+      consent_text_version: CONSENT_TEXT_VERSION,
+
+      consent_sms: payload.consentSms === true,
+      consent_sms_at: payload.consentSms === true ? now : null,
+      consent_sms_text_version: payload.consentSms === true ? CONSENT_TEXT_VERSION : null,
+
+      consent_marketing: payload.consentMarketing === true,
+      consent_marketing_at: payload.consentMarketing === true ? now : null,
+      consent_marketing_text_version:
+        payload.consentMarketing === true ? CONSENT_TEXT_VERSION : null,
+
+      user_agent: req.headers.get('user-agent')?.slice(0, 500) ?? null,
+      ip_address: clientIp(req),
+    })
+    .select('id')
+    .single();
+
+  if (error || !inserted) {
+    console.error('[contact] Supabase insert failed:', error?.message);
     // Still try to notify — a dropped row is bad, a dropped person is worse.
     await sendContactAlert(payload);
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 500 });
   }
 
-  // Notification failures are logged inside sendContactAlert and never fail
-  // the request: the submission is already durably stored at this point.
-  await sendContactAlert(payload);
+  const contactId = inserted.id as string;
+
+  /*
+    Notification failures are logged inside sendContactAlert and never fail
+    the request: the submission is already durably stored at this point. The
+    outcome is now recorded on the row as well, so a silent Resend outage
+    shows up as `notify_status = 'failed'` in the operational queue instead of
+    disappearing into a log line nobody reads.
+  */
+  const alerts = await sendContactAlert(payload);
+  const emailAlert = alerts.find((r) => r.channel === 'email');
+
+  await supabase
+    .from('contacts')
+    .update({
+      notify_status: emailAlert?.status ?? 'failed',
+      notified_at: emailAlert?.status === 'sent' ? new Date().toISOString() : null,
+    })
+    .eq('id', contactId);
+
+  // One audit row per channel attempted. Both are audience='internal': these
+  // are alerts to the advisor, not messages to the person who submitted.
+  await supabase.from('notification_deliveries').insert(
+    alerts.map((result) => ({
+      contact_id: contactId,
+      channel: result.channel,
+      audience: 'internal' as const,
+      purpose: 'contact-alert',
+      status: result.status === 'sent' ? 'sent' : result.status === 'failed' ? 'failed' : 'skipped',
+      provider: result.channel === 'email' ? 'resend' : 'twilio',
+      provider_message_id: result.providerMessageId ?? null,
+      last_error: result.detail ?? null,
+      consent_basis: null, // Internal audience — no consumer consent applies.
+      sent_at: result.status === 'sent' ? new Date().toISOString() : null,
+      failed_at: result.status === 'failed' ? new Date().toISOString() : null,
+    })),
+  );
+
+  /*
+    Queue the CRM handoff. Deliberately AFTER the durable write and the
+    advisor alert, and deliberately non-blocking on failure: the visitor's
+    submission is already safe, and a CRM that is unreachable must never turn
+    into an error page for someone asking for help.
+  */
+  await enqueueLeadSync({
+    contactId,
+    submittedAt: now,
+    name: payload.name,
+    email: payload.email || null,
+    phone: payload.phone || null,
+    zip: payload.zip || null,
+    preferredContact: payload.preferredContact,
+    topic: payload.topic ?? null,
+    message: payload.message || null,
+    sourcePage: payload.source,
+    attribution: extractAttribution(payload.context),
+    consent: {
+      reply: true,
+      replyAt: now,
+      replyTextVersion: CONSENT_TEXT_VERSION,
+      sms: payload.consentSms === true,
+      smsAt: payload.consentSms === true ? now : null,
+      smsTextVersion: payload.consentSms === true ? CONSENT_TEXT_VERSION : null,
+      marketing: payload.consentMarketing === true,
+      marketingAt: payload.consentMarketing === true ? now : null,
+      marketingTextVersion: payload.consentMarketing === true ? CONSENT_TEXT_VERSION : null,
+    },
+  });
 
   return NextResponse.json({ ok: true, persisted: true });
+}
+
+/**
+ * Pulls the attribution keys out of the submitted context.
+ *
+ * An allowlist, not a filter. `context` also carries page-supplied values
+ * such as quiz answers, and those are not attribution — sending them across
+ * a project boundary because they happened to share a field would be exactly
+ * the kind of accidental leak the contract's prohibited-field check exists to
+ * catch.
+ */
+const ATTRIBUTION_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'landing',
+  'referrer',
+];
+
+function extractAttribution(context: Record<string, string> | undefined): Record<string, string> {
+  if (!context) return {};
+  const out: Record<string, string> = {};
+  for (const key of ATTRIBUTION_KEYS) {
+    const value = context[key];
+    if (typeof value === 'string' && value) out[key] = value.slice(0, 80);
+  }
+  return out;
 }
 
 /**
  * Bump this whenever the consent language in <ContactForm /> changes, so each
  * stored row records which wording the visitor actually agreed to.
  */
-const CONSENT_TEXT_VERSION = '2026-01';
+const CONSENT_TEXT_VERSION = '2026-07';

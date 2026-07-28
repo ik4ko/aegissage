@@ -76,16 +76,60 @@ export default function PrivacyPage() {
 
           <h2>How it is used</h2>
           <p>
-            To reply to you, and for nothing else. Submissions are stored in a private
-            database and sent to {advisor.name} by email and text message so he can respond
-            quickly. I do not sell, rent or trade your information, and I do not pass it to
-            other agents or to lead-generation companies.
+            To reply to you, and to keep an accurate record of that conversation. Nothing
+            else. I do not sell, rent or trade your information, and I do not pass it to
+            other agents, other agencies, or lead-generation companies.
+          </p>
+
+          <h2>Where your request goes</h2>
+          <p>
+            When you submit a form, two things happen. Your request is stored in a private
+            database, and it is routed into the secure agency workflow {advisor.firstName}{' '}
+            uses to run his practice — the same system that tracks who has been answered,
+            what was discussed, and what happens next. That is how a request gets followed
+            up instead of getting lost in an inbox.
+          </p>
+          <p>
+            That workflow is {advisor.firstName}&rsquo;s own system. It is not a shared
+            marketplace, it is not a lead exchange, and no other agent or agency has access
+            to it. Routing your request into it does not make it available to anyone else.
+          </p>
+          <p>
+            A small number of service providers handle your information on my behalf,
+            strictly to make this work: the database host that stores submissions, and the
+            email and text-message providers that deliver replies. They process it under
+            contract and are not permitted to use it for their own purposes.
           </p>
 
           <h2>Text messages</h2>
           <p>
-            If you ask to be contacted by text, message and data rates may apply. Reply
-            STOP at any time and I will stop texting you.
+            <strong>
+              I will not text you unless you specifically tick the box giving permission
+              for text messages.
+            </strong>{' '}
+            That is a separate, optional checkbox. Giving me your phone number is not
+            permission to text you, and choosing &ldquo;text me back&rdquo; as your
+            preferred way to be reached is not permission for automated messages either.
+          </p>
+          <p>
+            If you do tick it: messages come from {advisor.name} at {site.name}, some may
+            be automated, message frequency varies, and message and data rates may apply.
+            Reply <strong>STOP</strong> at any time to opt out, or <strong>HELP</strong>{' '}
+            for help. An opt-out is permanent until you text START — submitting the form
+            again does not undo it.
+          </p>
+          <p>
+            Permission to receive marketing or educational emails is a third, separate
+            checkbox. You can give me permission to reply to you without agreeing to either
+            of the others.
+          </p>
+
+          <h2>Requests submitted before July 2026</h2>
+          <p>
+            If you contacted me before this notice was updated, your information is still
+            handled under the terms you originally agreed to. I have not applied the newer
+            permissions to older submissions, and I do not send automated text messages or
+            marketing email to anyone who was not specifically asked.
           </p>
 
           <h2>Removing your information</h2>
