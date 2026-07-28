@@ -99,6 +99,29 @@ async function deliver(row: OutboxRow, url: string, secret: string): Promise<str
     const text = await res.text();
 
     /*
+      Vercel Deployment Protection does NOT always answer with a redirect.
+      A browser GET gets a 302 to sso-api (handled above), but a
+      server-to-server POST gets a 401 whose JSON body carries
+      `"protection":{"vercel_auth_enabled":true}` — verified by probing the
+      live deployment.
+
+      That distinction matters a great deal here. 401 otherwise falls into the
+      permanent bucket below, so a missing or rotated bypass token would burn
+      every attempt at once and mark real leads `dead` instead of holding them
+      until someone fixes the configuration. It is a transport failure wearing
+      an authentication status code, so it is classified by body, not status.
+    */
+    if (res.status === 401 && text.includes('"vercel_auth_enabled":true')) {
+      throw Object.assign(
+        new Error(
+          'Blocked by Vercel Deployment Protection (401). Set CRM_INGEST_BYPASS_TOKEN ' +
+            "to the target project's Protection Bypass for Automation secret.",
+        ),
+        { permanent: false },
+      );
+    }
+
+    /*
       2xx is success. 409 is ALSO success: the receiver is telling us this
       idempotency key already exists, which is the dedupe guarantee working.
       Retrying a 409 forever would be the bug.

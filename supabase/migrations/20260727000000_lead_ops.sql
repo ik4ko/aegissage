@@ -145,6 +145,12 @@ create table if not exists public.notification_deliveries (
 
   provider          text,
   provider_message_id text,
+  -- Who the message was addressed to (normalised E.164, or an email). The
+  -- per-destination SMS rate limiter counts on this. Do NOT overload
+  -- provider_message_id for it — that holds the provider's own message id, so
+  -- matching a phone number against it silently matches nothing and the limit
+  -- fails open.
+  destination       text,
   last_error        text,
 
   -- Which consent authorised this send. NULL for internal audience, since no
@@ -173,6 +179,9 @@ create index if not exists notification_deliveries_contact_idx
 create index if not exists notification_deliveries_failed_idx
   on public.notification_deliveries (created_at desc)
   where status in ('failed', 'permanently_failed');
+create index if not exists notification_deliveries_sms_rate_idx
+  on public.notification_deliveries (destination, created_at desc)
+  where channel = 'sms' and audience = 'client';
 
 alter table public.notification_deliveries enable row level security;
 
@@ -200,10 +209,14 @@ comment on table public.sms_opt_outs is
 alter table public.sms_opt_outs enable row level security;
 
 -- ── updated_at maintenance ─────────────────────────────────────────────────
+-- INVOKER, not DEFINER: this only ever sets NEW.updated_at, so it needs no
+-- elevated rights. As a SECURITY DEFINER function it was also reachable at
+-- /rest/v1/rpc/touch_updated_at by anon and authenticated, which the Supabase
+-- security advisor flags. EXECUTE is revoked below so it is a trigger only.
 create or replace function public.touch_updated_at()
 returns trigger
 language plpgsql
-security definer
+security invoker
 set search_path = public, pg_temp
 as $$
 begin
@@ -211,6 +224,10 @@ begin
   return new;
 end;
 $$;
+
+revoke all on function public.touch_updated_at() from public;
+revoke all on function public.touch_updated_at() from anon;
+revoke all on function public.touch_updated_at() from authenticated;
 
 drop trigger if exists lead_sync_outbox_touch on public.lead_sync_outbox;
 create trigger lead_sync_outbox_touch

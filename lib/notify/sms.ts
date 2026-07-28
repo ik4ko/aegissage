@@ -123,7 +123,10 @@ async function withinRateLimit(phoneE164: string): Promise<boolean> {
     .select('id', { count: 'exact', head: true })
     .eq('channel', 'sms')
     .eq('audience', 'client')
-    .eq('provider_message_id', phoneE164)
+    // `destination`, NOT provider_message_id — that column holds the Twilio
+    // message SID, so matching a phone number against it never matched
+    // anything and this limit silently allowed unlimited sends.
+    .eq('destination', phoneE164)
     .gte('created_at', since);
 
   if (error) return false;
@@ -175,6 +178,8 @@ export async function sendClientSms(opts: {
     status: result.status === 'sent' ? 'sent' : result.status === 'failed' ? 'failed' : 'skipped',
     provider: 'twilio',
     provider_message_id: result.providerMessageId ?? null,
+    // What the rate limiter counts. Must be the normalised number, not the SID.
+    destination: to,
     last_error: result.reason ?? null,
     // A client message must always name the consent that permitted it. The
     // database constraint enforces this too.
@@ -211,6 +216,7 @@ export async function sendInternalSms(body: string, purpose: string): Promise<Sm
       status: result.status === 'sent' ? 'sent' : result.status === 'failed' ? 'failed' : 'skipped',
       provider: 'twilio',
       provider_message_id: result.providerMessageId ?? null,
+      destination: to,
       last_error: result.reason ?? null,
       consent_basis: null, // Internal audience: no consumer consent applies.
       sent_at: result.status === 'sent' ? new Date().toISOString() : null,
