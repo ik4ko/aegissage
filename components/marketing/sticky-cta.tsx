@@ -37,7 +37,7 @@ export function StickyCta() {
           className="flex h-touch items-center justify-center gap-2 rounded-xl border-2 border-white/35 px-3 text-base font-semibold text-white transition-colors hover:border-white/70 hover:bg-white/10 active:translate-y-px sm:px-5"
         >
           <MessageSquareText className="h-5 w-5" aria-hidden="true" />
-          Text me
+          Text {advisor.firstName}
         </a>
         </div>
       </div>

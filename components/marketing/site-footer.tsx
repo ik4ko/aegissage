@@ -112,7 +112,7 @@ export function SiteFooter() {
 
       <div className="border-t border-line">
         <p className="container py-6 text-sm text-ink-faint">
-          © {new Date().getFullYear()} {site.name}. {advisor.firstName}, {advisor.credential}.
+          © {new Date().getFullYear()} {site.name}. {advisor.name}, {advisor.credential}.
         </p>
       </div>
     </footer>

@@ -11,7 +11,7 @@ import { advisor } from '@/lib/site';
 export function CtaBand({
   where,
   heading = 'Still not sure what applies to you?',
-  body = 'That is the normal state of things. Call or text me and we will sort it out in about ten minutes — no script, no obligation, no fee to you.',
+  body = 'That is the normal state of things. Call or text Eric and talk it through — no script, no obligation, and no fee to you for the conversation.',
 }: {
   where: string;
   heading?: string;
@@ -38,9 +38,15 @@ export function CtaBand({
                 <p className="text-sm text-white/70">{advisor.credential}</p>
               </div>
             </div>
+            {/*
+              No response-time promise here. There is no system behind this
+              site that can guarantee one — it is one person with a phone — and
+              a turnaround claim the advisor cannot always meet is the kind of
+              small broken promise that costs trust on the first contact.
+            */}
             <p className="mt-5 text-base leading-relaxed text-white/80">
-              You will reach me, not a queue. If I am with someone, leave a message or send a
-              text and you will hear back the same day.
+              You reach Eric directly, not a call center. If he is with someone, leave a
+              message or send a text and he will get back to you.
             </p>
           </div>
         </div>

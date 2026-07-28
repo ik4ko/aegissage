@@ -216,11 +216,11 @@ export default function HomePage() {
               },
               {
                 stat: 'One person',
-                label: 'You get me on the phone, not a rotating queue.',
+                label: 'You get me, not a rotating queue of strangers.',
               },
               {
-                stat: 'No fee',
-                label: 'My help never costs you anything, and never requires enrolling.',
+                stat: 'No fee to you',
+                label: 'You never pay me, and you are never required to enroll in anything.',
               },
             ].map((item) => (
               <RevealItem as="li" key={typeof item.stat === 'string' ? item.stat : item.label} className="rounded-2xl border border-line bg-paper p-6">

@@ -107,6 +107,14 @@ export default function AboutPage() {
       {/* ── Story ─────────────────────────────────────────────────────── */}
       <section id="contact" className="container py-14 sm:py-20">
         <Reveal className="mx-auto max-w-[68ch] article-body">
+          {/*
+            ERIC — PLEASE CONFIRM THIS STORY IS YOURS.
+            It reads as a first-person factual account of a real family member
+            and it is the emotional centre of the page, so it is left in place
+            rather than guessed at. If it was written for you rather than by
+            you, replace it with the real reason you started doing this. Do not
+            leave an invented personal anecdote on a page carrying your licence.
+          */}
           <h2>How I ended up doing this</h2>
           <p>
             My grandmother picked her Medicare coverage off a card that came in the mail.
@@ -167,18 +175,25 @@ export default function AboutPage() {
               That answer pays me zero dollars and I give it constantly.
             </li>
             <li>
-              <strong>I pick up next year.</strong> The value of an independent agent is
-              not the enrollment. It is having someone to call when a drug gets dropped
+              <strong>I am still here next year.</strong> The value of an independent agent
+              is not the enrollment. It is having someone to call when a drug gets dropped
               from a formulary in November.
             </li>
           </ul>
 
-          <h2>Who I am when I am not doing this</h2>
+          {/*
+            The invented personality details that used to sit here — coaching
+            youth soccer, opinions about diner coffee — were written for Eric,
+            not by him. Specific biographical claims about a real person should
+            come from that person. Replaced with something true and general.
+            Eric: send real details and this becomes a better paragraph.
+          */}
+          <h2>Where I am</h2>
           <p>
-            {advisor.basedIn.split(',')[0]} is home. I coach youth soccer badly and with
-            great enthusiasm, I am the person in my family who reads the whole terms
-            document, and I have strong opinions about diner coffee. If we work together
-            you will find out more than you wanted to about all three.
+            {advisor.basedIn} is home, and it is where most of my in-person conversations
+            happen. The rest are by phone or text, which is how most people prefer it
+            anyway — you can ask me something from your kitchen table without booking
+            anything or letting anyone into your house.
           </p>
         </Reveal>
       </section>

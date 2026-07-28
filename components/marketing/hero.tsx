@@ -3,6 +3,7 @@ import { ArrowRight, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ContactActions } from './contact-actions';
 import { AdvisorAvatar } from './trust-bar';
+import { licensedStates } from '@/lib/states';
 import { advisor, site } from '@/lib/site';
 
 /**
@@ -33,9 +34,15 @@ export function Hero() {
       <div className="container relative py-14 sm:py-20 lg:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
           <div>
+            {/*
+              Derived from lib/states.ts, never hardcoded. This read "23 more
+              states" as a literal, which happened to be right only while the
+              list held 26 entries — it would have quietly gone wrong the first
+              time a licence was added or dropped.
+            */}
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
               <Clock className="h-4 w-4" aria-hidden="true" />
-              Independent · NJ · NY · PA and 23 more states
+              Independent · NJ · NY · PA and {licensedStates.length - 3} more states
             </p>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl lg:text-6xl">
@@ -43,11 +50,18 @@ export function Hero() {
               <span className="block text-navy">It is just badly explained.</span>
             </h1>
 
+            {/*
+              Local focus and the wider licence are two different facts, and
+              running them together confused both. The eyebrow above advertises
+              26 states while this sentence used to name four areas as the
+              whole service area.
+            */}
             <p className="mt-6 max-w-xl text-lg text-ink-soft sm:text-xl">
-              I am {advisor.firstName} — an independent Medicare advisor serving{' '}
-              {site.serviceArea}. I spend most of my day undoing what a mailer or a
-              commercial told someone. Ask me anything, in plain English, before you
-              decide anything.
+              I am {advisor.firstName}, an independent Medicare advisor based in{' '}
+              {advisor.basedIn}. I work most closely with people in {site.serviceArea}, and I
+              am licensed in {licensedStates.length} states. A lot of my week is spent undoing
+              what a mailer or a TV commercial told someone. Ask me anything, in plain English,
+              before you decide anything.
             </p>
 
             <ContactActions where="hero" className="mt-9" size="xl" includeEmail={false} />
@@ -91,8 +105,8 @@ function HeroCard() {
         {[
           'Tell you which enrollment deadline applies to you, and what happens if you miss it.',
           'Check your doctors and your prescriptions against what is available in your county.',
-          'Explain the trade-offs of each route honestly, including the ones that cost me nothing.',
-          'Pick up the phone next year when something changes.',
+          'Explain the trade-offs of each route honestly, including the ones I earn nothing from.',
+          'Still be here next year, when something changes and you need to look at it again.',
         ].map((item) => (
           <li key={item} className="flex gap-3">
             <span
@@ -104,13 +118,20 @@ function HeroCard() {
         ))}
       </ul>
 
+      {/*
+        Says how he is actually paid. "No fee to you" on its own reads as "I
+        have no financial stake in this", which is not true of any independent
+        agent — carriers pay a commission on enrollment. Naming that is what
+        makes the "no fee" part credible instead of evasive.
+      */}
       <p className="mt-6 rounded-xl bg-navy-soft p-4 text-sm leading-relaxed text-navy-deep">
-        There is never a fee to you for my help, and you are never obligated to enroll in
-        anything to get it.
+        You never pay me a fee, and you are never obligated to enroll in anything. If you do
+        enroll, the insurance company pays the commission, not you. Ask me about it directly
+        — it is a fair question and I will answer it.
       </p>
 
       <Button asChild variant="navy" size="block" className="mt-6">
-        <Link href="/about">Why people pick me →</Link>
+        <Link href="/about">More about Eric</Link>
       </Button>
     </aside>
   );

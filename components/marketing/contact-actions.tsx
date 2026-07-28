@@ -61,9 +61,14 @@ export function ContactActions({
         variant="outline"
         className={cn(darkFocus, onDark && 'border-white/40 bg-transparent text-white hover:border-white hover:bg-white/10')}
       >
+        {/*
+          Named, not "Text me". Screen readers and voice control surface
+          buttons out of context ("Text me" — text who?), and these three sit
+          next to each other, so the label has to stand alone.
+        */}
         <a href={contactHrefs.sms} onClick={() => trackContactIntent('text', where)}>
           <MessageSquareText className="h-5 w-5" aria-hidden="true" />
-          Text me
+          Text {advisor.firstName}
         </a>
       </Button>
 
@@ -76,7 +81,7 @@ export function ContactActions({
         >
           <a href={contactHrefs.mailto} onClick={() => trackContactIntent('email', where)}>
             <Mail className="h-5 w-5" aria-hidden="true" />
-            Email me
+            Email {advisor.firstName}
           </a>
         </Button>
       ) : null}

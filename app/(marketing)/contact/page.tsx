@@ -64,7 +64,7 @@ export default function ContactPage() {
         <div className="mx-auto max-w-2xl">
           <ContactForm
             source="contact"
-            heading={`Reach ${advisor.name.split(' ')[0]}`}
+            heading={`Reach ${advisor.firstName}`}
             intro="Include your ZIP code, the doctors you want to keep, and the question you are carrying."
           />
         </div>

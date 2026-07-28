@@ -37,9 +37,15 @@ export const site = {
   name: 'AegisSage',
   domain: 'aegissage.com',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aegissage.com',
-  tagline: 'Straight answers about Medicare, from someone who picks up the phone.',
+  /**
+   * No response-time or availability promise in the tagline. "Someone who
+   * picks up the phone" reads as a guarantee of pickup, and there is one
+   * person behind this number — some calls will go to voicemail. "A real
+   * person, not a call center" says the true thing instead.
+   */
+  tagline: 'Straight answers about Medicare, from a real person instead of a call center.',
   description:
-    'Independent Medicare guidance for people in Bergen County, New Jersey, New York City, and Philadelphia. Plain-English guides, a free eligibility check, and a real person you can call or text.',
+    'Independent Medicare help from Eric Niniashvili. Plain-English guides, a free eligibility check, and someone you can call or text with a question. Based in Bergen County, New Jersey and licensed in 26 states.',
   serviceArea: 'Bergen County, New Jersey, New York City, and Philadelphia',
 } as const;
 

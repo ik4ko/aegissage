@@ -124,13 +124,20 @@ export function ContactForm({
       >
         <CheckCircle2 className="h-10 w-10 text-sage" aria-hidden="true" />
         <h2 className="mt-4 font-display text-2xl font-bold text-ink">Got it — thank you.</h2>
+        {/*
+          Says what the system actually does — saved, then emailed to Eric —
+          instead of promising a turnaround nothing here can enforce. The old
+          copy claimed "usually the same day and almost always within one
+          business day", which is a guarantee one person with a phone cannot
+          make on every message.
+        */}
         <p className="mt-3 text-base leading-relaxed text-ink-soft">
-          Your message is with me. I answer these personally, usually the same day and
-          almost always within one business day.
+          Your message has been saved and sent to Eric. He reads and answers these himself —
+          there is no assistant and no auto-reply, so it comes back from him.
         </p>
         <p className="mt-4 text-base leading-relaxed text-ink-soft">
-          If it is time-sensitive, do not wait on me — call or text and you will get me
-          faster.
+          If it is time-sensitive, please do not wait on the form. Calling or texting is the
+          fastest way to reach him.
         </p>
         <ContactActions where={`${source}-success`} className="mt-6" size="md" />
       </div>
@@ -221,7 +228,7 @@ export function ContactForm({
             type="tel"
             inputMode="tel"
             autoComplete="tel"
-          placeholder="(551) 202-9079"
+            placeholder="(201) 555-0143"
             invalid={Boolean(errors.phone)}
             aria-describedby={errors.phone ? `${source}-phone-error` : undefined}
             {...register('phone')}
@@ -320,7 +327,7 @@ export function ContactForm({
               />
             </span>
             <span className="text-base leading-relaxed text-ink">
-              Yes, {advisor.name.split(' ')[0]} may contact me about Medicare insurance
+              Yes, {advisor.firstName} may contact me about Medicare insurance
               options using the phone number or email address I provided, including by
               text message.
             </span>
@@ -394,11 +401,10 @@ export function ContactForm({
 
           <p className="mt-3 text-sm leading-relaxed text-ink-soft">
             <strong className="font-semibold text-ink">Where this goes.</strong> Your
-            request is stored securely and routed into {advisor.firstName}&rsquo;s own
-            agency workflow so it is tracked, assigned and followed up rather than lost in
-            an inbox. It is used only to answer you and to keep a record of that
-            conversation. It is handled by {advisor.firstName} and, where needed, the
-            service providers that store the data and deliver his email or text replies.{' '}
+            request is stored securely and added to {advisor.firstName}&rsquo;s own follow-up
+            list, so it is tracked instead of getting lost in an inbox. It is used only to
+            answer you and to keep a record of that conversation. Only {advisor.firstName}{' '}
+            sees it, along with the services that store the data and send his replies.{' '}
             <strong className="font-semibold text-ink">
               I do not sell your information, and I do not share it with other agents,
               agencies or lead buyers.
@@ -441,7 +447,9 @@ export function ContactForm({
                 Sending…
               </>
             ) : (
-              'Send this to me'
+              /* Named. "Send this to me" is ambiguous read on its own —
+                 a screen-reader user hears it as sending it to themselves. */
+              `Send this to ${advisor.firstName}`
             )}
           </Button>
 
