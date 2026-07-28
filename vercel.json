@@ -2,7 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "crons": [
     {
-      "_comment": "Safety net for retries, not the primary path. Vercel Hobby caps crons at once per day, so leads are drained immediately after submission via after() in /api/contact; this sweep only picks up rows whose earlier attempts failed. On Pro, change to */5 * * * * and the sweep becomes near-real-time.",
       "path": "/api/internal/sync-leads",
       "schedule": "0 9 * * *"
     }
