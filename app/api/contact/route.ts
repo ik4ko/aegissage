@@ -1,8 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
 import { contactSchema } from '@/lib/validations/contact';
 import { getServerSupabase } from '@/lib/supabase/server';
 import { sendContactAlert } from '@/lib/notify/send-contact-alert';
 import { enqueueLeadSync } from '@/lib/crm/outbox';
+import { syncPendingLeads } from '@/lib/crm/dispatch';
 import { advisor } from '@/lib/site';
 
 export const runtime = 'nodejs';
@@ -163,7 +164,7 @@ export async function POST(req: Request) {
     submission is already safe, and a CRM that is unreachable must never turn
     into an error page for someone asking for help.
   */
-  await enqueueLeadSync({
+  const queued = await enqueueLeadSync({
     contactId,
     submittedAt: now,
     name: payload.name,
@@ -187,6 +188,31 @@ export async function POST(req: Request) {
       marketingTextVersion: payload.consentMarketing === true ? CONSENT_TEXT_VERSION : null,
     },
   });
+
+  /*
+    Drain the outbox immediately, AFTER the response is sent.
+
+    `after()` runs once the response has been flushed, so the visitor never
+    waits on a cross-project HTTP call — the same reason the delivery is not
+    inline in the first place.
+
+    This is the primary delivery path, not an optimisation. Vercel Hobby caps
+    cron jobs at once per day, so relying on the scheduled sweep alone would
+    leave a lead sitting for up to 24 hours. The cron remains as the retry
+    safety net for anything that fails here.
+
+    Failures are swallowed: the row is already durably queued, and the sweep
+    will pick it up with proper backoff.
+  */
+  if (queued) {
+    after(async () => {
+      try {
+        await syncPendingLeads(5);
+      } catch (err) {
+        console.error('[contact] post-response sync failed:', err);
+      }
+    });
+  }
 
   return NextResponse.json({ ok: true, persisted: true });
 }
