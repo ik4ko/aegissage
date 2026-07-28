@@ -1,11 +1,12 @@
 # Website → Agent Factory lead bridge
 
-**Status: website side COMPLETE and deployed. CRM side WRITTEN but NOT APPLIED.
-The bridge is NOT live.**
+**Status: LIVE and verified end to end on 2026-07-28.**
 
-Leads are being captured and queued right now. Nothing is being delivered to
-the CRM, and nothing is being lost — the outbox holds them until the remaining
-steps below are done, then drains automatically.
+A submission on aegissage.com reaches the Agent Factory Website Lead Inbox in
+about three seconds. Verified by running the whole path against production —
+form POST, contact row, outbox row, Resend alert, signed delivery, CRM lead,
+audit event, replay rejection, operator-authenticated dashboard read — then
+deleting every synthetic record by explicit id.
 
 ## The two projects
 
@@ -83,59 +84,71 @@ commit** or deliveries start failing validation.
 Backoff: 1, 5, 15, 60, 180, 360, 720, 1440 minutes, then `dead`. A dead row
 keeps its `last_error` and stays visible for a human to re-drive.
 
-## Verified state (2026-07-27)
+## Verified state (2026-07-28)
 
-Checked against both live databases with their publishable keys:
+Applied and checked directly against both live databases:
 
-| Table | Project | Result |
-| --- | --- | --- |
-| `contacts` | website | exists, `200 []` — RLS blocking all anon rows ✅ |
-| `quiz_responses` | website | exists, RLS blocking ✅ |
-| `lead_sync_outbox` | website | **404 PGRST205 — migration not applied** ❌ |
-| `notification_deliveries` | website | **404 — not applied** ❌ |
-| `sms_opt_outs` | website | **404 — not applied** ❌ |
-| `ag_clients` | CRM | exists, `200 []` — RLS blocking anon ✅ |
-| `ag_policies` / `ag_communications_log` | CRM | exist, RLS blocking ✅ |
-| `ag_website_leads` | CRM | **404 — not applied** ❌ |
-| `ag_website_lead_events` | CRM | **404 — not applied** ❌ |
+| Table | Project | RLS | Policies | Result |
+| --- | --- | --- | --- | --- |
+| `contacts` | website | on | 0 | service-role only ✅ |
+| `quiz_responses` | website | on | 0 | service-role only ✅ |
+| `lead_sync_outbox` | website | on | 0 | applied ✅ |
+| `notification_deliveries` | website | on | 0 | applied ✅ |
+| `sms_opt_outs` | website | on | 0 | applied ✅ |
+| `ag_website_leads` | CRM | on | 1 (`service_role`) | applied ✅ |
+| `ag_website_lead_events` | CRM | on | 1 (`service_role`) | applied ✅ |
 
-Existing CRM RLS is confirmed correct: an anonymous key sees zero rows in
-`ag_clients`.
+Zero policies is the design, not an oversight: RLS on with no policy means
+`anon` and `authenticated` can do nothing at all, and only the service role —
+which bypasses RLS and never leaves the server — has access. Supabase's
+advisor reports these as `rls_enabled_no_policy` INFO notices. They are
+expected. Do not "fix" them by adding a policy.
 
-### Why migrations still cannot be applied from here
+Migrations were applied through the Supabase MCP server, which supplied the
+access the CLI lacked. Migration history now shows `lead_ops`,
+`touch_updated_at_invoker_and_revoke` and
+`notification_deliveries_destination` on the website, and
+`20260727_website_leads` on the CRM.
 
-- `supabase projects list` → `Unauthorized`. CLI 2.110.0 is installed but not
-  logged in.
-- `SUPABASE_ACCESS_TOKEN` is not set, and `supabase login` needs a browser.
-- No Postgres connection string exists in either project's env.
-- The publishable key cannot run DDL — PostgREST does not execute it, and RLS
-  blocks the key from everything anyway.
+### Advisor findings this bridge introduced, and their fixes
 
-**Unblock with either:** a personal access token from
-`supabase.com/dashboard/account/tokens` exported as `SUPABASE_ACCESS_TOKEN`
-(then `npx supabase link --project-ref <ref>` and `npx supabase db push`), or
-pasting each migration into that project's SQL editor.
+- `touch_updated_at` was `SECURITY DEFINER`, so it was callable by `anon` and
+  `authenticated` at `/rest/v1/rpc/touch_updated_at`. It only ever sets
+  `NEW.updated_at`, so it is now `SECURITY INVOKER` with `EXECUTE` revoked
+  from `public`, `anon` and `authenticated`. Both WARNs cleared.
 
-## Second blocker: Vercel Deployment Protection
+Every other advisor warning on the Agent Factory project predates this work
+(broadcast trigger functions, `rls_auto_enable`, permissive INSERT policies on
+`agents`/`logs`/`memory`/`tasks`). The two new tables added no new lints and
+those pre-existing ones were deliberately left alone.
 
-The Agent Factory deployment has Deployment Protection enabled. Verified by
-probing `https://my-agent-factory-train-dive.vercel.app` — every path,
-including `/api/*`, answers **302 to `vercel.com/sso-api`**.
+## Vercel Deployment Protection — resolved, with a trap worth knowing
 
-That is correct for an internal dashboard, but it means a signed
-server-to-server POST never reaches the ingest handler, so the route's own
-signature check never runs.
+Protection is still enabled on the Agent Factory project, which is correct for
+an internal dashboard. `/` and `/dashboard` still answer 302 to
+`vercel.com/sso-api`. The ingest route gets through because the dispatcher
+sends `x-vercel-protection-bypass`.
 
-**Fix:** enable *Protection Bypass for Automation* on the Agent Factory
-project and set the generated secret as `CRM_INGEST_BYPASS_TOKEN` on the
-website. The dispatcher already sends it as `x-vercel-protection-bypass`, and
-treats an SSO redirect as a named retryable failure rather than following it
-into an HTML login page.
+**The trap:** a protected deployment does not answer a server-to-server POST
+with a redirect. It answers **401** with a JSON body containing
+`"protection":{"vercel_auth_enabled":true}`. Only browser GETs get the 302.
 
-The bypass is a transport concern, not authentication — the HMAC signature is
-still what proves a request genuine.
+The dispatcher originally recognised the 302 only, so the 401 fell into its
+permanent-failure bucket and would have burned all eight attempts at once,
+marking real leads `dead` on the first try. It now classifies that response by
+body rather than status and treats it as retryable. Verified live:
 
-## Third blocker: Vercel Hobby cron limit
+```
+POST /api/website-leads/ingest                       → 401 Protected deployment
+POST + x-vercel-protection-bypass                    → 401 {"error":"Missing signature"}
+POST + bypass + bogus signature                      → 401 {"error":"Invalid signature"}
+```
+
+The second and third are the application answering, which is the proof the
+bypass works. The bypass is transport only — the HMAC is still what proves a
+request genuine.
+
+## Vercel Hobby cron limit — worked around, not blocking
 
 Vercel rejected a 5-minute cron: Hobby accounts allow one run per day. A daily
 sweep would leave a lead queued for up to 24 hours.
@@ -145,77 +158,108 @@ response is flushed, so the visitor still never waits on a cross-project call,
 and the lead moves within seconds. `vercel.json` keeps a daily cron purely as
 the retry safety net. On Pro, restore `*/5 * * * *`.
 
-## Remaining steps to make this live
+## End-to-end verification, 2026-07-28
 
-1. **Apply the website migration** `supabase/migrations/20260727000000_lead_ops.sql`
-   to `oofxhxsjfyuqegicczbu`.
-   *Until this runs, `enqueueLeadSync` logs a failure and returns false. The
-   contact form still works and still stores + notifies — only the outbox row
-   is skipped.*
-2. **Apply the CRM migration** `20260727_website_leads.sql` to
-   `grtnjhwekvkyawacunde`.
-3. **Exempt the ingest route** in the dashboard's `src/proxy.ts`, alongside
-   `/api/orchestrator/cron` and `/api/loops/tick`:
-   ```ts
-   '/api/website-leads/ingest',
-   ```
-   It self-authorizes by signature; without the exemption the operator-session
-   gate returns 401 to every delivery.
-4. **Generate one shared secret** (`openssl rand -hex 32`) and set it as:
-   - website Vercel → `CRM_INGEST_SECRET`
-   - dashboard Vercel → `WEBSITE_LEAD_INGEST_SECRET`
-5. **Set `CRM_INGEST_URL`** on the website to the dashboard's deployed
-   `/api/website-leads/ingest`.
-6. **Set `CRON_SECRET`** on the website and add a Vercel Cron hitting
-   `/api/internal/sync-leads` every 5 minutes.
-7. **Deploy the dashboard**, then verify:
-   ```bash
-   curl -s "https://<website>/api/internal/sync-leads" -H "Authorization: Bearer $CRON_SECRET"
-   # expect {"ok":true,"configured":true,"claimed":N,"delivered":N,...}
-   ```
-8. **Run Supabase security advisors** on both projects after the migrations.
+Run against production, not a preview. Every step confirmed by querying the
+databases directly rather than trusting a 200.
 
-## Synthetic test rows needing cleanup
+| # | Step | Result |
+| --- | --- | --- |
+| 1 | Form POST with valid consent | `200 {"ok":true,"persisted":true}` |
+| 2 | `contacts` row written | ✅ granular consent columns populated |
+| 3 | `lead_sync_outbox` row created | ✅ `pending` → `delivered` |
+| 4 | Resend alert | ✅ `notify_status = sent` |
+| 5 | `notification_deliveries` audit | ✅ email `sent`, SMS `skipped` |
+| 6 | Signed delivery reaches CRM | ✅ ~3s after submit |
+| 7 | Exactly one `ag_website_leads` row | ✅ |
+| 8 | `website_submission_id` preserved | ✅ matches the contact id |
+| 9 | `ag_website_lead_events` records it | ✅ `ingested` |
+| 10 | Replay the same delivery | ✅ `duplicate_ingest_ignored`, still 1 lead |
+| 11 | Outbox re-armed and re-driven | ✅ redelivered to the same `remote_id` |
+| 12 | Lead visible in Website Lead Inbox | ✅ via operator-authenticated API |
+| 13 | Unauthenticated inbox read | ✅ `401 Unauthorized` |
+| 14 | Unauthenticated dashboard page | ✅ `307 → /login` |
+| 15 | Invalid signature | ✅ `401 Invalid signature` |
+| 16 | Missing / false consent | ✅ `400`, nothing written |
+| 17 | SMS attempted | ✅ no — `skipped`, Twilio absent |
 
-Two production submissions were made during end-to-end testing. Only the
-second created a row (the first failed on the unapplied-migration bug it
-uncovered):
+Steps 10 and 11 were driven by re-arming the synthetic outbox row and letting
+the next submission's `after()` drain claim it, since the production
+`CRON_SECRET` is stored Sensitive in Vercel and is not retrievable by
+`vercel env pull`. Same code path as the cron, same result.
+
+All synthetic records were then deleted by explicit id. Final counts: website
+`contacts` 2 (both pre-existing, neither synthetic), `lead_sync_outbox` 0,
+`notification_deliveries` 0; CRM `ag_website_leads` 0, `ag_website_lead_events`
+0, `ag_clients` 0 — untouched throughout.
+
+If you ever need to clean up again, both predicates are required. Never delete
+on `name like` alone:
 
 ```sql
--- Review before deleting. Marker is unambiguous and matches nothing real.
 select id, name, created_at from public.contacts
- where source = 'synthetic-e2e' and name like 'SYNTHETIC-E2E-%';
-
-delete from public.contacts
  where source = 'synthetic-e2e' and name like 'SYNTHETIC-E2E-%';
 ```
 
-Requires service-role access, so it must be run from the SQL editor. Both
-predicates are required — do not delete on `name like` alone.
-
 ## Env vars
 
-| Var | Where | Public? | Purpose |
+| Var | Where | Set? | Purpose |
 | --- | --- | --- | --- |
-| `CRM_INGEST_URL` | website | no | dashboard ingest endpoint |
-| `CRM_INGEST_SECRET` | website | no | HMAC signing key |
-| `CRON_SECRET` | website | no | authorises the drain worker |
-| `WEBSITE_LEAD_INGEST_SECRET` | dashboard | no | must equal `CRM_INGEST_SECRET` |
-| `TWILIO_ACCOUNT_SID` / `TWILIO_AUTH_TOKEN` / `TWILIO_FROM_NUMBER` | website | no | SMS provider |
-| `NOTIFY_SMS_TO` | website | no | **internal** alerts to Eric only |
+| `CRM_INGEST_URL` | website | ✅ | dashboard ingest endpoint |
+| `CRM_INGEST_SECRET` | website | ✅ | HMAC signing key |
+| `CRM_INGEST_BYPASS_TOKEN` | website | ✅ | Vercel Protection Bypass for Automation |
+| `CRON_SECRET` | website | ✅ | authorises the drain worker |
+| `RESEND_API_KEY` / `NOTIFY_EMAIL_TO` | website | ✅ | advisor email alert |
+| `WEBSITE_LEAD_INGEST_SECRET` | dashboard | ✅ | must equal `CRM_INGEST_SECRET` |
+| `TWILIO_ACCOUNT_SID` / `TWILIO_AUTH_TOKEN` / `TWILIO_FROM_NUMBER` | website | ❌ | SMS provider |
+| `NOTIFY_SMS_TO` | website | ❌ | **internal** alerts to Eric only |
 
 None of these may be prefixed `NEXT_PUBLIC_`. A signing secret in the browser
-lets anyone forge leads into the CRM.
+lets anyone forge leads into the CRM. All of them are stored Sensitive in
+Vercel, so `vercel env pull` returns empty strings for them — that is the
+platform protecting the values, not a misconfiguration.
 
-## Does the desktop Agent Factory app see synced leads?
+## What activating SMS would still require
 
-**Not yet, and not automatically.** Its Medicare CRM screen reads
-`/api/medicare-crm`, which queries eight `ag_` tables and does not know
-`ag_website_leads` exists. Adding leads to that response — or mounting the
-`LeadInbox` component — is a dashboard-side change that has not been made.
+Nothing sends today. Every SMS path returns `skipped` with
+`twilio_not_configured`, and the audit row records that rather than silently
+doing nothing. To turn it on:
 
-The data will be in the database and correct. The existing UI simply will not
-render it until someone wires it in.
+1. A Twilio account, and a number provisioned for A2P messaging.
+2. `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` on the
+   website project.
+3. `NOTIFY_SMS_TO` — Eric's own number — for internal alerts only. Setting
+   just this plus the Twilio triple enables **internal** alerts and nothing
+   client-facing.
+4. For any client-facing message: A2P 10DLC brand and campaign registration.
+   US carriers filter unregistered application-to-person traffic.
+5. A standalone SMS consent checkbox in the form whose wording discloses
+   automated messaging, message frequency, and STOP/HELP. The column
+   (`consent_sms`) and the send-time gate already exist and default to false.
+
+Existing rows are **not** backfilled from the old combined consent, and must
+not be. The old wording did not disclose automated messaging, and inferring
+SMS permission from a historical checkbox is the exact TCPA failure mode.
+
+## Does the Agent Factory dashboard see synced leads?
+
+**Yes.** `WebsiteLeadInbox` is mounted in the Medicare room
+(`src/components/dashboard/medicare-room-client.tsx`) and reads
+`/api/website-leads`, which is gated by the same `requireMedicareOperator`
+guard as the rest of that room. Confirmed live with an authenticated session:
+both synthetic leads came back with status, consent flags, source page,
+timestamps and their event counts.
+
+The inbox sorts oldest-first by design — a lead queue defaulting to
+newest-first is how enquiries rot at the bottom of a list. It shows per-lead
+consent chips (Reply / SMS / Marketing), the full status vocabulary, an
+overdue flag past a 4-hour SLA, and a count of leads whose advisor alert
+failed.
+
+`/api/website-leads` is a separate route from `/api/website-leads/ingest`, and
+only the `/ingest` child is exempt in `src/proxy.ts`. The machine lane cannot
+read leads; the operator lane cannot be reached without a session. The
+`/api/medicare-crm` authorization boundary was not widened.
 
 ## What is deliberately not automated
 
