@@ -15,7 +15,7 @@ import { licensedStates } from '@/lib/states';
 import { locationLandings } from '@/lib/locations';
 import { breadcrumbJsonLd } from '@/lib/seo';
 
-const DESCRIPTION = `${advisor.name} provides independent Medicare guidance in ${site.serviceArea}. Here is who he is and how he works.`;
+const DESCRIPTION = `${advisor.name} is an independent Medicare advisor based in ${advisor.basedIn}. Medicare and Medicaid only, for people 65+ and anyone with Parts A and B. Here is who he is and how he works.`;
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent(`Meet ${advisor.name}`)}` +
   `&kicker=${encodeURIComponent('The person behind the phone number')}` +
@@ -62,9 +62,11 @@ export default function AboutPage() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-xl leading-relaxed text-ink-soft">
-              I am an independent Medicare advisor serving {site.serviceArea}. If you
-              landed here from a video, this is the page where you decide whether I am
-              worth your time. Fair enough. Here is the honest version.
+              I am an independent Medicare advisor based in {advisor.basedIn}, working
+              mostly with people in {site.serviceArea} and licensed in{' '}
+              {licensedStates.length} states. If you landed here from a video, this is the
+              page where you decide whether I am worth your time. Fair enough — here is the
+              honest version.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-base text-ink-soft">
@@ -108,40 +110,63 @@ export default function AboutPage() {
       <section id="contact" className="container py-14 sm:py-20">
         <Reveal className="mx-auto max-w-[68ch] article-body">
           {/*
-            ERIC — PLEASE CONFIRM THIS STORY IS YOURS.
-            It reads as a first-person factual account of a real family member
-            and it is the emotional centre of the page, so it is left in place
-            rather than guessed at. If it was written for you rather than by
-            you, replace it with the real reason you started doing this. Do not
-            leave an invented personal anecdote on a page carrying your licence.
+            Eric's own account, given by him directly. Every fact below came
+            from him: the country of origin, the 2000 arrival, Edgewater, the
+            agency job alongside independent work for family, and that this is
+            his second year. Do not embellish it and do not add detail he has
+            not given.
+
+            "Georgia" is stated as the country every time it appears. GA is one
+            of the 26 licensed states, so an unqualified "I am from Georgia"
+            reads as the state to exactly the audience this page is for.
           */}
           <h2>How I ended up doing this</h2>
           <p>
-            My grandmother picked her Medicare coverage off a card that came in the mail.
-            It had a big number on it and a smiling couple on a boat. Two years later she
-            needed a specialist eighty minutes away, in a hospital that was not in her
-            plan&rsquo;s network, and nobody had ever explained to her that the network was
-            the thing that mattered.
+            I am from Georgia — the small country on the Black Sea, not the state. I came
+            to the United States in 2000 and have been in the Edgewater and New York City
+            area ever since. My full name is Erekle Niniashvili. Most people here call
+            me Eric, and the people who have known me longest call me Ika.
           </p>
           <p>
-            That is not a tragedy. It is a paperwork problem. But it was an expensive,
-            frightening paperwork problem for a woman in her seventies, and it happened
-            because the only person who talked to her about Medicare was being paid to
-            close, not to explain.
+            I got into this working at a Medicare agency, which is where I learned the
+            mechanics of it. At the same time, on my own, I was helping my own family and
+            people close to me sort out their coverage. That second part is the part that
+            taught me the most. When it is someone you love, you do not skim the summary —
+            you sit down and go through every plan available to them until you actually
+            know which one fits.
+          </p>
+          <p>
+            That is the same process I use for you. It is the only one I trust, because it
+            is the one I built for people I could not afford to get wrong.
           </p>
 
           <PullQuote attribution={`${advisor.name}, ${advisor.credential}`}>
-            I would rather spend forty minutes talking you out of a decision than four
-            minutes closing you into one.
+            I go through your options the same way I went through them for my own family.
           </PullQuote>
+
+          <p>
+            Being straight with you: this is my second year in the Medicare industry. I
+            would rather you hear that from me than wonder. What I can tell you is that I
+            do this one thing and nothing else, I take the time it takes, and I will say
+            &ldquo;I do not know, let me find out&rdquo; before I will guess at something
+            that affects your coverage.
+          </p>
+
+          <h2>Who I work with</h2>
+          <p>
+            Medicare and Medicaid, and only that. If you are 65 or older, or you already
+            have Medicare Parts A and B at any age, you are who I help. That is all I do —
+            I am not selling you another kind of insurance alongside it.
+          </p>
 
           <h2>What &ldquo;independent&rdquo; actually means</h2>
           <p>
             A lot of people call themselves independent. Here is the version that matters
-            to you: I am not employed by an insurance company, and no carrier sets quotas
-            for me. I am contracted with multiple organizations, which means when we talk
-            through your options I have no financial reason to steer you toward one over
-            another.
+            to you: I am not signed to a single carrier and no insurance company sets
+            quotas for me. I am contracted with a number of the major organizations, so
+            when we go through your options I have no reason to push you toward one company
+            over another. What I recommend comes out of what I find for you, not out of who
+            I work for.
           </p>
           <p>
             I do get paid — by the insurance company, if you enroll in something. That is
@@ -160,9 +185,9 @@ export default function AboutPage() {
           <h2>How I actually work</h2>
           <ul>
             <li>
-              <strong>First conversation is a conversation.</strong> No application, no
-              screen share, no &ldquo;let me just get a few things from you.&rdquo; You ask,
-              I answer.
+              <strong>Over the phone, or I come to you.</strong> Whichever you prefer. If
+              you would rather do this at your own kitchen table than on the phone, say so
+              and I will come out.
             </li>
             <li>
               <strong>Your doctors and your prescriptions come first.</strong> Before
@@ -170,9 +195,21 @@ export default function AboutPage() {
               is downstream of that list.
             </li>
             <li>
+              <strong>I go through the plans available to you, properly.</strong> Not the
+              first two that look reasonable. I compare what is actually offered in your
+              county against that list of yours, then tell you which one I think fits best
+              and exactly why I think so.
+            </li>
+            <li>
+              <strong>Ask as many times as you want.</strong> Call, text or email as often
+              as you like, and there is no charge for any of it. If you only want to
+              understand your options and compare a few plans with no intention of changing
+              anything, that is a completely fine reason to contact me.
+            </li>
+            <li>
               <strong>I will tell you to do nothing when that is right.</strong> Sometimes
               the answer is &ldquo;your current coverage is fine, call me in October.&rdquo;
-              That answer pays me zero dollars and I give it constantly.
+              That answer pays me nothing, and it is still the right answer.
             </li>
             <li>
               <strong>I am still here next year.</strong> The value of an independent agent
@@ -181,20 +218,6 @@ export default function AboutPage() {
             </li>
           </ul>
 
-          {/*
-            The invented personality details that used to sit here — coaching
-            youth soccer, opinions about diner coffee — were written for Eric,
-            not by him. Specific biographical claims about a real person should
-            come from that person. Replaced with something true and general.
-            Eric: send real details and this becomes a better paragraph.
-          */}
-          <h2>Where I am</h2>
-          <p>
-            {advisor.basedIn} is home, and it is where most of my in-person conversations
-            happen. The rest are by phone or text, which is how most people prefer it
-            anyway — you can ask me something from your kitchen table without booking
-            anything or letting anyone into your house.
-          </p>
         </Reveal>
       </section>
 
