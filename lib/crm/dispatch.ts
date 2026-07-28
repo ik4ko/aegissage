@@ -13,12 +13,27 @@ import { claimDueLeads, markDelivered, markFailed, type OutboxRow } from './outb
  * Server-only. Both env vars are non-public by design — a signing secret that
  * reached the browser would let anyone forge leads into the CRM.
  *
- *   CRM_INGEST_URL      full URL of the Agent Factory ingest route
- *   CRM_INGEST_SECRET   shared secret for HMAC request signing
+ *   CRM_INGEST_URL           full URL of the Agent Factory ingest route
+ *   CRM_INGEST_SECRET        shared secret for HMAC request signing
+ *   CRM_INGEST_BYPASS_TOKEN  optional; see below
  *
  * Absent credentials are a no-op, not an error. Leads keep accumulating in
- * the outbox and drain the moment the bridge is configured — which is exactly
- * the current state of the world, since the CRM side is not yet deployed.
+ * the outbox and drain the moment the bridge is configured.
+ *
+ * ── Why the bypass token exists ───────────────────────────────────────────
+ * The Agent Factory deployment has Vercel Deployment Protection enabled.
+ * Verified by probing it: every path, including /api/*, answers 302 to
+ * vercel.com/sso-api. That protection is good — it keeps an internal
+ * operations dashboard off the public internet — but it also means a
+ * server-to-server POST never reaches the route handler, so the signature
+ * check inside it never runs.
+ *
+ * `CRM_INGEST_BYPASS_TOKEN` is Vercel's "Protection Bypass for Automation"
+ * secret, sent as x-vercel-protection-bypass. It gets the request past the
+ * edge gate so the endpoint's OWN signature verification can do the real
+ * authorization. It is a transport concern, not an authentication one — the
+ * HMAC is still what proves the request is genuine, and the bypass token
+ * alone grants nothing but the ability to be rejected by that check.
  */
 
 export type SyncResult = {
@@ -41,6 +56,7 @@ async function deliver(row: OutboxRow, url: string, secret: string): Promise<str
   const body = JSON.stringify(row.payload);
   const timestamp = String(Date.now());
   const signature = signPayload(body, timestamp, secret);
+  const bypass = process.env.CRM_INGEST_BYPASS_TOKEN?.trim();
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -48,16 +64,37 @@ async function deliver(row: OutboxRow, url: string, secret: string): Promise<str
   try {
     const res = await fetch(url, {
       method: 'POST',
+      // `manual` so a Vercel SSO redirect surfaces as a failure to retry
+      // rather than being silently followed to an HTML login page that
+      // would then parse as a mysterious schema error.
+      redirect: 'manual',
       headers: {
         'Content-Type': 'application/json',
         [SIGNATURE_HEADER]: signature,
         [TIMESTAMP_HEADER]: timestamp,
         [IDEMPOTENCY_HEADER]: row.idempotency_key,
+        ...(bypass ? { 'x-vercel-protection-bypass': bypass } : {}),
       },
       body,
       signal: controller.signal,
       cache: 'no-store',
     });
+
+    if (res.status >= 300 && res.status < 400) {
+      const location = res.headers.get('location') ?? '';
+      const isSso = location.includes('vercel.com/sso-api');
+      throw Object.assign(
+        new Error(
+          isSso
+            ? 'Blocked by Vercel Deployment Protection. Set CRM_INGEST_BYPASS_TOKEN ' +
+              'to the target project\'s Protection Bypass for Automation secret.'
+            : `Unexpected redirect to ${location.slice(0, 120)}`,
+        ),
+        // Retryable: this is a configuration problem someone will fix, and
+        // the lead should still be waiting in the queue when they do.
+        { permanent: false },
+      );
+    }
 
     const text = await res.text();
 
