@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { ArrowRight, Clock } from 'lucide-react';
+import { ArrowRight, Clock, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ContactActions } from './contact-actions';
 import { AdvisorAvatar } from './trust-bar';
 import { licensedStates } from '@/lib/states';
-import { advisor, site } from '@/lib/site';
+import { advisor, contactHrefs, site } from '@/lib/site';
 
 /**
  * The homepage hook. Built around the person, not a funnel: a claim someone
@@ -56,26 +56,41 @@ export function Hero() {
               26 states while this sentence used to name four areas as the
               whole service area.
             */}
+            {/*
+              Kept to roughly five seconds of skimming. The longer version of
+              who he is and where he works lives on /about, which this page
+              links to twice.
+            */}
             <p className="mt-6 max-w-xl text-lg text-ink-soft sm:text-xl">
-              I am {advisor.firstName}, an independent Medicare advisor based in{' '}
-              {advisor.basedIn}. I work most closely with people in {site.serviceArea}, and I
-              am licensed in {licensedStates.length} states. A lot of my week is spent undoing
-              what a mailer or a TV commercial told someone. Ask me anything, in plain English,
-              before you decide anything.
+              I am {advisor.firstName}, an independent Medicare advisor in New Jersey. I
+              explain deadlines, doctors, prescriptions, and plan trade-offs in plain
+              English — without pressure. Licensed in {licensedStates.length} states.
             </p>
 
-            <ContactActions where="hero" className="mt-9" size="xl" includeEmail={false} />
-
-            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-base text-ink-faint">
-              <span>Or start here, no phone call needed:</span>
-              <Link
-                href="/tools/eligibility-check"
-                className="inline-flex min-h-touch items-center gap-1.5 font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep"
-              >
-                Check which enrollment window is yours
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
+            {/*
+              The filled primary is the self-serve tool, not the phone. Most
+              visitors are not ready to talk on the first visit, and asking
+              them to call before they know their own deadline is the step
+              that loses them. Calling is one tap away either way.
+            */}
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <Button asChild size="xl">
+                <Link href="/tools/eligibility-check">
+                  Check your enrollment window
+                  <ArrowRight className="h-5 w-5" aria-hidden="true" />
+                </Link>
+              </Button>
+              <Button asChild size="xl" variant="outline">
+                <a href={contactHrefs.tel}>
+                  <Phone className="h-5 w-5" aria-hidden="true" />
+                  Call {advisor.firstName}
+                </a>
+              </Button>
             </div>
+
+            <p className="mt-4 text-base text-ink-faint">
+              Or call {advisor.phone} directly — no menus, no queue.
+            </p>
           </div>
 
           <HeroCard />

@@ -130,9 +130,11 @@ export const compliance = {
  */
 
 export const nav = [
-  { href: '/medicare-basics', label: 'Medicare Basics' },
-  { href: '/medicare-checklist', label: 'Free Checklist' },
-  { href: '/tools/eligibility-check', label: 'Eligibility Check' },
+  { href: '/medicare-basics', label: 'Basics' },
+  { href: '/medicare-checklist', label: 'Checklist' },
+  // "Enrollment Check" says what it answers; "Eligibility Check" was read as
+  // a means test rather than a deadline lookup.
+  { href: '/tools/eligibility-check', label: 'Enrollment Check' },
   { href: '/tools/medicare-iq', label: 'Medicare IQ' },
   { href: '/news', label: 'News' },
   { href: '/blog', label: 'Articles' },

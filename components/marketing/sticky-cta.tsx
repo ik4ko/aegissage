@@ -17,7 +17,13 @@ export function StickyCta() {
     // than orphaned content sitting outside <main>.
     <aside
       aria-label="Contact shortcuts"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-navy-deep/20 bg-navy-deep/95 backdrop-blur-sm"
+      /*
+        Mobile only. On desktop the header, the hero and every CTA band carry
+        a visible Call action, so a permanently pinned bar was covering content
+        to repeat something already on screen. Calling and texting stay
+        available at every width — this only removes the duplicate.
+      */
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-navy-deep/20 bg-navy-deep/95 backdrop-blur-sm lg:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="container flex items-center justify-between gap-3 p-2.5 sm:py-3">

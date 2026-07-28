@@ -22,6 +22,7 @@ import { getArticles, getLatestNews } from '@/lib/content';
 import { locationLandings } from '@/lib/locations';
 import { licensedStates } from '@/lib/states';
 import { advisor, site } from '@/lib/site';
+import { cn } from '@/lib/utils';
 
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent(site.tagline)}` +
@@ -131,15 +132,27 @@ export default function HomePage() {
         <div className="container py-14 sm:py-20">
           <Reveal>
             <SectionHeading
-              kicker="Start without talking to anyone"
-              title="Answer your own question first"
-              body="You should be able to get a long way on your own. These are the same tools I walk people through on the phone."
+              kicker="Self-serve tools"
+              title="Get answers before you call"
+              body="Four free tools I use with clients, plus the guides I send people before we talk."
             />
           </Reveal>
 
-          <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {TOOLS.map(({ href, icon: Icon, kicker, title, body }) => (
-              <RevealItem key={href}>
+          {/*
+            Five cards on a four-column grid left a single orphan on the second
+            row. A six-column grid with each card spanning two gives 3 + 2, and
+            starting the fourth card at column 2 centres the pair underneath.
+            Below lg it is a plain two-column grid, so nothing to balance.
+          */}
+          <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
+            {TOOLS.map(({ href, icon: Icon, kicker, title, body }, index) => (
+              <RevealItem
+                key={href}
+                className={cn(
+                  'lg:col-span-2',
+                  index === 3 && 'lg:col-start-2',
+                )}
+              >
                 <Link
                   href={href}
                   className="group flex h-full flex-col rounded-2xl border border-line bg-cream p-7 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lift focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
@@ -256,8 +269,10 @@ export default function HomePage() {
               ))}
             </RevealGroup>
 
+            {/* Two-card row is constrained to the width of two of the three
+                cards above it, then centred, rather than stretched full width. */}
             {posts.length > 0 ? (
-              <RevealGroup className="mt-5 grid gap-5 md:grid-cols-2">
+              <RevealGroup className="mt-5 grid gap-5 md:grid-cols-2 lg:mx-auto lg:max-w-[calc(66.666%-0.833rem)]">
                 {posts.map((article) => (
                   <RevealItem key={article.href}>
                     <ArticleCard article={article} className="h-full" />

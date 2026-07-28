@@ -48,10 +48,12 @@ export function SiteFooter() {
             <li>
               <a
                 href={contactHrefs.mailto}
-                className="flex min-h-touch items-center gap-2.5 break-all text-base text-ink-soft hover:text-navy"
+                className="flex min-h-touch items-center gap-2.5 text-base text-ink-soft hover:text-navy"
               >
                 <Mail className="h-5 w-5 shrink-0" aria-hidden="true" />
-                {advisor.email}
+                {/* The literal address wrapped mid-word on small screens.
+                    The mailto target is unchanged. */}
+                Email {advisor.firstName}
               </a>
             </li>
           </ul>

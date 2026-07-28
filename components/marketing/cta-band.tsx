@@ -10,7 +10,7 @@ import { advisor } from '@/lib/site';
  */
 export function CtaBand({
   where,
-  heading = 'Still not sure what applies to you?',
+  heading = 'Want to talk it through?',
   body = 'That is the normal state of things. Call or text Eric and talk it through — no script, no obligation, and no fee to you for the conversation.',
 }: {
   where: string;
