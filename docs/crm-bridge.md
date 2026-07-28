@@ -83,6 +83,68 @@ commit** or deliveries start failing validation.
 Backoff: 1, 5, 15, 60, 180, 360, 720, 1440 minutes, then `dead`. A dead row
 keeps its `last_error` and stays visible for a human to re-drive.
 
+## Verified state (2026-07-27)
+
+Checked against both live databases with their publishable keys:
+
+| Table | Project | Result |
+| --- | --- | --- |
+| `contacts` | website | exists, `200 []` — RLS blocking all anon rows ✅ |
+| `quiz_responses` | website | exists, RLS blocking ✅ |
+| `lead_sync_outbox` | website | **404 PGRST205 — migration not applied** ❌ |
+| `notification_deliveries` | website | **404 — not applied** ❌ |
+| `sms_opt_outs` | website | **404 — not applied** ❌ |
+| `ag_clients` | CRM | exists, `200 []` — RLS blocking anon ✅ |
+| `ag_policies` / `ag_communications_log` | CRM | exist, RLS blocking ✅ |
+| `ag_website_leads` | CRM | **404 — not applied** ❌ |
+| `ag_website_lead_events` | CRM | **404 — not applied** ❌ |
+
+Existing CRM RLS is confirmed correct: an anonymous key sees zero rows in
+`ag_clients`.
+
+### Why migrations still cannot be applied from here
+
+- `supabase projects list` → `Unauthorized`. CLI 2.110.0 is installed but not
+  logged in.
+- `SUPABASE_ACCESS_TOKEN` is not set, and `supabase login` needs a browser.
+- No Postgres connection string exists in either project's env.
+- The publishable key cannot run DDL — PostgREST does not execute it, and RLS
+  blocks the key from everything anyway.
+
+**Unblock with either:** a personal access token from
+`supabase.com/dashboard/account/tokens` exported as `SUPABASE_ACCESS_TOKEN`
+(then `npx supabase link --project-ref <ref>` and `npx supabase db push`), or
+pasting each migration into that project's SQL editor.
+
+## Second blocker: Vercel Deployment Protection
+
+The Agent Factory deployment has Deployment Protection enabled. Verified by
+probing `https://my-agent-factory-train-dive.vercel.app` — every path,
+including `/api/*`, answers **302 to `vercel.com/sso-api`**.
+
+That is correct for an internal dashboard, but it means a signed
+server-to-server POST never reaches the ingest handler, so the route's own
+signature check never runs.
+
+**Fix:** enable *Protection Bypass for Automation* on the Agent Factory
+project and set the generated secret as `CRM_INGEST_BYPASS_TOKEN` on the
+website. The dispatcher already sends it as `x-vercel-protection-bypass`, and
+treats an SSO redirect as a named retryable failure rather than following it
+into an HTML login page.
+
+The bypass is a transport concern, not authentication — the HMAC signature is
+still what proves a request genuine.
+
+## Third blocker: Vercel Hobby cron limit
+
+Vercel rejected a 5-minute cron: Hobby accounts allow one run per day. A daily
+sweep would leave a lead queued for up to 24 hours.
+
+So delivery now happens in `after()` inside `/api/contact` — it runs once the
+response is flushed, so the visitor still never waits on a cross-project call,
+and the lead moves within seconds. `vercel.json` keeps a daily cron purely as
+the retry safety net. On Pro, restore `*/5 * * * *`.
+
 ## Remaining steps to make this live
 
 1. **Apply the website migration** `supabase/migrations/20260727000000_lead_ops.sql`
@@ -112,6 +174,24 @@ keeps its `last_error` and stays visible for a human to re-drive.
    # expect {"ok":true,"configured":true,"claimed":N,"delivered":N,...}
    ```
 8. **Run Supabase security advisors** on both projects after the migrations.
+
+## Synthetic test rows needing cleanup
+
+Two production submissions were made during end-to-end testing. Only the
+second created a row (the first failed on the unapplied-migration bug it
+uncovered):
+
+```sql
+-- Review before deleting. Marker is unambiguous and matches nothing real.
+select id, name, created_at from public.contacts
+ where source = 'synthetic-e2e' and name like 'SYNTHETIC-E2E-%';
+
+delete from public.contacts
+ where source = 'synthetic-e2e' and name like 'SYNTHETIC-E2E-%';
+```
+
+Requires service-role access, so it must be run from the SQL editor. Both
+predicates are required — do not delete on `name like` alone.
 
 ## Env vars
 
