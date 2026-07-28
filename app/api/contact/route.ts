@@ -289,6 +289,7 @@ const ATTRIBUTION_KEYS = [
   'utm_term',
   'landing',
   'referrer',
+  'firstTouchDate',
 ];
 
 function extractAttribution(context: Record<string, string> | undefined): Record<string, string> {

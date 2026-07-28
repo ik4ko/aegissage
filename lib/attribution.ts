@@ -109,6 +109,17 @@ export function captureAttribution(): void {
 
     data.landing = clean(window.location.pathname) || '/';
 
+    /*
+      First-touch day, not a precise timestamp.
+
+      Marketing attribution needs to know which campaign week produced a lead,
+      not the second it arrived — and a full ISO timestamp is a higher-entropy
+      value sitting in a record beside someone's name. The date is enough to
+      join a lead to a campaign, and `created_at` on the contact row already
+      carries the exact submission time.
+    */
+    data.firstTouchDate = new Date().toISOString().slice(0, 10);
+
     if (document.referrer) {
       try {
         const host = new URL(document.referrer).host;
