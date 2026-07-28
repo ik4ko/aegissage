@@ -81,41 +81,91 @@ export async function POST(req: Request) {
     lib/notify/sms.ts re-reads this column at send time rather than trusting
     any caller, so there is no path that texts someone who did not tick it.
   */
-  const { data: inserted, error } = await supabase
-    .from('contacts')
-    .insert({
-      name: payload.name,
-      email: payload.email || null,
-      phone: payload.phone || null,
-      zip: payload.zip || null,
-      topic: payload.topic ?? null,
-      preferred_contact: payload.preferredContact,
-      message: payload.message || null,
-      source: payload.source,
-      context: payload.context ?? null,
+  /*
+    ── Migration-tolerant write ──────────────────────────────────────────
+    The granular-consent columns arrive with 20260727000000_lead_ops.sql. If
+    that migration has not been applied to this environment yet, Postgres
+    rejects the whole insert with 42703 (undefined_column) and the visitor
+    sees an error — which is exactly what happened in production when the
+    code shipped ahead of the migration.
 
-      consent: true,
-      consent_at: now,
-      consent_text_version: CONSENT_TEXT_VERSION,
+    So the write is attempted with the full column set and falls back to the
+    columns that have always existed. The contact form is the site's primary
+    conversion path; it must not depend on migration ordering. Once the
+    migration lands, the first branch succeeds and the fallback goes unused.
 
-      consent_sms: payload.consentSms === true,
-      consent_sms_at: payload.consentSms === true ? now : null,
-      consent_sms_text_version: payload.consentSms === true ? CONSENT_TEXT_VERSION : null,
+    The fallback loses only the granular consent COLUMNS, never the consent
+    itself: `consent` is still required and recorded, and because SMS consent
+    cannot be persisted in that state, lib/notify/sms.ts reads a missing/false
+    value and refuses to send. Degrading here fails safe.
+  */
+  const baseRow = {
+    name: payload.name,
+    email: payload.email || null,
+    phone: payload.phone || null,
+    zip: payload.zip || null,
+    topic: payload.topic ?? null,
+    preferred_contact: payload.preferredContact,
+    message: payload.message || null,
+    source: payload.source,
+    context: payload.context ?? null,
+    consent: true,
+    consent_text_version: CONSENT_TEXT_VERSION,
+    user_agent: req.headers.get('user-agent')?.slice(0, 500) ?? null,
+    ip_address: clientIp(req),
+  };
 
-      consent_marketing: payload.consentMarketing === true,
-      consent_marketing_at: payload.consentMarketing === true ? now : null,
-      consent_marketing_text_version:
-        payload.consentMarketing === true ? CONSENT_TEXT_VERSION : null,
+  const consentColumns = {
+    consent_at: now,
+    consent_sms: payload.consentSms === true,
+    consent_sms_at: payload.consentSms === true ? now : null,
+    consent_sms_text_version: payload.consentSms === true ? CONSENT_TEXT_VERSION : null,
+    consent_marketing: payload.consentMarketing === true,
+    consent_marketing_at: payload.consentMarketing === true ? now : null,
+    consent_marketing_text_version:
+      payload.consentMarketing === true ? CONSENT_TEXT_VERSION : null,
+  };
 
-      user_agent: req.headers.get('user-agent')?.slice(0, 500) ?? null,
-      ip_address: clientIp(req),
-    })
-    .select('id')
-    .single();
+  let inserted: { id: string } | null = null;
+  let leadOpsAvailable = true;
 
-  if (error || !inserted) {
-    console.error('[contact] Supabase insert failed:', error?.message);
-    // Still try to notify — a dropped row is bad, a dropped person is worse.
+  {
+    const attempt = await supabase
+      .from('contacts')
+      .insert({ ...baseRow, ...consentColumns })
+      .select('id')
+      .single();
+
+    if (attempt.error) {
+      // 42703 = undefined_column, PGRST204 = column not in schema cache.
+      const missingColumn =
+        attempt.error.code === '42703' || attempt.error.code === 'PGRST204';
+
+      if (!missingColumn) {
+        console.error('[contact] Supabase insert failed:', attempt.error.message);
+        await sendContactAlert(payload);
+        return NextResponse.json({ error: GENERIC_ERROR }, { status: 500 });
+      }
+
+      console.warn(
+        '[contact] lead_ops migration not applied — storing without granular ' +
+          'consent columns. Apply supabase/migrations/20260727000000_lead_ops.sql.',
+      );
+      leadOpsAvailable = false;
+
+      const fallback = await supabase.from('contacts').insert(baseRow).select('id').single();
+      if (fallback.error || !fallback.data) {
+        console.error('[contact] Supabase insert failed:', fallback.error?.message);
+        await sendContactAlert(payload);
+        return NextResponse.json({ error: GENERIC_ERROR }, { status: 500 });
+      }
+      inserted = fallback.data as { id: string };
+    } else {
+      inserted = attempt.data as { id: string };
+    }
+  }
+
+  if (!inserted) {
     await sendContactAlert(payload);
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 500 });
   }
@@ -132,6 +182,10 @@ export async function POST(req: Request) {
   const alerts = await sendContactAlert(payload);
   const emailAlert = alerts.find((r) => r.channel === 'email');
 
+  // Everything below writes to columns and tables the lead_ops migration
+  // creates. Skipped entirely when it has not been applied, so the core
+  // submission path never depends on it.
+  if (leadOpsAvailable) {
   await supabase
     .from('contacts')
     .update({
@@ -213,6 +267,7 @@ export async function POST(req: Request) {
       }
     });
   }
+  } // end leadOpsAvailable
 
   return NextResponse.json({ ok: true, persisted: true });
 }
