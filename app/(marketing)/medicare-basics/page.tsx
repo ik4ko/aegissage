@@ -13,8 +13,9 @@ import { breadcrumbJsonLd, faqJsonLd } from '@/lib/seo';
 import { site } from '@/lib/site';
 
 const TITLE = 'Medicare Basics';
+// ~150 chars: Google truncates a search-result description around there.
 const DESCRIPTION =
-  'The plain-English guides I send people before our first call. Enrollment windows, the parts, the penalties, and the traps — written to be understood, not to sell you something.';
+  'Plain-English Medicare guides: enrollment windows, the four parts, the penalties, and the traps. Written to be understood, not to sell you something.';
 
 const FAQ_ITEMS = [
   {

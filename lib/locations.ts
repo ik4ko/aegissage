@@ -56,8 +56,17 @@ export type LocationLanding = {
   inState: string;
   /** Page <h1>. Deliberately not "Medicare in {name}" on every page. */
   headline: string;
-  /** Lede paragraph, also used as the meta description. */
+  /** Lede paragraph. Shown on the page; NOT used as the meta description. */
   intro: string;
+  /**
+   * Search-result description, ~150 chars.
+   *
+   * Separate from `intro` on purpose. The lede is written to be read on the
+   * page and runs 250-350 characters; Google truncates a description around
+   * 155, so reusing it meant every location page was cut mid-sentence in
+   * results. Each one names what is actually different about that place.
+   */
+  metaDescription: string;
   /** Body. Each landing defines its own section headings. */
   sections: LocationSection[];
   /** Locally relevant questions. Different per page. */
@@ -69,6 +78,8 @@ export const locationLandings: LocationLanding[] = [
   // ── Bergen County ───────────────────────────────────────────────────────
   {
     slug: 'bergen-county',
+    metaDescription:
+      'Independent Medicare help in Bergen County, NJ. Plan availability is set county by county — here is what that means for your doctors, and how to reach Eric.',
     name: 'Bergen County',
     shortName: 'Bergen County',
     region: 'Bergen County, NJ',
@@ -124,6 +135,8 @@ export const locationLandings: LocationLanding[] = [
   // ── New Jersey ──────────────────────────────────────────────────────────
   {
     slug: 'new-jersey',
+    metaDescription:
+      'Medicare in New Jersey, explained plainly. All 21 counties behave as separate plan markets, and the Medigap window runs on the federal clock.',
     name: 'New Jersey',
     shortName: 'New Jersey',
     region: 'New Jersey',
@@ -169,6 +182,8 @@ export const locationLandings: LocationLanding[] = [
   // ── New York City ───────────────────────────────────────────────────────
   {
     slug: 'new-york-city',
+    metaDescription:
+      'Medicare in New York City, explained plainly. Each borough is its own county for plan availability, and the Medigap rules differ from New Jersey.',
     name: 'New York City',
     shortName: 'New York City',
     region: 'New York City',
@@ -213,6 +228,8 @@ export const locationLandings: LocationLanding[] = [
   // ── Philadelphia ────────────────────────────────────────────────────────
   {
     slug: 'philadelphia',
+    metaDescription:
+      'Medicare in Philadelphia, explained plainly. The city and the county cover identical ground — which changes the moment you cross into a neighboring county.',
     name: 'Philadelphia',
     shortName: 'Philadelphia',
     region: 'Philadelphia, PA',
@@ -278,19 +295,19 @@ export function locationMetadata(slug: string): Metadata {
 
   return {
     title,
-    description: location.intro,
+    description: location.metaDescription,
     alternates: { canonical: path },
     openGraph: {
       type: 'website',
       title: `${title} · ${site.name}`,
-      description: location.intro,
+      description: location.metaDescription,
       url: `${site.url}${path}`,
       images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${title} · ${site.name}`,
-      description: location.intro,
+      description: location.metaDescription,
       images: [ogImage],
     },
   };

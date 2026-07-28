@@ -15,7 +15,8 @@ import { licensedStates } from '@/lib/states';
 import { locationLandings } from '@/lib/locations';
 import { breadcrumbJsonLd } from '@/lib/seo';
 
-const DESCRIPTION = `${advisor.name} is an independent Medicare advisor based in ${advisor.basedIn}. Medicare and Medicaid only, for people 65+ and anyone with Parts A and B. Here is who he is and how he works.`;
+// ~150 chars: Google truncates a search-result description around there.
+const DESCRIPTION = `${advisor.name}, independent Medicare advisor in ${advisor.basedIn}. Medicare and Medicaid only, for people 65+ and anyone with Parts A and B.`;
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent(`Meet ${advisor.name}`)}` +
   `&kicker=${encodeURIComponent('The person behind the phone number')}` +

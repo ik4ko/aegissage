@@ -29,8 +29,10 @@ const OG_IMAGE =
   `&subtitle=${encodeURIComponent(`Independent guidance across ${site.serviceArea}.`)}`;
 
 export const metadata: Metadata = {
-  title: `${site.name} — ${site.tagline}`,
-  description: site.description,
+  // Short forms for the search result; the full tagline and description are
+  // kept below for Open Graph and Twitter, where the space exists.
+  title: site.shortTitle,
+  description: site.metaDescription,
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',

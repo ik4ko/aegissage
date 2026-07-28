@@ -46,6 +46,15 @@ export const site = {
   tagline: 'Straight answers about Medicare, from a real person instead of a call center.',
   description:
     'Independent Medicare help from Eric Niniashvili. Plain-English guides, a free eligibility check, and someone you can call or text with a question. Based in Bergen County, New Jersey and licensed in 26 states.',
+  /**
+   * Search-result description, ~150 chars. `description` above is longer and
+   * still used for Open Graph and Twitter, where there is room for it. Google
+   * truncates around 155, so the homepage was being cut mid-sentence.
+   */
+  metaDescription:
+    'Independent Medicare help from Eric Niniashvili. Plain-English guides, a free eligibility check, and a real person you can call or text.',
+  /** Search-result title. The full tagline runs 91 chars in <title>. */
+  shortTitle: 'AegisSage — Independent Medicare help in plain English',
   serviceArea: 'Bergen County, New Jersey, New York City, and Philadelphia',
 } as const;
 
