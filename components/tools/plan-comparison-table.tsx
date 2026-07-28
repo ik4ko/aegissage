@@ -1,8 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Check, Minus } from 'lucide-react';
 import { GlossaryTerm } from '@/components/marketing/glossary-term';
+import {
+  trackPlanComparisonCompleted,
+  trackPlanComparisonRouteView,
+} from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 
 /**
@@ -93,6 +97,36 @@ export function PlanComparisonTable() {
   // Mobile shows one column at a time; a two-column table at 375px is
   // unreadable for the people this site is built for.
   const [mobileRoute, setMobileRoute] = useState<RouteKey>('original');
+  const endRef = useRef<HTMLDivElement>(null);
+  const completed = useRef(false);
+
+  /**
+   * "Completed" for a comparison table means read, so this fires when the
+   * final row reaches the viewport — never on mount, which would make the
+   * metric indistinguishable from a page view.
+   */
+  useEffect(() => {
+    const element = endRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || completed.current) return;
+        completed.current = true;
+        trackPlanComparisonCompleted();
+        observer.disconnect();
+      },
+      { threshold: 0.6 },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  function chooseRoute(key: RouteKey) {
+    setMobileRoute(key);
+    trackPlanComparisonRouteView(key);
+  }
 
   return (
     <div>
@@ -109,7 +143,7 @@ export function PlanComparisonTable() {
               role="tab"
               type="button"
               aria-selected={mobileRoute === key}
-              onClick={() => setMobileRoute(key)}
+              onClick={() => chooseRoute(key)}
               className={cn(
                 'min-h-touch rounded-xl px-3 text-base font-semibold transition-colors',
                 'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30',
@@ -188,6 +222,13 @@ export function PlanComparisonTable() {
           </tbody>
         </table>
       </div>
+
+      {/*
+        Sentinel for the completion event. Sits after both the mobile list and
+        the desktop table, so reaching it means the reader got through the
+        whole comparison on either layout. Zero height, no visual effect.
+      */}
+      <div ref={endRef} aria-hidden="true" className="h-px w-full" />
 
       <div className="mt-10 rounded-2xl border-2 border-navy/20 bg-navy-soft p-6">
         <p className="flex items-start gap-3 text-base leading-relaxed text-navy-deep">

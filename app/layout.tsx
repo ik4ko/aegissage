@@ -7,6 +7,7 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { StickyCta } from '@/components/marketing/sticky-cta';
 import { DisclaimerFooter } from '@/components/marketing/disclaimer-footer';
 import { JsonLd } from '@/components/seo/json-ld';
+import { AttributionCapture } from '@/components/analytics/attribution-capture';
 import { advisor, site } from '@/lib/site';
 import { siteJsonLd } from '@/lib/seo';
 import './globals.css';
@@ -121,6 +122,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         */}
         <Analytics />
         <SpeedInsights />
+
+        {/*
+          Records first-touch UTM/referrer attribution once per session so a
+          contact submission can be traced to the page that produced it.
+          Renders nothing and runs in an effect — never on the critical path.
+        */}
+        <AttributionCapture />
       </body>
     </html>
   );

@@ -116,6 +116,7 @@ export const compliance = {
 
 export const nav = [
   { href: '/medicare-basics', label: 'Medicare Basics' },
+  { href: '/medicare-checklist', label: 'Free Checklist' },
   { href: '/tools/eligibility-check', label: 'Eligibility Check' },
   { href: '/tools/medicare-iq', label: 'Medicare IQ' },
   { href: '/news', label: 'News' },

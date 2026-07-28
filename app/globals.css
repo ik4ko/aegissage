@@ -63,6 +63,54 @@
   }
 }
 
+@layer base {
+  /*
+   * Print rules, driven by the checklist at /medicare-checklist.
+   *
+   * ── What is hidden ────────────────────────────────────────────────────
+   * Interactive chrome only: the sticky header, the fixed contact bar, and
+   * the site footer navigation. None of it does anything on paper, and the
+   * fixed bar would otherwise overprint the content on every page.
+   *
+   * ── What is deliberately KEPT ─────────────────────────────────────────
+   * The TPMO disclosure block. A printed checklist carries the AegisSage
+   * name and Eric's phone number, which makes it a marketing piece in CMS
+   * terms — precisely the situation the disclosure exists for. Hiding it to
+   * save a page of paper would be the wrong trade. Do not add it to the
+   * hidden list.
+   */
+  @media print {
+    body {
+      padding-bottom: 0 !important;
+      background: #fff;
+    }
+
+    header[class*='sticky'],
+    aside[aria-label='Contact shortcuts'],
+    footer {
+      display: none !important;
+    }
+
+    /* Reveal-animated blocks must never print blank. */
+    [data-reveal] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    /* Keep worksheet blocks and numbered questions whole across page breaks. */
+    .break-inside-avoid {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    a[href^='http']::after {
+      content: ' (' attr(href) ')';
+      font-size: 0.75em;
+      word-break: break-all;
+    }
+  }
+}
+
 @layer components {
   /*
    * Article body typography. Applied to the rendered MDX so long-form pages

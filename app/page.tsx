@@ -4,6 +4,7 @@ import {
   ArrowRight,
   Brain,
   CalendarClock,
+  ClipboardList,
   Compass,
   MessageCircleQuestion,
 } from 'lucide-react';
@@ -47,6 +48,13 @@ export const metadata: Metadata = {
 };
 
 const TOOLS = [
+  {
+    href: '/medicare-checklist',
+    icon: ClipboardList,
+    kicker: 'Free · Printable',
+    title: 'The Medicare appointment checklist',
+    body: 'Print it, fill it in at the kitchen table, bring it to any conversation. Doctors, prescriptions, ZIP code, deadlines, and the questions worth asking. No email required.',
+  },
   {
     href: '/tools/eligibility-check',
     icon: CalendarClock,

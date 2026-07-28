@@ -11,6 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { advisor, compliance } from '@/lib/site';
 import { trackContactSubmit } from '@/lib/analytics';
+import { getAttribution } from '@/lib/attribution';
 import { cn } from '@/lib/utils';
 import {
   CONTACT_TOPICS,
@@ -67,10 +68,26 @@ export function ContactForm({
     setServerError(null);
 
     try {
+      /*
+        First-touch attribution rides along in `context` so a submission can
+        be traced back to the landing page and campaign that produced it.
+
+        Everything merged in here is sanitized in lib/attribution.ts and is
+        non-personal by construction: UTM tokens, a pathname, a referring
+        host. The page's own context (quiz answers, location) is spread last
+        so it always wins a key collision — attribution must never be able to
+        overwrite what the page meant to record.
+      */
+      const attribution = getAttribution();
+
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...values, source, context }),
+        body: JSON.stringify({
+          ...values,
+          source,
+          context: { ...attribution, ...context },
+        }),
       });
 
       if (!res.ok) {

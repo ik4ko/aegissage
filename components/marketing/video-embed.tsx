@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Play } from 'lucide-react';
+import { trackVideoLoad } from '@/lib/analytics';
 
 /**
  * Click-to-load YouTube embed.
@@ -40,12 +41,22 @@ export function VideoEmbed({
   youtubeId,
   title,
   caption,
+  where = 'article',
 }: {
   youtubeId: string;
   title: string;
   caption?: string;
+  /** Page surface, for conversion reporting. */
+  where?: string;
 }) {
   const [active, setActive] = useState(false);
+
+  function play() {
+    setActive(true);
+    // Fires at the exact moment YouTube is first contacted, which makes this
+    // both a conversion signal and an honest third-party-contact record.
+    trackVideoLoad(youtubeId, where);
+  }
 
   return (
     <figure className="my-10">
@@ -62,7 +73,7 @@ export function VideoEmbed({
           ) : (
             <button
               type="button"
-              onClick={() => setActive(true)}
+              onClick={play}
               className="group absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-4 bg-navy-deep p-6 text-center transition-colors hover:bg-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
             >
               <span className="grid h-16 w-16 place-items-center rounded-full bg-ember shadow-lift transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100">

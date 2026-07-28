@@ -19,6 +19,7 @@ Medicare Advantage and Part D plan availability is set by CMS at the county leve
 ## Key pages
 
 - [Medicare Basics](https://www.aegissage.com/medicare-basics): plain-English guides on enrollment, penalties, Medicare parts, and common traps.
+- [Free Medicare appointment checklist](https://www.aegissage.com/medicare-checklist): a printable worksheet for listing doctors, prescriptions, ZIP code and current coverage, plus the questions worth asking before comparing plans. No email address is required and nothing on the page is collected.
 - [Articles](https://www.aegissage.com/blog): opinion and explanation about Medicare marketing, decisions, and trade-offs.
 - [Videos](https://www.aegissage.com/videos): a growing library of plain-English Medicare explanations from Eric.
 - [Medicare News & Updates](https://www.aegissage.com/news): short deadline and rule-change updates.
