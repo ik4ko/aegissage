@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { BadgeCheck, MapPin } from 'lucide-react';
 import { advisor } from '@/lib/site';
 import { licensedStates } from '@/lib/states';
@@ -30,9 +31,23 @@ export function TrustBar({ className }: { className?: string }) {
           <BadgeCheck className="h-5 w-5 text-sage" aria-hidden="true" />
           Licensed in {licensedStates.length} states
         </li>
+        {/*
+          The three local markets are named by state code, then the remaining
+          licensed states are a link rather than a claim the reader has to
+          take on trust. "+ N more" is derived from lib/states.ts, so it can
+          never disagree with the directory it points at.
+        */}
         <li className="flex items-center gap-2">
           <MapPin className="h-5 w-5 text-sage" aria-hidden="true" />
-          Bergen County · NJ · NYC · Philadelphia
+          <span>
+            NJ · NY · PA{' '}
+            <Link
+              href="/plans"
+              className="font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep"
+            >
+              + {licensedStates.length - 3} more states
+            </Link>
+          </span>
         </li>
       </ul>
     </div>

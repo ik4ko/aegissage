@@ -77,52 +77,14 @@ export function PullQuote({
 }
 
 /**
- * Embedded YouTube player.
+ * Video embed.
  *
- * ── What this actually does ───────────────────────────────────────────────
- * The iframe IS present in the markup from first render, with `loading="lazy"`
- * so the browser defers the network fetch until the frame nears the viewport.
- * It is not click-to-load: an earlier version of this comment claimed nothing
- * was mounted until the reader asked for it, which was never true of the code
- * below and would have been a misleading privacy claim.
- *
- * What is true: the youtube-nocookie.com host is used, `rel=0` keeps the
- * end-card recommendations to the same channel, nothing autoplays, and a
- * below-the-fold embed costs nothing until it is scrolled toward.
- *
- * The 16:9 wrapper reserves layout space before the frame loads, so an embed
- * never shifts the page — the site currently measures CLS 0.000 and this is
- * part of why.
+ * The implementation moved to ./video-embed.tsx because it needs client-side
+ * state to be genuinely click-to-load, and this module is otherwise made of
+ * server components. Re-exported here so the MDX component map and every
+ * existing `import { VideoEmbed } from './prose'` keep working unchanged.
  */
-export function VideoEmbed({
-  youtubeId,
-  title,
-  caption,
-}: {
-  youtubeId: string;
-  title: string;
-  caption?: string;
-}) {
-  return (
-    <figure className="my-10">
-      <div className="overflow-hidden rounded-2xl border border-line bg-navy-deep shadow-card">
-        <div className="relative aspect-video">
-          <iframe
-            src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0`}
-            title={title}
-            loading="lazy"
-            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="absolute inset-0 h-full w-full"
-          />
-        </div>
-      </div>
-      {caption ? (
-        <figcaption className="mt-3 text-sm text-ink-faint">{caption}</figcaption>
-      ) : null}
-    </figure>
-  );
-}
+export { VideoEmbed } from './video-embed';
 
 /**
  * Numbered takeaways rendered from a plain markdown list.

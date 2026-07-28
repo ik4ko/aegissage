@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Fraunces, Source_Sans_3 } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { StickyCta } from '@/components/marketing/sticky-cta';
@@ -104,7 +105,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <DisclaimerFooter />
 
         <StickyCta />
+
+        {/*
+          @vercel/analytics is page-view/audience data. It does NOT report
+          Core Web Vitals, which is why no field CWV data existed for this
+          site until now.
+
+          SpeedInsights is the field-data half: it reports real LCP/INP/CLS
+          from real visitors on real devices. Both inject their script with
+          `afterInteractive` strategy, so neither is on the critical path.
+
+          Until this has been live long enough to collect samples, there is
+          no field data and no basis for claiming Core Web Vitals pass. Lab
+          numbers are not field numbers.
+        */}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

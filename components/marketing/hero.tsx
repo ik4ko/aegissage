@@ -35,7 +35,7 @@ export function Hero() {
           <div>
             <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
               <Clock className="h-4 w-4" aria-hidden="true" />
-              Independent · Bergen County · NJ · NYC · Philadelphia
+              Independent · NJ · NY · PA and 23 more states
             </p>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl lg:text-6xl">
