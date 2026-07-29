@@ -35,7 +35,17 @@ export function StickyCta() {
           className="flex h-touch items-center justify-center gap-2 rounded-xl bg-ember px-3 text-base font-semibold text-white transition-colors hover:bg-ember-deep active:translate-y-px sm:px-5"
         >
           <Phone className="h-5 w-5" aria-hidden="true" />
-          Call {advisor.phone}
+          {/*
+            The full number does not fit here on a narrow phone. At 390px each
+            half of this two-column grid is about 165px, and "Call (551)
+            202-9079" needs roughly 214px once the icon, gap and padding are
+            counted — so it wrapped inside a fixed-height button and looked
+            clipped. The number is still one tap away (this dials it), and it
+            is printed in full in the header, the hero, the footer and every
+            CTA band.
+          */}
+          <span className="sm:hidden">Call {advisor.firstName}</span>
+          <span className="hidden sm:inline">Call {advisor.phone}</span>
         </a>
         <a
           href={contactHrefs.sms}
