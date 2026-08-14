@@ -33,31 +33,6 @@ function formatPhone(raw: string): string {
  * card footer and nothing else), where "aegissage.com" is the brand and
  * "www." is noise. It is never used to build a URL.
  */
-export const site = {
-  name: 'AegisSage',
-  domain: 'aegissage.com',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aegissage.com',
-  /**
-   * No response-time or availability promise in the tagline. "Someone who
-   * picks up the phone" reads as a guarantee of pickup, and there is one
-   * person behind this number — some calls will go to voicemail. "A real
-   * person, not a call center" says the true thing instead.
-   */
-  tagline: 'Straight answers about Medicare, from a real person instead of a call center.',
-  description:
-    'Independent Medicare help from Eric Niniashvili. Plain-English guides, a free eligibility check, and someone you can call or text with a question. Based in Bergen County, New Jersey and licensed in 26 states.',
-  /**
-   * Search-result description, ~150 chars. `description` above is longer and
-   * still used for Open Graph and Twitter, where there is room for it. Google
-   * truncates around 155, so the homepage was being cut mid-sentence.
-   */
-  metaDescription:
-    'Independent Medicare help from Eric Niniashvili. Plain-English guides, a free eligibility check, and a real person you can call or text.',
-  /** Search-result title. The full tagline runs 91 chars in <title>. */
-  shortTitle: 'AegisSage — Independent Medicare help in plain English',
-  serviceArea: 'Bergen County, New Jersey, New York City, and Philadelphia',
-} as const;
-
 export const advisor = {
   name: process.env.NEXT_PUBLIC_ADVISOR_NAME ?? 'Eric Niniashvili',
   firstName: 'Eric',
@@ -74,18 +49,67 @@ export const advisor = {
    * so nothing on this site may render a postal address, geo coordinates or
    * opening hours. Stating the county of origin is a factual origin statement;
    * it must never be presented as a walk-in office.
+   *
+   * NOTE (Aug 2026): a Google Business Profile now exists for the practice.
+   * Re-evaluate this constraint once that profile carries a verified address
+   * — do not add one here until it does.
    */
   basedIn: 'Bergen County, New Jersey',
+  /**
+   * NOTE (Aug 13 2026): Louisiana removed — appointment lost, confirmed by
+   * Erekle. If it needs to come back, add it here AND nowhere else; every
+   * other consumer (lib/states.ts, hero/trust-bar copy, /plans, footer,
+   * schema areaServed, llms.txt, sitemap) derives from this array.
+   */
   licensedStates: [
-    'AL', 'AR', 'AZ', 'FL', 'GA', 'IA', 'IL', 'IN', 'KY', 'LA', 'MI', 'MN', 'MS',
+    'AL', 'AR', 'AZ', 'FL', 'GA', 'IA', 'IL', 'IN', 'KY', 'MI', 'MN', 'MS',
     'MO', 'NC', 'ND', 'NJ', 'NY', 'OH', 'OK', 'PA', 'SC', 'TN', 'TX', 'VA', 'WV',
   ],
+} as const;
+
+export const site = {
+  name: 'AegisSage',
+  domain: 'aegissage.com',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aegissage.com',
+  /**
+   * No response-time or availability promise in the tagline. "Someone who
+   * picks up the phone" reads as a guarantee of pickup, and there is one
+   * person behind this number — some calls will go to voicemail. "A real
+   * person, not a call center" says the true thing instead.
+   */
+  tagline: 'Straight answers about Medicare, from a real person instead of a call center.',
+  /**
+   * State count is interpolated from advisor.licensedStates.length rather
+   * than hardcoded — this string previously said "26 states" as a literal
+   * and would have silently gone stale the moment a license was added or
+   * dropped (which is exactly what happened; it dropped to 25 on Aug 13
+   * 2026 and this line was the one place that hadn't caught up).
+   */
+  description:
+    `Independent Medicare help from Eric Niniashvili. Plain-English guides, a free eligibility check, and someone you can call or text with a question. Based in Bergen County, New Jersey and licensed in ${advisor.licensedStates.length} states.`,
+  /**
+   * Search-result description, ~150 chars. `description` above is longer and
+   * still used for Open Graph and Twitter, where there is room for it. Google
+   * truncates around 155, so the homepage was being cut mid-sentence.
+   */
+  metaDescription:
+    'Independent Medicare help from Eric Niniashvili. Plain-English guides, a free eligibility check, and a real person you can call or text.',
+  /** Search-result title. The full tagline runs 91 chars in <title>. */
+  shortTitle: 'AegisSage — Independent Medicare help in plain English',
+  serviceArea: 'Bergen County, New Jersey, New York City, and Philadelphia',
 } as const;
 
 export const contactHrefs = {
   tel: `tel:+${advisor.phoneRaw.replace(/\D/g, '')}`,
   sms: `sms:+${advisor.phoneRaw.replace(/\D/g, '')}`,
   mailto: advisor.emailConfigured ? `mailto:${advisor.email}` : '#contact-email',
+  /**
+   * Google Calendar Appointment Schedule — 60-minute Medicare consultation
+   * slots. Added Aug 14 2026. This is a public Google-hosted booking page,
+   * not a page on this site, so it opens in a new tab rather than routing
+   * internally.
+   */
+  booking: 'https://calendar.app.google/pNjYuj1JK6i2ATrN6',
 } as const;
 
 export const social = {

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
 import { advisor, compliance, site } from '@/lib/site';
 
 /**
@@ -36,6 +35,14 @@ import { advisor, compliance, site } from '@/lib/site';
  *  fix. It still matters here: this is legally required disclosure text, read
  *  by an audience that skews 65+, set at 16px on a dark field. It should not
  *  be the lowest-contrast text on the page.
+ *
+ *  ── Aug 13 2026: collapsed <details>/<summary> removed ────────────────────
+ *  This previously rendered the required text inside a collapsed <details>,
+ *  with the reasoning that the full text stayed in the DOM for crawlers and
+ *  screen readers even while visually collapsed. Erekle overrode that
+ *  judgment call directly: the disclosure must be visible on page load, not
+ *  gated behind a click, full stop. That is now the standing rule for this
+ *  component — do not reintroduce a collapse here without his sign-off.
  * ══════════════════════════════════════════════════════════════════════════
  */
 
@@ -47,32 +54,9 @@ export function DisclaimerFooter() {
       className="border-t border-line bg-navy-deep text-navy-soft"
     >
       <div className="container max-w-3xl py-10 sm:py-12">
-        {/*
-          ── Why <details> and not a link ──────────────────────────────────
-          The required CMS language ran to four paragraphs of dense text at
-          the bottom of every page, which is where an audience that skews 65+
-          learns to stop reading. Collapsing it reduces the visual weight
-          without weakening the disclosure:
-
-            • the complete text stays in the DOM on every page — it is not
-              fetched, routed to, or rendered conditionally, so crawlers and
-              screen readers receive all of it
-            • <summary> is natively focusable and toggles on Enter/Space, so
-              keyboard users need no custom handler
-            • the summary names what is inside — plan availability and how
-              Eric is paid — rather than saying "learn more"
-
-          Do NOT swap this for a link to another page. The disclosure has to
-          be present on the touchpoint that carries the marketing.
-        */}
-        <details className="group" name="disclosures">
-          <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-white/85 marker:content-[''] hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40">
-            <ChevronRight
-              className="h-4 w-4 shrink-0 transition-transform group-open:rotate-90"
-              aria-hidden="true"
-            />
-            Important disclosures — plan availability and how {advisor.firstName} is paid
-          </summary>
+        <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-white/85">
+          Important disclosures — plan availability and how {advisor.firstName} is paid
+        </p>
 
         <div className="mt-5 space-y-4 text-sm leading-relaxed text-white/85">
           {/* (1) Required TPMO scope-of-appointment style disclosure. */}
@@ -126,7 +110,6 @@ export function DisclaimerFooter() {
             </Link>
           </p>
         </div>
-        </details>
       </div>
     </section>
   );

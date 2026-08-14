@@ -26,6 +26,41 @@ const licensedAreas = licensedStates.map((state) => ({
  * walk-in location. Serving an area and having premises in it are different
  * claims and only the first one is supported by evidence.
  */
+/**
+ * Service areas.
+ *
+ * States come from lib/states.ts, so this can never drift from the licensed
+ * set. The sub-state entries are markets with their own landing pages or
+ * named local relevance, each nested under its state via `containedInPlace`.
+ *
+ * Bergen County appears as an AdministrativeArea the advisor SERVES. It is
+ * deliberately not an address, a `location`, or a `LocalBusiness` place:
+ * there is no verified public street address, no verified office hours and
+ * no Google Business Profile for this advisor, so nothing here may imply a
+ * walk-in location. Serving an area and having premises in it are different
+ * claims and only the first one is supported by evidence.
+ *
+ * The named Bergen County towns below (added Aug 14 2026) are the George
+ * Washington Bridge corridor — real coverage, since the advisor is licensed
+ * statewide in NJ. Naming them explicitly as entities (rather than leaving
+ * them implicit inside "Bergen County") is what gives AI search / GEO
+ * systems a citable, unambiguous local signal instead of one they have to
+ * infer. Do not add towns here that don't have at least this level of real
+ * service backing it — the same accuracy standard as the address omission
+ * above applies to every entity in this list.
+ */
+const bergenCountyTowns = [
+  'Fort Lee',
+  'Edgewater',
+  'Cliffside Park',
+  'Palisades Park',
+  'Ridgefield',
+  'Fairview',
+  'Hackensack',
+  'Teaneck',
+  'Englewood',
+];
+
 const serviceAreas = [
   ...licensedAreas,
   {
@@ -33,6 +68,11 @@ const serviceAreas = [
     name: 'Bergen County',
     containedInPlace: { '@type': 'State', name: 'New Jersey' },
   },
+  ...bergenCountyTowns.map((name) => ({
+    '@type': 'City',
+    name,
+    containedInPlace: { '@type': 'AdministrativeArea', name: 'Bergen County' },
+  })),
   { '@type': 'City', name: 'New York City', containedInPlace: { '@type': 'State', name: 'New York' } },
   { '@type': 'City', name: 'Philadelphia', containedInPlace: { '@type': 'State', name: 'Pennsylvania' } },
 ];

@@ -8,10 +8,14 @@ export type StateInfo = {
   note: string;
 };
 
+/**
+ * Louisiana removed Aug 13 2026 — appointment lost, confirmed by Erekle.
+ * Do not re-add without confirming the appointment is active again.
+ */
 const LICENSED_STATES: Array<[string, string]> = [
   ['AL', 'Alabama'], ['AR', 'Arkansas'], ['AZ', 'Arizona'], ['FL', 'Florida'],
   ['GA', 'Georgia'], ['IA', 'Iowa'], ['IL', 'Illinois'], ['IN', 'Indiana'],
-  ['KY', 'Kentucky'], ['LA', 'Louisiana'], ['MI', 'Michigan'], ['MN', 'Minnesota'],
+  ['KY', 'Kentucky'], ['MI', 'Michigan'], ['MN', 'Minnesota'],
   ['MS', 'Mississippi'], ['MO', 'Missouri'], ['NC', 'North Carolina'],
   ['ND', 'North Dakota'], ['NJ', 'New Jersey'], ['NY', 'New York'], ['OH', 'Ohio'],
   ['OK', 'Oklahoma'], ['PA', 'Pennsylvania'], ['SC', 'South Carolina'],
@@ -46,7 +50,7 @@ const FALLBACK_NOTE =
  * (every consumer is server-rendered or statically generated). A mismatch
  * fails `next build` loudly instead of shipping.
  */
-const EXPECTED_LICENSED_COUNT = 26;
+const EXPECTED_LICENSED_COUNT = 25;
 
 function assertLicensing() {
   const codes = LICENSED_STATES.map(([code]) => code);
@@ -85,7 +89,8 @@ function assertLicensing() {
 assertLicensing();
 
 /**
- * The 26 licensed states.
+ * The licensed states (count enforced by EXPECTED_LICENSED_COUNT above,
+ * currently 25 — do not let this comment's number drift from that one).
  *
  * `licensedStates` and `planStates` are the same list and are kept as two
  * names only because both are imported across the app. They were previously

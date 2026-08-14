@@ -1,6 +1,6 @@
 'use client';
 
-import { Mail, MessageSquareText, Phone } from 'lucide-react';
+import { CalendarClock, Mail, MessageSquareText, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { advisor, contactHrefs } from '@/lib/site';
@@ -52,6 +52,18 @@ export function ContactActions({
         <a href={contactHrefs.tel} onClick={() => trackContactIntent('call', where)}>
           <Phone className="h-5 w-5" aria-hidden="true" />
           Call {advisor.phone}
+        </a>
+      </Button>
+
+      <Button asChild size={size} variant="primary" className={cn(darkFocus)}>
+        <a
+          href={contactHrefs.booking}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackContactIntent('book', where)}
+        >
+          <CalendarClock className="h-5 w-5" aria-hidden="true" />
+          Book a Time
         </a>
       </Button>
 

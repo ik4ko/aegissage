@@ -77,9 +77,9 @@ function emit(event: string, props?: Record<string, Primitive>) {
   }
 }
 
-/** A visitor tapped a call, text or email link. `where` is the component id. */
+/** A visitor tapped a call, text, email or booking link. `where` is the component id. */
 export function trackContactIntent(
-  channel: 'call' | 'text' | 'email',
+  channel: 'call' | 'text' | 'email' | 'book',
   where: string,
 ) {
   emit('contact_intent', { channel, where });
