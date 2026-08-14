@@ -53,8 +53,8 @@ export function Hero() {
             {/*
               Local focus and the wider licence are two different facts, and
               running them together confused both. The eyebrow above advertises
-              26 states while this sentence used to name four areas as the
-              whole service area.
+              the full licensed-state count while this sentence used to name
+              four areas as the whole service area.
             */}
             {/*
               Kept to roughly five seconds of skimming. The longer version of

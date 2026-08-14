@@ -54,9 +54,9 @@ export function DisclaimerFooter() {
       className="border-t border-line bg-navy-deep text-navy-soft"
     >
       <div className="container max-w-3xl py-10 sm:py-12">
-        <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-white/85">
+        <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-white/85">
           Important disclosures — plan availability and how {advisor.firstName} is paid
-        </p>
+        </h2>
 
         <div className="mt-5 space-y-4 text-sm leading-relaxed text-white/85">
           {/* (1) Required TPMO scope-of-appointment style disclosure. */}

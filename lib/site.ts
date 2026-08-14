@@ -19,20 +19,6 @@ function formatPhone(raw: string): string {
   return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 }
 
-/**
- * ── Canonical host ────────────────────────────────────────────────────────
- * `www.aegissage.com` is the host Vercel serves with a 200. The apex
- * `aegissage.com` issues a 308 to it on every path, verified live.
- *
- * Canonicals, sitemap entries, JSON-LD @ids and OG image URLs must all point
- * at the host that answers directly. Previously they pointed at the apex, so
- * every self-referencing canonical on the site resolved through a redirect
- * and the sitemap advertised 52 URLs that all bounced.
- *
- * `domain` stays as the bare apex on purpose — it is display text (the OG
- * card footer and nothing else), where "aegissage.com" is the brand and
- * "www." is noise. It is never used to build a URL.
- */
 export const advisor = {
   name: process.env.NEXT_PUBLIC_ADVISOR_NAME ?? 'Eric Niniashvili',
   firstName: 'Eric',
@@ -69,6 +55,20 @@ export const advisor = {
 
 export const site = {
   name: 'AegisSage',
+  /**
+   * ── Canonical host ──────────────────────────────────────────────────────
+   * `www.aegissage.com` is the host Vercel serves with a 200. The apex
+   * `aegissage.com` issues a 308 to it on every path, verified live.
+   *
+   * Canonicals, sitemap entries, JSON-LD @ids and OG image URLs must all
+   * point at the host that answers directly. Previously they pointed at the
+   * apex, so every self-referencing canonical on the site resolved through
+   * a redirect and the sitemap advertised 52 URLs that all bounced.
+   *
+   * `domain` stays as the bare apex on purpose — it is display text (the OG
+   * card footer and nothing else), where "aegissage.com" is the brand and
+   * "www." is noise. It is never used to build a URL.
+   */
   domain: 'aegissage.com',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.aegissage.com',
   /**

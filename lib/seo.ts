@@ -16,20 +16,6 @@ const licensedAreas = licensedStates.map((state) => ({
  * Service areas.
  *
  * States come from lib/states.ts, so this can never drift from the licensed
- * set. The three sub-state entries are the markets with their own landing
- * pages, each nested under its state via `containedInPlace`.
- *
- * Bergen County appears as an AdministrativeArea the advisor SERVES. It is
- * deliberately not an address, a `location`, or a `LocalBusiness` place:
- * there is no verified public street address, no verified office hours and
- * no Google Business Profile for this advisor, so nothing here may imply a
- * walk-in location. Serving an area and having premises in it are different
- * claims and only the first one is supported by evidence.
- */
-/**
- * Service areas.
- *
- * States come from lib/states.ts, so this can never drift from the licensed
  * set. The sub-state entries are markets with their own landing pages or
  * named local relevance, each nested under its state via `containedInPlace`.
  *
