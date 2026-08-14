@@ -42,9 +42,17 @@ const FALLBACK_NOTE =
 /**
  * ── Licensing guard ───────────────────────────────────────────────────────
  * Every public surface that lists states — /plans, /plans/[state], the footer,
- * the About page, the sitemap, schema `areaServed` and llms.txt — reads from
- * this module. A state added here appears in all of them at once, including
- * in JSON-LD, where claiming an unheld license is a real problem.
+ * the About page, the sitemap and schema `areaServed` — reads from this
+ * module. A state added here appears in all of them at once, including in
+ * JSON-LD, where claiming an unheld license is a real problem.
+ *
+ * EXCEPTION — public/llms.txt is hand-maintained and does NOT read from here.
+ * This comment used to claim it did, which is how the Louisiana removal on
+ * Aug 13 2026 shipped everywhere except the one file AI assistants read as
+ * ground truth. Any change to this list must be mirrored by hand in
+ * public/llms.txt (the state list and the state count in the Service area
+ * section). The unlicensed-state guard in scripts/validate-site.mjs is the
+ * backstop; add any dropped state to that regex too.
  *
  * These checks run at module load, which on this app means at build time
  * (every consumer is server-rendered or statically generated). A mismatch

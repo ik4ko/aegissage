@@ -34,7 +34,10 @@ const FORBIDDEN = [
   [0, /Hackensack Meridian|Valley Health|NYU Langone|Mount Sinai/i, 'a health-system reference'],
   [
     0,
-    /\b(Alaska|California|Colorado|Connecticut|Hawaii|Idaho|Kansas|Maryland|Massachusetts|Montana|Nebraska|Nevada|New Hampshire|New Mexico|Oregon|Rhode Island|South Dakota|Vermont|Wisconsin|Wyoming)\b/,
+    // Louisiana was licensed until Aug 13 2026 (appointment lost) and is
+    // listed here for the same reason as the never-licensed states: naming
+    // it on a public page claims a license that is not held.
+    /\b(Alaska|California|Colorado|Connecticut|Hawaii|Idaho|Kansas|Louisiana|Maryland|Massachusetts|Montana|Nebraska|Nevada|New Hampshire|New Mexico|Oregon|Rhode Island|South Dakota|Vermont|Wisconsin|Wyoming)\b/,
     'an unlicensed state',
   ],
   [0, /"streetAddress"|"postalCode"|"openingHours|"latitude"|"longitude"/, 'address/geo/hours in schema'],
