@@ -271,6 +271,151 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'Philadelphia' },
   },
+
+  // ── Fort Lee ────────────────────────────────────────────────────────────
+  {
+    slug: 'fort-lee',
+    metaDescription:
+      'Medicare help in Fort Lee, NJ — right at the foot of the George Washington Bridge. What the bridge changes about your provider network, and what it does not.',
+    name: 'Fort Lee',
+    shortName: 'Fort Lee',
+    region: 'Fort Lee, NJ',
+    kind: 'city',
+    parentSlug: 'bergen-county',
+    inState: 'New Jersey',
+    headline: 'Fort Lee sits at the foot of the bridge. Your plan still follows New Jersey rules.',
+    intro:
+      'Fort Lee is the western anchorage of the George Washington Bridge — Manhattan is close enough to see, and for a lot of longtime residents, close enough that their doctors are there too. That closeness is exactly what makes the Medicare Advantage network question sharper here than almost anywhere else I work.',
+    sections: [
+      {
+        heading: 'A town built around the bridge',
+        paragraphs: [
+          'Fort Lee is dense and largely high-rise, and it faces the Washington Heights neighborhood of Manhattan directly across the Hudson. Plenty of people here have spent decades going back and forth — for work, for family, for a doctor they have seen since before the bridge traffic got bad.',
+          'None of that changes which county governs your Medicare Advantage and Part D plan menu. Fort Lee is Bergen County, New Jersey, and the plans available to you are the ones approved for a New Jersey service area — regardless of how close Manhattan feels.',
+        ],
+      },
+      {
+        heading: 'Close by geography, separate by network',
+        paragraphs: [
+          'Original Medicare does not care about the bridge — any provider who accepts Medicare assignment can see you, on either side of the river. Medicare Advantage is different, because those plans are built around a contracted network tied to a specific service area, and a network approved for New Jersey may or may not reach a specific practice in Manhattan.',
+          'I am not going to guess on a web page whether your specific doctor is in a specific network — that changes by plan and by year. What I can tell you is that in Fort Lee, more than in most towns I work in, this is the question that actually decides which plan makes sense.',
+        ],
+      },
+      {
+        heading: 'A community with deep, longstanding ties on both sides of the river',
+        paragraphs: [
+          'Fort Lee has one of the larger Korean-American communities in New Jersey, alongside residents with roots across dozens of other countries, and many families here have relationships — medical, professional, personal — that run straight across the bridge into New York. That pattern is exactly why the network check matters more here than the premium does.',
+        ],
+      },
+      {
+        heading: 'What to have written down before we talk',
+        paragraphs: [
+          'Three things, in this order: your ZIP code, every doctor and facility you want to keep — on either side of the bridge — and every prescription you take with its dose. That is what turns a general conversation into a specific one.',
+        ],
+      },
+    ],
+    questions: [
+      'I live in Fort Lee but my doctor is in Manhattan. How do I check if a plan covers that?',
+      'Does living this close to New York change which plans I can enroll in?',
+      'I am turning 65 and still have ties to a job or coverage across the river — what applies to me?',
+      'My family has used the same specialist in Washington Heights for years. What should I check first?',
+      'If I move a few blocks in either direction, does anything about my coverage change?',
+    ],
+    context: { Location: 'Fort Lee' },
+  },
+
+  // ── Edgewater ───────────────────────────────────────────────────────────
+  {
+    slug: 'edgewater',
+    metaDescription:
+      'Medicare help in Edgewater, NJ, from someone who grew up there. A narrow river town with a ferry to Manhattan — here is what that means for your plan.',
+    name: 'Edgewater',
+    shortName: 'Edgewater',
+    region: 'Edgewater, NJ',
+    kind: 'city',
+    parentSlug: 'bergen-county',
+    inState: 'New Jersey',
+    headline:
+      'Edgewater is where I am from. Here is what the ferry does and does not change about your Medicare.',
+    intro:
+      'Edgewater is a narrow strip of land along the Hudson River, with the Palisades cliff at its back and a ferry to Manhattan at its front. I grew up here, so I know firsthand how many people in this town have a foot on each side of the river — a ferry commute, a doctor in the city, family in both places.',
+    sections: [
+      {
+        heading: 'A river town, and a fast-growing one',
+        paragraphs: [
+          'Edgewater has grown quickly over the last decade, and that means the town is a genuine mix of people who have been here for decades and people who just arrived. Both groups tend to ask me the same first question, just from different directions: newer residents ask what changes when they move here; longtime residents ask what changes if their doctor is somewhere they have always gone, across the river.',
+          'The answer starts in the same place either way. Edgewater is Bergen County, New Jersey, and that is the service area your Medicare Advantage and Part D plan choices are built around.',
+        ],
+      },
+      {
+        heading: 'The ferry connects two states — and two different rulebooks',
+        paragraphs: [
+          'A lot of Edgewater life runs through the ferry landing, and a lot of that traffic is people heading into Manhattan for work, for family, or for a doctor they have seen for years. Original Medicare travels with you on that ferry without any issue — any provider who accepts Medicare assignment can see you, no matter which side of the river they are on.',
+          'Medicare Advantage plans work differently, because they are built around a contracted network approved for a specific service area. A plan approved for New Jersey may or may not include a specific practice across the water, and that is worth checking by provider name rather than assuming either way.',
+        ],
+      },
+      {
+        heading: 'What to have written down before we talk',
+        paragraphs: [
+          'Your ZIP code, every doctor and facility you want to keep — including anywhere you go across the river — and every prescription you take with its dose. That is the difference between a real answer and a guess.',
+        ],
+      },
+    ],
+    questions: [
+      'I take the ferry into the city for my doctor. Will a New Jersey plan cover that?',
+      'I just moved to Edgewater — does that change my Medicare options from where I lived before?',
+      'I have lived in Edgewater my whole life and I am about to turn 65 — where do I start?',
+      'Does anything about my coverage change if I move from Edgewater up the hill to Cliffside Park or Fort Lee?',
+      'My spouse and I split time between here and another state. How does that affect enrollment?',
+    ],
+    context: { Location: 'Edgewater' },
+  },
+
+  // ── Cliffside Park ──────────────────────────────────────────────────────
+  {
+    slug: 'cliffside-park',
+    metaDescription:
+      'Medicare help in Cliffside Park, NJ — one of the most densely populated towns in the state, with one of its largest 65-and-over populations. Plain-English guidance.',
+    name: 'Cliffside Park',
+    shortName: 'Cliffside Park',
+    region: 'Cliffside Park, NJ',
+    kind: 'city',
+    parentSlug: 'bergen-county',
+    inState: 'New Jersey',
+    headline:
+      'Cliffside Park packs more people into one square mile than almost anywhere else in New Jersey.',
+    intro:
+      'Cliffside Park is about one square mile and among the most densely populated municipalities in the state — and roughly one in five residents is 65 or older. In a town this size, Medicare questions tend to travel fast between neighbors, which is exactly why I would rather you get a straight answer than a secondhand one.',
+    sections: [
+      {
+        heading: 'A small town carrying a lot of people — and a lot of Medicare-age residents',
+        paragraphs: [
+          'Cliffside Park sits at roughly one square mile with over 25,000 residents, making it one of the most densely populated towns in New Jersey. About one in five residents is 65 or older, which is a meaningfully larger share than the county average.',
+          'That density does not change the underlying rule: Cliffside Park is Bergen County, and your Medicare Advantage and Part D plan choices are set at the county level, same as every other town covered on this site.',
+        ],
+      },
+      {
+        heading: 'A genuinely diverse community',
+        paragraphs: [
+          'Cliffside Park has a large foreign-born population and a majority of residents speak a language other than English at home. Medicare enrollment rules and deadlines apply exactly the same regardless of where you or your family are from — the part that varies is making sure the specific plan you are looking at actually covers the specific doctors and pharmacy you already use.',
+        ],
+      },
+      {
+        heading: 'What to have written down before we talk',
+        paragraphs: [
+          'Your ZIP code, every doctor and facility you want to keep, and every prescription you take with its dose. In a town this compact, it is tempting to assume everyone nearby has the same plan or the same answer — they usually do not, because those three things are different for every household.',
+        ],
+      },
+    ],
+    questions: [
+      'A neighbor told me about their Medicare plan — does the same one make sense for me?',
+      'I am turning 65 soon. Where do I start?',
+      'Does living in such a small, dense town change which plans are available to me?',
+      'My family and I speak a language other than English at home — does that change anything about enrollment?',
+      'If I move from Cliffside Park to a nearby Bergen County town, does my plan change?',
+    ],
+    context: { Location: 'Cliffside Park' },
+  },
 ];
 
 export function getLocationLanding(slug: string) {
