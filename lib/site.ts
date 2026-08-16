@@ -165,3 +165,26 @@ export const nav = [
   { href: '/videos', label: 'Videos' },
   { href: '/about', label: 'About' },
 ] as const;
+
+/**
+ * Header nav — a trimmed subset of `nav` above.
+ *
+ * Added Aug 14 2026: eight items in the header read as clutter, and two
+ * pairs read as duplicates even though they aren't (Checklist is a prep
+ * document; Enrollment Check is a "which window am I in" quiz — News is
+ * short-form updates; Articles is long-form guides). Rather than delete
+ * either page — both have real content and real SEO value — this trims
+ * what the HEADER shows while `nav` above (unchanged) still drives the
+ * footer, so every page keeps at least one real internal link pointing at
+ * it. An orphaned page (no internal links) is worse for SEO than a
+ * decluttered header is good for it.
+ *
+ * Dropped from the header, still live and still linked from the footer:
+ * Basics, Enrollment Check, News, Videos.
+ */
+export const headerNav = [
+  { href: '/about', label: 'About Me' },
+  { href: '/medicare-checklist', label: 'Checklist' },
+  { href: '/tools/medicare-iq', label: 'Medicare IQ' },
+  { href: '/blog', label: 'Articles' },
+] as const;

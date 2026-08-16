@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { advisor, compliance, site } from '@/lib/site';
+import { compliance, site } from '@/lib/site';
 
 /**
  * ══════════════════════════════════════════════════════════════════════════
@@ -55,16 +55,25 @@ export function DisclaimerFooter() {
     >
       <div className="container max-w-3xl py-10 sm:py-12">
         <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-white/85">
-          Important disclosures — plan availability and how {advisor.firstName} is paid
+          Important disclosures
         </h2>
 
         <div className="mt-5 space-y-4 text-sm leading-relaxed text-white/85">
-          {/* (1) Required TPMO scope-of-appointment style disclosure. */}
+          {/*
+            (1) Required TPMO disclaimer + non-government statement, merged
+            into one short paragraph. Simplified Aug 14 2026 to match the
+            length/structure of comparable FMO disclosures (Pinnacle
+            Financial, IFG) at Erekle's direction — both real examples fold
+            the non-government statement into the same sentence as the
+            "we don't offer every plan" language rather than giving it a
+            separate paragraph, and neither includes a name-specific
+            "[name] will confirm" sentence. Do not re-add the advisor's name
+            here without asking first.
+          */}
           <p>
-            We do not offer every plan available in your area. Which Medicare plans and
-            organizations are available to you depends on your county, the contract year,
-            and your own eligibility, and that set changes annually. {advisor.firstName}{' '}
-            will confirm what is actually available to you during a conversation. Please
+            {site.name} is not affiliated with or endorsed by the U.S. government or the
+            federal Medicare program. We do not offer every plan available in your area. Any
+            information we provide is limited to the plans we do offer in your area. Please
             contact{' '}
             <a
               href="tel:+18006334227"
@@ -72,7 +81,7 @@ export function DisclaimerFooter() {
             >
               {compliance.medicarePhone}
             </a>{' '}
-            (TTY {compliance.medicareTty}), 24 hours a day, 7 days a week, or consult{' '}
+            or{' '}
             <a
               href={compliance.medicareGovUrl}
               rel="noopener noreferrer"
@@ -82,22 +91,6 @@ export function DisclaimerFooter() {
               medicare.gov
             </a>{' '}
             to get information on all of your options.
-          </p>
-
-          {/* (2) Non-government entity statement. */}
-          <p>
-            {site.name} is not connected with or endorsed by the United States government or the
-            federal Medicare program. {advisor.name} is an independent Medicare advisor and may
-            receive compensation from the plans he represents.
-            Enrollment in a plan is never a condition of receiving information or guidance.
-          </p>
-
-          {/* (3) Educational-purpose framing. */}
-          <p>
-            The material on this site is for general educational purposes and is not medical,
-            legal or tax advice, nor a complete description of benefits. Plan availability,
-            costs, provider networks and covered drug lists vary by county and change every
-            contract year. Confirm the details that apply to you before making a decision.
           </p>
 
           <p className="text-white/75">

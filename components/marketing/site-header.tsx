@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, Phone, X } from 'lucide-react';
-import { advisor, contactHrefs, nav, site } from '@/lib/site';
+import { advisor, contactHrefs, headerNav, site } from '@/lib/site';
 import { trackContactIntent } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 
@@ -62,7 +62,7 @@ export function SiteHeader() {
 
         <nav aria-label="Main" className="hidden lg:block">
           <ul className="flex items-center gap-1">
-            {nav.map((item) => {
+            {headerNav.map((item) => {
               const active = pathname === item.href || pathname?.startsWith(`${item.href}/`);
               return (
                 <li key={item.href}>
@@ -89,8 +89,8 @@ export function SiteHeader() {
             onClick={() => trackContactIntent('call', 'header')}
             className="hidden h-touch items-center gap-2 rounded-xl bg-ember px-5 font-semibold text-white shadow-card transition-colors hover:bg-ember-deep focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30 sm:flex"
           >
-            <Phone className="h-5 w-5" aria-hidden="true" />
-            {advisor.phone}
+            <Phone className="h-5 w-5 shrink-0" aria-hidden="true" />
+            <span className="whitespace-nowrap">{advisor.phone}</span>
           </a>
 
           <button
@@ -114,7 +114,7 @@ export function SiteHeader() {
           className="animate-fade-up border-t border-line bg-cream lg:hidden"
         >
           <ul className="container flex flex-col py-2">
-            {nav.map((item) => (
+            {headerNav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
