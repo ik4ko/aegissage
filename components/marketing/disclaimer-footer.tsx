@@ -69,19 +69,21 @@ export function DisclaimerFooter() {
             separate paragraph, and neither includes a name-specific
             "[name] will confirm" sentence. Do not re-add the advisor's name
             here without asking first.
+
+            Aug 16 2026: the CMS standardized TPMO disclaimer wording is
+            restored verbatim — "those plans" (not "the plans"), and all
+            THREE referral routes CMS names: medicare.gov, 1-800-MEDICARE
+            (with TTY), and the caller's local State Health Insurance
+            Program (SHIP). An earlier pass shortened this to two routes and
+            dropped TTY while matching the FMO examples' brevity. The FMO
+            examples are not the compliance source; 42 CFR 422.2267(e)(41)
+            is. Do not trim this sentence for length again.
           */}
           <p>
             {site.name} is not affiliated with or endorsed by the U.S. government or the
             federal Medicare program. We do not offer every plan available in your area. Any
-            information we provide is limited to the plans we do offer in your area. Please
+            information we provide is limited to those plans we do offer in your area. Please
             contact{' '}
-            <a
-              href="tel:+18006334227"
-              className="font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
-            >
-              {compliance.medicarePhone}
-            </a>{' '}
-            or{' '}
             <a
               href={compliance.medicareGovUrl}
               rel="noopener noreferrer"
@@ -89,8 +91,16 @@ export function DisclaimerFooter() {
               className="font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
             >
               medicare.gov
+            </a>
+            ,{' '}
+            <a
+              href="tel:+18006334227"
+              className="font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
+            >
+              {compliance.medicarePhone}
             </a>{' '}
-            to get information on all of your options.
+            (TTY {compliance.medicareTty}), or your local State Health Insurance Program
+            (SHIP), to get information on all of your options.
           </p>
 
           <p className="text-white/75">
