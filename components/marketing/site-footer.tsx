@@ -2,11 +2,44 @@ import Link from 'next/link';
 import { Mail, MessageSquareText, Phone } from 'lucide-react';
 import { advisor, contactHrefs, nav, site } from '@/lib/site';
 import { planStates } from '@/lib/states';
-import { locationLandings } from '@/lib/locations';
+import { getLocationLanding, locationLandings } from '@/lib/locations';
 import { ShieldMark } from './site-header';
 import { SocialLinks } from './social-links';
 
+/**
+ * ── Why the footer does not list every state ──────────────────────────────
+ * This column used to render all 25 plan pages as two-letter codes. That was
+ * ~1,575 sitewide internal links (25 × every page) whose anchor text was
+ * "AL", "MI", "MN" — unreadable for an audience that skews 65+, and worthless
+ * as anchor text. /plans already links all 25 by full name, and every one is
+ * in the sitemap, so the pages keep a real internal link and the equity flows
+ * through one hub instead of being spread across meaningless anchors.
+ *
+ * Do not re-add the per-state grid here. If a state needs more prominence,
+ * that belongs on /plans, which is built for it.
+ *
+ * ── Why the towns nest ────────────────────────────────────────────────────
+ * lib/locations.ts models three levels (state → county → town). Rendering
+ * that flat put Fort Lee alongside New Jersey as if they were peers. Only the
+ * county level nests here, so the footer stays two deep and still reads as a
+ * hierarchy. Derived from `parentSlug`, so a new town appears correctly with
+ * no change to this file.
+ */
+function groupLocations() {
+  const isTown = (slug?: string) =>
+    slug ? getLocationLanding(slug)?.kind === 'county' : false;
+
+  const topLevel = locationLandings.filter((location) => !isTown(location.parentSlug));
+
+  return topLevel.map((location) => ({
+    location,
+    towns: locationLandings.filter((town) => town.parentSlug === location.slug && isTown(town.parentSlug)),
+  }));
+}
+
 export function SiteFooter() {
+  const areas = groupLocations();
+
   return (
     <footer className="border-t border-line bg-paper">
       <div className="container grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
@@ -82,7 +115,7 @@ export function SiteFooter() {
             Local areas
           </h2>
           <ul className="mt-4 space-y-1">
-            {locationLandings.map((location) => (
+            {areas.map(({ location, towns }) => (
               <li key={location.slug}>
                 <Link
                   href={`/medicare-${location.slug}`}
@@ -90,25 +123,31 @@ export function SiteFooter() {
                 >
                   {location.name}
                 </Link>
+
+                {towns.length > 0 ? (
+                  <ul className="border-l border-line pl-3">
+                    {towns.map((town) => (
+                      <li key={town.slug}>
+                        <Link
+                          href={`/medicare-${town.slug}`}
+                          className="flex min-h-touch items-center text-base text-ink-soft hover:text-navy"
+                        >
+                          {town.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </li>
             ))}
           </ul>
 
-          <h2 className="mt-8 text-sm font-semibold uppercase tracking-[0.12em] text-ink-faint">
-            Plan pages
-          </h2>
-          <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1.5">
-            {planStates.map((state) => (
-              <li key={state.code}>
-                <Link
-                  href={`/plans/${state.slug}`}
-                  className="inline-flex min-h-[2.25rem] items-center text-sm text-ink-soft underline decoration-line underline-offset-4 hover:text-navy hover:decoration-navy"
-                >
-                  {state.code}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <Link
+            href="/plans"
+            className="mt-5 inline-flex min-h-touch items-center text-base text-ink-soft underline decoration-line underline-offset-4 hover:text-navy hover:decoration-navy"
+          >
+            Plan pages for all {planStates.length} states →
+          </Link>
         </div>
       </div>
 
