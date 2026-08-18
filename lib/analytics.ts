@@ -98,6 +98,34 @@ export function trackQuizCompleted(answered: number) {
   emit('quiz_completed', { answered });
 }
 
+// ── Late enrollment penalty calculator ─────────────────────────────────────
+// This tool collects Medicare eligibility and enrollment MONTHS, which are a
+// date of birth in all but name — `assertNoPii` would rightly throw on them.
+// Nothing here carries a date, and nothing carries the dollar figure that was
+// shown to the visitor. Only the step reached, and coarse booleans about the
+// shape of the outcome, which is all that is needed to know whether the tool
+// works.
+
+export function trackPenaltyStarted() {
+  emit('penalty_started');
+}
+
+/** `field` is which screen was reached ('eligible', 'coverage'), never a value. */
+export function trackPenaltyStep(step: number, field: string) {
+  emit('penalty_step', { step, field });
+}
+
+export function trackPenaltyCalculated(outcome: {
+  /** Whether any penalty came out above zero. Not the amount. */
+  owes: boolean;
+  /** Whether the visitor answered "not sure" and got a worst case. */
+  uncertain: boolean;
+  /** Whether they have still not enrolled, so the gap is open. */
+  stillAccruing: boolean;
+}) {
+  emit('penalty_calculated', outcome);
+}
+
 export function trackTriageStarted() {
   emit('triage_started');
 }

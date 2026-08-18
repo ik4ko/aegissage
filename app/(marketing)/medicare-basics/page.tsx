@@ -112,6 +112,15 @@ export default function MedicareBasicsPage() {
           <Button asChild size="lg">
             <Link href="/tools/eligibility-check">Check your enrollment window →</Link>
           </Button>
+          {/*
+            The penalty calculator sits next to the window checker on purpose:
+            "which deadline is mine" and "what happens if I miss it" are the
+            same worry asked twice, and the guides above spend a lot of words
+            on penalties without ever putting a number on one.
+          */}
+          <Button asChild variant="outline" size="lg">
+            <Link href="/tools/penalty-calculator">What would a late penalty cost?</Link>
+          </Button>
           <Button asChild variant="outline" size="lg">
             <Link href="/tools/plan-comparison">Compare the two routes</Link>
           </Button>

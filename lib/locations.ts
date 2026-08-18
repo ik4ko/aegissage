@@ -38,6 +38,15 @@ import { site } from './site';
 export type LocationSection = {
   heading: string;
   paragraphs: string[];
+  /**
+   * Optional call-to-action rendered after the paragraphs.
+   *
+   * `paragraphs` is deliberately plain strings — no JSX, no markdown — so that
+   * this file stays copy and nothing else. That rules out an inline link, so a
+   * section that needs to point somewhere declares it here instead and the
+   * landing component renders it.
+   */
+  link?: { href: string; label: string };
 };
 
 export type LocationLanding = {
@@ -119,7 +128,12 @@ export const locationLandings: LocationLanding[] = [
         paragraphs: [
           'Three things, and they matter in this order: your ZIP code, every doctor and facility you want to keep, and every prescription you take with its dose. That list is what turns a vague conversation into a specific one.',
           'Bring it and we can look at what is actually available to you. Without it, anything either of us says about a specific plan is speculation.',
+          'One more thing worth knowing before the conversation rather than during it: whether a late enrollment penalty applies to you. It is the question people most often discover the answer to too late, and it takes a couple of minutes to check.',
         ],
+        link: {
+          href: '/tools/penalty-calculator',
+          label: 'Estimate a late enrollment penalty →',
+        },
       },
     ],
     questions: [

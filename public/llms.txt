@@ -36,6 +36,7 @@ Medicare Advantage and Part D plan availability is set by CMS at the county leve
 - [YouTube](https://www.youtube.com/@65MAPD): Medicare videos from Eric.
 - [Instagram](https://www.instagram.com/aegissage): AegisSage social updates.
 - [Enrollment window tool](https://www.aegissage.com/tools/eligibility-check): a free, no-email-required questionnaire.
+- [Late enrollment penalty calculator](https://www.aegissage.com/tools/penalty-calculator): estimates the Part B and Part D late enrollment penalties in dollars per month from the dates someone became eligible, held other coverage, and enrolled. Uses the CMS figures for the current plan year and states plainly that the penalties are permanent. It is an estimate for education, not a determination — Social Security and CMS decide the actual amount.
 - [Original Medicare vs. Medicare Advantage](https://www.aegissage.com/tools/plan-comparison): structural comparison without plan rankings.
 
 ## Advisor credentials

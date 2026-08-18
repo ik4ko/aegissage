@@ -91,6 +91,16 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
                 {section.paragraphs.map((paragraph) => (
                   <p key={paragraph.slice(0, 48)}>{paragraph}</p>
                 ))}
+                {section.link ? (
+                  <p className="not-prose">
+                    <Link
+                      href={section.link.href}
+                      className="inline-flex min-h-touch items-center font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep"
+                    >
+                      {section.link.label}
+                    </Link>
+                  </p>
+                ) : null}
               </section>
             ))}
 
