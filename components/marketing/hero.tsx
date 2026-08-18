@@ -100,14 +100,39 @@ export function Hero() {
   );
 }
 
+/*
+  ── Why this card no longer animates ────────────────────────────────────────
+  It used `animate-fade-up`, justified in the note above on the grounds that
+  the card "is not the LCP candidate, and the movement there costs nothing".
+  That stopped being true once the card led with a real portrait: fade-up
+  starts at opacity 0, and a transparent element is not a valid Largest
+  Contentful Paint candidate — the same defect that was fixed on the <h1>.
+
+  On a phone the card stacks directly under the headline and the portrait is
+  the biggest image above the fold, so it is a genuine LCP contender. Leaving
+  the animation on would have re-introduced the exact bug the file already
+  documents, and it also meant the face visibly popped in after hydration.
+*/
 function HeroCard() {
   return (
-    <aside className="animate-fade-up rounded-3xl border border-line bg-paper p-7 shadow-lift sm:p-8 lg:mt-0">
-      <div className="flex items-center gap-4">
-        <AdvisorAvatar size={72} priority />
+    <aside className="rounded-3xl border border-line bg-paper p-7 shadow-lift sm:p-8 lg:mt-0">
+      {/*
+        The portrait leads the card rather than sitting inline beside the
+        name. At 72px it read as a UI avatar; the whole pitch of this site is
+        that you reach a specific person rather than a call centre, so the
+        face is worth real space. Stacked rather than side-by-side because a
+        144px circle beside text squeezes the name into a narrow column.
+      */}
+      <div className="flex flex-col items-start gap-4">
+        <AdvisorAvatar
+          size={160}
+          responsive
+          className="h-32 w-32 ring-4 sm:h-40 sm:w-40"
+          priority
+        />
         <div>
-          <p className="font-display text-xl font-semibold text-ink">{advisor.name}</p>
-          <p className="text-sm text-ink-faint">
+          <p className="font-display text-2xl font-semibold text-ink">{advisor.name}</p>
+          <p className="text-base text-ink-faint">
             {advisor.credential}
           </p>
         </div>

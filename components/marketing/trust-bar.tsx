@@ -19,7 +19,7 @@ export function TrustBar({ className }: { className?: string }) {
       )}
     >
       <div className="flex items-center gap-3">
-        <AdvisorAvatar size={52} />
+        <AdvisorAvatar size={64} />
         <div className="leading-tight">
           <p className="font-semibold text-ink">{advisor.name}</p>
           <p className="text-sm text-ink-faint">{advisor.credential}</p>
@@ -58,10 +58,18 @@ export function TrustBar({ className }: { className?: string }) {
  * The advisor's photo, committed at public/images/advisor-headshot.png.
  *
  * ── Why this is one component and not an <img> in each place ──────────────
- * The same face appears in the hero card (72px), in every TrustBar (52px)
- * and therefore on every location landing page. Routing all of them through
- * here means the photo is swapped in one place and the rounded/ring/cover
- * treatment cannot drift between them.
+ * The same face appears as a portrait in the hero card and as a small avatar
+ * in every TrustBar, and therefore on every location landing page. Routing
+ * all of them through here means the photo is swapped in one place and the
+ * rounded/ring/cover treatment cannot drift between them.
+ *
+ * ── Fixed size vs responsive ──────────────────────────────────────────────
+ * `size` sets the box with an inline width/height, which is right for the
+ * compact TrustBar avatar. The hero portrait needs to be bigger on a laptop
+ * than on a phone, and an inline style would beat any Tailwind class trying
+ * to do that — so `responsive` drops the inline style and hands sizing to
+ * `className`. `size` is still required in that mode: it is the largest
+ * rendered width, and it is what the `sizes` hint is computed from.
  *
  * The source file is a large square PNG. That is deliberate and it is not
  * shipped as-is: next/image resizes to the requested `size` and re-encodes to
@@ -83,10 +91,12 @@ export function AdvisorAvatar({
   size = 64,
   className,
   priority,
+  responsive,
 }: {
   size?: number;
   className?: string;
   priority?: boolean;
+  responsive?: boolean;
 }) {
   const initials = advisor.name
     .split(' ')
@@ -102,7 +112,7 @@ export function AdvisorAvatar({
         'relative grid shrink-0 place-items-center overflow-hidden rounded-full bg-navy text-white ring-2 ring-white',
         className,
       )}
-      style={{ width: size, height: size }}
+      style={responsive ? undefined : { width: size, height: size }}
     >
       {photo ? (
         <Image
@@ -112,9 +122,9 @@ export function AdvisorAvatar({
           /*
            * `sizes` is the CSS width the circle occupies, NOT the pixel count
            * to fetch. The browser multiplies by device pixel ratio itself and
-           * then picks the next candidate up from the srcSet, so a 72px
-           * circle on a 2x screen already resolves to a 256px asset. Doubling
-           * this by hand double-counts DPR and just fetches a larger file.
+           * then picks the next candidate up from the srcSet, so a 64px circle
+           * on a 2x screen already resolves to a 256px asset. Doubling this by
+           * hand double-counts DPR and just fetches a larger file.
            */
           sizes={`${size}px`}
           priority={priority}
