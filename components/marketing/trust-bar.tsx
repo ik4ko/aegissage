@@ -55,10 +55,30 @@ export function TrustBar({ className }: { className?: string }) {
 }
 
 /**
- * The advisor's photo. Until a real headshot is dropped at
- * public/advisor.jpg, this renders initials in the brand palette rather than
- * a broken image or a stock photo.
+ * The advisor's photo, committed at public/images/advisor-headshot.png.
+ *
+ * ── Why this is one component and not an <img> in each place ──────────────
+ * The same face appears in the hero card (72px), in every TrustBar (52px)
+ * and therefore on every location landing page. Routing all of them through
+ * here means the photo is swapped in one place and the rounded/ring/cover
+ * treatment cannot drift between them.
+ *
+ * The source file is a large square PNG. That is deliberate and it is not
+ * shipped as-is: next/image resizes to the requested `size` and re-encodes to
+ * AVIF/WebP (configured in next.config.js), so the bytes on the wire are a
+ * fraction of the source. Keeping the original at full resolution means a
+ * larger crop later — an About-page portrait, say — needs no new asset.
+ *
+ * NEXT_PUBLIC_ADVISOR_PHOTO still overrides, so the photo can be pointed at a
+ * different file per environment without a code change. The committed file is
+ * the default rather than the fallback, so a fresh clone renders the real
+ * face instead of initials.
+ *
+ * If neither is available the component renders initials in the brand
+ * palette — never a broken image, and never a stock photo of someone else.
  */
+const ADVISOR_PHOTO = '/images/advisor-headshot.png';
+
 export function AdvisorAvatar({
   size = 64,
   className,
@@ -74,6 +94,8 @@ export function AdvisorAvatar({
     .slice(0, 2)
     .join('');
 
+  const photo = process.env.NEXT_PUBLIC_ADVISOR_PHOTO ?? ADVISOR_PHOTO;
+
   return (
     <span
       className={cn(
@@ -82,11 +104,18 @@ export function AdvisorAvatar({
       )}
       style={{ width: size, height: size }}
     >
-      {process.env.NEXT_PUBLIC_ADVISOR_PHOTO ? (
+      {photo ? (
         <Image
-          src={process.env.NEXT_PUBLIC_ADVISOR_PHOTO}
+          src={photo}
           alt={`${advisor.name}, ${advisor.credential}`}
           fill
+          /*
+           * `sizes` is the CSS width the circle occupies, NOT the pixel count
+           * to fetch. The browser multiplies by device pixel ratio itself and
+           * then picks the next candidate up from the srcSet, so a 72px
+           * circle on a 2x screen already resolves to a 256px asset. Doubling
+           * this by hand double-counts DPR and just fetches a larger file.
+           */
           sizes={`${size}px`}
           priority={priority}
           className="object-cover"
