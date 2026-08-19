@@ -5,6 +5,7 @@ import {
   Brain,
   Calculator,
   CalendarClock,
+  CircleDollarSign,
   ClipboardList,
   Compass,
   MessageCircleQuestion,
@@ -87,6 +88,13 @@ const TOOLS = [
     body: 'Part B and Part D late enrollment penalties, estimated in real dollars from your dates. No email required.',
   },
   {
+    href: '/tools/irmaa-calculator',
+    icon: CircleDollarSign,
+    kicker: '2 minutes',
+    title: 'Does your income add a surcharge?',
+    body: 'IRMAA raises Part B and Part D premiums above a certain income, based on your tax return from two years ago. See where you land and how close the next threshold is.',
+  },
+  {
     href: '/medicare-basics',
     icon: MessageCircleQuestion,
     kicker: 'Start here',
@@ -145,9 +153,17 @@ export default function HomePage() {
             />
           </Reveal>
 
-          <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
+          {/*
+            A plain four-column grid, deliberately. Earlier versions used a
+            six-column grid with two-column spans and a hand-placed card to
+            centre whatever orphan the current tool count produced — which
+            had to be re-derived every time a tool was added, and was wrong
+            twice. This hub keeps growing, so the layout should not care how
+            many cards it holds. A short last row is fine.
+          */}
+          <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {TOOLS.map(({ href, icon: Icon, kicker, title, body }) => (
-              <RevealItem key={href} className="lg:col-span-2">
+              <RevealItem key={href}>
                 <Link
                   href={href}
                   className="group flex h-full flex-col rounded-2xl border border-line bg-cream p-7 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lift focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"

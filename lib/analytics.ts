@@ -126,6 +126,31 @@ export function trackPenaltyCalculated(outcome: {
   emit('penalty_calculated', outcome);
 }
 
+// ── IRMAA calculator ───────────────────────────────────────────────────────
+// This tool takes an income figure, which is the most sensitive input any
+// tool on the site collects. It never leaves the browser and it never reaches
+// analytics — not the amount, and not the bracket it landed in, because a
+// bracket IS an income band and naming one is naming a person's income to
+// within a few thousand dollars.
+//
+// What is sent is whether any surcharge applied at all, plus the filing
+// status, which is the pair that answers "is this tool working and who is
+// using it" without describing anyone's finances. Same posture as the penalty
+// calculator, which sends `owes` rather than the dollar figure.
+
+export function trackIrmaaStarted() {
+  emit('irmaa_started');
+}
+
+export function trackIrmaaCalculated(outcome: {
+  /** Whether a surcharge applied. Never the tier, never the amount. */
+  surcharge: boolean;
+  /** Filing status enum — 'single' | 'joint' | 'separate'. */
+  filing: string;
+}) {
+  emit('irmaa_calculated', outcome);
+}
+
 export function trackTriageStarted() {
   emit('triage_started');
 }
