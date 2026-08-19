@@ -421,6 +421,11 @@ export function IrmaaCalculator() {
           means the surcharge falls away on its own once a normal year works through the same
           two-year lag.
         </p>
+        <p className="mt-3 text-base leading-relaxed text-navy-deep/80">
+          One exception worth knowing: if your {IRMAA_MAGI_YEAR} return has not been processed
+          when premiums are set, Social Security falls back to the year before it. If that applies
+          to you, the figure above is being compared against the wrong return.
+        </p>
       </div>
 
       {/* ── SSA-44 ───────────────────────────────────────────────────────── */}
@@ -431,11 +436,12 @@ export function IrmaaCalculator() {
         </p>
         <p className="mt-3 text-base leading-relaxed text-ink-soft">
           Social Security will reconsider the surcharge when a specific life-changing event caused
-          the drop — retirement or reduced work hours, the death of a spouse, marriage or divorce,
-          loss of a pension, or loss of income-producing property. The form is{' '}
+          the drop. It recognises eight: the death of a spouse, marriage, divorce or annulment,
+          work stoppage, work reduction, loss of income-producing property, loss of an employer
+          pension, and a settlement payment from a current or former employer. The form is{' '}
           <strong className="font-semibold text-ink">SSA-44</strong>, &ldquo;Medicare
-          Income-Related Monthly Adjustment Amount — Life-Changing Event&rdquo;, and it is filed
-          with Social Security along with evidence of the change.
+          Income-Related Monthly Adjustment Amount &ndash; Life-Changing Event&rdquo;, and it is
+          filed with Social Security along with evidence of the change.
         </p>
         <p className="mt-3 text-base leading-relaxed text-ink-soft">
           Worth knowing that a merely lower income does not qualify on its own — the reduction has
@@ -466,7 +472,8 @@ export function IrmaaCalculator() {
           modified adjusted gross income that adds back tax-exempt interest and certain other
           items. Figures use the {IRMAA_YEAR} brackets published by {IRMAA_SOURCE_NOTE}, and they
           change annually. If you are billed a surcharge you did not expect, Social Security sends
-          a notice explaining which return it used — start there rather than here.
+          a notice explaining which return it used — start there rather than here. Confirm your
+          own position with Social Security before acting on anything above.
         </p>
       </div>
 

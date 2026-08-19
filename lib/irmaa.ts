@@ -14,11 +14,26 @@
  * that lands:
  *
  *   1. replace all three tier tables below,
- *   2. update IRMAA_YEAR, IRMAA_MAGI_YEAR and IRMAA_SOURCE_NOTE,
+ *   2. update IRMAA_YEAR and IRMAA_SOURCE_NOTE. IRMAA_MAGI_YEAR is derived
+ *      and must NOT be edited by hand,
  *   3. re-read the boundary note below — the comparison operators are not
- *      uniform across rows and CMS has not always kept them consistent,
- *   4. re-check PART_B_STANDARD_PREMIUM in lib/medicare-costs.ts, which the
- *      Part B total is built from.
+ *      uniform across rows, so transcribing the published table row by row
+ *      without checking each "less than" against each "less than or equal
+ *      to" WILL reintroduce a real bug. It has happened once already,
+ *   4. update lib/medicare-costs.ts in the same edit. The Part B totals here
+ *      are built from PART_B_STANDARD_PREMIUM there, and the two files
+ *      publish together,
+ *   5. run `npm run test:math`. Every published figure is asserted against
+ *      the CMS/SSA value, so the suite fails until the tables are correct —
+ *      including the reconciliation of each surcharge against the Part B
+ *      TOTAL that SSA prints, which is the check that catches a mistyped
+ *      surcharge.
+ *
+ * ── How to transcribe the new table safely ────────────────────────────────
+ * SSA and CMS publish Part B TOTALS. This file stores SURCHARGES. Subtract
+ * the new standard premium from each published total rather than copying a
+ * surcharge from a secondary source, and let the test suite confirm the
+ * subtraction by adding it back.
  *
  * Nothing else in the app hardcodes these numbers. The calculator, its copy
  * and its disclaimer all read from here, so a single edit moves the whole

@@ -15,9 +15,12 @@ import {
   COSTS_YEAR,
   PART_B_STANDARD_PREMIUM,
   PART_D_BASE_PREMIUM,
+  PART_D_TRIGGER_DAYS,
+  daysInMonth,
   estimatePartBPenalty,
   estimatePartDPenalty,
   formatUsd,
+  type CalendarDate,
   type CoverageAnswer,
   type PenaltyEstimate,
   type PenaltyInput,
@@ -78,6 +81,17 @@ type Answers = {
   partDNotYet: boolean;
   coverage?: CoverageAnswer;
   coverageEnded: Partial<YearMonth>;
+  /**
+   * Day of the month coverage ended. Optional on purpose.
+   *
+   * Part D's penalty triggers at 63 continuous days, so this one date has to
+   * be known to the day or the answer can be wrong by a whole penalty. But
+   * the question asks for "the last month it was active", and the honest
+   * reading of that answer is the last day of that month — so leaving this
+   * unset is a correct answer rather than a missing one, and the calculator
+   * never blocks on it.
+   */
+  coverageEndedDay?: number;
 };
 
 const EMPTY: Answers = {
@@ -368,11 +382,35 @@ export function PenaltyCalculator() {
                         <MonthYear
                           legend="Month and year coverage ended"
                           value={answers.coverageEnded}
-                          onChange={(coverageEnded) => update({ coverageEnded })}
+                          // Changing the month drops any day already chosen —
+                          // a "31" left over from March is not an answer about
+                          // February, and silently clamping it would be a
+                          // date the visitor never gave.
+                          onChange={(coverageEnded) =>
+                            update({ coverageEnded, coverageEndedDay: undefined })
+                          }
                           yearFrom={1990}
                           yearTo={COSTS_YEAR + 1}
                           compact
                         />
+
+                        {/*
+                          The drug-plan penalty turns on a 63-day count, not a
+                          number of months, so this one date is the only place
+                          on the form where the day can change the answer.
+                          Offered rather than demanded: most people remember
+                          "it ended in March" and not the date, and the last
+                          day of the month is what "the last month it was
+                          active" actually means.
+                        */}
+                        {isComplete(answers.coverageEnded) ? (
+                          <DayOfMonth
+                            year={answers.coverageEnded.year}
+                            month={answers.coverageEnded.month}
+                            value={answers.coverageEndedDay}
+                            onChange={(coverageEndedDay) => update({ coverageEndedDay })}
+                          />
+                        ) : null}
                       </div>
                     ) : null}
                   </div>
@@ -507,6 +545,56 @@ function MonthYear({
   );
 }
 
+/**
+ * Optional day-of-month select.
+ *
+ * Defaults to "the last day of that month", which is both the most common
+ * truth and the literal meaning of the question above it. The option list is
+ * built from the chosen month so February never offers a 30th, and the
+ * selection is cleared by the parent if the month changes underneath it.
+ */
+function DayOfMonth({
+  year,
+  month,
+  value,
+  onChange,
+}: {
+  year: number;
+  month: number;
+  value: number | undefined;
+  onChange: (day: number | undefined) => void;
+}) {
+  const last = daysInMonth(year, month);
+  const days = useMemo(() => Array.from({ length: last }, (_, i) => i + 1), [last]);
+
+  return (
+    <label className="mt-4 block">
+      <span className="text-base font-semibold text-ink-soft">
+        Do you know the exact day? <span className="font-normal text-ink-faint">(optional)</span>
+      </span>
+      <select
+        className="mt-2 min-h-touch w-full rounded-xl border-2 border-line bg-paper px-4 text-lg text-ink transition-colors hover:border-navy/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+        value={value ?? ''}
+        onChange={(e) => onChange(e.target.value ? Number(e.target.value) : undefined)}
+      >
+        <option value="">
+          It ran to the end of the month ({MONTHS[month - 1]} {last})
+        </option>
+        {days.map((day) => (
+          <option key={day} value={day}>
+            {MONTHS[month - 1]} {day}
+          </option>
+        ))}
+      </select>
+      <span className="mt-2 block text-sm leading-relaxed text-ink-faint">
+        Only the drug-plan penalty uses this. Its rules count 63 days, so an
+        exact date gives a sharper answer — but the end of the month is the
+        right answer if that is when it ran out.
+      </span>
+    </label>
+  );
+}
+
 function EnrollmentBlock({
   title,
   subtitle,
@@ -572,12 +660,45 @@ function buildInput(answers: Answers, which: 'partB' | 'partD'): PenaltyInput | 
   const enrolled = answers[which];
   if (!notYet && !isComplete(enrolled)) return null;
 
+  /*
+    An unanswered day resolves to the last of the month — the literal reading
+    of "the last month it was active", not a guess. A day left over from a
+    previously chosen month is clamped rather than carried, so switching from
+    March 31 to February cannot produce a February 31st.
+  */
+  const coverageEnded = isComplete(answers.coverageEnded)
+    ? {
+        ...answers.coverageEnded,
+        day: Math.min(
+          answers.coverageEndedDay ??
+            daysInMonth(answers.coverageEnded.year, answers.coverageEnded.month),
+          daysInMonth(answers.coverageEnded.year, answers.coverageEnded.month),
+        ),
+      }
+    : undefined;
+
   return {
     eligible: eligibilityFrom(answers.born),
     coverage: answers.coverage,
-    coverageEnded: isComplete(answers.coverageEnded) ? answers.coverageEnded : undefined,
+    coverageEnded,
     enrolled: notYet ? null : (enrolled as YearMonth),
   };
+}
+
+/**
+ * The coverage-end date as the calculation actually used it.
+ *
+ * Spells out the resolved day even when the visitor did not pick one, because
+ * for Part D that day is what decided whether a penalty applied at all. A
+ * read-back that hid it would be hiding the input that moved the answer.
+ */
+function describeCoverageEnd(answers: Answers): string {
+  if (!isComplete(answers.coverageEnded)) return 'not given';
+  const { year, month } = answers.coverageEnded;
+  const last = daysInMonth(year, month);
+  const day = Math.min(answers.coverageEndedDay ?? last, last);
+  const assumed = answers.coverageEndedDay === undefined ? ' (end of month)' : '';
+  return `${MONTHS[month - 1]} ${day}, ${year}${assumed}`;
 }
 
 function describe(value: Partial<YearMonth>, notYet: boolean): string {
@@ -604,9 +725,12 @@ function PenaltyResult({
     matters because for someone who has not enrolled, "today" is the open end
     of the gap being measured.
   */
-  const [today] = useState<YearMonth>(() => {
+  const [today] = useState<CalendarDate>(() => {
     const now = new Date();
-    return { year: now.getFullYear(), month: now.getMonth() + 1 };
+    // The day matters now: Part D measures its 63-day trigger against it for
+    // anyone who has not enrolled yet, so a month-precision "today" would
+    // move their answer by up to a month.
+    return { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
   });
 
   const inputB = buildInput(answers, 'partB');
@@ -636,6 +760,9 @@ function PenaltyResult({
     'Part B enrolled': describe(answers.partB, answers.partBNotYet),
     'Part D enrolled': describe(answers.partD, answers.partDNotYet),
     'Coverage after 65': coverageLabel,
+    ...(answers.coverage === 'ended'
+      ? { 'Coverage ended': describeCoverageEnd(answers) }
+      : {}),
     'Part B estimate': partB ? `${formatUsd(partB.monthlyPenalty)}/mo` : 'not calculated',
     'Part D estimate': partD ? `${formatUsd(partD.monthlyPenalty)}/mo` : 'not calculated',
   };
@@ -693,6 +820,9 @@ function PenaltyResult({
         <dl className="mt-3 grid gap-x-6 gap-y-2 text-base sm:grid-cols-2">
           <Row label="You turned 65" value={context['Turned 65']} />
           <Row label="Coverage after 65" value={coverageLabel} />
+          {answers.coverage === 'ended' ? (
+            <Row label="Coverage ended" value={describeCoverageEnd(answers)} />
+          ) : null}
           <Row label="Part B signed up" value={context['Part B enrolled']} />
           <Row label="Part D signed up" value={context['Part D enrolled']} />
         </dl>
@@ -718,10 +848,10 @@ function PenaltyResult({
           title="Part D"
           subtitle="Prescription drug coverage"
           estimate={partD}
-          basis={`1% of the ${formatUsd(PART_D_BASE_PREMIUM)} base premium for each uncovered month`}
+          basis={`1% of the ${formatUsd(PART_D_BASE_PREMIUM)} base premium for each full uncovered month, once a gap reaches ${PART_D_TRIGGER_DAYS} days`}
           detail={
             partD && partD.uncoveredMonths > 0
-              ? `${partD.uncoveredMonths} uncovered months counted`
+              ? `${partD.uncoveredMonths} full uncovered ${partD.uncoveredMonths === 1 ? 'month' : 'months'} counted`
               : undefined
           }
         />

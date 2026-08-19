@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "validate": "node scripts/validate-site.mjs",
-    "test:digest": "node scripts/test-digest.mjs"
+    "test:digest": "node scripts/test-digest.mjs",
+    "test:math": "node scripts/test-medicare-math.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
