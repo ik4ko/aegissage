@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import {
   ArrowRight,
   Brain,
+  Calculator,
   CalendarClock,
   ClipboardList,
   Compass,
@@ -22,7 +23,6 @@ import { getArticles, getLatestNews } from '@/lib/content';
 import { locationLandings } from '@/lib/locations';
 import { licensedStates } from '@/lib/states';
 import { advisor, site } from '@/lib/site';
-import { cn } from '@/lib/utils';
 
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent(site.tagline)}` +
@@ -80,6 +80,13 @@ const TOOLS = [
     body: 'The structural differences laid out honestly — including the trade-off nobody explains until it is too late to change your mind.',
   },
   {
+    href: '/tools/penalty-calculator',
+    icon: Calculator,
+    kicker: '3 minutes',
+    title: 'What would a late penalty actually cost you?',
+    body: 'Part B and Part D late enrollment penalties, estimated in real dollars from your dates. No email required.',
+  },
+  {
     href: '/medicare-basics',
     icon: MessageCircleQuestion,
     kicker: 'Start here',
@@ -134,25 +141,13 @@ export default function HomePage() {
             <SectionHeading
               kicker="Self-serve tools"
               title="Get answers before you call"
-              body="Four free tools I use with clients, plus the guides I send people before we talk."
+              body="The free tools I use with clients, plus the guides I send people before we talk."
             />
           </Reveal>
 
-          {/*
-            Five cards on a four-column grid left a single orphan on the second
-            row. A six-column grid with each card spanning two gives 3 + 2, and
-            starting the fourth card at column 2 centres the pair underneath.
-            Below lg it is a plain two-column grid, so nothing to balance.
-          */}
           <RevealGroup className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
-            {TOOLS.map(({ href, icon: Icon, kicker, title, body }, index) => (
-              <RevealItem
-                key={href}
-                className={cn(
-                  'lg:col-span-2',
-                  index === 3 && 'lg:col-start-2',
-                )}
-              >
+            {TOOLS.map(({ href, icon: Icon, kicker, title, body }) => (
+              <RevealItem key={href} className="lg:col-span-2">
                 <Link
                   href={href}
                   className="group flex h-full flex-col rounded-2xl border border-line bg-cream p-7 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lift focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
@@ -297,7 +292,7 @@ export default function HomePage() {
         <div className="container py-14 sm:py-16">
           <Reveal className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
-              More from Eric
+              More from Erekle
             </p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-[-0.03em] text-ink sm:text-4xl">
               Short Medicare explanations, wherever you watch.
