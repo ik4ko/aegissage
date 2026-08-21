@@ -158,6 +158,8 @@ export type PenaltyInput = {
   coverageEnded?: CalendarDate;
   /** When they enrolled. `null` means not yet — the gap runs to `today`. */
   enrolled: YearMonth | null;
+  /** Extra Help eliminates a Part D late-enrollment penalty when applicable. */
+  extraHelp?: boolean;
 };
 
 export type PenaltyEstimate = {
@@ -312,6 +314,18 @@ export function estimatePartBPenalty(input: PenaltyInput, today: YearMonth): Pen
   };
 }
 
+/** The displayed standard Part B premium after adding its rounded penalty. */
+export function partBMonthlyPremium(monthlyPenalty: number): number {
+  return roundToDime(PART_B_STANDARD_PREMIUM + Math.max(0, monthlyPenalty));
+}
+
+/** Part D penalty dollars for a known count of full uncovered months. */
+export function partDPenaltyForFullMonths(fullMonths: number): number {
+  return roundToDime(
+    Math.max(0, Math.floor(fullMonths)) * PART_D_PENALTY_RATE_PER_MONTH * PART_D_BASE_PREMIUM,
+  );
+}
+
 /**
  * Part D late enrollment penalty.
  *
@@ -328,7 +342,7 @@ export function estimatePartBPenalty(input: PenaltyInput, today: YearMonth): Pen
  * shown here.
  */
 export function estimatePartDPenalty(input: PenaltyInput, today: CalendarDate): PenaltyEstimate {
-  if (input.coverage === 'throughout') {
+  if (input.coverage === 'throughout' || input.extraHelp === true) {
     return {
       uncoveredMonths: 0,
       fullYears: 0,
@@ -348,9 +362,7 @@ export function estimatePartDPenalty(input: PenaltyInput, today: CalendarDate): 
   const months =
     gapDays >= PART_D_TRIGGER_DAYS ? fullMonthsBetween(gapStart, gapEnd) : 0;
 
-  const monthlyPenalty = roundToDime(
-    months * PART_D_PENALTY_RATE_PER_MONTH * PART_D_BASE_PREMIUM,
-  );
+  const monthlyPenalty = partDPenaltyForFullMonths(months);
 
   return {
     uncoveredMonths: months,

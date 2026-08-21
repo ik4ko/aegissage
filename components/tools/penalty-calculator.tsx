@@ -19,6 +19,7 @@ import {
   daysInMonth,
   estimatePartBPenalty,
   estimatePartDPenalty,
+  partBMonthlyPremium,
   formatUsd,
   type CalendarDate,
   type CoverageAnswer,
@@ -837,6 +838,7 @@ function PenaltyResult({
           title="Part B"
           subtitle="Doctor and hospital coverage"
           estimate={partB}
+          totalMonthlyPremium={partB ? partBMonthlyPremium(partB.monthlyPenalty) : undefined}
           basis={`10% of the ${formatUsd(PART_B_STANDARD_PREMIUM)} standard premium for each full 12 months`}
           detail={
             partB && partB.uncoveredMonths > 0
@@ -915,6 +917,12 @@ function PenaltyResult({
           {COSTS_SOURCE_NOTE}, and they change annually. Confirm your own position with Social
           Security or at medicare.gov before acting on it.
         </p>
+        <p className="mt-3 text-base leading-relaxed text-ember-deep">
+          This calculator cannot determine whether you qualify for a Special Enrollment Period,
+          Medicare Savings Program, Extra Help, or creditable coverage. Extra Help generally
+          means no Part D late-enrollment penalty; IRMAA is separate and can change what you pay.
+          Confirm those factors with Social Security, Medicare, or a benefits counselor.
+        </p>
       </div>
 
       <div className="mt-8 rounded-3xl border border-navy-deep/20 bg-navy-deep p-6 text-white shadow-lift sm:p-8">
@@ -963,12 +971,14 @@ function PenaltyCard({
   title,
   subtitle,
   estimate,
+  totalMonthlyPremium,
   basis,
   detail,
 }: {
   title: string;
   subtitle: string;
   estimate: PenaltyEstimate | null;
+  totalMonthlyPremium?: number;
   basis: string;
   detail?: string;
 }) {
@@ -993,6 +1003,12 @@ function PenaltyCard({
         {formatUsd(amount)}
         <span className="text-lg font-semibold"> /month</span>
       </p>
+
+      {totalMonthlyPremium !== undefined ? (
+        <p className="mt-2 text-sm font-semibold text-ink-soft">
+          Estimated standard Part B premium including penalty: {formatUsd(totalMonthlyPremium)}/month
+        </p>
+      ) : null}
 
       {detail ? <p className="mt-2 text-sm text-ink-soft">{detail}</p> : null}
       <p className="mt-3 text-sm leading-relaxed text-ink-faint">{basis}</p>

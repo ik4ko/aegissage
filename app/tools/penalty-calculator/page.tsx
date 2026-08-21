@@ -50,6 +50,28 @@ export default function PenaltyCalculatorPage() {
             and you will see the real monthly figure — or, just as often, that you do not owe
             anything at all. Nothing is sent anywhere unless you decide to send it.
           </p>
+          <p className="mt-4 rounded-xl border-2 border-ember/30 bg-ember-soft p-4 text-base font-semibold leading-relaxed text-ember-deep">
+            This tool gives a plain-English estimate using the {COSTS_YEAR} CMS figures. It is
+            not an official Medicare determination, bill, or decision about your penalty,
+            eligibility, or enrollment. For your specific situation, contact Medicare or a
+            licensed Medicare broker.
+          </p>
+          <p className="mt-4 text-sm leading-relaxed text-ink-soft">
+            The estimate cannot conclusively determine whether a Special Enrollment Period,
+            Medicare Savings Program, employer coverage, creditable drug coverage, or Extra
+            Help applies. Extra Help generally means no Part D late-enrollment penalty, while
+            IRMAA is a separate factor that may change what you pay.
+          </p>
+          <p className="mt-4 text-sm leading-relaxed text-ink-soft">
+            Official {COSTS_YEAR} examples: 14 full Part D uncovered months estimates $5.50 per
+            month; 24 full Part B delayed months estimates a 20% penalty and a $243.50 standard
+            monthly premium including the penalty.
+          </p>
+          <p className="mt-4 text-sm leading-relaxed text-ink-soft">
+            For Part D, the penalty trigger is generally 63 or more consecutive days without
+            Part D or other creditable drug coverage; this calculator does not subtract those
+            first 63 days from the full uncovered-month estimate.
+          </p>
         </div>
 
         <div className="mt-12">

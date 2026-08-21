@@ -83,6 +83,8 @@ const {
   fullMonthsBetween,
   estimatePartBPenalty,
   estimatePartDPenalty,
+  partBMonthlyPremium,
+  partDPenaltyForFullMonths,
 } = await import('../lib/medicare-costs.ts');
 
 const {
@@ -126,6 +128,12 @@ check('Part D penalty rate per month', PART_D_PENALTY_RATE_PER_MONTH, 0.01);
 check('Part D trigger in days (42 CFR 423.46(a))', PART_D_TRIGGER_DAYS, 63);
 check('IRMAA lookback is exactly two years', IRMAA_YEAR - IRMAA_MAGI_YEAR, 2);
 check('Both modules describe the same plan year', COSTS_YEAR, IRMAA_YEAR);
+
+section('Required 2026 Part D full-month outputs');
+for (const [months, expected] of [[0, 0], [1, 0.4], [2, 0.8], [14, 5.5], [29, 11.3]]) {
+  check(`${months} full uncovered months`, partDPenaltyForFullMonths(months), expected);
+}
+check('official 14-month example is $5.50', partDPenaltyForFullMonths(14), 5.5);
 
 // ═════════════════════════════════════════════════════════════════════════
 //  PART 2 — Calendar helpers
@@ -189,6 +197,8 @@ check('13 months late → still 1 full year', partB({ enrolled: { year: 2021, mo
 check('23 months late → still 1 full year', partB({ enrolled: { year: 2022, month: 3 } }).fullYears, 1);
 check('24 months late → 2 full years', partB({ enrolled: { year: 2022, month: 4 } }).fullYears, 2);
 check('24 months late → 20% of the premium', partB({ enrolled: { year: 2022, month: 4 } }).monthlyPenalty, 40.6);
+check('24 months late → $243.50 total Part B premium', partBMonthlyPremium(partB({ enrolled: { year: 2022, month: 4 } }).monthlyPenalty), 243.5);
+check('36 months late → 30% penalty', partB({ enrolled: { year: 2023, month: 4 } }).monthlyPenalty, 60.9);
 check('yearly is twelve times monthly', partB({ enrolled: { year: 2022, month: 4 } }).yearlyPenalty, 487.2);
 
 section('Part B — protective coverage');
@@ -277,6 +287,7 @@ check('12 months late', partD({ enrolled: { year: 2021, month: 5 } }).uncoveredM
 check('12 months late → 12% of the base premium', partD({ enrolled: { year: 2021, month: 5 } }).monthlyPenalty, 4.7);
 check('yearly is twelve times monthly', partD({ enrolled: { year: 2021, month: 5 } }).yearlyPenalty, 56.4);
 check('coverage throughout → no penalty', partD({ coverage: 'throughout' }).monthlyPenalty, 0);
+check('Extra Help → no Part D penalty', partD({ extraHelp: true }).monthlyPenalty, 0);
 check('coverage throughout → not still accruing', partD({ coverage: 'throughout' }).stillAccruing, false);
 
 // ═════════════════════════════════════════════════════════════════════════
