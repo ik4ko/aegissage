@@ -147,9 +147,24 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: GENERIC_ERROR }, { status: 500 });
       }
 
-      console.warn(
-        '[contact] lead_ops migration not applied — storing without granular ' +
-          'consent columns. Apply supabase/migrations/20260727000000_lead_ops.sql.',
+      /*
+        DEGRADED WRITE. This is an error, not a warning.
+
+        Two real submissions were stored through this branch in July 2026 and
+        nobody found out for three weeks, because this logged at warn level
+        and the audit table that would have recorded the damage was skipped by
+        the same condition that caused it.
+
+        `LEAD_OPS_DEGRADED` is the marker to alert on. /api/internal/lead-health
+        also probes the schema directly, so this state is visible without
+        anyone reading logs at all.
+      */
+      console.error(
+        '[contact] LEAD_OPS_DEGRADED — lead_ops migration not applied. Storing ' +
+          'without granular consent columns. Consent itself is still recorded and ' +
+          'SMS still fails closed, but CRM handoff and delivery auditing are ' +
+          'unavailable until supabase/migrations/20260727000000_lead_ops.sql is ' +
+          'applied.',
       );
       leadOpsAvailable = false;
 
@@ -182,41 +197,84 @@ export async function POST(req: Request) {
   const alerts = await sendContactAlert(payload);
   const emailAlert = alerts.find((r) => r.channel === 'email');
 
-  // Everything below writes to columns and tables the lead_ops migration
-  // creates. Skipped entirely when it has not been applied, so the core
-  // submission path never depends on it.
-  if (leadOpsAvailable) {
-  await supabase
-    .from('contacts')
-    .update({
-      notify_status: emailAlert?.status ?? 'failed',
-      notified_at: emailAlert?.status === 'sent' ? new Date().toISOString() : null,
-    })
-    .eq('id', contactId);
+  /*
+    ── Why none of this is gated any more ──────────────────────────────────
 
-  // One audit row per channel attempted. Both are audience='internal': these
-  // are alerts to the advisor, not messages to the person who submitted.
-  await supabase.from('notification_deliveries').insert(
-    alerts.map((result) => ({
-      contact_id: contactId,
-      channel: result.channel,
-      audience: 'internal' as const,
-      purpose: 'contact-alert',
-      status: result.status === 'sent' ? 'sent' : result.status === 'failed' ? 'failed' : 'skipped',
-      provider: result.channel === 'email' ? 'resend' : 'twilio',
-      provider_message_id: result.providerMessageId ?? null,
-      last_error: result.detail ?? null,
-      consent_basis: null, // Internal audience — no consumer consent applies.
-      sent_at: result.status === 'sent' ? new Date().toISOString() : null,
-      failed_at: result.status === 'failed' ? new Date().toISOString() : null,
-    })),
-  );
+    All of the writes below used to sit inside `if (leadOpsAvailable)`. That
+    put the DELIVERY AUDIT behind the same condition that breaks delivery —
+    so when the lead_ops migration was missing, the system lost both the
+    ability to hand a lead off AND the ability to record that it had failed
+    to. Two leads sat undelivered and unreported for three weeks in July 2026
+    because of exactly that.
+
+    Each step now attempts independently and reports its own outcome. A
+    missing table produces a loud, marked log line instead of silence. None
+    of them can fail the request: the submission is already durably stored,
+    and a broken CRM must never become an error page for someone asking for
+    help with their Medicare.
+  */
+  function reportDegraded(step: string, detail: string | undefined): void {
+    /*
+      `cause` separates the two very different situations that land here.
+
+      "migration-missing" is already explained by the LEAD_OPS_DEGRADED line
+      logged at insert time — expected fallout, one fix.
+
+      "unexpected" means the schema is fine and this step failed anyway: a
+      Supabase outage, a policy change, a genuine bug. Same visible symptom,
+      completely different investigation, so the log says which.
+    */
+    const cause = leadOpsAvailable ? 'unexpected' : 'migration-missing';
+    console.error(
+      `[contact] LEAD_OPS_DEGRADED step=${step} cause=${cause} contact=${contactId} — ` +
+        `${detail ?? 'unknown error'}`,
+    );
+  }
+
+  // Notification outcome on the row itself, so a Resend outage is visible as
+  // notify_status='failed' in the operational queue rather than a log line.
+  {
+    const { error } = await supabase
+      .from('contacts')
+      .update({
+        notify_status: emailAlert?.status ?? 'failed',
+        notified_at: emailAlert?.status === 'sent' ? new Date().toISOString() : null,
+      })
+      .eq('id', contactId);
+    if (error) reportDegraded('notify_status', error.message);
+  }
+
+  /*
+    One audit row per channel attempted. Both are audience='internal': these
+    are alerts to the advisor, not messages to the person who submitted.
+
+    This is the record of whether Erekle was actually told about this lead. It
+    is the single most important thing to write when something else is broken,
+    which is why it is no longer conditional on anything.
+  */
+  {
+    const { error } = await supabase.from('notification_deliveries').insert(
+      alerts.map((result) => ({
+        contact_id: contactId,
+        channel: result.channel,
+        audience: 'internal' as const,
+        purpose: 'contact-alert',
+        status:
+          result.status === 'sent' ? 'sent' : result.status === 'failed' ? 'failed' : 'skipped',
+        provider: result.channel === 'email' ? 'resend' : 'twilio',
+        provider_message_id: result.providerMessageId ?? null,
+        last_error: result.detail ?? null,
+        consent_basis: null, // Internal audience — no consumer consent applies.
+        sent_at: result.status === 'sent' ? new Date().toISOString() : null,
+        failed_at: result.status === 'failed' ? new Date().toISOString() : null,
+      })),
+    );
+    if (error) reportDegraded('notification_deliveries', error.message);
+  }
 
   /*
     Queue the CRM handoff. Deliberately AFTER the durable write and the
-    advisor alert, and deliberately non-blocking on failure: the visitor's
-    submission is already safe, and a CRM that is unreachable must never turn
-    into an error page for someone asking for help.
+    advisor alert, and deliberately non-blocking on failure.
   */
   const queued = await enqueueLeadSync({
     contactId,
@@ -244,19 +302,25 @@ export async function POST(req: Request) {
   });
 
   /*
+    A lead that could not be queued is a lead the CRM will never receive, and
+    the daily sweep cannot rescue it because there is no row to sweep. That is
+    precisely the July 2026 failure, and it must be loud.
+  */
+  if (!queued) {
+    reportDegraded('lead_sync_outbox', 'enqueueLeadSync returned false — lead not queued for CRM');
+  }
+
+  /*
     Drain the outbox immediately, AFTER the response is sent.
 
     `after()` runs once the response has been flushed, so the visitor never
-    waits on a cross-project HTTP call — the same reason the delivery is not
-    inline in the first place.
+    waits on a cross-project HTTP call.
 
     This is the primary delivery path, not an optimisation. Vercel Hobby caps
     cron jobs at once per day, so relying on the scheduled sweep alone would
-    leave a lead sitting for up to 24 hours. The cron remains as the retry
-    safety net for anything that fails here.
-
-    Failures are swallowed: the row is already durably queued, and the sweep
-    will pick it up with proper backoff.
+    leave a lead sitting for up to 24 hours. The cron remains the retry safety
+    net — but note that it is disabled entirely unless CRON_SECRET is set, so
+    this path is the only one that runs until it is.
   */
   if (queued) {
     after(async () => {
@@ -267,7 +331,6 @@ export async function POST(req: Request) {
       }
     });
   }
-  } // end leadOpsAvailable
 
   return NextResponse.json({ ok: true, persisted: true });
 }

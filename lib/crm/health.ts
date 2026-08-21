@@ -39,7 +39,27 @@ export type DeliveryHealth = {
   recentFailures: FailedDelivery[];
   /** True when Twilio is unconfigured, so SMS skips are expected, not faults. */
   smsConfigured: boolean;
+  /**
+   * Whether the database actually has the lead-operations schema.
+   *
+   * Added after two July 2026 submissions were stored but never handed off,
+   * because the lead_ops migration had not been applied. The old code detected
+   * that condition and then skipped the audit write that would have recorded
+   * it — the alarm was wired to the same breaker as the thing it watched.
+   *
+   * `ok: false` means leads are being accepted and stored but NOT delivered
+   * to the CRM and NOT audited. Treat it as a page-someone incident, not a
+   * warning: every submission during this window needs manual follow-up.
+   */
+  schema: SchemaHealth;
   generatedAt: string;
+};
+
+export type SchemaHealth = {
+  ok: boolean;
+  /** Objects the lead_ops migration should have created but which are absent. */
+  missing: string[];
+  detail: string | null;
 };
 
 export type FailedDelivery = {
@@ -215,7 +235,81 @@ export async function getDeliveryHealth(failureLimit = 20): Promise<DeliveryHeal
     notifications: { emailSent, emailFailed, smsSkipped, smsSent, smsFailed },
     recentFailures,
     smsConfigured,
+    schema: await probeLeadOpsSchema(),
     generatedAt: new Date().toISOString(),
+  };
+}
+
+/**
+ * Confirms the lead_ops schema is actually present.
+ *
+ * ── Why this exists ───────────────────────────────────────────────────────
+ * /api/contact degrades gracefully when the lead_ops migration is missing: it
+ * still stores the submission, but cannot queue the CRM handoff or write a
+ * delivery audit row. Graceful is right — a visitor asking for Medicare help
+ * must never see an error page because a migration is behind. Silent is not.
+ * Two leads sat undelivered for three weeks in July 2026 because the only
+ * signal was a warn-level log nobody read.
+ *
+ * This probes the schema directly so the condition is reportable rather than
+ * inferable. It answers "is the pipeline capable of working", which is a
+ * different question from "are there failures", and the old health report
+ * could only answer the second — an empty outbox looked identical whether
+ * everything had been delivered or nothing had ever been queued.
+ *
+ * Each probe is a zero-row, head-only select: it asks Postgres to plan the
+ * query without returning data, so a missing table or column errors while a
+ * healthy one costs nothing.
+ */
+async function probeLeadOpsSchema(): Promise<SchemaHealth> {
+  const supabase = getServerSupabase();
+  if (!supabase) {
+    return { ok: false, missing: [], detail: 'Supabase is not configured.' };
+  }
+
+  /*
+    `PromiseLike`, not `Promise` — a Supabase query builder is thenable but is
+    not a Promise instance, so awaiting it works while annotating it as one
+    does not.
+  */
+  const probes: Array<{ label: string; run: () => PromiseLike<{ error: unknown }> }> = [
+    {
+      label: 'lead_sync_outbox',
+      run: () => supabase.from('lead_sync_outbox').select('id', { head: true, count: 'exact' }),
+    },
+    {
+      label: 'notification_deliveries',
+      run: () =>
+        supabase.from('notification_deliveries').select('id', { head: true, count: 'exact' }),
+    },
+    {
+      label: 'contacts.notify_status',
+      run: () => supabase.from('contacts').select('notify_status', { head: true, count: 'exact' }),
+    },
+    {
+      label: 'contacts.consent_at',
+      run: () => supabase.from('contacts').select('consent_at', { head: true, count: 'exact' }),
+    },
+  ];
+
+  const missing: string[] = [];
+  for (const probe of probes) {
+    const { error } = await probe.run();
+    if (error) missing.push(probe.label);
+  }
+
+  if (missing.length === 0) {
+    return { ok: true, missing: [], detail: null };
+  }
+
+  return {
+    ok: false,
+    missing,
+    detail:
+      `Lead operations are DEGRADED. Missing: ${missing.join(', ')}. ` +
+      'Submissions are still being stored, but CRM handoff and delivery ' +
+      'auditing are not running, and every lead received in this state needs ' +
+      'manual follow-up. Apply supabase/migrations/20260727000000_lead_ops.sql.',
   };
 }
 
