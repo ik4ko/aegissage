@@ -65,6 +65,10 @@ const serviceAreas = [
 
 const sameAs = [social.youtube, social.instagram];
 
+const organizationId = `${site.url}#organization`;
+const advisorId = `${site.url}#advisor`;
+const professionalServiceId = `${site.url}#professional-service`;
+
 /**
  * Subject-matter coverage for the Person and Organization nodes.
  *
@@ -89,7 +93,7 @@ export function siteJsonLd() {
     '@graph': [
       {
         '@type': 'Organization',
-        '@id': `${site.url}#organization`,
+        '@id': organizationId,
         name: site.name,
         url: site.url,
         logo: `${site.url}/icon.svg`,
@@ -99,7 +103,7 @@ export function siteJsonLd() {
         sameAs,
         areaServed: serviceAreas,
         knowsAbout,
-        employee: { '@id': `${site.url}#advisor` },
+        employee: { '@id': advisorId },
         contactPoint: {
           '@type': 'ContactPoint',
           contactType: 'customer support',
@@ -111,7 +115,7 @@ export function siteJsonLd() {
       },
       {
         '@type': 'Person',
-        '@id': `${site.url}#advisor`,
+        '@id': advisorId,
         name: advisor.name,
         jobTitle: advisor.credential,
         telephone: phone,
@@ -121,11 +125,11 @@ export function siteJsonLd() {
         areaServed: serviceAreas,
         knowsAbout,
         knowsLanguage: 'English',
-        worksFor: { '@id': `${site.url}#organization` },
+        worksFor: { '@id': organizationId },
       },
       {
-        '@type': ['LocalBusiness', 'InsuranceAgency'],
-        '@id': `${site.url}#localbusiness`,
+        '@type': 'ProfessionalService',
+        '@id': professionalServiceId,
         name: site.name,
         url: site.url,
         image: businessImage,
@@ -134,29 +138,68 @@ export function siteJsonLd() {
         sameAs,
         areaServed: serviceAreas,
         knowsAbout,
-        parentOrganization: { '@id': `${site.url}#organization` },
+        parentOrganization: { '@id': organizationId },
         /*
+         * This is a service-area business signal, not a walk-in location.
          * Intentionally absent: address, geo, openingHours(Specification),
          * hasMap, priceRange, aggregateRating.
          *
-         * Google's LocalBusiness guidance treats `address` as required, so
-         * this node will not by itself earn a local pack placement or a
-         * knowledge panel. That is the correct trade: a fabricated address
-         * would be worse than an incomplete node. Add these ONLY when a
-         * verified public NAP and Google Business Profile exist.
+         * Add a public address or hours only after they are verified and
+         * approved for publication. The current service-area details include
+         * Edgewater and Bergen County, but do not imply premises there.
          */
       },
+      ...serviceJsonLd().map((service) => ({
+        ...service,
+        provider: { '@id': organizationId },
+      })),
       {
         '@type': 'WebSite',
         '@id': `${site.url}#website`,
         name: site.name,
         url: site.url,
         description: site.description,
-        publisher: { '@id': `${site.url}#organization` },
+        publisher: { '@id': organizationId },
         inLanguage: 'en-US',
       },
     ],
   };
+}
+
+/**
+ * Services named by the visible site content. Keep descriptions factual and
+ * educational; do not add plan, price, savings, eligibility, or outcome claims.
+ */
+export function serviceJsonLd() {
+  return [
+    {
+      '@type': 'Service',
+      '@id': `${site.url}#service-medicare-education`,
+      name: 'Medicare education',
+      serviceType: 'Medicare education and guidance',
+      description:
+        'Plain-English Medicare guides and explanations covering enrollment windows, Medicare parts, provider networks, and prescription formularies.',
+      areaServed: serviceAreas,
+    },
+    {
+      '@type': 'Service',
+      '@id': `${site.url}#service-enrollment-guidance`,
+      name: 'Medicare enrollment guidance',
+      serviceType: 'Medicare enrollment guidance',
+      description:
+        'General education about Medicare enrollment windows, deadlines, and the questions to bring to a coverage conversation.',
+      areaServed: serviceAreas,
+    },
+    {
+      '@type': 'Service',
+      '@id': `${site.url}#service-coverage-guidance`,
+      name: 'Medicare coverage and provider-network guidance',
+      serviceType: 'Medicare coverage and provider-network guidance',
+      description:
+        'Help organizing doctors, prescriptions, ZIP code, and current coverage before comparing Medicare options.',
+      areaServed: serviceAreas,
+    },
+  ];
 }
 
 export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
