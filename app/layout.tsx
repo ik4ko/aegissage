@@ -70,6 +70,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${sans.variable} ${display.variable}`}>
       <head>
         <JsonLd data={siteJsonLd()} />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-VW5X8553VN"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-VW5X8553VN');
+            `,
+          }}
+        />
         {/*
           Scroll-reveal elements are server-rendered in their hidden state.
           Without JS they would never animate in, so force them visible. The
