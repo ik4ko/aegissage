@@ -62,7 +62,7 @@ export function Hero() {
               links to twice.
             */}
             <p className="mt-6 max-w-xl text-lg text-ink-soft sm:text-xl">
-              I am {advisor.firstName}, an independent Medicare advisor in New Jersey. I
+              I am {advisor.firstName}, an independent Medicare broker in New Jersey. I
               explain deadlines, doctors, prescriptions, and plan trade-offs in plain
               English — without pressure. Licensed in {licensedStates.length} states.
             </p>
@@ -171,7 +171,7 @@ function HeroCard() {
       </p>
 
       <Button asChild variant="navy" size="block" className="mt-6">
-        <Link href="/about">More about Eric</Link>
+        <Link href="/about">More about Erekle</Link>
       </Button>
     </aside>
   );

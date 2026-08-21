@@ -88,7 +88,7 @@ export const locationLandings: LocationLanding[] = [
   {
     slug: 'bergen-county',
     metaDescription:
-      'Independent Medicare help in Bergen County, NJ. Plan availability is set county by county — here is what that means for your doctors, and how to reach Eric.',
+      'Independent Medicare help in Bergen County, NJ. Plan availability is set county by county — here is what that means for your doctors, and how to reach Erekle.',
     name: 'Bergen County',
     shortName: 'Bergen County',
     region: 'Bergen County, NJ',

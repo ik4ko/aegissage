@@ -1,7 +1,7 @@
 # AegisSage
 
 Medicare educational content hub and personal-brand site for a licensed
-independent Medicare advisor. Public, no login, built so that every page ends
+independent Medicare broker. Public, no login, built so that every page ends
 in a real phone number.
 
 Next.js (App Router) · TypeScript · Tailwind · Framer Motion · Supabase ·
@@ -17,9 +17,9 @@ deployed on Vercel.
 
 One launch detail remains open. It does not require a code change.
 
-**1. Review the advisor details in `lib/site.ts`.** The public name is Eric
+**1. Review the broker details in `lib/site.ts`.** The public name is Erekle
 Niniashvili, the phone is `(551) 202-9079`, the email is
-`erekleniniashvili@gmail.com`, and the 26 licensed states are listed there.
+`en@aegissage.com`, and the 25 licensed states are listed there.
 Every configured value can be set by an environment variable; see `.env.example`.
 
 **2. Have a human review `components/marketing/disclaimer-footer.tsx`.** It

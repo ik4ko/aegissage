@@ -16,11 +16,11 @@ import { locationLandings } from '@/lib/locations';
 import { breadcrumbJsonLd } from '@/lib/seo';
 
 // ~150 chars: Google truncates a search-result description around there.
-const DESCRIPTION = `${advisor.name}, independent Medicare advisor in ${advisor.basedIn}. Medicare and Medicaid only, for people 65+ and anyone with Parts A and B.`;
+const DESCRIPTION = `${advisor.name}, independent Medicare broker in ${advisor.basedIn}. Medicare and Medicaid only, for people 65+ and anyone with Parts A and B.`;
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent(`Meet ${advisor.name}`)}` +
   `&kicker=${encodeURIComponent('The person behind the phone number')}` +
-  `&subtitle=${encodeURIComponent(`Licensed independent Medicare advisor · ${advisor.basedIn}`)}`;
+  `&subtitle=${encodeURIComponent(`Licensed independent Medicare broker · ${advisor.basedIn}`)}`;
 
 export const metadata: Metadata = {
   title: `About ${advisor.name}`,
@@ -63,7 +63,7 @@ export default function AboutPage() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-xl leading-relaxed text-ink-soft">
-              I am an independent Medicare advisor based in {advisor.basedIn}, working
+              I am an independent Medicare broker based in {advisor.basedIn}, working
               mostly with people in {site.serviceArea} and licensed in{' '}
               {licensedStates.length} states. If you landed here from a video, this is the
               page where you decide whether I am worth your time. Fair enough — here is the
@@ -111,7 +111,7 @@ export default function AboutPage() {
       <section id="contact" className="container py-14 sm:py-20">
         <Reveal className="mx-auto max-w-[68ch] article-body">
           {/*
-            Eric's own account, given by him directly. Every fact below came
+            Erekle's own account, given by him directly. Every fact below came
             from him: the country of origin, the 2000 arrival, Edgewater, the
             agency job alongside independent work for family, and that this is
             his second year. Do not embellish it and do not add detail he has
@@ -126,7 +126,8 @@ export default function AboutPage() {
             I am from Georgia — the small country on the Black Sea, not the state. I came
             to the United States in 2000 and have been in the Edgewater and New York City
             area ever since. My full name is Erekle Niniashvili. Most people here call
-            me Eric, and the people who have known me longest call me Ika.
+            My full name is Erekle Niniashvili. The people who have known me longest call
+            me Ika.
           </p>
           <p>
             I got into this working at a Medicare agency, which is where I learned the

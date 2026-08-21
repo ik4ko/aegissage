@@ -30,7 +30,7 @@ export type NotifyChannelResult = {
  * NOTE ON THE SMS IN THIS FILE
  *
  * `sendSms` below alerts the ADVISOR about a new lead. It reads NOTIFY_SMS_TO
- * — Eric's own number — and is an internal notification, so no consumer
+ * — Erekle's own number — and is an internal notification, so no consumer
  * consent applies to it.
  *
  * It is not, and must never become, a path for texting the person who filled

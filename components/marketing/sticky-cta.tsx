@@ -27,7 +27,7 @@ export function StickyCta() {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="container flex items-center justify-between gap-3 p-2.5 sm:py-3">
-        <p className="hidden text-sm font-semibold text-white/85 sm:block">Call or text Eric</p>
+        <p className="hidden text-sm font-semibold text-white/85 sm:block">Call or text Erekle</p>
         <div className="grid flex-1 grid-cols-2 gap-2 sm:flex sm:flex-none">
         <a
           href={contactHrefs.tel}

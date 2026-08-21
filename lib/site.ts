@@ -11,7 +11,7 @@
 /** Digits only — used to build tel: hrefs and the SMS link. */
 const RAW_PHONE = process.env.NEXT_PUBLIC_ADVISOR_PHONE ?? '15512029079';
 const CONFIGURED_EMAIL =
-  process.env.NEXT_PUBLIC_ADVISOR_EMAIL?.trim() || 'erekleniniashvili@gmail.com';
+  process.env.NEXT_PUBLIC_ADVISOR_EMAIL?.trim() || 'en@aegissage.com';
 
 function formatPhone(raw: string): string {
   const digits = raw.replace(/\D/g, '').replace(/^1/, '');
@@ -20,9 +20,9 @@ function formatPhone(raw: string): string {
 }
 
 export const advisor = {
-  name: process.env.NEXT_PUBLIC_ADVISOR_NAME ?? 'Eric Niniashvili',
-  firstName: 'Eric',
-  credential: 'Independent Medicare advisor',
+  name: process.env.NEXT_PUBLIC_ADVISOR_NAME ?? 'Erekle Niniashvili',
+  firstName: 'Erekle',
+  credential: 'Independent Medicare Broker',
   email: CONFIGURED_EMAIL,
   emailConfigured: true,
   phoneRaw: RAW_PHONE,
@@ -86,14 +86,14 @@ export const site = {
    * 2026 and this line was the one place that hadn't caught up).
    */
   description:
-    `Independent Medicare help from Eric Niniashvili. Plain-English guides, a free eligibility check, and someone you can call or text with a question. Based in Bergen County, New Jersey and licensed in ${advisor.licensedStates.length} states.`,
+    `Independent Medicare help from Erekle Niniashvili. Plain-English guides, a free eligibility check, and someone you can call or text with a question. Based in Bergen County, New Jersey and licensed in ${advisor.licensedStates.length} states.`,
   /**
    * Search-result description, ~150 chars. `description` above is longer and
    * still used for Open Graph and Twitter, where there is room for it. Google
    * truncates around 155, so the homepage was being cut mid-sentence.
    */
   metaDescription:
-    'Independent Medicare help from Eric Niniashvili. Plain-English guides, a free eligibility check, and a real person you can call or text.',
+    'Independent Medicare help from Erekle Niniashvili. Plain-English guides, a free eligibility check, and a real person you can call or text.',
   /** Search-result title. The full tagline runs 91 chars in <title>. */
   shortTitle: 'AegisSage — Independent Medicare help in plain English',
   serviceArea: 'Bergen County, New Jersey, New York City, and Philadelphia',
@@ -127,7 +127,7 @@ export const social = {
  * "current as of" date updated below.
  */
 export const compliance = {
-  currentAsOf: 'January 2026',
+  currentAsOf: 'August 2026',
   medicareGovUrl: 'https://www.medicare.gov',
   medicarePhone: '1-800-MEDICARE',
   medicareTty: '1-877-486-2048',

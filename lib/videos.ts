@@ -10,7 +10,7 @@
  *     the videos ACTUALLY embedded on the page, using accurate `uploadDate`
  *     and `duration` taken from YouTube — not estimated.
  *
- * The array is intentionally empty until Eric publishes. /videos renders a
+ * The array is intentionally empty until Erekle publishes. /videos renders a
  * genuine "coming soon" state rather than filler.
  */
 

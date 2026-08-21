@@ -47,7 +47,7 @@ export async function generateMetadata({
   // `state.note` is a full sentence of local detail; appending it pushed this
   // past 240 characters and Google truncated it. The note still renders on the
   // page — it just does not belong in a search-result description.
-  const description = `How Medicare enrollment works in ${state.name}, and how to reach Eric Niniashvili, a licensed independent advisor covering the state.`;
+  const description = `How Medicare enrollment works in ${state.name}, and how to reach Erekle Niniashvili, an independent Medicare broker covering the state.`;
   const ogImage =
     `${site.url}/api/og?title=${encodeURIComponent(`Medicare in ${state.name}`)}` +
     `&kicker=${encodeURIComponent(state.code)}` +

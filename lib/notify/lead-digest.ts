@@ -10,7 +10,7 @@ import { site } from '@/lib/site';
  *  DAILY LEAD-HEALTH DIGEST
  * ══════════════════════════════════════════════════════════════════════════
  *
- *  The Bridge Health panel is pull-only: it tells Eric something is broken
+ *  The Bridge Health panel is pull-only: it tells Erekle something is broken
  *  the moment he looks. This tells him when he is not looking, which is the
  *  case that actually matters — a lead that failed to sync on Friday evening
  *  should not wait until he happens to open the dashboard on Monday.

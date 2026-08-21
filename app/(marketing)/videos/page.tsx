@@ -18,7 +18,7 @@ import { getVideos } from '@/lib/videos';
 const videos = getVideos();
 
 const OG_IMAGE =
-  `${site.url}/api/og?title=${encodeURIComponent('Medicare videos from Eric')}` +
+  `${site.url}/api/og?title=${encodeURIComponent('Medicare videos from Erekle')}` +
   `&kicker=${encodeURIComponent('Watch and learn')}` +
   `&subtitle=${encodeURIComponent('Plain-English guidance from AegisSage')}`;
 
@@ -28,11 +28,11 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: 'Videos',
   description:
-    'Plain-English Medicare videos from Eric at AegisSage. New videos will be added here as they are published.',
+    'Plain-English Medicare videos from Erekle at AegisSage. New videos will be added here as they are published.',
   alternates: { canonical: '/videos' },
   openGraph: {
     type: 'website',
-    title: 'Medicare videos from Eric — AegisSage',
+    title: 'Medicare videos from Erekle — AegisSage',
     description: DESCRIPTION,
     url: `${site.url}/videos`,
     images: [
@@ -40,13 +40,13 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: 'Medicare videos from Eric at AegisSage',
+    alt: 'Medicare videos from Erekle at AegisSage',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Medicare videos from Eric — AegisSage',
+    title: 'Medicare videos from Erekle — AegisSage',
     description: DESCRIPTION,
     images: [OG_IMAGE],
   },
@@ -89,7 +89,7 @@ export default function VideosPage() {
               New videos are on the way.
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-ink-soft">
-              Eric is building a library of practical Medicare explanations. Until then,
+              Erekle is building a library of practical Medicare explanations. Until then,
               browse the written guides or go straight to the channel.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">

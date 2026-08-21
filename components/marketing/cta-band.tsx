@@ -11,7 +11,7 @@ import { advisor } from '@/lib/site';
 export function CtaBand({
   where,
   heading = 'Want to talk it through?',
-  body = 'That is the normal state of things. Call or text Eric and talk it through — no script, no obligation, and no fee to you for the conversation.',
+  body = 'That is the normal state of things. Call or text Erekle and talk it through — no script, no obligation, and no fee to you for the conversation.',
 }: {
   where: string;
   heading?: string;
@@ -45,7 +45,7 @@ export function CtaBand({
               small broken promise that costs trust on the first contact.
             */}
             <p className="mt-5 text-base leading-relaxed text-white/80">
-              You reach Eric directly, not a call center. If he is with someone, leave a
+              You reach Erekle directly, not a call center. If he is with someone, leave a
               message or send a text and he will get back to you.
             </p>
           </div>

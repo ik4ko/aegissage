@@ -194,7 +194,7 @@ export async function sendClientSms(opts: {
 /**
  * Alerts the advisor about activity on his own site.
  *
- * No consumer consent is involved and none is checked — this messages Eric,
+ * No consumer consent is involved and none is checked — this messages Erekle,
  * not a beneficiary. It reads NOTIFY_SMS_TO, which is deliberately a
  * different variable from TWILIO_FROM_NUMBER and from any client destination,
  * so an internal alert can never be addressed to a client by configuration

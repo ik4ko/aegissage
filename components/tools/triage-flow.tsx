@@ -32,15 +32,15 @@ const INTENTS: Record<Stage, Option<Intent>[]> = {
   'coverage-change': [
     { value: 'dates', label: 'Understand my timing' },
     { value: 'compare', label: 'See what options may be available' },
-    { value: 'talk', label: 'Tell Eric what changed' },
+    { value: 'talk', label: 'Tell Erekle what changed' },
   ],
 };
 
 const RESULTS: Record<Intent, { headline: string; body: string; href: string; cta: string }> = {
-  learn: { headline: 'Start with the plain-English guides.', body: 'Read the short explanations first, then bring Eric the question that remains.', href: '/medicare-basics', cta: 'Open Medicare Basics' },
+  learn: { headline: 'Start with the plain-English guides.', body: 'Read the short explanations first, then bring Erekle the question that remains.', href: '/medicare-basics', cta: 'Open Medicare Basics' },
   dates: { headline: 'Start with your enrollment window.', body: 'A few timing details can change the next step. The eligibility check keeps the questions focused.', href: '/tools/eligibility-check', cta: 'Check my enrollment window' },
-  compare: { headline: 'See the trade-offs side by side.', body: 'The comparison tool gives you the structure. Eric can help you apply it to your doctors, prescriptions, and ZIP code.', href: '/tools/plan-comparison', cta: 'Compare the two routes' },
-  talk: { headline: 'Bring the real question to Eric.', body: 'Tell him what changed, what you want to keep, and where you are stuck. There is no fee or obligation.', href: '/contact', cta: 'Contact Eric' },
+  compare: { headline: 'See the trade-offs side by side.', body: 'The comparison tool gives you the structure. Erekle can help you apply it to your doctors, prescriptions, and ZIP code.', href: '/tools/plan-comparison', cta: 'Compare the two routes' },
+  talk: { headline: 'Bring the real question to Erekle.', body: 'Tell him what changed, what you want to keep, and where you are stuck. There is no fee or obligation.', href: '/contact', cta: 'Contact Erekle' },
 };
 
 /** A two-step routing aid, intentionally modeled on the eligibility quiz. */

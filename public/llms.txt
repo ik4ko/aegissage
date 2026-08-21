@@ -7,12 +7,12 @@
 - Independent Medicare guidance with no fee and no obligation to enroll.
 - Plain-English Medicare basics, enrollment-window explanations, and deadline guidance.
 - Side-by-side education about Original Medicare and Medicare Advantage.
-- Free public tools for checking an enrollment window, comparing the two Medicare routes, and testing Medicare knowledge.
+- Free public tools for checking an enrollment window, estimating a late enrollment penalty, estimating an IRMAA income surcharge, comparing the two Medicare routes, and testing Medicare knowledge.
 - Human contact by phone, text, email, and a public contact form.
 
 ## Service area
 
-AegisSage serves Medicare-eligible people in Bergen County (New Jersey), the rest of New Jersey, New York City, and Philadelphia. The advisor is based in Bergen County, New Jersey. There is no published street address, no published office hours, and no walk-in location; contact is by phone, text, email, or the contact form.
+AegisSage serves Medicare-eligible people in Bergen County (New Jersey), the rest of New Jersey, New York City, and Philadelphia. The Medicare broker is based in Bergen County, New Jersey. There is no published street address, no published office hours, and no walk-in location; contact is by phone, text, email, or the contact form.
 
 Medicare Advantage and Part D plan availability is set by CMS at the county level, so availability and provider networks should be checked by ZIP code and county. The state plan pages below are educational; the advisor is licensed only in the 25 states listed below.
 
@@ -21,7 +21,7 @@ Medicare Advantage and Part D plan availability is set by CMS at the county leve
 - [Medicare Basics](https://www.aegissage.com/medicare-basics): plain-English guides on enrollment, penalties, Medicare parts, and common traps.
 - [Free Medicare appointment checklist](https://www.aegissage.com/medicare-checklist): a printable worksheet for listing doctors, prescriptions, ZIP code and current coverage, plus the questions worth asking before comparing plans. No email address is required and nothing on the page is collected.
 - [Articles](https://www.aegissage.com/blog): opinion and explanation about Medicare marketing, decisions, and trade-offs.
-- [Videos](https://www.aegissage.com/videos): a growing library of plain-English Medicare explanations from Eric.
+- [Videos](https://www.aegissage.com/videos): a growing library of plain-English Medicare explanations from Erekle.
 - [Medicare News & Updates](https://www.aegissage.com/news): short deadline and rule-change updates.
 - [Plan pages](https://www.aegissage.com/plans): state-level enrollment and availability mechanics.
 - [Medicare in Bergen County](https://www.aegissage.com/medicare-bergen-county): why the county line rather than the town line governs plan availability, and how living in New Jersey while using New York providers affects a Medicare Advantage network check.
@@ -33,15 +33,16 @@ Medicare Advantage and Part D plan availability is set by CMS at the county leve
 - [Medicare in Philadelphia](https://www.aegissage.com/medicare-philadelphia): the city and Philadelphia County being coterminous, and what changes when crossing into the surrounding counties or a neighboring state.
 - [About](https://www.aegissage.com/about): how the advisor works and the current licensing information.
 - [Contact](https://www.aegissage.com/contact): phone, text, email, and contact form.
-- [YouTube](https://www.youtube.com/@65MAPD): Medicare videos from Eric.
+- [YouTube](https://www.youtube.com/@65MAPD): Medicare videos from Erekle.
 - [Instagram](https://www.instagram.com/aegissage): AegisSage social updates.
 - [Enrollment window tool](https://www.aegissage.com/tools/eligibility-check): a free, no-email-required questionnaire.
 - [Late enrollment penalty calculator](https://www.aegissage.com/tools/penalty-calculator): estimates the Part B and Part D late enrollment penalties in dollars per month from the dates someone became eligible, held other coverage, and enrolled. Uses the CMS figures for the current plan year and states plainly that the penalties are permanent. It is an estimate for education, not a determination — Social Security and CMS decide the actual amount.
+- [IRMAA income surcharge calculator](https://www.aegissage.com/tools/irmaa-calculator): checks a modified adjusted gross income against the current IRMAA brackets for all three filing statuses and reports the Part B premium, the Part D surcharge, the combined annual cost, and the distance to the next threshold. Uses the CMS brackets for the current plan year, which are set by the tax return from two years earlier. Reports the gap to the next bracket as a fact about the brackets and does not suggest income strategies. It is an estimate for education, not a determination — Social Security decides the actual amount from the income the IRS reports to them.
 - [Original Medicare vs. Medicare Advantage](https://www.aegissage.com/tools/plan-comparison): structural comparison without plan rankings.
 
-## Advisor credentials
+## Medicare broker credentials
 
-The advisor's confirmed public name is Eric Niniashvili, with Eric used in casual copy. The phone is 551-202-9079 and the public email is erekleniniashvili@gmail.com.
+The advisor's confirmed public name is Erekle Niniashvili. The phone is 551-202-9079 and the public email is en@aegissage.com.
 
 - Licensed states: Alabama, Arkansas, Arizona, Florida, Georgia, Iowa, Illinois, Indiana, Kentucky, Michigan, Minnesota, Mississippi, Missouri, North Carolina, North Dakota, New Jersey, New York, Ohio, Oklahoma, Pennsylvania, South Carolina, Tennessee, Texas, Virginia, and West Virginia.
 
