@@ -7,7 +7,10 @@ import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion';
 export function CountUp({ value, suffix = '' }: { value: number; suffix?: string }) {
   const reduced = usePrefersReducedMotion();
   const ref = useRef<HTMLSpanElement>(null);
-  const [current, setCurrent] = useState(0);
+  // Render the verified value immediately in server HTML. Starting at zero
+  // made real counts look like placeholder data until the section entered the
+  // viewport.
+  const [current, setCurrent] = useState(value);
 
   /**
    * Under reduced motion the final value is derived, not stored. Writing it
@@ -28,6 +31,7 @@ export function CountUp({ value, suffix = '' }: { value: number; suffix?: string
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting || started) return;
       started = true;
+      setCurrent(0);
       const startedAt = performance.now();
       const tick = (now: number) => {
         const progress = Math.min((now - startedAt) / 600, 1);
