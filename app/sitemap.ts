@@ -3,6 +3,14 @@ import { getAllArticles } from '@/lib/content';
 import { planStates } from '@/lib/states';
 import { locationLandings } from '@/lib/locations';
 import { site } from '@/lib/site';
+/*
+  Imported for its side effect: asserts at build time that lib/tpmo.ts's
+  ZIP_ROUTES still matches the location and state pages that actually exist,
+  so a new page cannot ship with the wrong TPMO disclaimer variant. This file
+  already enumerates every route, which makes it the natural place to hang
+  that check.
+*/
+import '@/lib/tpmo-guard';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

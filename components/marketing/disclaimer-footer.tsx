@@ -1,30 +1,43 @@
+'use client';
+
 import Link from 'next/link';
-import { compliance, site } from '@/lib/site';
+import { usePathname } from 'next/navigation';
+import { compliance } from '@/lib/site';
+import { collectsZip } from '@/lib/tpmo';
+import { TpmoDisclaimer, tpmoVariantFor } from './tpmo-disclaimer';
 
 /**
  * ══════════════════════════════════════════════════════════════════════════
  *  TPMO COMPLIANCE COMPONENT — SINGLE SOURCE OF TRUTH
  * ══════════════════════════════════════════════════════════════════════════
  *
- *  This is the only place on the site where the required CMS Medicare
- *  Communications and Marketing Guidelines (MCMG) disclaimer text lives.
- *  It is rendered once in the root layout, so it appears on every public
- *  page automatically — no page should ever import it directly, and no page
- *  should ever restate this language inline.
+ *  This is the mount point. It is rendered once in the root layout, so the
+ *  disclosure appears on every public page automatically — no page should
+ *  ever import it directly, and no page should ever restate this language
+ *  inline.
  *
- *  WHEN CMS UPDATES THE REQUIRED LANGUAGE, EDIT ONLY THIS FILE.
+ *  THE REQUIRED WORDING ITSELF NOW LIVES IN ./tpmo-disclaimer.tsx, which
+ *  holds both CMS variants (generic and counted) and is the only place
+ *  either one exists. WHEN CMS UPDATES THE REQUIRED LANGUAGE, EDIT THAT
+ *  FILE, not this one. This file owns chrome only: the heading, the
+ *  "current as of" line, the privacy link, and picking a variant.
+ *
  *  `compliance.currentAsOf` in lib/site.ts must be re-verified at the start
- *  of every contract year.
+ *  of every contract year, alongside `tpmoCounts`.
  *
- *  Reviewer checklist for this file:
+ *  Reviewer checklist:
  *   1. "We do not offer every plan available in your area..." sentence is
  *      present, verbatim, and visible without interaction.
  *   2. No plan or organization COUNT is asserted unless it has been verified
- *      against the advisor's actual contracts. See the note in lib/site.ts —
- *      placeholder counts previously shipped here and were removed.
- *   3. The 1-800-MEDICARE + medicare.gov referral is present.
+ *      against the advisor's actual contracts. Placeholder counts previously
+ *      shipped here and were removed; <TpmoDisclaimer /> now throws rather
+ *      than render an unverified one.
+ *   3. The 1-800-MEDICARE + medicare.gov + SHIP referrals are present.
  *   4. The non-government-entity statement is present.
  *   5. Nothing here promises, guarantees or ranks benefits.
+ *   6. Every ZIP-collecting route is listed in `ZIP_ROUTES` in
+ *      lib/tpmo.ts, which lib/tpmo-guard.ts checks at build time. A ZIP
+ *      field without the counted variant is a defect.
  *
  *  Contrast, measured as composited values over navy-deep (#0B2942):
  *    white/85 → 11.10:1 (AAA)   body text and the section heading
@@ -47,10 +60,29 @@ import { compliance, site } from '@/lib/site';
  */
 
 export function DisclaimerFooter() {
+  const pathname = usePathname();
+
+  /*
+    Which variant this route needs.
+
+    `collectsZip()` in lib/tpmo.ts owns the route list; `tpmoVariantFor()`
+    downgrades to "generic" while the counts are still null, so a
+    ZIP-collecting page renders a compliant disclosure today rather than
+    failing the build before Erekle has supplied the numbers.
+
+    usePathname() resolves during static prerender — verified against the
+    header's aria-current, which is baked correctly into every static page —
+    so the disclosure text ships in the served HTML, not after hydration.
+    That matters: it is legally required text and a crawler or a
+    JS-disabled reader must see it.
+  */
+  const variant = tpmoVariantFor(pathname, collectsZip(pathname));
+
   return (
     <section
       aria-label="Medicare marketing disclaimer"
       data-compliance="tpmo-disclaimer"
+      data-tpmo-variant={variant}
       className="border-t border-line bg-navy-deep text-navy-soft"
     >
       <div className="container max-w-3xl py-10 sm:py-12">
@@ -60,48 +92,19 @@ export function DisclaimerFooter() {
 
         <div className="mt-5 space-y-4 text-sm leading-relaxed text-white/85">
           {/*
-            (1) Required TPMO disclaimer + non-government statement, merged
-            into one short paragraph. Simplified Aug 14 2026 to match the
-            length/structure of comparable FMO disclosures (Pinnacle
-            Financial, IFG) at Erekle's direction — both real examples fold
-            the non-government statement into the same sentence as the
-            "we don't offer every plan" language rather than giving it a
-            separate paragraph, and neither includes a name-specific
-            "[name] will confirm" sentence. Do not re-add the advisor's name
-            here without asking first.
+            The required text itself lives in <TpmoDisclaimer />, which is the
+            only place either variant's wording exists. Everything in this
+            file is chrome around it: the heading, the "current as of" line
+            and the privacy link.
 
-            Aug 16 2026: the CMS standardized TPMO disclaimer wording is
-            restored verbatim — "those plans" (not "the plans"), and all
-            THREE referral routes CMS names: medicare.gov, 1-800-MEDICARE
-            (with TTY), and the caller's local State Health Insurance
-            Program (SHIP). An earlier pass shortened this to two routes and
-            dropped TTY while matching the FMO examples' brevity. The FMO
-            examples are not the compliance source; 42 CFR 422.2267(e)(41)
-            is. Do not trim this sentence for length again.
+            Aug 16 2026 note, still binding: all THREE referral routes CMS
+            names must be present — medicare.gov, 1-800-MEDICARE (with TTY),
+            and the caller's local State Health Insurance Program (SHIP). An
+            earlier pass shortened this to two routes and dropped TTY to match
+            comparable FMO disclosures. The FMO examples are not the
+            compliance source; 42 CFR 422.2267(e)(41) is. Do not trim it.
           */}
-          <p>
-            {site.name} is not affiliated with or endorsed by the U.S. government or the
-            federal Medicare program. We do not offer every plan available in your area. Any
-            information we provide is limited to those plans we do offer in your area. Please
-            contact{' '}
-            <a
-              href={compliance.medicareGovUrl}
-              rel="noopener noreferrer"
-              target="_blank"
-              className="font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
-            >
-              medicare.gov
-            </a>
-            ,{' '}
-            <a
-              href="tel:+18006334227"
-              className="font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
-            >
-              {compliance.medicarePhone}
-            </a>{' '}
-            (TTY {compliance.medicareTty}), or your local State Health Insurance Program
-            (SHIP), to get information on all of your options.
-          </p>
+          <TpmoDisclaimer variant={variant} />
 
           <p className="text-white/75">
             Information current as of {compliance.currentAsOf}.{' '}

@@ -167,24 +167,36 @@ export const compliance = {
 } as const;
 
 /**
- * ── Why there are no plan/organization counts here ────────────────────────
+ * ── TPMO plan and organization counts ─────────────────────────────────────
  *
- * CMS model TPMO language includes a sentence of the form "Currently we
- * represent N organizations which offer M products in your area." Those two
- * numbers are contract facts specific to this advisor and change every
- * contract year. They were previously hardcoded to unverified placeholder
- * values and rendered publicly on every page as a factual disclosure, which
- * is worse than omitting them: a wrong count is an inaccurate CMS disclosure.
+ * CMS defines two forms of the TPMO disclaimer. The "counted" form is
+ * required on any marketing touchpoint that collects a ZIP code, and reads:
  *
- * The disclaimer now carries the required "we do not offer every plan
- * available in your area" scope limitation and the required 1-800-MEDICARE /
- * medicare.gov referral, without asserting a count that cannot be verified.
+ *   "Currently we represent N organizations which offer M products in your
+ *    area."
  *
- * TO RESTORE THE COUNTS: add `organizationCount` and `planCount` above with
- * the advisor's verified contracted figures, then render them in
- * <DisclaimerFooter />. Do not guess. Do not round. Re-verify annually
- * alongside `currentAsOf`.
+ * BOTH VALUES ARE NULL ON PURPOSE. They are contract facts specific to this
+ * advisor and this county, they change every contract year, and the only
+ * authoritative source is Erekle's quoting platform. They must never be
+ * guessed, rounded, estimated, carried over from a previous year, or
+ * inferred from a carrier list.
+ *
+ * A wrong count is not a smaller problem than a missing count — it is a
+ * false factual disclosure on a federally mandated notice. So
+ * <TpmoDisclaimer variant="counted" /> throws rather than rendering a gap,
+ * a zero, or a placeholder.
+ *
+ * TO POPULATE: pull the Bergen County figures from the quoting platform,
+ * set both numbers here, and re-verify them alongside
+ * `compliance.currentAsOf` at the start of every contract year.
  */
+export const tpmoCounts: {
+  organizationCount: number | null;
+  productCount: number | null;
+} = {
+  organizationCount: null,
+  productCount: null,
+};
 
 export const nav = [
   { href: '/medicare-basics', label: 'Basics' },
