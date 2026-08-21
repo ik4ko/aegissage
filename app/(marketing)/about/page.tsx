@@ -125,9 +125,8 @@ export default function AboutPage() {
           <p>
             I am from Georgia — the small country on the Black Sea, not the state. I came
             to the United States in 2000 and have been in the Edgewater and New York City
-            area ever since. My full name is Erekle Niniashvili. Most people here call
-            My full name is Erekle Niniashvili. The people who have known me longest call
-            me Ika.
+            area ever since. My full name is Erekle Niniashvili. The people who have known
+            me longest call me Ika.
           </p>
           <p>
             I got into this working at a Medicare agency, which is where I learned the

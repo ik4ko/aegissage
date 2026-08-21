@@ -40,7 +40,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-    alt: 'Medicare videos from Erekle at AegisSage',
+        alt: 'Medicare videos from Erekle at AegisSage',
       },
     ],
   },

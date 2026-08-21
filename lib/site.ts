@@ -8,8 +8,25 @@
  * ─────────────────────────────────────────────────────────────────────────
  */
 
+/**
+ * ── Why every env read below uses `|| ` and not `?? ` ─────────────────────
+ *
+ * `??` falls back only on `undefined`/`null`. An environment variable that
+ * exists but is BLANK arrives as an empty string and wins the coalesce, so
+ * `?? 'Erekle Niniashvili'` yields `''` rather than the fallback.
+ *
+ * That is not hypothetical. `.env.example` ships `NEXT_PUBLIC_ADVISOR_PHOTO=`
+ * with no value, and anyone who seeds a deployment from it gets a blank
+ * override that silently defeats the default — which is what made the
+ * advisor's photo render as initials while the code looked correct.
+ *
+ * `.trim() || fallback` treats blank and whitespace-only the same as unset,
+ * which is the behaviour every one of these wants. Do not "simplify" these
+ * back to `??`.
+ */
+
 /** Digits only — used to build tel: hrefs and the SMS link. */
-const RAW_PHONE = process.env.NEXT_PUBLIC_ADVISOR_PHONE ?? '15512029079';
+const RAW_PHONE = process.env.NEXT_PUBLIC_ADVISOR_PHONE?.trim() || '15512029079';
 const CONFIGURED_EMAIL =
   process.env.NEXT_PUBLIC_ADVISOR_EMAIL?.trim() || 'en@aegissage.com';
 
@@ -20,13 +37,29 @@ function formatPhone(raw: string): string {
 }
 
 export const advisor = {
-  name: process.env.NEXT_PUBLIC_ADVISOR_NAME ?? 'Erekle Niniashvili',
+  /**
+   * The one public name. There is no second display name and no nickname
+   * field — "Eric" is handled in exactly one place, as `alternateName` on
+   * the Person node in lib/seo.ts, and appears nowhere in body copy.
+   */
+  name: process.env.NEXT_PUBLIC_ADVISOR_NAME?.trim() || 'Erekle Niniashvili',
   firstName: 'Erekle',
   credential: 'Independent Medicare Broker',
   email: CONFIGURED_EMAIL,
   emailConfigured: true,
   phoneRaw: RAW_PHONE,
   phone: formatPhone(RAW_PHONE),
+  /** E.164, for tel:/sms: hrefs and schema `telephone`. */
+  phoneE164: `+${RAW_PHONE.replace(/\D/g, '')}`,
+  /**
+   * National Producer Number.
+   *
+   * Deliberately blank. Erekle supplies this; it is a verifiable regulatory
+   * identifier and guessing one would be worse than publishing none. Every
+   * consumer must treat `''` as "not published" and render nothing —
+   * never a placeholder, a dash, or "pending".
+   */
+  npn: '',
   /**
    * Where the advisor is based, at county granularity.
    *
@@ -100,8 +133,8 @@ export const site = {
 } as const;
 
 export const contactHrefs = {
-  tel: `tel:+${advisor.phoneRaw.replace(/\D/g, '')}`,
-  sms: `sms:+${advisor.phoneRaw.replace(/\D/g, '')}`,
+  tel: `tel:${advisor.phoneE164}`,
+  sms: `sms:${advisor.phoneE164}`,
   mailto: advisor.emailConfigured ? `mailto:${advisor.email}` : '#contact-email',
   /**
    * Google Calendar Appointment Schedule — 60-minute Medicare consultation

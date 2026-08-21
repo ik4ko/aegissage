@@ -104,7 +104,13 @@ export function AdvisorAvatar({
     .slice(0, 2)
     .join('');
 
-  const photo = process.env.NEXT_PUBLIC_ADVISOR_PHOTO ?? ADVISOR_PHOTO;
+  /*
+   * `|| `, not `?? ` — see the note in lib/site.ts. `.env.example` ships
+   * NEXT_PUBLIC_ADVISOR_PHOTO with a blank value, and under `??` that blank
+   * string won the coalesce and dropped every avatar on the site to the
+   * initials fallback while this file still looked correct.
+   */
+  const photo = process.env.NEXT_PUBLIC_ADVISOR_PHOTO?.trim() || ADVISOR_PHOTO;
 
   return (
     <span
