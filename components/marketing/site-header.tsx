@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Phone, X } from 'lucide-react';
+import { CalendarClock, Menu, Phone, X } from 'lucide-react';
 import { advisor, contactHrefs, headerNav, site } from '@/lib/site';
 import { trackContactIntent } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
@@ -84,6 +84,16 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <a
+            href={contactHrefs.booking}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackContactIntent('book', 'header')}
+            className="hidden h-touch items-center gap-2 rounded-xl border-2 border-navy/25 px-4 font-semibold text-navy transition-colors hover:border-navy/60 hover:bg-navy-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30 md:flex"
+          >
+            <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" />
+            <span className="whitespace-nowrap">Book a time</span>
+          </a>
           <a
             href={contactHrefs.tel}
             onClick={() => trackContactIntent('call', 'header')}
