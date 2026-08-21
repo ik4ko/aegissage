@@ -11,6 +11,7 @@
  * <ContactForm />. So "collects a ZIP" means precisely "renders ContactForm",
  * directly or through a shared component:
  *
+ *   /                             the homepage lead-capture band
  *   /about, /contact              render it directly
  *   /plans/{state}                renders it directly (25 state pages)
  *   /medicare-{place}             via <LocationLandingPage /> (7 pages)
@@ -47,6 +48,13 @@
  */
 
 export const ZIP_ROUTES: ReadonlySet<string> = new Set([
+  /*
+    The homepage collects a ZIP as of the lead-capture band added in
+    components/forms/deadline-capture.tsx. It is the highest-traffic page on
+    the site, so if this entry is ever removed the disclosure silently
+    downgrades on the page that needs it most.
+  */
+  '/',
   '/about',
   '/contact',
   '/tools/eligibility-check',

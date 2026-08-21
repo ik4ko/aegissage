@@ -19,6 +19,7 @@ import { SocialLinks } from '@/components/marketing/social-links';
 import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { CountUp } from '@/components/motion/count-up';
 import { TriageFlow } from '@/components/tools/triage-flow';
+import { DeadlineCapture } from '@/components/forms/deadline-capture';
 import { Button } from '@/components/ui/button';
 import { getArticles, getLatestNews } from '@/lib/content';
 import { locationLandings } from '@/lib/locations';
@@ -115,6 +116,27 @@ export default function HomePage() {
       <section className="container -mt-4 pb-4">
         <Reveal>
           <TrustBar />
+        </Reveal>
+      </section>
+
+      {/* ── Lead capture ──────────────────────────────────────────────── */}
+      {/*
+        Sits between the hero's "What I actually do" card and the news feed:
+        after the visitor knows who this is and what he does, and before the
+        page turns into a reading list. Every other CTA on this page assumes
+        someone is ready to act today; this is the only one that works for a
+        reader who is months out.
+      */}
+      <section className="container py-14 sm:py-16">
+        <Reveal className="mx-auto max-w-3xl">
+          <SectionHeading
+            kicker="Two dates, no pitch"
+            title="Tell me your ZIP and the month you turn 65."
+            body="I'll send you the two deadlines that actually apply to you. No plan pitches, no phone calls unless you ask."
+          />
+          <div className="mt-8">
+            <DeadlineCapture />
+          </div>
         </Reveal>
       </section>
 

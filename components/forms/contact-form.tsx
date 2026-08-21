@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input, Textarea } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Field } from '@/components/ui/field';
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { advisor, compliance, site } from '@/lib/site';
 import { trackContactSubmit } from '@/lib/analytics';
@@ -471,41 +472,3 @@ export function ContactForm({
   );
 }
 
-function Field({
-  id,
-  label,
-  hint,
-  error,
-  required,
-  children,
-}: {
-  id: string;
-  label: string;
-  hint?: string;
-  error?: string;
-  required?: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <Label htmlFor={id}>
-        {label}
-        {required ? (
-          <span className="text-ember-deep" aria-hidden="true">
-            {' '}
-            *
-          </span>
-        ) : (
-          <span className="ml-2 text-sm font-normal text-ink-faint">optional</span>
-        )}
-      </Label>
-      {hint ? <p className="mt-1 text-sm text-ink-faint">{hint}</p> : null}
-      <div className="mt-2">{children}</div>
-      {error ? (
-        <p id={`${id}-error`} role="alert" className="mt-2 text-sm font-semibold text-ember-deep">
-          {error}
-        </p>
-      ) : null}
-    </div>
-  );
-}
