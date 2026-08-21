@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Mail, MessageSquareText, Phone } from 'lucide-react';
-import { advisor, contactHrefs, nav, site } from '@/lib/site';
+import { advisor, compliance, contactHrefs, nav, site } from '@/lib/site';
 import { planStates } from '@/lib/states';
 import { getLocationLanding, locationLandings } from '@/lib/locations';
 import { ShieldMark } from './site-header';
@@ -90,6 +90,16 @@ export function SiteFooter() {
               </a>
             </li>
           </ul>
+
+          {/*
+            Required CMS disclosure for published agent phone numbers, in the
+            footer contact block per the second required placement. Verbatim —
+            see lib/site.ts. Sized down but not faded: ink-faint is the same
+            token the surrounding footer text uses, not a lower-contrast one.
+          */}
+          <p className="mt-3 max-w-xs text-sm text-ink-faint">
+            {compliance.licensedAgentNotice}
+          </p>
         </div>
 
         <div>

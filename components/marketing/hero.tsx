@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { ContactActions } from './contact-actions';
 import { AdvisorAvatar } from './trust-bar';
 import { licensedStates } from '@/lib/states';
-import { advisor, contactHrefs, site } from '@/lib/site';
+import { advisor, compliance, contactHrefs, site } from '@/lib/site';
 
 /**
  * The homepage hook. Built around the person, not a funnel: a claim someone
@@ -91,6 +91,14 @@ export function Hero() {
             <p className="mt-4 text-base text-ink-faint">
               Or call {advisor.phone} directly — no menus, no queue.
             </p>
+
+            {/*
+              Required CMS disclosure for published agent phone numbers. Sits
+              with the phone CTA rather than in the disclaimer block at the
+              foot of the page, because the point is that someone sees it
+              before they dial, not after. Verbatim — see lib/site.ts.
+            */}
+            <p className="mt-2 text-sm text-ink-faint">{compliance.licensedAgentNotice}</p>
           </div>
 
           <HeroCard />

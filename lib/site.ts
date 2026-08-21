@@ -164,6 +164,21 @@ export const compliance = {
   medicareGovUrl: 'https://www.medicare.gov',
   medicarePhone: '1-800-MEDICARE',
   medicareTty: '1-877-486-2048',
+  /**
+   * CMS marketing guidance requires that any material publishing an agent's
+   * phone number tell the reader that calling it reaches a licensed
+   * insurance agent — so that a call to a broker is never mistaken for a
+   * call to Medicare, to a plan, or to a neutral government help line.
+   *
+   * VERBATIM. Do not reword, abbreviate, or soften it to "you'll reach me"
+   * or similar. "Licensed insurance agent" is the phrase that carries the
+   * meaning; a friendlier paraphrase drops exactly the disclosure being
+   * required.
+   *
+   * Rendered adjacent to the primary phone CTA in the hero and in the footer
+   * contact block. It does NOT need to sit beside every tel: link on a page.
+   */
+  licensedAgentNotice: 'Calling this number will direct you to a licensed insurance agent.',
 } as const;
 
 /**
