@@ -24,6 +24,30 @@ export type QuizQuestion = {
 };
 
 export const QUIZ_QUESTIONS: QuizQuestion[] = [
+  /*
+    Timing goes FIRST on purpose.
+
+    It is the highest-signal answer in the flow and the one most likely to be
+    lost to abandonment, so it is asked before anyone has had a chance to give
+    up. It is also the only question that separates an urgent lead from a
+    planner: `age: 'turning-65'` spans a full twelve months, which is far too
+    coarse to act on.
+
+    `just-researching` is how someone says "do not chase me" without the site
+    having to overload preferred_contact — that column is a channel, and
+    putting intent in it would corrupt what it means.
+  */
+  {
+    id: 'timing',
+    prompt: 'When do you need this sorted out?',
+    help: 'A rough answer is fine. It decides how much of a hurry you are actually in.',
+    options: [
+      { value: 'now', label: 'Now — I have a deadline coming up', hint: 'Or one I think I may have missed' },
+      { value: '1-3-months', label: 'In the next month or three' },
+      { value: 'later', label: 'Further out — I am planning ahead' },
+      { value: 'just-researching', label: 'Just reading for now', hint: 'No need for anyone to follow up' },
+    ],
+  },
   {
     id: 'age',
     prompt: 'Where are you in the countdown to 65?',
@@ -102,7 +126,7 @@ export type QuizResult = {
  * the same for every carrier — never a statement about which plan is better.
  */
 export function interpretQuiz(answers: QuizAnswers): QuizResult {
-  const { age, employer, enrolled, drugs } = answers;
+  const { timing, age, employer, enrolled, drugs } = answers;
   const points: string[] = [];
   const terms = new Set<string>();
 
@@ -185,5 +209,50 @@ export function interpretQuiz(answers: QuizAnswers): QuizResult {
     terms.add('part-d').add('creditable-coverage');
   }
 
+  /*
+    Timing changes the urgency of the advice, never the advice itself. The
+    windows and deadlines above are federal and identical regardless of how
+    someone answered this; this only says which end of them to look at first.
+  */
+  if (timing === 'now') {
+    points.push(
+      'You said you are working against a deadline. If you are unsure which one applies or whether it has already passed, that is the first thing worth confirming — some windows can be reopened and some cannot, and which is which depends on why you missed it.',
+    );
+  } else if (timing === 'just-researching') {
+    points.push(
+      'You said you are reading rather than deciding, so nothing here needs acting on today. The one thing worth doing early is getting your creditable-coverage status in writing, because that is the fact that is hardest to reconstruct later.',
+    );
+    terms.add('creditable-coverage');
+  }
+
   return { headline, points, terms: [...terms] };
 }
+
+/**
+ * Quiz answers rendered as "Question? — Answer" lines for the advisor's email.
+ *
+ * Storage moved to ids and values so lead scoring could rely on them; this
+ * maps back to the wording a person actually saw. An answer whose id or value
+ * is no longer in QUIZ_QUESTIONS is skipped rather than printed raw — a stale
+ * id from an old row should not put `enrolled: a-only` in front of Erekle as
+ * if it were a sentence.
+ *
+ * Lives here rather than in lib/lead-score.ts so that scoreLead() has no
+ * imports at all and stays a pure, standalone function.
+ */
+export function describeQuizAnswers(answers: Record<string, string>): string[] {
+  const lines: string[] = [];
+  for (const question of QUIZ_QUESTIONS) {
+    const value = answers[question.id];
+    if (!value) continue;
+    const option = question.options.find((o) => o.value === value);
+    if (!option) continue;
+    lines.push(`${question.prompt} — ${option.label}`);
+  }
+  return lines;
+}
+
+/** Question ids, so non-quiz keys in `context` can be told apart from answers. */
+export const QUIZ_QUESTION_IDS: ReadonlySet<string> = new Set(
+  QUIZ_QUESTIONS.map((q) => q.id),
+);

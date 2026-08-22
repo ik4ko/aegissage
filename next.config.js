@@ -65,13 +65,12 @@ const nextConfig = {
       {
         source: '/contact-medicare',
         /*
-         * Target is /contact, NOT the /medicare-coverage-review named in the
-         * brief — that page does not exist in this repo and returns 404 live,
-         * so the redirect would have been a 404 -> 404 hop, which search
-         * engines treat as a soft error and which is strictly worse than the
-         * plain 404 it replaced. Repoint this the day that page ships.
+         * Repointed from /contact when /medicare-coverage-review shipped.
+         * It originally went to /contact because the intended target did not
+         * exist yet, and pointing a dead URL at another dead URL is a soft
+         * error rather than a fix.
          */
-        destination: '/contact',
+        destination: '/medicare-coverage-review',
         permanent: true,
       },
       {

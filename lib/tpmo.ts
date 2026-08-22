@@ -47,7 +47,17 @@
  * IF YOU ADD <ContactForm /> TO A PAGE, ADD ITS ROUTE HERE.
  */
 
-export const ZIP_ROUTES: ReadonlySet<string> = new Set([
+/**
+ * ZIP routes whose page is hand-authored.
+ *
+ * Kept apart from the generated ones so lib/tpmo-guard.ts can check the
+ * generated families against real data without tripping over these. An earlier
+ * version prefix-matched "/medicare-" to decide what was generated, which
+ * flagged the hand-written /medicare-coverage-review as a stale location page
+ * and failed the build. Same too-broad-prefix trap this file already warns
+ * about; naming the two sets explicitly removes it for good.
+ */
+const HAND_AUTHORED_ZIP_ROUTES = [
   /*
     The homepage collects a ZIP as of the lead-capture band added in
     components/forms/deadline-capture.tsx. It is the highest-traffic page on
@@ -60,6 +70,23 @@ export const ZIP_ROUTES: ReadonlySet<string> = new Set([
   '/tools/eligibility-check',
   '/tools/penalty-calculator',
   '/tools/irmaa-calculator',
+  /*
+    Both landing pages embed <EligibilityQuiz />, which renders <ContactForm />
+    and therefore a ZIP field. Added with the pages in the same commit — a
+    landing page carrying the generic disclaimer while collecting a ZIP is the
+    exact defect this list exists to prevent.
+  */
+  '/turning-65-bergen-county',
+  '/medicare-coverage-review',
+] as const;
+
+/**
+ * ZIP routes generated from lib/locations.ts and lib/states.ts.
+ *
+ * lib/tpmo-guard.ts checks THIS list against the real data at build time, so
+ * adding a location or a state without adding it here fails the build.
+ */
+const GENERATED_ZIP_ROUTES = [
   // Local landing pages — mirrors locationLandings in lib/locations.ts
   '/medicare-bergen-county',
   '/medicare-cliffside-park',
@@ -94,7 +121,17 @@ export const ZIP_ROUTES: ReadonlySet<string> = new Set([
   '/plans/texas',
   '/plans/virginia',
   '/plans/west-virginia',
+] as const;
+
+export const ZIP_ROUTES: ReadonlySet<string> = new Set<string>([
+  ...HAND_AUTHORED_ZIP_ROUTES,
+  ...GENERATED_ZIP_ROUTES,
 ]);
+
+/** Only the generated families, for the build-time drift guard. */
+export const GENERATED_ZIP_ROUTE_SET: ReadonlySet<string> = new Set<string>(
+  GENERATED_ZIP_ROUTES,
+);
 
 /** True when the route at `pathname` puts a ZIP field in front of a visitor. */
 export function collectsZip(pathname: string | null): boolean {

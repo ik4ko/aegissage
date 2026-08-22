@@ -7,6 +7,7 @@ import { syncPendingLeads } from '@/lib/crm/dispatch';
 import { advisor } from '@/lib/site';
 import { consentTextVersionFor } from '@/lib/consent';
 import { normalizeEmail, normalizePhone } from '@/lib/match';
+import { scoreLead } from '@/lib/lead-score';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -51,6 +52,31 @@ export async function POST(req: Request) {
     once here so every column and the CRM payload record the same value.
   */
   const consentTextVersion = consentTextVersionFor(payload.source);
+
+  /*
+    ── Scored on the server, not sent by the client ────────────────────────
+
+    The plan was to score client-side and post the result. Making quiz answers
+    id-keyed removed the reason for that: the server now has every input in a
+    stable shape, so it can score directly.
+
+    Server-side is strictly better here. One implementation covers every form
+    — quiz, contact, booking interstitial, homepage capture and both landing
+    pages — without each remembering to score itself, and a value that decides
+    who gets called first is not something to accept from the browser.
+
+    Scored against `now` at arrival, and never recomputed on read: the score
+    records the situation as it was.
+  */
+  const leadScore = scoreLead({
+    bookingStatus: payload.bookingStatus,
+    topic: payload.topic,
+    preferredContact: payload.preferredContact,
+    source: payload.source,
+    answers: payload.context ?? null,
+    turns65: payload.context?.turns65 ?? null,
+    now: new Date(),
+  });
 
   // Honeypot: a bot filled the hidden field. Return 200 so it learns nothing.
   if (payload.website) {
@@ -139,6 +165,7 @@ export async function POST(req: Request) {
   */
   const consentColumns = {
     booking_status: payload.bookingStatus ?? null,
+    lead_score: leadScore,
     consent_at: now,
     consent_sms: payload.consentSms === true,
     consent_sms_at: payload.consentSms === true ? now : null,
@@ -214,7 +241,7 @@ export async function POST(req: Request) {
         // still a lead, and losing it would be far worse than duplicating it.
         console.error('[contact] booking match update failed:', error.message);
       } else {
-        const alerts = await sendContactAlert(payload);
+        const alerts = await sendContactAlert(payload, leadScore);
         const emailAlert = alerts.find((r) => r.channel === 'email');
         await supabase.from('notification_deliveries').insert(
           alerts.map((result) => ({
@@ -306,7 +333,7 @@ export async function POST(req: Request) {
     shows up as `notify_status = 'failed'` in the operational queue instead of
     disappearing into a log line nobody reads.
   */
-  const alerts = await sendContactAlert(payload);
+  const alerts = await sendContactAlert(payload, leadScore);
   const emailAlert = alerts.find((r) => r.channel === 'email');
 
   /*

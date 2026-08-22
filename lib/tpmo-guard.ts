@@ -2,7 +2,7 @@ import 'server-only';
 
 import { locationLandings } from './locations';
 import { planStates } from './states';
-import { ZIP_ROUTES } from './tpmo';
+import { GENERATED_ZIP_ROUTE_SET } from './tpmo';
 
 /**
  * Build-time guard: keeps lib/tpmo.ts honest.
@@ -31,19 +31,14 @@ function assertZipRoutesMatchGeneratedPages(): void {
     ...planStates.map((state) => `/plans/${state.slug}`),
   ];
 
-  const missing = expected.filter((route) => !ZIP_ROUTES.has(route));
+  const missing = expected.filter((route) => !GENERATED_ZIP_ROUTE_SET.has(route));
 
   /*
     The reverse direction matters just as much. A route left behind here
     after its page was deleted is not a compliance problem, but it is a lie
     about what the site does, and it is how the list rots.
   */
-  const generatedPrefixes = ['/medicare-', '/plans/'];
-  const stale = [...ZIP_ROUTES].filter(
-    (route) =>
-      generatedPrefixes.some((prefix) => route.startsWith(prefix)) &&
-      !expected.includes(route),
-  );
+  const stale = [...GENERATED_ZIP_ROUTE_SET].filter((route) => !expected.includes(route));
 
   if (missing.length === 0 && stale.length === 0) return;
 

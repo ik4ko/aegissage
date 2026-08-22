@@ -2,6 +2,8 @@ import 'server-only';
 
 import { Resend } from 'resend';
 import { advisor, site } from '@/lib/site';
+import { type LeadScore } from '@/lib/lead-score';
+import { describeQuizAnswers, QUIZ_QUESTION_IDS } from '@/lib/validations/quiz';
 import type { ContactPayload } from '@/lib/validations/contact';
 
 /**
@@ -38,10 +40,16 @@ export type NotifyChannelResult = {
  * explicit consent check and an opt-out check. Keep the two separate.
  */
 
-function summarize(payload: ContactPayload, meta: { submittedAt: string }) {
+function summarize(
+  payload: ContactPayload,
+  meta: { submittedAt: string; leadScore?: LeadScore },
+) {
   const lines = [
-    `New contact from ${site.domain}`,
+    meta.leadScore === 'A'
+      ? `URGENT (A) — new contact from ${site.domain}`
+      : `New contact from ${site.domain}`,
     '',
+    `Priority:  ${meta.leadScore ?? '—'}`,
     `Name:      ${payload.name}`,
     `Email:     ${payload.email || '—'}`,
     `Phone:     ${payload.phone || '—'}`,
@@ -52,10 +60,23 @@ function summarize(payload: ContactPayload, meta: { submittedAt: string }) {
     `Submitted: ${meta.submittedAt}`,
   ];
 
+  /*
+    Quiz answers are stored keyed by question id and valued by option value,
+    so they are mapped back to the wording the person actually saw. Anything
+    in `context` that is not a quiz answer — UTM keys, landing path, referrer,
+    turns65 — is printed as-is underneath.
+  */
   if (payload.context && Object.keys(payload.context).length > 0) {
-    lines.push('', 'Eligibility check answers:');
-    for (const [key, value] of Object.entries(payload.context)) {
-      lines.push(`  ${key}: ${value}`);
+    const quizLines = describeQuizAnswers(payload.context);
+    if (quizLines.length > 0) {
+      lines.push('', 'Eligibility check answers:');
+      for (const line of quizLines) lines.push(`  ${line}`);
+    }
+
+    const rest = Object.entries(payload.context).filter(([key]) => !QUIZ_QUESTION_IDS.has(key));
+    if (rest.length > 0) {
+      lines.push('', 'Context:');
+      for (const [key, value] of rest) lines.push(`  ${key}: ${value}`);
     }
   }
 
@@ -74,7 +95,11 @@ function escapeHtml(value: string) {
     .replace(/"/g, '&quot;');
 }
 
-async function sendEmail(text: string, payload: ContactPayload): Promise<NotifyChannelResult> {
+async function sendEmail(
+  text: string,
+  payload: ContactPayload,
+  leadScore?: LeadScore,
+): Promise<NotifyChannelResult> {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.NOTIFY_EMAIL_TO;
   const from = process.env.NOTIFY_EMAIL_FROM ?? `AegisSage <notifications@${site.domain}>`;
@@ -89,7 +114,16 @@ async function sendEmail(text: string, payload: ContactPayload): Promise<NotifyC
       from,
       to: to.split(',').map((t) => t.trim()),
       replyTo: payload.email || undefined,
-      subject: `New AegisSage contact — ${payload.name} (${payload.preferredContact})`,
+      /*
+        A leads are flagged in the SUBJECT, not just the body. The whole point
+        of scoring is that an urgent one is not buried under three newsletter
+        signups, and a body-only flag is invisible in an inbox list — which is
+        exactly where the burying happens.
+      */
+      subject:
+        leadScore === 'A'
+          ? `[A] URGENT — ${payload.name} (${payload.preferredContact}) — AegisSage`
+          : `New AegisSage contact — ${payload.name} (${payload.preferredContact})`,
       text,
       html: `<pre style="font:15px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap">${escapeHtml(text)}</pre>`,
     });
@@ -144,11 +178,14 @@ async function sendSms(payload: ContactPayload): Promise<NotifyChannelResult> {
   }
 }
 
-export async function sendContactAlert(payload: ContactPayload): Promise<NotifyChannelResult[]> {
+export async function sendContactAlert(
+  payload: ContactPayload,
+  leadScore?: LeadScore,
+): Promise<NotifyChannelResult[]> {
   const submittedAt = new Date().toISOString();
-  const text = summarize(payload, { submittedAt });
+  const text = summarize(payload, { submittedAt, leadScore });
 
-  const results = await Promise.all([sendEmail(text, payload), sendSms(payload)]);
+  const results = await Promise.all([sendEmail(text, payload, leadScore), sendSms(payload)]);
 
   for (const result of results) {
     if (result.status === 'failed') {

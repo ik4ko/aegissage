@@ -194,12 +194,26 @@ function QuizResult({
     headingRef.current?.focus({ preventScroll: true });
   }, []);
 
-  // Human-readable answer labels, for the advisor's notification email.
+  /*
+    Answers are stored keyed by QUESTION ID and valued by OPTION VALUE.
+
+    They used to be keyed by the full prompt text and valued by the human
+    label — readable in the advisor's email, and unusable for anything else.
+    Rewording a question silently orphaned every row written before the edit,
+    and any code reading those answers was string-matching prose that a copy
+    change could break without a single test failing. Lead scoring reads these
+    answers, so that fragility would have shown up as leads quietly grading
+    themselves down.
+
+    Ids and values are stable by contract. lib/notify/send-contact-alert.ts
+    maps them back to labels at send time, so the email is exactly as readable
+    as it was.
+  */
   const context: Record<string, string> = {};
   for (const q of QUIZ_QUESTIONS) {
     const value = answers[q.id];
     const option = q.options.find((o) => o.value === value);
-    if (option) context[q.prompt] = option.label;
+    if (option) context[q.id] = option.value;
   }
 
   return (
