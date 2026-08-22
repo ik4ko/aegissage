@@ -209,8 +209,35 @@ export const tpmoCounts: {
   organizationCount: number | null;
   productCount: number | null;
 } = {
-  organizationCount: null,
-  productCount: null,
+  /*
+    ── Counted from Sunfire, August 2026 ──────────────────────────────────
+    Scope: Bergen County, New Jersey. APPOINTED CARRIERS ONLY — carriers
+    Erekle actually holds an appointment with, not everything Sunfire can
+    quote. That distinction is the whole point of the disclosure: it states
+    what THIS agent can offer, not what exists in the market.
+
+    organizationCount = 6
+      Humana, Aetna, UnitedHealthcare, Wellpoint, Clover, Horizon/Braven
+
+    productCount = 65
+      26 Medicare Advantage + 39 Medigap
+
+    ── Recount due October 2026 ───────────────────────────────────────────
+    Devoted comes online then, which changes BOTH numbers: 6 -> 7
+    organizations, plus however many products they bring. Re-pull from
+    Sunfire for Bergen County rather than incrementing by hand, and update
+    `compliance.currentAsOf` in the same commit.
+
+    Plan-year turnover also moves these. Treat any count older than the
+    current contract year as wrong, not merely stale — the counted TPMO
+    disclaimer is a factual regulatory statement under 42 CFR
+    422.2267(e)(41), and a number that was true last year is a false one
+    now. If a recount cannot be done, set both back to null: the component
+    falls back to the generic variant, which asserts no count and is
+    itself fully compliant.
+  */
+  organizationCount: 6,
+  productCount: 65,
 };
 
 export const nav = [
