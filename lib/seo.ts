@@ -117,6 +117,13 @@ export function siteJsonLd() {
         '@type': 'Person',
         '@id': advisorId,
         name: advisor.name,
+        /*
+          The ONLY place the nickname appears anywhere in this codebase.
+          Body copy uses one name; this exists so a search for "Eric
+          Niniashvili" still resolves to the same person, which is a real
+          query given he is introduced that way in person and on video.
+        */
+        alternateName: 'Eric Niniashvili',
         jobTitle: advisor.credential,
         telephone: phone,
         ...(advisor.emailConfigured ? { email: advisor.email } : {}),
@@ -128,7 +135,17 @@ export function siteJsonLd() {
         worksFor: { '@id': organizationId },
       },
       {
-        '@type': 'ProfessionalService',
+        /*
+          Both types are schema.org subtypes of LocalBusiness, so this IS a
+          LocalBusiness node — more specifically typed than the bare term.
+
+          InsuranceAgency says what the business is. ProfessionalService says
+          it is a service-area business rather than a place you visit, which
+          is why address, geo, openingHours and hasMap stay absent: Google
+          treats `address` as required for a LocalBusiness, and a fabricated
+          one would be far worse than an incomplete node.
+        */
+        '@type': ['ProfessionalService', 'InsuranceAgency'],
         '@id': professionalServiceId,
         name: site.name,
         url: site.url,
@@ -200,6 +217,44 @@ export function serviceJsonLd() {
       areaServed: serviceAreas,
     },
   ];
+}
+
+/**
+ * Per-page LocalBusiness node for a local-area page.
+ *
+ * The sitewide node in `siteJsonLd()` declares the whole service area. This
+ * narrows it to the one place a given page is about, so /medicare-fort-lee
+ * says Fort Lee rather than repeating the full list on every page.
+ *
+ * `@id` is per-page and distinct from the sitewide `#professional-service`
+ * node — two nodes sharing an @id with different areaServed is a contradiction
+ * a validator will flag. `parentOrganization` ties it back to the same
+ * Organization so the graph stays connected.
+ *
+ * Deliberately absent, for the same reason as the sitewide node: address,
+ * geo, openingHours, hasMap, priceRange, aggregateRating. Add them only when
+ * a verified public address exists and has been approved for publication.
+ */
+export function localBusinessJsonLd(options: {
+  /** Page path, e.g. "/medicare-fort-lee". */
+  path: string;
+  /** The place this page is about, e.g. "Fort Lee, New Jersey". */
+  areaServed: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': ['ProfessionalService', 'InsuranceAgency'],
+    '@id': `${site.url}${options.path}#business`,
+    name: site.name,
+    url: `${site.url}${options.path}`,
+    image: businessImage,
+    telephone: phone,
+    email: advisor.email,
+    areaServed: options.areaServed,
+    knowsAbout,
+    parentOrganization: { '@id': organizationId },
+    employee: { '@id': advisorId },
+  };
 }
 
 export function breadcrumbJsonLd(items: { name: string; url: string }[]) {

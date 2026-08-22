@@ -6,7 +6,7 @@ import { TrustBar } from './trust-bar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/json-ld';
-import { breadcrumbJsonLd } from '@/lib/seo';
+import { breadcrumbJsonLd, localBusinessJsonLd } from '@/lib/seo';
 import { advisor, site } from '@/lib/site';
 import {
   getLocationLanding,
@@ -33,6 +33,36 @@ import { Reveal } from '@/components/motion/reveal';
  * paints with the document. Reveal is still used below the fold, where the
  * delay costs nothing.
  */
+
+/**
+ * Full place name for schema, walking up the parentSlug chain.
+ *
+ * `context.Location` is what the page shows a visitor, and for a town it is
+ * the bare name — "Fort Lee", "Edgewater". That is right on the page, where
+ * the surrounding copy supplies the context, and wrong in `areaServed`, where
+ * a consumer has only the string. There is a Fort Lee in several states.
+ *
+ * Walking parentSlug yields "Fort Lee, Bergen County, New Jersey" without
+ * hardcoding a state, so a landing added outside New Jersey stays correct.
+ * The depth guard is against a parentSlug cycle, which would otherwise hang
+ * the build rather than fail it.
+ */
+function fullAreaServed(location: LocationLanding): string {
+  const parts: string[] = [location.name];
+  let parentSlug = location.parentSlug;
+  let depth = 0;
+
+  while (parentSlug && depth < 5) {
+    const parent = getLocationLanding(parentSlug);
+    if (!parent) break;
+    if (!parts.includes(parent.name)) parts.push(parent.name);
+    parentSlug = parent.parentSlug;
+    depth += 1;
+  }
+
+  return parts.join(', ');
+}
+
 export function LocationLandingPage({ location }: { location: LocationLanding }) {
   const url = `${site.url}/medicare-${location.slug}`;
   const parent = location.parentSlug ? getLocationLanding(location.parentSlug) : undefined;
@@ -52,6 +82,18 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
   return (
     <>
       <JsonLd data={breadcrumbJsonLd(crumbs)} />
+      {/*
+        Per-page LocalBusiness/InsuranceAgency node, scoped to this one place.
+        `context.Location` is the page's own full place name, already used for
+        the form context, so the schema and the visible page cannot disagree
+        about where this page is about.
+      */}
+      <JsonLd
+        data={localBusinessJsonLd({
+          path: `/medicare-${location.slug}`,
+          areaServed: fullAreaServed(location),
+        })}
+      />
 
       <section className="border-b border-line bg-paper">
         <div className="container py-14 sm:py-20">
