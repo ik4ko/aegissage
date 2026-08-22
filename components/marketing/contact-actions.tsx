@@ -58,8 +58,6 @@ export function ContactActions({
       <Button asChild size={size} variant="primary" className={cn(darkFocus)}>
         <a
           href={contactHrefs.booking}
-          target="_blank"
-          rel="noopener noreferrer"
           onClick={() => trackContactIntent('book', where)}
         >
           <CalendarClock className="h-5 w-5" aria-hidden="true" />

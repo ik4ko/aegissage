@@ -62,6 +62,14 @@ export const contactSchema = z
     /** Standalone permission for future marketing/educational email. */
     consentMarketing: z.boolean().optional().default(false),
     /**
+     * Set by the /book interstitial only.
+     *
+     * 'intent' means the visitor completed the interstitial and was
+     * redirected to Google Calendar. It is NOT proof they finished booking —
+     * nothing reads Calendar back. See the migration comment.
+     */
+    bookingStatus: z.enum(['intent']).optional(),
+    /**
      * Honeypot — real people leave this empty. It deliberately accepts any
      * value: rejecting it here would return a validation error that tells a
      * bot exactly which field to stop filling. The API route checks it and

@@ -137,12 +137,31 @@ export const contactHrefs = {
   sms: `sms:${advisor.phoneE164}`,
   mailto: advisor.emailConfigured ? `mailto:${advisor.email}` : '#contact-email',
   /**
-   * Google Calendar Appointment Schedule — 60-minute Medicare consultation
-   * slots. Added Aug 14 2026. This is a public Google-hosted booking page,
-   * not a page on this site, so it opens in a new tab rather than routing
-   * internally.
+   * Every "Book a time" CTA points HERE, not straight at Google.
+   *
+   * /book is an on-domain interstitial that records who is booking, captures
+   * UTM attribution, and takes a real consent tick before handing off to
+   * Google Calendar. Booking used to go direct, which produced no contacts
+   * row, no alert and no attribution for the highest-intent action on the
+   * site.
+   *
+   * Attribution is why the interstitial has to exist rather than being solved
+   * on the Google side: an Appointment Schedule link has no documented way to
+   * carry UTM parameters through and hand them back, so anything not captured
+   * before the redirect is gone.
+   *
+   * Internal route — do NOT give these links target="_blank".
    */
-  booking: 'https://calendar.app.google/pNjYuj1JK6i2ATrN6',
+  booking: '/book',
+  /**
+   * Google Calendar Appointment Schedule — 60-minute Medicare consultation
+   * slots. Added Aug 14 2026.
+   *
+   * Only /book redirects here. Do not link to it from anywhere else: a direct
+   * link skips attribution and consent capture, which is the entire reason
+   * the interstitial exists.
+   */
+  bookingCalendar: 'https://calendar.app.google/pNjYuj1JK6i2ATrN6',
 } as const;
 
 export const social = {

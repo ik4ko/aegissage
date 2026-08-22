@@ -86,8 +86,6 @@ export function SiteHeader() {
         <div className="flex items-center gap-2">
           <a
             href={contactHrefs.booking}
-            target="_blank"
-            rel="noopener noreferrer"
             onClick={() => trackContactIntent('book', 'header')}
             className="hidden h-touch items-center gap-2 rounded-xl border-2 border-navy/25 px-4 font-semibold text-navy transition-colors hover:border-navy/60 hover:bg-navy-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30 md:flex"
           >
@@ -153,8 +151,6 @@ export function SiteHeader() {
           <div className="container flex flex-col gap-2 pb-4 pt-3">
             <a
               href={contactHrefs.booking}
-              target="_blank"
-              rel="noopener noreferrer"
               onClick={() => {
                 trackContactIntent('book', 'header-mobile');
                 setOpen(false);

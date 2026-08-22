@@ -6,6 +6,7 @@ import { enqueueLeadSync } from '@/lib/crm/outbox';
 import { syncPendingLeads } from '@/lib/crm/dispatch';
 import { advisor } from '@/lib/site';
 import { consentTextVersionFor } from '@/lib/consent';
+import { normalizeEmail, normalizePhone } from '@/lib/match';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -123,7 +124,21 @@ export async function POST(req: Request) {
     ip_address: clientIp(req),
   };
 
+  /*
+    Columns added by a LATER migration than the one that created `contacts`.
+
+    These are spread into the first insert attempt and dropped from the
+    fallback, so a database that has not had the migration applied yet still
+    stores the submission instead of 500ing at the visitor.
+
+    booking_status lives here, NOT in baseRow. It arrives with
+    20260822000000_booking_status.sql; putting it in baseRow would have meant
+    the fallback insert carried it too, so a missing migration would fail BOTH
+    attempts and break every form on the site — which is precisely the July
+    2026 failure this fallback exists to prevent.
+  */
   const consentColumns = {
+    booking_status: payload.bookingStatus ?? null,
     consent_at: now,
     consent_sms: payload.consentSms === true,
     consent_sms_at: payload.consentSms === true ? now : null,
@@ -133,6 +148,95 @@ export async function POST(req: Request) {
     consent_marketing_text_version:
       payload.consentMarketing === true ? consentTextVersion : null,
   };
+
+  /*
+    ── Booking: update the existing person rather than duplicating them ────
+
+    Someone who used the contact form last week and books a call today is one
+    lead, not two. Without this they appear as a stranger and get a second
+    follow-up.
+
+    Scoped to bookings on purpose. Form submissions still always insert: two
+    separate messages from the same person are two separate things to answer,
+    and collapsing them would lose the second one's message and consent
+    record.
+
+    Best-effort, as agreed — no unique index. A miss creates a new row, which
+    is the same behaviour as before this existed and is never worse than it.
+    Only `booking_status` is written to the matched row: their original
+    consent, source, message and attribution are the record of what they
+    actually did, and a booking must not overwrite any of it.
+  */
+  if (payload.bookingStatus) {
+    const emailKey = normalizeEmail(payload.email);
+    const phoneKey = normalizePhone(payload.phone);
+
+    let existingId: string | null = null;
+
+    if (emailKey) {
+      const { data } = await supabase
+        .from('contacts')
+        .select('id')
+        .ilike('email', emailKey)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      existingId = (data?.id as string | undefined) ?? null;
+    }
+
+    if (!existingId && phoneKey) {
+      /*
+        Phone is stored as typed, so an equality match would miss most
+        formats. Pulling the recent candidates and normalising in JS is
+        correct at this volume and avoids a schema change; if `contacts` ever
+        grows past a few thousand rows, this wants a generated normalised
+        column with an index rather than a bigger limit.
+      */
+      const { data } = await supabase
+        .from('contacts')
+        .select('id, phone')
+        .not('phone', 'is', null)
+        .order('created_at', { ascending: false })
+        .limit(500);
+
+      const hit = (data ?? []).find((row) => normalizePhone(row.phone as string) === phoneKey);
+      existingId = (hit?.id as string | undefined) ?? null;
+    }
+
+    if (existingId) {
+      const { error } = await supabase
+        .from('contacts')
+        .update({ booking_status: payload.bookingStatus })
+        .eq('id', existingId);
+
+      if (error) {
+        // Fall through to a normal insert: a lead that cannot be matched is
+        // still a lead, and losing it would be far worse than duplicating it.
+        console.error('[contact] booking match update failed:', error.message);
+      } else {
+        const alerts = await sendContactAlert(payload);
+        const emailAlert = alerts.find((r) => r.channel === 'email');
+        await supabase.from('notification_deliveries').insert(
+          alerts.map((result) => ({
+            contact_id: existingId,
+            channel: result.channel,
+            audience: 'internal' as const,
+            purpose: 'booking-alert',
+            status:
+              result.status === 'sent' ? 'sent' : result.status === 'failed' ? 'failed' : 'skipped',
+            provider: result.channel === 'email' ? 'resend' : 'twilio',
+            provider_message_id: result.providerMessageId ?? null,
+            last_error: result.detail ?? null,
+            consent_basis: null,
+            sent_at: result.status === 'sent' ? new Date().toISOString() : null,
+            failed_at: result.status === 'failed' ? new Date().toISOString() : null,
+          })),
+        );
+        void emailAlert;
+        return NextResponse.json({ ok: true, persisted: true, matched: true });
+      }
+    }
+  }
 
   let inserted: { id: string } | null = null;
   let leadOpsAvailable = true;
