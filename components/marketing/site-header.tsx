@@ -128,6 +128,7 @@ export function SiteHeader() {
               <li key={item.href}>
                 <Link
                   href={item.href}
+                  onClick={() => setOpen(false)}
                   className="flex min-h-touch items-center border-b border-line/70 py-3.5 text-lg font-medium text-ink"
                 >
                   {item.label}
@@ -135,6 +136,46 @@ export function SiteHeader() {
               </li>
             ))}
           </ul>
+
+          {/*
+            Booking and calling, inside the drawer.
+
+            The desktop "Book a time" button is `md:flex`, so on a phone it is
+            not rendered at all — and it was not in this menu either, which
+            meant mobile visitors had no route to the calendar from the header
+            on any page. Most of this site's traffic is on a phone, and
+            scheduling is the action that does not require someone to be ready
+            to talk right now, so it was the wrong one to lose.
+
+            The phone link repeats here for the same reason: its header
+            counterpart is `sm:flex` and disappears on the narrowest screens.
+          */}
+          <div className="container flex flex-col gap-2 pb-4 pt-3">
+            <a
+              href={contactHrefs.booking}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                trackContactIntent('book', 'header-mobile');
+                setOpen(false);
+              }}
+              className="flex min-h-touch items-center justify-center gap-2 rounded-xl border-2 border-navy/25 px-4 font-semibold text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+            >
+              <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" />
+              <span>Book a time</span>
+            </a>
+            <a
+              href={contactHrefs.tel}
+              onClick={() => {
+                trackContactIntent('call', 'header-mobile');
+                setOpen(false);
+              }}
+              className="flex min-h-touch items-center justify-center gap-2 rounded-xl bg-ember px-5 font-semibold text-white shadow-card focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+            >
+              <Phone className="h-5 w-5 shrink-0" aria-hidden="true" />
+              <span>{advisor.phone}</span>
+            </a>
+          </div>
         </nav>
       ) : null}
     </header>

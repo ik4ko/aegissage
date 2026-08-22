@@ -227,24 +227,36 @@ export const nav = [
 ] as const;
 
 /**
- * Header nav — a trimmed subset of `nav` above.
+ * Header nav.
  *
- * Added Aug 14 2026: eight items in the header read as clutter, and two
- * pairs read as duplicates even though they aren't (Checklist is a prep
- * document; Enrollment Check is a "which window am I in" quiz — News is
- * short-form updates; Articles is long-form guides). Rather than delete
- * either page — both have real content and real SEO value — this trims
- * what the HEADER shows while `nav` above (unchanged) still drives the
- * footer, so every page keeps at least one real internal link pointing at
- * it. An orphaned page (no internal links) is worse for SEO than a
+ * ── History, so this is not "fixed" back and forth ────────────────────────
+ * Aug 14 2026 trimmed this from eight items to four, on the grounds that
+ * eight read as clutter and two pairs read as duplicates even though they
+ * are not: Checklist is a prep document while Enrollment Check is a "which
+ * window am I in" quiz, and News is short-form updates while Articles is
+ * long-form guides.
+ *
+ * Aug 2026 (this pass) restores Basics and Enrollment Check, at Erekle's
+ * direction, giving six. The reasoning that dropped them still holds for
+ * News and Videos, which stay out of the header. Enrollment Check comes
+ * back because it is the primary conversion tool on the site and the hero's
+ * filled CTA points at it — burying the site's main self-serve action in
+ * the footer worked against the page's own hierarchy.
+ *
+ * The Checklist/Enrollment Check adjacency the Aug 14 note warned about is
+ * real and is now shipped deliberately. If they test as confusing, the fix
+ * is clearer labels rather than dropping one — both pages have real content
+ * and real search traffic.
+ *
+ * `nav` above is unchanged and still drives the footer, so News and Videos
+ * keep a real internal link. An orphaned page is worse for SEO than a
  * decluttered header is good for it.
- *
- * Dropped from the header, still live and still linked from the footer:
- * Basics, Enrollment Check, News, Videos.
  */
 export const headerNav = [
-  { href: '/about', label: 'About Me' },
+  { href: '/medicare-basics', label: 'Basics' },
   { href: '/medicare-checklist', label: 'Checklist' },
+  { href: '/tools/eligibility-check', label: 'Enrollment Check' },
   { href: '/tools/medicare-iq', label: 'Medicare IQ' },
   { href: '/blog', label: 'Articles' },
+  { href: '/about', label: 'About' },
 ] as const;
