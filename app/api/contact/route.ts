@@ -231,9 +231,36 @@ export async function POST(req: Request) {
     }
 
     if (existingId) {
+      /*
+        ── What a match writes, and why that changed ─────────────────────
+
+        This originally wrote booking_status alone, on the reasoning that the
+        row's existing consent, source and message record what the person
+        actually did and a booking must not overwrite it.
+
+        That was wrong about consent specifically. Someone ticking the box on
+        /book has just given a fresh, dated permission against wording we can
+        name. Recording only booking_status threw that away — and on a row
+        written through the degraded path, whose consent_at was already null,
+        it left a contact holding a live consent with no timestamp for it.
+        That is not a usable consent record.
+
+        So the new consent event is written and supersedes the old one: the
+        most recent affirmative permission is the operative one, and the
+        version tag now names wording the person actually saw.
+
+        Everything else is still left alone. source, message, context, zip and
+        topic remain the record of what they originally came for, and a
+        booking must not rewrite that.
+      */
       const { error } = await supabase
         .from('contacts')
-        .update({ booking_status: payload.bookingStatus })
+        .update({
+          booking_status: payload.bookingStatus,
+          lead_score: leadScore,
+          consent_at: now,
+          consent_text_version: consentTextVersion,
+        })
         .eq('id', existingId);
 
       if (error) {

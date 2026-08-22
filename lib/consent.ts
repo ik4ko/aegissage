@@ -31,6 +31,18 @@ export const CONSENT_TEXT_VERSIONS = {
   contactForm: 'contact-form-2026-07',
   /** components/forms/deadline-capture.tsx — single email-only consent box. */
   homepageCapture: 'homepage-capture-2026-08',
+  /**
+   * components/forms/booking-form.tsx — consent to be contacted about the
+   * appointment being booked.
+   *
+   * Added after this exact mistake: /book shipped without a branch here and
+   * fell through to the ContactForm default, recording
+   * 'contact-form-2026-07' against wording nobody on /book had ever seen.
+   * The warning against that was already written at the bottom of this file.
+   * It is easy to miss precisely because nothing fails — the column just
+   * quietly says the wrong thing.
+   */
+  bookingInterstitial: 'booking-interstitial-2026-08',
 } as const;
 
 /**
@@ -42,6 +54,9 @@ export const CONSENT_TEXT_VERSIONS = {
  */
 export const HOMEPAGE_CAPTURE_SOURCE = 'homepage-deadline-capture';
 
+/** `source` posted by the /book interstitial. Shared for the same reason. */
+export const BOOKING_SOURCE = 'booking-interstitial';
+
 /**
  * The consent wording version for a submission's `source`.
  *
@@ -52,7 +67,7 @@ export const HOMEPAGE_CAPTURE_SOURCE = 'homepage-deadline-capture';
  * showed anyone.
  */
 export function consentTextVersionFor(source: string): string {
-  return source === HOMEPAGE_CAPTURE_SOURCE
-    ? CONSENT_TEXT_VERSIONS.homepageCapture
-    : CONSENT_TEXT_VERSIONS.contactForm;
+  if (source === HOMEPAGE_CAPTURE_SOURCE) return CONSENT_TEXT_VERSIONS.homepageCapture;
+  if (source === BOOKING_SOURCE) return CONSENT_TEXT_VERSIONS.bookingInterstitial;
+  return CONSENT_TEXT_VERSIONS.contactForm;
 }

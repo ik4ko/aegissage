@@ -290,6 +290,23 @@ async function probeLeadOpsSchema(): Promise<SchemaHealth> {
       label: 'contacts.consent_at',
       run: () => supabase.from('contacts').select('consent_at', { head: true, count: 'exact' }),
     },
+    /*
+      Added after a booking wrote a null booking_status and the probe still
+      reported ok:true — it covered only the July lead_ops migration and knew
+      nothing about the columns added since. A health check that does not cover
+      the newest thing that can break is the same defect it was built to catch.
+
+      Probe every column the write path depends on, and add to this list in the
+      same commit as any migration that adds one.
+    */
+    {
+      label: 'contacts.booking_status',
+      run: () => supabase.from('contacts').select('booking_status', { head: true, count: 'exact' }),
+    },
+    {
+      label: 'contacts.lead_score',
+      run: () => supabase.from('contacts').select('lead_score', { head: true, count: 'exact' }),
+    },
   ];
 
   const missing: string[] = [];
@@ -308,8 +325,10 @@ async function probeLeadOpsSchema(): Promise<SchemaHealth> {
     detail:
       `Lead operations are DEGRADED. Missing: ${missing.join(', ')}. ` +
       'Submissions are still being stored, but CRM handoff and delivery ' +
-      'auditing are not running, and every lead received in this state needs ' +
-      'manual follow-up. Apply supabase/migrations/20260727000000_lead_ops.sql.',
+      'auditing may not be running, and leads received in this state need ' +
+      'manual follow-up. Check that every migration in supabase/migrations/ has ' +
+      'been applied, then `notify pgrst, \'reload schema\';` — PostgREST caches ' +
+      'the schema, so a column can exist in Postgres and still be rejected on write.',
   };
 }
 

@@ -12,6 +12,7 @@ import { Field } from '@/components/ui/field';
 import { advisor, contactHrefs } from '@/lib/site';
 import { trackContactSubmit, trackFormStart, trackFormSubmit } from '@/lib/analytics';
 import { captureAttribution, getAttribution } from '@/lib/attribution';
+import { BOOKING_SOURCE } from '@/lib/consent';
 
 /**
  * ══════════════════════════════════════════════════════════════════════════
@@ -41,7 +42,13 @@ import { captureAttribution, getAttribution } from '@/lib/attribution';
  * ══════════════════════════════════════════════════════════════════════════
  */
 
-const SOURCE = 'booking-interstitial';
+/*
+  Shared with lib/consent.ts, which maps it to this form's consent wording
+  version. Importing rather than re-declaring means the string cannot drift out
+  from under that mapping — which is how this form spent its first day
+  recording the ContactForm's consent version against wording it never showed.
+*/
+const SOURCE = BOOKING_SOURCE;
 
 const bookingSchema = z.object({
   name: z
