@@ -43,46 +43,164 @@ const VALUE_LOOKS_PERSONAL = [
   /\b[0-9A-Za-z]{11}\b(?=.*\d)(?=.*[A-Za-z])/, // MBI-shaped token
 ];
 
-function assertNoPii(event: string, props?: Record<string, Primitive>) {
-  if (process.env.NODE_ENV === 'production' || !props) return;
+/**
+ * Returns a description of the first PII violation found, or null if clean.
+ *
+ * Pure detection — it neither throws nor logs, so the caller decides what to
+ * do about a violation in each environment.
+ */
+function findPiiViolation(props?: Record<string, Primitive>): string | null {
+  if (!props) return null;
 
   for (const [key, value] of Object.entries(props)) {
     if (FORBIDDEN_KEYS.test(key)) {
-      throw new Error(
-        `[analytics] event "${event}" carries a forbidden property "${key}". ` +
-          'Analytics must never receive personal or health data. Send an id, ' +
-          'an enum or a count instead.',
-      );
+      return `forbidden property "${key}"`;
     }
     if (typeof value === 'string' && VALUE_LOOKS_PERSONAL.some((re) => re.test(value))) {
+      return `property "${key}" contains a value that looks like a direct identifier`;
+    }
+  }
+  return null;
+}
+
+/**
+ * The page path, with query string and hash deliberately discarded.
+ *
+ * `?email=...` and `#name=...` are exactly the kind of thing that ends up in
+ * a URL, and a page_path property is not worth turning into a PII carrier.
+ */
+function pagePath(): string {
+  if (typeof window === 'undefined') return 'unknown';
+  return window.location.pathname;
+}
+
+/**
+ * ── Why this drops rather than skips in production ────────────────────────
+ *
+ * This check used to begin with:
+ *
+ *     if (process.env.NODE_ENV === 'production' || !props) return;
+ *
+ * so it ran ONLY in development and every production event went out
+ * unchecked. The guard was disabled precisely where a leak has consequences,
+ * which is the same defect shape as the lead pipeline gating its own audit
+ * behind the failure it was meant to record.
+ *
+ * The dev behaviour is unchanged: throw loudly, because a developer must find
+ * out on the first run. Production now DROPS the offending event instead of
+ * transmitting it. Losing one analytics event is free; sending a Medicare
+ * visitor's ZIP, phone number or MBI to a vendor is not, and this audience
+ * makes that PHI rather than a theoretical worry.
+ */
+function emit(event: string, props?: Record<string, Primitive>) {
+  const violation = findPiiViolation(props);
+
+  if (violation) {
+    if (process.env.NODE_ENV !== 'production') {
       throw new Error(
-        `[analytics] event "${event}" property "${key}" contains a value that ` +
-          'looks like a direct identifier. Send a category, not the value.',
+        `[analytics] event "${event}" carries ${violation}. Analytics must ` +
+          'never receive personal or health data. Send an id, an enum or a ' +
+          'count instead.',
       );
     }
+    // Production: drop it. Never send, never break the page.
+    console.error(`[analytics] DROPPED event "${event}" — ${violation}.`);
+    return;
   }
-}
 
-function emit(event: string, props?: Record<string, Primitive>) {
   try {
-    assertNoPii(event, props);
     track(event, props);
-  } catch (err) {
-    // A PII assertion is a developer error and must surface in development.
-    if (process.env.NODE_ENV !== 'production' && err instanceof Error && err.message.startsWith('[analytics]')) {
-      throw err;
-    }
-    // Anything else — network, blocked script, quota — is never worth
-    // breaking a page over.
+  } catch {
+    // Network, blocked script, quota — never worth breaking a page over.
   }
 }
 
-/** A visitor tapped a call, text, email or booking link. `where` is the component id. */
+/**
+ * A visitor tapped a call, text, email or booking link.
+ *
+ * Emits one channel-specific event rather than a single `contact_intent` with
+ * a channel property. Renamed from `contact_intent` deliberately: these are
+ * the three conversion actions worth reporting on individually, and a funnel
+ * report should not have to filter one event by a property to see them.
+ *
+ * NOTE FOR DASHBOARDS: historical data before this change lives under
+ * `contact_intent`. Nothing was migrated — Vercel Analytics keeps the old
+ * event name for the old rows.
+ *
+ * `where` becomes `cta_position`: which surface the tap came from (hero,
+ * header, header-mobile, sticky, cta-band, 404, location-*). That is the
+ * question these events exist to answer.
+ */
+const CONTACT_EVENTS = {
+  call: 'call_click',
+  text: 'text_click',
+  book: 'booking_click',
+  email: 'email_click',
+} as const;
+
 export function trackContactIntent(
   channel: 'call' | 'text' | 'email' | 'book',
   where: string,
 ) {
-  emit('contact_intent', { channel, where });
+  emit(CONTACT_EVENTS[channel], { page_path: pagePath(), cta_position: where });
+}
+
+/**
+ * First field focus on a form, fired once per mount.
+ *
+ * The pair (form_start, form_submit) is the abandonment rate. Submissions
+ * alone cannot distinguish "nobody started" from "everybody gave up".
+ */
+export function trackFormStart(formId: string) {
+  emit('form_start', { form_id: formId });
+}
+
+/**
+ * A form submitted successfully.
+ *
+ * ── ZIP is deliberately absent ────────────────────────────────────────────
+ * The original spec listed `zip` as a parameter. It is not sent, and cannot
+ * be: FORBIDDEN_KEYS matches /zip/ and emit() drops any event carrying it.
+ * A 5-digit ZIP alongside a birth month is a meaningful re-identification
+ * pair for a Medicare-age visitor, and ZIP is already in Supabase where it is
+ * actually needed. Do not add it here.
+ */
+export function trackFormSubmit(
+  formId: string,
+  detail?: { intent?: string; contactPref?: string },
+) {
+  emit('form_submit', {
+    form_id: formId,
+    intent: detail?.intent ?? 'unspecified',
+    contact_pref: detail?.contactPref ?? 'unspecified',
+  });
+}
+
+/**
+ * One of the public tools was opened. `toolName` is a slug, never a result.
+ *
+ * The property is `tool`, NOT `tool_name` as the spec named it: FORBIDDEN_KEYS
+ * matches any key ending in `_name`, so `tool_name` would be dropped in
+ * production and throw in development. The guard is right and the parameter
+ * name is what changes — never loosen a PII pattern to fit a label.
+ */
+export function trackToolStart(toolName: string) {
+  emit('tool_start', { tool: toolName });
+}
+
+/** A tool reached its result screen. */
+export function trackToolComplete(toolName: string) {
+  emit('tool_complete', { tool: toolName });
+}
+
+/**
+ * The homepage two-question router resolved to a branch.
+ *
+ * `branch` is the chosen route id (learn / compare / talk) — an enum from the
+ * component, never anything the visitor typed.
+ */
+export function trackRouterSelect(branch: string) {
+  emit('router_select', { branch });
 }
 
 /** Quiz funnel. `questionId` is the question key, never the answer. */
@@ -92,10 +210,12 @@ export function trackQuizStep(step: number, questionId: string) {
 
 export function trackQuizStarted() {
   emit('quiz_started');
+  trackToolStart('eligibility-check');
 }
 
 export function trackQuizCompleted(answered: number) {
   emit('quiz_completed', { answered });
+  trackToolComplete('eligibility-check');
 }
 
 // ── Late enrollment penalty calculator ─────────────────────────────────────
@@ -108,6 +228,7 @@ export function trackQuizCompleted(answered: number) {
 
 export function trackPenaltyStarted() {
   emit('penalty_started');
+  trackToolStart('penalty-calculator');
 }
 
 /** `field` is which screen was reached ('eligible', 'coverage'), never a value. */
@@ -123,6 +244,7 @@ export function trackPenaltyCalculated(outcome: {
   /** Whether they have still not enrolled, so the gap is open. */
   stillAccruing: boolean;
 }) {
+  trackToolComplete('penalty-calculator');
   emit('penalty_calculated', outcome);
 }
 
@@ -140,6 +262,7 @@ export function trackPenaltyCalculated(outcome: {
 
 export function trackIrmaaStarted() {
   emit('irmaa_started');
+  trackToolStart('irmaa-calculator');
 }
 
 export function trackIrmaaCalculated(outcome: {
@@ -148,11 +271,13 @@ export function trackIrmaaCalculated(outcome: {
   /** Filing status enum — 'single' | 'joint' | 'separate'. */
   filing: string;
 }) {
+  trackToolComplete('irmaa-calculator');
   emit('irmaa_calculated', outcome);
 }
 
 export function trackTriageStarted() {
   emit('triage_started');
+  trackToolStart('triage-router');
 }
 
 export function trackTriageStep(step: number, question: 'stage' | 'intent') {
@@ -161,6 +286,8 @@ export function trackTriageStep(step: number, question: 'stage' | 'intent') {
 
 export function trackTriageCompleted(intent: string) {
   emit('triage_completed', { intent });
+  trackToolComplete('triage-router');
+  trackRouterSelect(intent);
 }
 
 /** Contact form outcomes. `source` matches the payload's source field. */
@@ -190,6 +317,7 @@ export function trackGlossaryOpen(term: string) {
 
 export function trackIqStart(roundId: string) {
   emit('iq_start', { round: roundId });
+  trackToolStart('medicare-iq');
 }
 
 /** Which questions people get wrong tells us what to write about next. */
@@ -198,6 +326,7 @@ export function trackIqAnswer(roundId: string, questionId: string, correct: bool
 }
 
 export function trackIqComplete(roundId: string, score: number, total: number) {
+  trackToolComplete('medicare-iq');
   emit('iq_complete', { round: roundId, score, total });
 }
 
@@ -217,6 +346,7 @@ export function trackNewsOpen(slug: string, from: 'home' | 'index') {
  */
 export function trackPlanComparisonCompleted() {
   emit('plan_comparison_completed');
+  trackToolComplete('plan-comparison');
 }
 
 /** Mobile route toggle on the comparison table. Enum value, not free text. */

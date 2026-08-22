@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Field } from '@/components/ui/field';
 import { advisor } from '@/lib/site';
-import { trackContactSubmit } from '@/lib/analytics';
+import { trackContactSubmit, trackFormStart, trackFormSubmit } from '@/lib/analytics';
 import { getAttribution } from '@/lib/attribution';
 import { HOMEPAGE_CAPTURE_SOURCE } from '@/lib/consent';
 
@@ -96,6 +96,18 @@ type CaptureInput = z.input<typeof captureSchema>;
 export function DeadlineCapture() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'sent' | 'error'>('idle');
   const [serverError, setServerError] = useState<string | null>(null);
+  /*
+    form_start fires once per mount, on the first focus anywhere in the form.
+    A ref rather than state: re-rendering on first focus would be a pointless
+    render, and the flag must not reset when status changes.
+  */
+  const startedRef = useRef(false);
+
+  function handleFirstFocus() {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackFormStart(SOURCE);
+  }
 
   const {
     register,
@@ -160,6 +172,12 @@ export function DeadlineCapture() {
 
       setStatus('sent');
       trackContactSubmit(SOURCE, 'success');
+      /*
+        intent is fixed for this form: everyone here is asking for deadline
+        dates. contact_pref is email because email is the only channel it
+        offers. No ZIP — see the note on trackFormSubmit.
+      */
+      trackFormSubmit(SOURCE, { intent: 'deadlines', contactPref: 'email' });
     } catch {
       setServerError('Something went wrong. Please try again.');
       setStatus('error');
@@ -182,7 +200,7 @@ export function DeadlineCapture() {
 
   return (
     <div className="rounded-3xl border border-line bg-paper p-7 shadow-lift sm:p-9">
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} onFocus={handleFirstFocus} noValidate>
         {/* Honeypot. Hidden from people, not from bots. */}
         <div aria-hidden="true" className="absolute left-[-9999px] h-px w-px overflow-hidden">
           <label htmlFor={`${SOURCE}-website`}>Website</label>

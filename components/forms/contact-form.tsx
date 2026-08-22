@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,7 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Field } from '@/components/ui/field';
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { advisor, compliance, site } from '@/lib/site';
-import { trackContactSubmit } from '@/lib/analytics';
+import { trackContactSubmit, trackFormStart, trackFormSubmit } from '@/lib/analytics';
 import { getAttribution } from '@/lib/attribution';
 import { cn } from '@/lib/utils';
 import {
@@ -70,6 +70,15 @@ export function ContactForm({
     },
   });
 
+  /* form_start fires once per mount, on first focus anywhere in the form. */
+  const startedRef = useRef(false);
+
+  function handleFirstFocus() {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    trackFormStart(source);
+  }
+
   const preferred = watch('preferredContact');
 
   async function onSubmit(values: ContactInput) {
@@ -106,6 +115,15 @@ export function ContactForm({
 
       setStatus('success');
       trackContactSubmit(source, 'success');
+      /*
+        `topic` is a fixed enum from CONTACT_TOPICS and preferredContact is
+        one of phone/text/email — both are categories the form defines, never
+        anything the visitor typed. No ZIP: see trackFormSubmit.
+      */
+      trackFormSubmit(source, {
+        intent: values.topic ?? 'unspecified',
+        contactPref: values.preferredContact ?? 'unspecified',
+      });
     } catch (err) {
       setStatus('error');
       setServerError(
@@ -161,7 +179,7 @@ export function ContactForm({
         <ContactActions where={`${source}-inline`} className="mt-3" size="md" />
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-7" noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} onFocus={handleFirstFocus} className="mt-8 space-y-7" noValidate>
         {/* Honeypot — visually and programmatically hidden from real users. */}
         <div aria-hidden="true" className="absolute h-0 w-0 overflow-hidden">
           <label htmlFor={`${source}-website`}>Leave this field empty</label>
