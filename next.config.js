@@ -44,6 +44,41 @@ const nextConfig = {
         destination: '/plans',
         permanent: true,
       },
+      /*
+       * ── Legacy URLs from Search Console's 404 report ────────────────────
+       *
+       * Five paths were reported. Only these two get redirects:
+       *
+       *   /login                  stays 404. Nothing on a consumer Medicare
+       *                           site is a login page, so there is no honest
+       *                           target. Redirecting it to / or /contact
+       *                           would tell a returning visitor their account
+       *                           moved somewhere it did not. Note this repo
+       *                           has never contained an auth route — no
+       *                           login/signin file in any of its 61 commits,
+       *                           no auth dependency ever in package.json.
+       *   /wp-content/uploads/*   scanner noise, already 403 at the platform
+       *                           layer. Nothing here was ever WordPress.
+       *   /docs                   one crawl in May, never repeated. Not worth
+       *                           a permanent rule.
+       */
+      {
+        source: '/contact-medicare',
+        /*
+         * Target is /contact, NOT the /medicare-coverage-review named in the
+         * brief — that page does not exist in this repo and returns 404 live,
+         * so the redirect would have been a 404 -> 404 hop, which search
+         * engines treat as a soft error and which is strictly worse than the
+         * plain 404 it replaced. Repoint this the day that page ships.
+         */
+        destination: '/contact',
+        permanent: true,
+      },
+      {
+        source: '/medicare-plans',
+        destination: '/plans',
+        permanent: true,
+      },
     ];
   },
   async headers() {
