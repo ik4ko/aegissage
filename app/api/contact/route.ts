@@ -5,6 +5,7 @@ import { sendContactAlert } from '@/lib/notify/send-contact-alert';
 import { enqueueLeadSync } from '@/lib/crm/outbox';
 import { syncPendingLeads } from '@/lib/crm/dispatch';
 import { advisor } from '@/lib/site';
+import { consentTextVersionFor } from '@/lib/consent';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -42,6 +43,13 @@ export async function POST(req: Request) {
   }
 
   const payload = parsed.data;
+
+  /*
+    Which consent wording this visitor actually saw. Derived from `source`,
+    because the two forms show different text — see lib/consent.ts. Resolved
+    once here so every column and the CRM payload record the same value.
+  */
+  const consentTextVersion = consentTextVersionFor(payload.source);
 
   // Honeypot: a bot filled the hidden field. Return 200 so it learns nothing.
   if (payload.website) {
@@ -110,7 +118,7 @@ export async function POST(req: Request) {
     source: payload.source,
     context: payload.context ?? null,
     consent: true,
-    consent_text_version: CONSENT_TEXT_VERSION,
+    consent_text_version: consentTextVersion,
     user_agent: req.headers.get('user-agent')?.slice(0, 500) ?? null,
     ip_address: clientIp(req),
   };
@@ -119,11 +127,11 @@ export async function POST(req: Request) {
     consent_at: now,
     consent_sms: payload.consentSms === true,
     consent_sms_at: payload.consentSms === true ? now : null,
-    consent_sms_text_version: payload.consentSms === true ? CONSENT_TEXT_VERSION : null,
+    consent_sms_text_version: payload.consentSms === true ? consentTextVersion : null,
     consent_marketing: payload.consentMarketing === true,
     consent_marketing_at: payload.consentMarketing === true ? now : null,
     consent_marketing_text_version:
-      payload.consentMarketing === true ? CONSENT_TEXT_VERSION : null,
+      payload.consentMarketing === true ? consentTextVersion : null,
   };
 
   let inserted: { id: string } | null = null;
@@ -291,13 +299,13 @@ export async function POST(req: Request) {
     consent: {
       reply: true,
       replyAt: now,
-      replyTextVersion: CONSENT_TEXT_VERSION,
+      replyTextVersion: consentTextVersion,
       sms: payload.consentSms === true,
       smsAt: payload.consentSms === true ? now : null,
-      smsTextVersion: payload.consentSms === true ? CONSENT_TEXT_VERSION : null,
+      smsTextVersion: payload.consentSms === true ? consentTextVersion : null,
       marketing: payload.consentMarketing === true,
       marketingAt: payload.consentMarketing === true ? now : null,
-      marketingTextVersion: payload.consentMarketing === true ? CONSENT_TEXT_VERSION : null,
+      marketingTextVersion: payload.consentMarketing === true ? consentTextVersion : null,
     },
   });
 
@@ -365,8 +373,4 @@ function extractAttribution(context: Record<string, string> | undefined): Record
   return out;
 }
 
-/**
- * Bump this whenever the consent language in <ContactForm /> changes, so each
- * stored row records which wording the visitor actually agreed to.
- */
-const CONSENT_TEXT_VERSION = '2026-07';
+

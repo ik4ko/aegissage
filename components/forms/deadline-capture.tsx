@@ -9,10 +9,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Field } from '@/components/ui/field';
-import { TpmoDisclaimer, tpmoVariantFor } from '@/components/marketing/tpmo-disclaimer';
 import { advisor } from '@/lib/site';
 import { trackContactSubmit } from '@/lib/analytics';
 import { getAttribution } from '@/lib/attribution';
+import { HOMEPAGE_CAPTURE_SOURCE } from '@/lib/consent';
 
 /**
  * ══════════════════════════════════════════════════════════════════════════
@@ -31,6 +31,16 @@ import { getAttribution } from '@/lib/attribution';
  *  checkbox on a form nobody expected to be a form is exactly the pattern
  *  that makes TCPA consent contestable. Email only. Four fields.
  *
+ *  ── Where the TPMO disclosure is ─────────────────────────────────────────
+ *  NOT in this component. This band collects a ZIP, so `/` is registered in
+ *  ZIP_ROUTES (lib/tpmo.ts) and the sitewide footer disclosure on the
+ *  homepage resolves to the counted variant automatically.
+ *
+ *  An earlier version rendered a second copy inline here. It was redundant
+ *  rather than wrong, but it broke the one-disclosure-per-page rule that
+ *  <DisclaimerFooter /> exists to enforce. Do not re-add it — registering the
+ *  route is the whole mechanism.
+ *
  *  ── Consent ──────────────────────────────────────────────────────────────
  *  One checkbox, unticked, whose text explicitly authorises ongoing email.
  *  It maps to BOTH `consent` (permission to reply to this request) and
@@ -44,7 +54,12 @@ import { getAttribution } from '@/lib/attribution';
  * ══════════════════════════════════════════════════════════════════════════
  */
 
-const SOURCE = 'homepage-deadline-capture';
+/*
+  Shared with lib/consent.ts, which maps it to this form's consent wording
+  version. Importing rather than re-declaring means the string cannot drift
+  out from under that mapping and start recording the wrong consent text.
+*/
+const SOURCE = HOMEPAGE_CAPTURE_SOURCE;
 
 const captureSchema = z.object({
   firstName: z
@@ -308,23 +323,6 @@ export function DeadlineCapture() {
         </Button>
       </form>
 
-      {/*
-        This section collects a ZIP, so CMS requires the counted TPMO
-        disclaimer here rather than the generic one.
-
-        `tpmoVariantFor(null, true)` — NOT a literal variant="counted".
-        The counted wording asserts a real organization and product count, and
-        those are null until Erekle pulls them from the quoting platform;
-        rendering it literally would fail the build. This asks for counted and
-        falls back to generic until the numbers exist, so the page ships a
-        compliant disclosure today and upgrades itself the moment they land.
-
-        `/` is registered in ZIP_ROUTES, so the sitewide footer disclosure on
-        this page switches to counted at the same time.
-      */}
-      <div className="mt-6 rounded-2xl bg-navy-deep p-5 text-sm leading-relaxed text-white/85">
-        <TpmoDisclaimer variant={tpmoVariantFor(null, true)} />
-      </div>
     </div>
   );
 }
