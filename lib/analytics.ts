@@ -194,6 +194,31 @@ export function trackToolComplete(toolName: string) {
 }
 
 /**
+ * A visitor landed on a 404.
+ *
+ * Client-side on purpose. The server-side version of this used
+ * `force-dynamic` + `headers()` in app/not-found.tsx, and because the root
+ * not-found sits in every route's tree that opted the ENTIRE SITE out of
+ * static rendering — 64 prerendered pages became per-request serverless
+ * invocations. Reverted; this replaces it.
+ *
+ * Only the referrer's HOST is sent, never the full URL. A referring URL can
+ * carry a query string and query strings carry anything; the host is the
+ * useful part regardless, since it says whether the broken link is ours.
+ */
+export function trackNotFound(path: string, referrer: string) {
+  let referrerHost = 'direct';
+  if (referrer) {
+    try {
+      referrerHost = new URL(referrer).host || 'unknown';
+    } catch {
+      referrerHost = 'unknown';
+    }
+  }
+  emit('not_found', { page_path: path, referrer_host: referrerHost });
+}
+
+/**
  * The homepage two-question router resolved to a branch.
  *
  * `branch` is the chosen route id (learn / compare / talk) — an enum from the

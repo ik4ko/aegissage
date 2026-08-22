@@ -1,47 +1,31 @@
 import Link from 'next/link';
-import { headers } from 'next/headers';
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { Button } from '@/components/ui/button';
 import { headerNav } from '@/lib/site';
-
-/*
-  Rendered per request rather than prerendered once.
-
-  Without this, Next builds _not-found.html at build time and the logging
-  below would run exactly once — during the build — instead of on each 404.
-  The cost is a server render on a page almost nobody should reach; the
-  benefit is that a broken link stops being invisible.
-*/
-export const dynamic = 'force-dynamic';
+import { NotFoundBeacon } from '@/components/seo/not-found-beacon';
 
 /**
- * ── Why this page logs ────────────────────────────────────────────────────
+ * ── How 404s get recorded, and why not from here ──────────────────────────
  *
- * The Task 10 audit found legacy URLs only because Search Console happened to
- * surface them weeks later. Every 404 in between was silent — the same shape
- * as the lead-pipeline defect: a failure with no record of itself.
+ * An earlier version of this file exported `dynamic = 'force-dynamic'` and
+ * read `headers()` to log the referer server-side. It worked, and it also
+ * took the entire site off static rendering: the root not-found is part of
+ * every route's tree, so forcing it dynamic turned all 64 prerendered pages
+ * into per-request serverless invocations. That reached production before the
+ * build output was read carefully enough to catch it.
  *
- * `[404]` is the marker to grep or alert on in Vercel's runtime logs.
+ * <NotFoundBeacon /> replaces it. It reports the path and the referring HOST
+ * from the client through lib/analytics.ts, so the event lands in Vercel
+ * Analytics beside every other funnel event and inherits the PII guard. This
+ * page stays static.
  *
- * What this captures and what it does not:
- *   - The REFERER is logged, which is the useful half: it names the page
- *     carrying the broken link, which is what you actually need to fix it.
- *     An empty referer means the URL was typed, bookmarked, or crawled.
- *   - The requested PATH is NOT logged here. Next's global not-found does not
- *     receive it, and the only ways to get it are a sitewide proxy matcher
- *     (latency on every request) or non-public Vercel headers. It is
- *     unnecessary anyway: Vercel's log line for this invocation already
- *     records the path, so the marker and the path sit on the same entry.
- *
- * No IP, no user agent, no query string — a 404 is not a reason to start
- * collecting more about a visitor than the request already required.
+ * Do not add `dynamic`, `headers()`, `cookies()` or any other dynamic API to
+ * this file. The cost is not local to this page.
  */
-export default async function NotFound() {
-  const referer = (await headers()).get('referer');
-  console.warn(`[404] referer=${referer ?? 'none'}`);
-
+export default function NotFound() {
   return (
     <div className="container py-20 sm:py-28">
+      <NotFoundBeacon />
       <div className="mx-auto max-w-2xl text-center">
         <p className="text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
           404
