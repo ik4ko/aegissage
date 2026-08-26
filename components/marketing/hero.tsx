@@ -46,8 +46,8 @@ export function Hero() {
             </p>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl lg:text-6xl">
-              Medicare is not complicated.
-              <span className="block text-navy">It is just badly explained.</span>
+              Medicare decisions affect more than
+              <span className="block text-navy">a card in your wallet.</span>
             </h1>
 
             {/*
@@ -57,40 +57,67 @@ export function Hero() {
               four areas as the whole service area.
             */}
             {/*
-              Kept to roughly five seconds of skimming. The longer version of
-              who he is and where he works lives on /about, which this page
-              links to twice.
+              The subheading answers "why should I care", the paragraphs below
+              answer "who are you". The longer version of who he is and where
+              he works lives on /about, which this page links to twice.
             */}
             <p className="mt-6 max-w-xl text-lg text-ink-soft sm:text-xl">
-              I am {advisor.firstName}, an independent Medicare broker in New Jersey. I
-              explain deadlines, doctors, prescriptions, and plan trade-offs in plain
-              English — without pressure. Licensed in {licensedStates.length} states.
+              They affect the doctors you trust, the prescriptions you take, and the
+              peace of mind your family depends on.
             </p>
 
             {/*
-              The filled primary is the self-serve tool, not the phone. Most
-              visitors are not ready to talk on the first visit, and asking
-              them to call before they know their own deadline is the step
-              that loses them. Calling is one tap away either way.
+              `basedIn` is county-level on purpose and the state count is
+              derived — see lib/site.ts and lib/states.ts. Neither may be
+              hardcoded here: the count read "26 states" as a literal once and
+              was still saying it after a licence lapsed.
+            */}
+            <p className="mt-5 max-w-xl text-lg text-ink-soft">
+              I&rsquo;m {advisor.name}, an independent Medicare broker in {advisor.basedIn},
+              licensed in {licensedStates.length} states. I work with Medicare Advantage,
+              Medicare Supplement, and Part D.
+            </p>
+
+            <p className="mt-4 max-w-xl text-lg text-ink-soft">
+              In 2025 I helped my own mother get her Medicare card for the first time. The
+              way I walked her through it is the same way I do it for everyone &mdash; one
+              person at a time, no rushing, no script.
+            </p>
+
+            {/*
+              The filled primary is the coverage review, not the quiz. It used
+              to point at /tools/eligibility-check, which is a five-question
+              self-serve screen — a fine tool, but the label promised a review
+              with a person and the destination did not deliver one. The quiz
+              is still reachable from the tools hub below.
+
+              /medicare-coverage-review is already in HAND_AUTHORED_ZIP_ROUTES
+              (lib/tpmo.ts) because it collects a ZIP, so pointing the busiest
+              CTA on the site at it does not change which disclaimer variant
+              anyone sees.
             */}
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Button asChild size="xl">
-                <Link href="/tools/eligibility-check">
-                  Check your enrollment window
+                <Link href="/medicare-coverage-review">
+                  Start a private Medicare review
                   <ArrowRight className="h-5 w-5" aria-hidden="true" />
                 </Link>
               </Button>
               <Button asChild size="xl" variant="outline">
                 <a href={contactHrefs.tel}>
                   <Phone className="h-5 w-5" aria-hidden="true" />
-                  Call {advisor.firstName}
+                  Call {advisor.firstName} &mdash; {advisor.phone}
                 </a>
               </Button>
             </div>
 
-            <p className="mt-4 text-base text-ink-faint">
-              Or call {advisor.phone} directly — no menus, no queue.
-            </p>
+            {/*
+              The number moved onto the button itself, so this line no longer
+              repeats it. It must not be reworded into a promise that the call
+              is answered — one person holds this phone and some calls go to
+              voicemail. See the tagline note in lib/site.ts.
+            */}
+            <p className="mt-4 text-base text-ink-faint">No menus, no queue.</p>
 
             {/*
               Required CMS disclosure for published agent phone numbers. Sits
@@ -148,13 +175,23 @@ function HeroCard() {
 
       <hr className="my-6 border-line" />
 
-      <p className="font-display text-lg font-semibold text-ink">What I actually do</p>
+      <p className="font-display text-lg font-semibold text-ink">What I help with</p>
+      {/*
+        Each line leads with the reader's own stake — their doctors, their
+        drugs, their money — rather than with the product.
+
+        On the budget line: this deliberately does NOT say "$0 premium".
+        CLAUDE.md forbids stating or implying a $0 premium before a licensed
+        review, and lib/content-guard.ts rejects the same phrasing in article
+        frontmatter. "A plan with no monthly premium still has costs" makes
+        the same point without asserting a plan exists at that price.
+      */}
       <ul className="mt-4 space-y-3.5 text-base text-ink-soft">
         {[
-          'Tell you which enrollment deadline applies to you, and what happens if you miss it.',
-          'Check your doctors and your prescriptions against what is available in your county.',
-          'Explain the trade-offs of each route honestly, including the ones I earn nothing from.',
-          'Still be here next year, when something changes and you need to look at it again.',
+          'Your doctors — before anything changes, we check whether the people treating you are still in network.',
+          'Your prescriptions — every plan covers drugs differently. We look at yours specifically, not a general list.',
+          'Your budget — a plan with no monthly premium still has costs. I will show you where the real numbers are.',
+          'Your options — Medicare Advantage, Medicare Supplement, Part D. I will explain the trade-offs and let you decide.',
         ].map((item) => (
           <li key={item} className="flex gap-3">
             <span
@@ -171,11 +208,22 @@ function HeroCard() {
         have no financial stake in this", which is not true of any independent
         agent — carriers pay a commission on enrollment. Naming that is what
         makes the "no fee" part credible instead of evasive.
+
+        The independence sentence sits in the middle ON PURPOSE. Admitting
+        that carriers pay the commission raises the reader's obvious next
+        question — does the money decide what he recommends — and this
+        paragraph used to leave it hanging. The answer belongs immediately
+        after the admission and before "ask me about it", not somewhere else
+        on the page. Do not move it out or the disclosure goes back to being
+        half an argument.
+
+        Uncontracted ("I am", "it is") to match the rest of this box.
       */}
       <p className="mt-6 rounded-xl bg-navy-soft p-4 text-sm leading-relaxed text-navy-deep">
         You never pay me a fee, and you are never obligated to enroll in anything. If you do
-        enroll, the insurance company pays the commission, not you. Ask me about it directly
-        — it is a fair question and I will answer it.
+        enroll, the insurance company pays the commission, not you. I am independent, which
+        means no carrier tells me what to recommend. Ask me about it directly — it is a fair
+        question and I will answer it.
       </p>
 
       <Button asChild variant="navy" size="block" className="mt-6">

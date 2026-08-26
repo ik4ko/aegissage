@@ -32,10 +32,23 @@ const OG_IMAGE =
   `&subtitle=${encodeURIComponent(`Independent guidance across ${site.serviceArea}.`)}`;
 
 export const metadata: Metadata = {
-  // Short forms for the search result; the full tagline and description are
-  // kept below for Open Graph and Twitter, where the space exists.
-  title: site.shortTitle,
-  description: site.metaDescription,
+  /*
+    Homepage-only title and description, set HERE rather than in lib/site.ts.
+    `site.shortTitle` and `site.metaDescription` feed other surfaces, so
+    editing them to change this page would have reached well beyond it.
+
+    The name comes from `advisor` and the state count from `licensedStates`
+    — neither may be hardcoded (lib/site.ts, and "dynamic state count" under
+    "do not modify" in CLAUDE.md). The description runs 143 characters, inside
+    the ~155 Google renders before truncating.
+
+    Open Graph and Twitter below are deliberately untouched: they carry the
+    full tagline, which is still accurate.
+  */
+  title: `Medicare Broker in Bergen County, NJ | ${advisor.name}`,
+  description:
+    `Independent Medicare broker in Bergen County, licensed in ${licensedStates.length} states. ` +
+    'One-on-one help with Medicare Advantage, Supplement and Part D. No pressure.',
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
@@ -232,20 +245,42 @@ export default function HomePage() {
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal direction="left">
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
-              Why this site exists
+              Where this comes from
             </p>
             <h2 className="mt-4 font-display text-3xl font-bold tracking-[-0.03em] text-ink sm:text-4xl">
-              Most Medicare advice is written by people who want you to stop reading and
-              start dialing.
+              Medicare is never a general question. It is always a specific one, about a
+              specific person.
             </h2>
+            {/*
+              The three examples below are CATEGORIES OF QUESTION, not client
+              stories. They name no carrier, no plan and no person, so they are
+              neither a testimonial nor a plan-specific claim. Keep them that
+              way: an example that named a carrier would need source_url and
+              review_date under CLAUDE.md, and this is not the place for one.
+            */}
             <p className="mt-5 text-lg leading-relaxed text-ink-soft">
-              I went the other way. Everything here is written to be genuinely useful even
-              if you never contact me — because if it is not useful, you have no reason to
-              trust me with something this important.
+              I started at an agency taking calls all day, surrounded by people who had been
+              doing this for years. Hundreds of conversations, and almost none of them the
+              same. Someone whose cardiologist left the network mid-year. Someone moving to a
+              different county who found their plan did not follow them. Someone on Medicare
+              and Medicaid both, trying to work out how the two fit together.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-ink-soft">
-              I am independent, which means no carrier tells me what to recommend. And I am
-              one person, which means the number on this page is my number.
+              Most people come to me confused. That is normal — Medicare was not designed to
+              be simple. So we go slowly. Bring your questions, your doctor list, your
+              prescription bottles if that is easier.
+            </p>
+            {/*
+              "What I can confirm today and what still has to be verified" is
+              doing compliance work, not just sounding modest: CLAUDE.md
+              forbids stating or implying eligibility, approval, savings or a
+              specific benefit before a licensed review. Do not tighten this
+              into a promise about what a plan will cover.
+            */}
+            <p className="mt-4 text-lg leading-relaxed text-ink-soft">
+              I will tell you what I can confirm today and what still has to be verified,
+              because some of it depends on your county and your situation. You do not have
+              to decide during the first conversation — most people do not.
             </p>
             <Button asChild variant="navy" size="lg" className="mt-8">
               <Link href="/about">Read my story →</Link>
@@ -260,7 +295,8 @@ export default function HomePage() {
               },
               {
                 stat: <CountUp value={licensedStates.length} suffix=" states" />,
-                label: 'Active health licenses across the listed states.',
+                label:
+                  'Bergen County is home — but whether you are in Fort Lee or across the country, it is the same conversation.',
               },
               {
                 stat: 'One person',
