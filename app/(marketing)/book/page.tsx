@@ -12,7 +12,10 @@ import { advisor, contactHrefs, site } from '@/lib/site';
  * Every "Book a time" CTA on the site routes here first. It exists so a
  * booking produces a contacts row, an alert and attribution — see the note in
  * components/forms/booking-form.tsx for why none of that can be recovered
- * after the handoff to Google.
+ * once the visitor is inside Google's calendar.
+ *
+ * The calendar itself opens in a dialog over this page rather than replacing
+ * it, so the copy below must not promise a "next screen".
  *
  * ── noindex ──────────────────────────────────────────────────────────────
  * This page has no standalone value in search: it is a step in a flow, not an
@@ -56,9 +59,9 @@ export default function BookPage() {
             how to reach them if something changes.
           */}
           <p className="mt-5 text-lg leading-relaxed text-ink-soft">
-            The calendar is on the next screen. I ask for these first so I know who I am
-            meeting and how to reach you if something moves — not to qualify you, and not to
-            put you on a list.
+            The calendar opens right here once you do. I ask for these first so I know who I
+            am meeting and how to reach you if something moves — not to qualify you, and not
+            to put you on a list.
           </p>
 
           <div className="mt-9 rounded-3xl border border-line bg-paper p-7 shadow-lift sm:p-9">

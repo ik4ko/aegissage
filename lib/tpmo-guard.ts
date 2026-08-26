@@ -1,11 +1,18 @@
 import 'server-only';
 
+import type { GuardSection } from './build-guard';
+
 import { locationLandings } from './locations';
 import { planStates } from './states';
 import { GENERATED_ZIP_ROUTE_SET } from './tpmo';
 
 /**
  * Build-time guard: keeps lib/tpmo.ts honest.
+ *
+ * NOTE: this module does NOT throw on import. It is one of the checks run
+ * by lib/build-guard.ts, which collects from every guard and throws a
+ * single combined report. Throwing here would mask whichever checks ran
+ * after it — which is exactly what used to happen to this one.
  *
  * ZIP_ROUTES is a literal list because <DisclaimerFooter /> is a client
  * component and deriving it would drag 33KB of location copy into the client
@@ -25,7 +32,8 @@ import { GENERATED_ZIP_ROUTE_SET } from './tpmo';
  * (/about, /contact, the three tools) are hand-listed in both places and a
  * check would just compare a literal to itself.
  */
-function assertZipRoutesMatchGeneratedPages(): void {
+/** Returns this check's findings, or null when the lists agree. */
+export function collectTpmoFailures(): GuardSection | null {
   const expected = [
     ...locationLandings.map((location) => `/medicare-${location.slug}`),
     ...planStates.map((state) => `/plans/${state.slug}`),
@@ -40,9 +48,9 @@ function assertZipRoutesMatchGeneratedPages(): void {
   */
   const stale = [...GENERATED_ZIP_ROUTE_SET].filter((route) => !expected.includes(route));
 
-  if (missing.length === 0 && stale.length === 0) return;
+  if (missing.length === 0 && stale.length === 0) return null;
 
-  const lines = ['lib/tpmo.ts ZIP_ROUTES is out of sync with the pages that exist.\n'];
+  const lines = ['lib/tpmo.ts ZIP_ROUTES is out of sync with the pages that exist.', ''];
 
   if (missing.length > 0) {
     lines.push(
@@ -63,7 +71,10 @@ function assertZipRoutesMatchGeneratedPages(): void {
 
   lines.push('Add or remove them in lib/tpmo.ts so the list matches.');
 
-  throw new Error(lines.join('\n'));
+  return {
+    title: 'TPMO route coverage',
+    count: missing.length + stale.length,
+    lines,
+  };
 }
 
-assertZipRoutesMatchGeneratedPages();

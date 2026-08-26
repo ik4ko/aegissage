@@ -35,8 +35,8 @@ export function NewsCard({
     >
       <div className="flex flex-wrap items-center gap-3">
         <Badge tone="sage">{item.category}</Badge>
-        <time dateTime={item.date} className="text-sm text-ink-faint">
-          {formatDate(item.date)}
+        <time dateTime={item.published} className="text-sm text-ink-faint">
+          {formatDate(item.published)}
         </time>
       </div>
 

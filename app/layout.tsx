@@ -97,7 +97,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
         </noscript>
       </head>
-      <body className="flex min-h-dvh flex-col pb-[5.25rem] lg:pb-0">
+      {/*
+        The bottom padding reserves space for <StickyCta />, the fixed
+        tap-to-call bar. It is static markup in the same render pass, so the
+        bar never displaces content after paint and adds no CLS.
+
+        The reserve ADDS `env(safe-area-inset-bottom)` because the bar does
+        too. A flat 5.25rem was 15px clear of a 69px bar on a flat-bottomed
+        phone, but an iPhone's ~34px inset pushes the bar to ~103px — past
+        the reserve and onto the TPMO disclaimer, which must remain fully
+        readable at maximum scroll. Deriving both from the same inset keeps
+        that 15px of clearance at any inset instead of only at zero.
+
+        `md:pb-0` MUST stay in lockstep with `md:hidden` on the bar itself.
+        If they diverge, one breakpoint range gets either a dead gap below
+        the footer or a bar covering the disclaimer.
+      */}
+      <body className="flex min-h-dvh flex-col pb-[calc(5.25rem_+_env(safe-area-inset-bottom))] md:pb-0">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-xl focus:bg-navy focus:px-5 focus:py-3 focus:text-base focus:font-semibold focus:text-white"

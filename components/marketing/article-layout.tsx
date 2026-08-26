@@ -63,10 +63,18 @@ export function ArticleLayout({
                   </span>
                   <span className="flex items-center gap-1.5 text-sm text-ink-faint">
                     <CalendarDays className="h-4 w-4" aria-hidden="true" />
-                    <time dateTime={article.updated ?? article.date}>
-                      {article.updated
+{/*
+                      `updated` is now a required field, so its mere presence
+                      no longer means the piece was revised — every article
+                      carries one. A revision is `updated` STRICTLY AFTER
+                      `published`; equal means never revised, and printing
+                      "Updated" for that would assert a revision that did not
+                      happen. Compare the values, not the field's existence.
+                    */}
+                    <time dateTime={article.updated}>
+                      {article.updated > article.published
                         ? `Updated ${formatDate(article.updated)}`
-                        : formatDate(article.date)}
+                        : formatDate(article.published)}
                     </time>
                   </span>
                 </div>
@@ -148,8 +156,8 @@ export function articleJsonLd(
     headline: article.title,
     description: article.description,
     image: [image],
-    datePublished: schemaDate(article.date),
-    dateModified: schemaDate(article.updated ?? article.date),
+    datePublished: schemaDate(article.published),
+    dateModified: schemaDate(article.updated),
     author: { '@id': `${site.url}#advisor`, url: `${site.url}/about` },
     publisher: { '@id': `${site.url}#organization` },
     articleSection: article.category,

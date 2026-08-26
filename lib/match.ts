@@ -14,8 +14,16 @@
  *
  * Nothing here is a security control. Do not use these values as a key, an
  * identifier, or anything an attacker could supply to reach another person's
- * row: the booking path only ever matches a row in order to update its
- * booking_status, never to read it back out.
+ * row.
+ *
+ * The booking path does now read ONE column back off the matched row —
+ * `context`, so that the update can merge the booking's attribution into it
+ * rather than discarding it. That value never leaves the server: it is merged
+ * and written straight back, and the browser still only ever sees a bare
+ * `{ ok, persisted, matched }`. Keep it that way. A matcher this loose must
+ * not become a way to read another person's stored data, so if something ever
+ * needs more of the matched row than this, that is the point at which to give
+ * the table a real unique key — not to widen the select.
  */
 
 /** Lowercased and trimmed, or null when there is nothing to match on. */

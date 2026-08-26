@@ -35,8 +35,8 @@ export async function generateMetadata({
       title: article.title,
       description: article.description,
       url: `${site.url}${article.href}`,
-      publishedTime: article.date,
-      modifiedTime: article.updated ?? article.date,
+      publishedTime: article.published,
+      modifiedTime: article.updated,
       images: [{ url: ogUrl, width: 1200, height: 630, alt: article.title }],
     },
     twitter: {

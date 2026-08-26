@@ -56,8 +56,8 @@ export async function generateMetadata({
       title: item.title,
       description: item.description,
       url: `${site.url}${item.href}`,
-      publishedTime: item.date,
-      modifiedTime: item.updated ?? item.date,
+      publishedTime: item.published,
+      modifiedTime: item.updated,
       images: [{ url: ogUrl, width: 1200, height: 630, alt: item.title }],
     },
     twitter: {
@@ -106,8 +106,15 @@ export default async function NewsItemPage({ params }: { params: Promise<Params>
               <Badge tone="sage">{item.category}</Badge>
               <span className="flex items-center gap-1.5 text-sm text-ink-faint">
                 <CalendarDays className="h-4 w-4" aria-hidden="true" />
-                <time dateTime={item.updated ?? item.date}>
-                  {item.updated ? `Updated ${formatDate(item.updated)}` : formatDate(item.date)}
+{/*
+                  Same rule as article-layout: `updated` is required now, so a
+                  revision is `updated` strictly after `published`, not the
+                  field simply being set.
+                */}
+                <time dateTime={item.updated}>
+                  {item.updated > item.published
+                    ? `Updated ${formatDate(item.updated)}`
+                    : formatDate(item.published)}
                 </time>
               </span>
             </div>

@@ -157,11 +157,33 @@ export const contactHrefs = {
    * Google Calendar Appointment Schedule — 60-minute Medicare consultation
    * slots. Added Aug 14 2026.
    *
-   * Only /book redirects here. Do not link to it from anywhere else: a direct
-   * link skips attribution and consent capture, which is the entire reason
-   * the interstitial exists.
+   * This is the SHARE link, and it is now a FALLBACK only. /book opens
+   * `bookingCalendarEmbed` in a dialog over the page and sends someone here
+   * only when the browser cannot do that. Do not link to it from anywhere
+   * else: a direct link skips attribution and consent capture, which is the
+   * entire reason the interstitial exists.
    */
   bookingCalendar: 'https://calendar.app.google/pNjYuj1JK6i2ATrN6',
+  /**
+   * The same appointment schedule in Google's embeddable form — the URL
+   * behind Calendar → Booking pages → Options → Sharing options → Website
+   * embed. /book loads it in an <iframe> inside a modal dialog, so booking
+   * never navigates away from the page.
+   *
+   * ── The two parts that matter ──────────────────────────────────────────
+   * The ID is the same schedule the share link above resolves to, so the two
+   * describe one calendar — but they are NOT interchangeable. `?gv=true` is
+   * what makes Google serve the embeddable view; without it the page renders
+   * its full standalone chrome inside our dialog. And only the embeddable
+   * view is served without framing restrictions, so the share link cannot be
+   * put in the iframe even if you wanted to.
+   *
+   * If the appointment schedule is ever recreated in Calendar, BOTH of these
+   * change. Re-copy this from Sharing options rather than editing the ID by
+   * hand — a stale ID here fails as an empty dialog, not as an error.
+   */
+  bookingCalendarEmbed:
+    'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2-9Z8ubWuB9eMp2xuO1rhtZHRCsid2-G0hWGqkvfno7Aq2T5tvoxxNJdNlol8EHZKfUuNNpmME?gv=true',
 } as const;
 
 export const social = {

@@ -190,9 +190,11 @@ export async function POST(req: Request) {
 
     Best-effort, as agreed — no unique index. A miss creates a new row, which
     is the same behaviour as before this existed and is never worse than it.
-    Only `booking_status` is written to the matched row: their original
-    consent, source, message and attribution are the record of what they
-    actually did, and a booking must not overwrite any of it.
+
+    What a match writes is deliberately narrow, and is spelled out at the
+    update below: the booking facts, the fresh consent, the name they just
+    gave, and the booking's attribution merged UNDER the original. source,
+    message, topic and zip stay as the record of what they first came for.
   */
   if (payload.bookingStatus) {
     const emailKey = normalizeEmail(payload.email);
@@ -249,17 +251,85 @@ export async function POST(req: Request) {
         most recent affirmative permission is the operative one, and the
         version tag now names wording the person actually saw.
 
-        Everything else is still left alone. source, message, context, zip and
-        topic remain the record of what they originally came for, and a
-        booking must not rewrite that.
+        It was also wrong about attribution, in the other direction. Leaving
+        `context` alone did preserve the original first touch — but it stored
+        NOTHING about the channel that produced the booking, so a matched row
+        could not answer "which channel drove this booking" at all. Since a
+        repeat booker is exactly who matches, that is most bookings. The two
+        concerns are not actually in conflict: the fix is to merge, not to
+        pick a winner.
+
+        And `name` now updates. They typed it on /book minutes ago, which is
+        a more current answer to "what do I call this person" than a value
+        from a form they filled in in July. It can trade a fuller name for a
+        shorter one — "Patricia Doyle" becoming "Pat" — and that is the right
+        trade: the shorter one is what they just asked to be called.
+
+        source, message, topic and zip are still left alone. Those record what
+        this person originally came for, and a booking must not rewrite them.
       */
+
+      /*
+        ── The merge, and its shape ──────────────────────────────────────
+
+        The original context stays at the top level exactly as it was and the
+        booking's attribution goes under a single `booking` key. Nothing that
+        was already there is touched, so a first touch captured in July
+        survives verbatim, and the new keys cannot collide with it.
+
+        `booking` is latest-wins: a second booking replaces it. That is
+        consistent with booking_status and lead_score, which are latest-wins
+        on this row too — the row describes the person as they are now, and
+        `booking` describes the booking that put them in that state. `at` is
+        stored alongside so it is always clear WHICH booking it describes
+        instead of leaving the reader to infer it.
+
+        Attribution goes through extractAttribution — the same allowlist the
+        CRM handoff uses — so quiz answers and other page-supplied context
+        cannot ride along into a key named for attribution.
+      */
+      const bookingContext: Record<string, string> = {
+        ...extractAttribution(payload.context),
+        source: payload.source,
+        at: now,
+      };
+
+      /*
+        Read-modify-write, because supabase-js cannot express Postgres's jsonb
+        `||` through .update(). If the read fails, `context` is left OUT of
+        the update entirely rather than written from an empty base: a booking
+        must never be the thing that blanks someone's attribution. Losing the
+        booking's own context is by far the smaller failure.
+      */
+      const existing = await supabase
+        .from('contacts')
+        .select('context')
+        .eq('id', existingId)
+        .maybeSingle();
+
+      if (existing.error) {
+        console.error(
+          `[contact] booking context read failed for ${existingId} — storing the ` +
+            `booking without merging attribution: ${existing.error.message}`,
+        );
+      }
+
+      const mergedContext = existing.error
+        ? null
+        : {
+            ...((existing.data?.context as Record<string, unknown> | null) ?? {}),
+            booking: bookingContext,
+          };
+
       const { error } = await supabase
         .from('contacts')
         .update({
           booking_status: payload.bookingStatus,
           lead_score: leadScore,
+          name: payload.name,
           consent_at: now,
           consent_text_version: consentTextVersion,
+          ...(mergedContext ? { context: mergedContext } : {}),
         })
         .eq('id', existingId);
 

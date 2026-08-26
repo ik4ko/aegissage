@@ -4,13 +4,19 @@ import { planStates } from '@/lib/states';
 import { locationLandings } from '@/lib/locations';
 import { site } from '@/lib/site';
 /*
-  Imported for its side effect: asserts at build time that lib/tpmo.ts's
-  ZIP_ROUTES still matches the location and state pages that actually exist,
-  so a new page cannot ship with the wrong TPMO disclaimer variant. This file
-  already enumerates every route, which makes it the natural place to hang
-  that check.
+  Imported for its side effect: runs every build-time guard and throws one
+  combined report if any of them find a problem.
+
+  Today that is the content frontmatter check (required fields, approval
+  status, expiry, cited plan claims) and the TPMO route check (ZIP_ROUTES
+  still matches the location and state pages that actually exist, so a new
+  page cannot ship with the wrong disclaimer variant). Both run on every
+  build and both report together — see lib/build-guard.ts.
+
+  This file already enumerates every route, which makes it the natural place
+  to hang them.
 */
-import '@/lib/tpmo-guard';
+import '@/lib/build-guard';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -84,7 +90,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const articles: MetadataRoute.Sitemap = getAllArticles().map((article) => ({
     url: `${site.url}${article.href}`,
-    lastModified: new Date(`${article.updated ?? article.date}T12:00:00Z`),
+    lastModified: new Date(`${article.updated}T12:00:00Z`),
     changeFrequency: 'monthly',
     priority: 0.8,
   }));
