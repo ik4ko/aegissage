@@ -328,3 +328,44 @@ export const headerNav = [
   { href: '/blog', label: 'Articles' },
   { href: '/about', label: 'About' },
 ] as const;
+
+/**
+ * ── Feature flags ─────────────────────────────────────────────────────────
+ *
+ * Kept here so a flag is read in exactly one place. The Google Preferred
+ * Sources integration spans three files — the script in app/layout.tsx, the
+ * button container in the footer, and the sentence in the privacy notice that
+ * discloses the script. All three must agree, and the only way to guarantee
+ * that is to have them read the same constant.
+ *
+ * The privacy notice in particular is not optional to keep in sync: it states
+ * what does and does not load on this site. A disclosure describing a script
+ * that is switched off is as wrong as one that omits a script that is on.
+ */
+
+/**
+ * Google Preferred Sources — the SwG publisher script and its footer button.
+ *
+ * ── Default is ON, and the flag exists to turn it OFF ─────────────────────
+ * The integration ships enabled. This flag is the kill switch for the case
+ * where the domain turns out not to be enrolled in Google Publisher Center,
+ * at which point the script is a third-party request on every page buying
+ * nothing and should come out.
+ *
+ * `NEXT_PUBLIC_ENABLE_GOOGLE_PREFERRED_SOURCE=false` (or `0`) disables it.
+ * Unset, blank or anything else leaves it on — same `.trim() ||` treatment
+ * every other env read in this file gets, and for the same reason: a variable
+ * that exists but is BLANK must behave as unset, not as "off".
+ *
+ * ── This is baked at BUILD time ───────────────────────────────────────────
+ * `NEXT_PUBLIC_*` values are inlined during `next build`, and every page that
+ * carries this is statically prerendered. Flipping the variable in Vercel
+ * does NOT take effect on its own — it needs a redeploy. If the script has to
+ * come off immediately, redeploy; do not expect an env change alone to do it.
+ */
+const PREFERRED_SOURCE_FLAG =
+  process.env.NEXT_PUBLIC_ENABLE_GOOGLE_PREFERRED_SOURCE?.trim().toLowerCase() || 'true';
+
+export const features = {
+  googlePreferredSource: PREFERRED_SOURCE_FLAG !== 'false' && PREFERRED_SOURCE_FLAG !== '0',
+} as const;

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Mail, MessageSquareText, Phone } from 'lucide-react';
-import { advisor, compliance, contactHrefs, nav, site } from '@/lib/site';
+import { advisor, compliance, contactHrefs, features, nav, site } from '@/lib/site';
 import { planStates } from '@/lib/states';
 import { getLocationLanding, locationLandings } from '@/lib/locations';
 import { ShieldMark } from './site-header';
@@ -53,6 +53,30 @@ export function SiteFooter() {
             hand-offs — you get me.
           </p>
           <SocialLinks className="mt-5" />
+
+          {/*
+            Google Preferred Sources button. The SwG publisher library loaded
+            in app/layout.tsx finds this container by attribute and injects
+            the button into it — the attribute is the hook, so do not rename
+            it, and do not put children inside.
+
+            ── Why it lives here and not in <SocialLinks /> ──────────────────
+            SocialLinks is rendered three times (the footer, the homepage
+            "More from Erekle" band, and /contact), so a copy inside it would
+            put two of these on the homepage and two on /contact. Google binds
+            one button per page; duplicates are at best redundant and at worst
+            leave a dead container on the page. The footer renders once per
+            page, which is what this needs.
+
+            `empty:hidden` because the button only appears for publications
+            Google treats as eligible for its news surfaces. Until then the
+            script injects nothing, the div stays empty, and hiding it keeps a
+            blank gap from opening under the social buttons. Once Google fills
+            it, the element stops matching :empty and appears on its own.
+          */}
+          {features.googlePreferredSource ? (
+            <div google-add-preferred-source-btn="" className="mt-5 empty:hidden" />
+          ) : null}
         </div>
 
         <div>
