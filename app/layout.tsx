@@ -8,7 +8,7 @@ import { StickyCta } from '@/components/marketing/sticky-cta';
 import { DisclaimerFooter } from '@/components/marketing/disclaimer-footer';
 import { JsonLd } from '@/components/seo/json-ld';
 import { AttributionCapture } from '@/components/analytics/attribution-capture';
-import { advisor, site } from '@/lib/site';
+import { advisor, features, site } from '@/lib/site';
 import { siteJsonLd } from '@/lib/seo';
 import './globals.css';
 
@@ -84,6 +84,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
+        {/*
+          Google Preferred Sources.
+
+          This is the Subscribe with Google (SwG) publisher library. It backs
+          the <div google-add-preferred-source-btn> container in the footer,
+          which lets a reader mark this site as a preferred source in Google
+          Search. The script finds that container itself — there is no init
+          call, so the two must stay in place together.
+
+          `async` on purpose: it must never sit on the critical path. This
+          file already documents how carefully LCP is guarded here, and a
+          third-party script that blocked parsing would undo that.
+
+          NOTE: the button only renders for publications Google considers
+          eligible for its news surfaces. If AegisSage is not one, the script
+          loads and injects nothing — which is why the footer container is
+          `empty:hidden` rather than a reserved box.
+
+          `features.googlePreferredSource` (lib/site.ts) gates this, the footer
+          container, AND the sentence in the privacy notice that discloses the
+          script. Turning it off must remove all three together, or the notice
+          describes a script that is not running.
+        */}
+        {features.googlePreferredSource ? (
+          <script async src="https://news.google.com/swg/js/v1/publisher.js" />
+        ) : null}
+
         {/*
           Scroll-reveal elements are server-rendered in their hidden state.
           Without JS they would never animate in, so force them visible. The

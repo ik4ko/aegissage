@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/seo/json-ld';
-import { advisor, compliance, site } from '@/lib/site';
+import { advisor, compliance, features, site } from '@/lib/site';
 import { breadcrumbJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -18,6 +18,8 @@ export const metadata: Metadata = {
  *  - /api/contact stores submissions in Supabase `contacts`
  *  - lib/notify emails/texts the advisor
  *  - lib/analytics records events with no personal data attached
+ *  - app/layout.tsx loads Google's SwG publisher script when
+ *    `features.googlePreferredSource` is on
  */
 export default function PrivacyPage() {
   return (
@@ -72,6 +74,23 @@ export default function PrivacyPage() {
             leaves your device unless you fill in the contact form at the end and check the
             consent box. There are no advertising trackers, no data brokers, and no
             third-party marketing pixels on this site.
+            {/*
+              Gated on the SAME flag as the script and the footer button, so
+              this notice can never describe something that is not running.
+              A disclosure that names a switched-off script is as wrong as one
+              that omits a script that is on — and this is a privacy notice on
+              a site whose readers are told to rely on it.
+
+              If the flag is removed one day, this sentence goes with it.
+            */}
+            {features.googlePreferredSource ? (
+              <>
+                {' '}
+                Google&rsquo;s news publisher script loads to support the
+                &ldquo;preferred source&rdquo; button in the footer; it is not an
+                advertising tracker.
+              </>
+            ) : null}
           </p>
 
           <h2>How it is used</h2>
