@@ -53,6 +53,14 @@ export function SiteFooter() {
             hand-offs — you get me.
           </p>
           <SocialLinks className="mt-5" />
+          <a
+            href="https://mymedicarebroker.com/agent/erekle-niniashvili"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex min-h-touch items-center text-base text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
+          >
+            MyMedicareBroker.com Verified Profile
+          </a>
         </div>
 
         <div>
