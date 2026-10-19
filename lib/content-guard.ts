@@ -2,7 +2,7 @@ import 'server-only';
 
 import fs from 'node:fs';
 import path from 'node:path';
-import matter from 'gray-matter';
+import { parseFrontmatter } from './frontmatter';
 
 import type { GuardSection } from './build-guard';
 
@@ -107,7 +107,7 @@ const PLAN_CLAIM_PATTERNS: ReadonlyArray<readonly [RegExp, string]> = [
 type Failure = { file: string; reason: string };
 
 /**
- * gray-matter runs YAML, so `expires_on: 2027-01-01` unquoted arrives as a JS
+ * Frontmatter is YAML (lib/frontmatter.ts), so `expires_on: 2027-01-01` unquoted arrives as a JS
  * Date while `expires_on: "2027-01-01"` arrives as a string. Both spellings
  * are legitimate YAML and a writer should not have to know the difference, so
  * normalise before validating rather than rejecting one of them.
@@ -170,7 +170,7 @@ function checkFile(relPath: string, failures: Failure[]): void {
   let data: Record<string, unknown>;
   let body: string;
   try {
-    const parsed = matter(fs.readFileSync(path.join(process.cwd(), relPath), 'utf8'));
+    const parsed = parseFrontmatter(fs.readFileSync(path.join(process.cwd(), relPath), 'utf8'));
     data = parsed.data as Record<string, unknown>;
     body = parsed.content;
   } catch (error) {
