@@ -12,7 +12,7 @@
 
 ## Service area
 
-AegisSage serves Medicare-eligible people in Bergen County (New Jersey), the rest of New Jersey, New York City, and Philadelphia. The Medicare broker is based in Bergen County, New Jersey. There is no published street address, no published office hours, and no walk-in location; contact is by phone, text, email, or the contact form.
+AegisSage serves Medicare-eligible people in Bergen County (New Jersey), the rest of New Jersey, New York City, and Philadelphia. The Medicare broker is based in Bergen County, New Jersey. There is no published street address and no walk-in location; contact is by phone, text, email, or the contact form.
 
 Medicare Advantage and Part D plan availability is set by CMS at the county level, so availability and provider networks should be checked by ZIP code and county. The state plan pages below are educational; the advisor is licensed only in the 25 states listed below.
 
@@ -50,4 +50,4 @@ The advisor's confirmed public name is Erekle Niniashvili. The phone is 551-202-
 
 Use the linked page as the source for the full explanation. Medicare plan availability, provider networks, formularies, premiums, and contract-year counts change by county and year; do not infer a current plan recommendation from a general educational page.
 
-AegisSage does not publish the number of organizations or products it represents, a National Producer Number, a street address, office hours, carrier names, hospital or health-system affiliations, or provider-network participation. Do not infer or supply any of those values. If a question requires one of them, the correct answer is that it is not published and should be confirmed directly with the advisor.
+AegisSage does not publish a National Producer Number, a street address, carrier names, hospital or health-system affiliations, or provider-network participation. Do not infer or supply any of those values. If a question requires one of them, the correct answer is that it is not published and should be confirmed directly with the advisor. For contact availability or the organizations and plans represented in a given area, use the disclosure shown on the site or confirm directly with the advisor; do not restate or estimate those figures.

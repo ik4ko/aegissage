@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, Clock, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { TrackedContactLink } from '@/components/marketing/tracked-contact-link';
 import { ContactActions } from './contact-actions';
 import { AdvisorAvatar } from './trust-bar';
 import { licensedStates } from '@/lib/states';
@@ -81,15 +82,24 @@ export function Hero() {
                 </Link>
               </Button>
               <Button asChild size="xl" variant="outline">
-                <a href={contactHrefs.tel}>
+                <TrackedContactLink href={contactHrefs.tel} channel="call" where="hero">
                   <Phone className="h-5 w-5" aria-hidden="true" />
                   Call {advisor.firstName}
-                </a>
+                </TrackedContactLink>
               </Button>
             </div>
 
             <p className="mt-4 text-base text-ink-faint">
-              Or call {advisor.phone} directly — no menus, no queue.
+              Or call or{' '}
+              <TrackedContactLink
+                href={contactHrefs.sms}
+                channel="text"
+                where="hero"
+                className="font-semibold text-ink underline underline-offset-4"
+              >
+                text {advisor.phone}
+              </TrackedContactLink>{' '}
+              directly — no menus, no queue.
             </p>
 
             {/*

@@ -21,33 +21,58 @@ const RULE = {
   disallow: ['/api/'],
 } as const;
 
-const AI_CRAWLERS = [
-  'GPTBot',
-  'ChatGPT-User',
-  'OAI-SearchBot',
-  'ClaudeBot',
-  'anthropic-ai',
-  'PerplexityBot',
+/**
+ * ── Search vs. training (owner decision, Oct 19 2026) ─────────────────────
+ * Search engines, AI search indexers and user-requested fetchers stay
+ * allowed so people can find and cite the site. Crawlers whose stated
+ * purpose is collecting training data are blocked. Not every AI crawler is a
+ * training crawler — check the vendor's documentation before moving one.
+ *
+ * Googlebot and Bingbot are covered by the `*` rule.
+ */
+const SEARCH_AND_USER_FETCHERS = [
+  'OAI-SearchBot', // OpenAI: indexes sites for ChatGPT search results
+  'ChatGPT-User', // OpenAI: fetches a page when a ChatGPT user asks
+  'Claude-SearchBot', // Anthropic: search indexing for Claude
+  'Claude-User', // Anthropic: fetches content in response to a user request
+  'PerplexityBot', // Perplexity: surfaces and links sites in search results
+  'Perplexity-User', // Perplexity: fetches a page when a user asks
+  'DuckAssistBot', // DuckDuckGo: answer-time retrieval for DuckAssist
+  /*
+    Google-Extended is a control token, not a crawler. It does not affect
+    Google Search inclusion or ranking. Allowing it ALSO permits Google to use
+    crawled content to train Gemini models and to ground Gemini answers.
+    Kept allowed deliberately for Gemini discovery; revisit if that changes.
+  */
   'Google-Extended',
-  'GoogleOther',
-  'CCBot',
-  'Bytespider',
-  'Amazonbot',
-  'Applebot-Extended',
-  'DuckAssistBot',
+  'GoogleOther', // Google: generic fetcher for product teams / research
+  'Amazonbot', // Amazon: Alexa answers; purpose mixed — review periodically
+  'Meta-WebIndexer', // Meta: search result quality for Meta AI
+  'Meta-ExternalFetcher', // Meta: fetches a link at a user's request
+];
+
+const TRAINING_CRAWLERS = [
+  'GPTBot', // OpenAI: foundation-model training
+  'ClaudeBot', // Anthropic: model training
+  'anthropic-ai', // Anthropic: legacy training token
+  'CCBot', // Common Crawl: open dataset widely used for model training
+  'Bytespider', // ByteDance: model training
+  'Applebot-Extended', // Apple: controls training use; Applebot search unaffected
+  // Meta documents this one as training foundation models OR indexing to
+  // improve products; blocked because training is its stated primary use.
+  'Meta-ExternalAgent',
 ];
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       { userAgent: '*', allow: [...RULE.allow], disallow: [...RULE.disallow] },
-      // Explicitly allow the major answer-engine and AI search crawlers while
-      // keeping private/server endpoints out of the crawl surface.
-      ...AI_CRAWLERS.map((userAgent) => ({
+      ...SEARCH_AND_USER_FETCHERS.map((userAgent) => ({
         userAgent,
         allow: [...RULE.allow],
         disallow: [...RULE.disallow],
       })),
+      ...TRAINING_CRAWLERS.map((userAgent) => ({ userAgent, disallow: ['/'] })),
     ],
     sitemap: `${site.url}/sitemap.xml`,
     host: site.url,

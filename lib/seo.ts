@@ -63,7 +63,13 @@ const serviceAreas = [
   { '@type': 'City', name: 'Philadelphia', containedInPlace: { '@type': 'State', name: 'Pennsylvania' } },
 ];
 
-const sameAs = [social.youtube, social.instagram];
+const sameAs = [
+  social.youtube,
+  social.instagram,
+  social.facebook,
+  social.x,
+  social.myMedicareBroker,
+];
 
 const organizationId = `${site.url}#organization`;
 const advisorId = `${site.url}#advisor`;
