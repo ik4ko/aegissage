@@ -35,6 +35,11 @@ const AI_CRAWLERS = [
   'Amazonbot',
   'Applebot-Extended',
   'DuckAssistBot',
+  // Search/answer-time fetchers added Oct 2026. These retrieve pages when a
+  // person asks an assistant a question; they are not model-training crawlers.
+  'Claude-SearchBot',
+  'Claude-User',
+  'Perplexity-User',
 ];
 
 export default function robots(): MetadataRoute.Robots {

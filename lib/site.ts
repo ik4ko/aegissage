@@ -189,6 +189,10 @@ export const contactHrefs = {
 export const social = {
   youtube: 'https://www.youtube.com/@65MAPD',
   instagram: 'https://www.instagram.com/aegissage',
+  /** Profiles linked from the Google Business Profile, verified Oct 19 2026. */
+  facebook: 'https://www.facebook.com/people/Aegis-Sage-Medicare/61588436026497/',
+  x: 'https://x.com/aegissage',
+  myMedicareBroker: 'https://mymedicarebroker.com/agent/erekle-niniashvili',
 } as const;
 
 /**
