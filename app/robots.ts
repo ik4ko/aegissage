@@ -47,6 +47,8 @@ const SEARCH_AND_USER_FETCHERS = [
   'Google-Extended',
   'GoogleOther', // Google: generic fetcher for product teams / research
   'Amazonbot', // Amazon: Alexa answers; purpose mixed — review periodically
+  'Meta-WebIndexer', // Meta: search result quality for Meta AI
+  'Meta-ExternalFetcher', // Meta: fetches a link at a user's request
 ];
 
 const TRAINING_CRAWLERS = [
@@ -56,7 +58,9 @@ const TRAINING_CRAWLERS = [
   'CCBot', // Common Crawl: open dataset widely used for model training
   'Bytespider', // ByteDance: model training
   'Applebot-Extended', // Apple: controls training use; Applebot search unaffected
-  'Meta-ExternalAgent', // Meta: model training
+  // Meta documents this one as training foundation models OR indexing to
+  // improve products; blocked because training is its stated primary use.
+  'Meta-ExternalAgent',
 ];
 
 export default function robots(): MetadataRoute.Robots {
