@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import matter from 'gray-matter';
+import { parseFrontmatter } from './frontmatter';
 import { readingTime } from './utils';
 
 export type Collection = 'medicare-basics' | 'blog' | 'news';
@@ -75,7 +75,7 @@ function collectionDir(collection: Collection) {
 function parseFile(collection: Collection, filename: string): Article {
   const slug = filename.replace(/\.mdx?$/, '');
   const raw = fs.readFileSync(path.join(collectionDir(collection), filename), 'utf8');
-  const { data, content } = matter(raw);
+  const { data, content } = parseFrontmatter(raw);
   const fm = data as ArticleFrontmatter;
 
   /*
