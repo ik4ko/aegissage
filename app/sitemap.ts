@@ -76,6 +76,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
+    // Service pages. The first two were live but missing from the sitemap
+    // until Oct 28 2026; the rest were added that day.
+    ...[
+      '/turning-65-bergen-county',
+      '/medicare-coverage-review',
+      '/medicare-plan-ending-letter',
+      '/dual-eligible-medicare-medicaid',
+      '/medicare-help-georgian-russian',
+    ].map((path) => ({
+      url: `${site.url}${path}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    })),
+    { url: `${site.url}/book`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${site.url}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
   ];
 

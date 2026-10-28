@@ -37,6 +37,20 @@ function groupLocations() {
   }));
 }
 
+/**
+ * Service pages. Added Oct 28 2026: /turning-65-bergen-county and
+ * /medicare-coverage-review had zero internal links (and were missing from
+ * the sitemap), so Google had no path to the two pages closest to what
+ * people search for. Names match the Google Business Profile services.
+ */
+const serviceLinks = [
+  { href: '/turning-65-bergen-county', label: 'Turning 65' },
+  { href: '/medicare-coverage-review', label: 'Annual plan review (AEP)' },
+  { href: '/medicare-plan-ending-letter', label: 'Plan-ending & change letters' },
+  { href: '/dual-eligible-medicare-medicaid', label: 'Medicare + Medicaid (dual-eligible)' },
+  { href: '/medicare-help-georgian-russian', label: 'Help in Georgian & Russian' },
+] as const;
+
 export function SiteFooter() {
   const areas = groupLocations();
 
@@ -49,8 +63,9 @@ export function SiteFooter() {
             <span className="font-display text-xl font-bold text-ink">{site.name}</span>
           </div>
           <p className="mt-4 max-w-xs text-base text-ink-soft">
-            Independent Medicare guidance from {advisor.basedIn}. No call centers, no
-            hand-offs — you get me.
+            Independent Medicare broker based in Edgewater, NJ, serving Bergen and Hudson
+            Counties, New York City and Philadelphia. Help in English, Georgian and Russian.
+            No call centers, no hand-offs — you get me.
           </p>
           <SocialLinks className="mt-5" />
           <a
@@ -116,6 +131,22 @@ export function SiteFooter() {
           </h2>
           <ul className="mt-4 space-y-1">
             {nav.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="flex min-h-touch items-center text-base text-ink-soft hover:text-navy"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <h2 className="mt-8 text-sm font-semibold uppercase tracking-[0.12em] text-ink-faint">
+            How I help
+          </h2>
+          <ul className="mt-4 space-y-1">
+            {serviceLinks.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}

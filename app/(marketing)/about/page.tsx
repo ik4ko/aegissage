@@ -230,7 +230,14 @@ export default function AboutPage() {
             Service area and licensing
           </h2>
           <p className="mt-3 max-w-2xl text-lg text-ink-soft">
-            I serve people in {site.serviceArea}, and hold active health licenses in{' '}
+            I work in English, Georgian and Russian (
+            <Link
+              href="/medicare-help-georgian-russian"
+              className="font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep"
+            >
+              more on that
+            </Link>
+            ). I serve people in {site.serviceArea}, and hold active health licenses in{' '}
             {licensedStates.length} states. Local pages:{' '}
             {locationLandings.map((location, index) => (
               <span key={location.slug}>

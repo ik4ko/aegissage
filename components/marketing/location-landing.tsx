@@ -113,6 +113,9 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
             ) : null}
 
             <h1 className="mt-4 font-display text-4xl font-bold tracking-[-0.035em] text-ink sm:text-5xl">
+              <span className="mb-3 block font-sans text-lg font-semibold tracking-normal text-navy sm:text-xl">
+                Independent Medicare broker in {location.region}
+              </span>
               {location.headline}
             </h1>
             <p className="mt-5 text-lg leading-relaxed text-ink-soft sm:text-xl">

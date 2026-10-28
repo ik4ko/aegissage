@@ -126,10 +126,28 @@ export const site = {
    * truncates around 155, so the homepage was being cut mid-sentence.
    */
   metaDescription:
-    'Independent Medicare help from Erekle Niniashvili. Plain-English guides, a free eligibility check, and a real person you can call or text.',
+    'Independent Medicare broker in Edgewater, NJ serving Bergen & Hudson Counties, NYC and Philadelphia. Help in English, Georgian and Russian. No cost to talk.',
   /** Search-result title. The full tagline runs 91 chars in <title>. */
-  shortTitle: 'AegisSage — Independent Medicare help in plain English',
-  serviceArea: 'Bergen County, New Jersey, New York City, and Philadelphia',
+  /*
+   * Oct 28 2026: keyword + place first. The old title ("Independent Medicare
+   * help in plain English") named no service and no location, and the Google
+   * Business Profile surfaced for zero Medicare searches in six months.
+   */
+  shortTitle: 'Medicare Broker in Edgewater & Bergen County, NJ | AegisSage',
+  /**
+   * Other names the same business is found under. The Google Business
+   * Profile is titled "Aegis Sage Medicare" and the brand is written as two
+   * words in email signatures; listing them lets Google and AI assistants
+   * resolve all three to one entity. Used only as schema `alternateName`.
+   */
+  alternateNames: ['Aegis Sage', 'Aegis Sage Medicare'],
+  /**
+   * Languages the advisor consults in. Confirmed by Erekle Oct 28 2026 and
+   * stated visibly on /medicare-help-georgian-russian and /about, which is
+   * what makes it safe to put in schema.
+   */
+  languages: ['English', 'Georgian', 'Russian'],
+  serviceArea: 'Bergen and Hudson Counties in New Jersey, New York City, and Philadelphia',
 } as const;
 
 export const contactHrefs = {
@@ -189,6 +207,12 @@ export const contactHrefs = {
 export const social = {
   youtube: 'https://www.youtube.com/@65MAPD',
   instagram: 'https://www.instagram.com/aegissage',
+  facebook: 'https://www.facebook.com/people/Aegis-Sage-Medicare/61588436026497/',
+  x: 'https://x.com/aegissage',
+  /** Verified Google Business Profile (owner-verified, service-area business). */
+  googleBusinessProfile: 'https://maps.google.com/?cid=12352955748415986977',
+  /** Third-party broker directory profile Erekle maintains. */
+  myMedicareBroker: 'https://mymedicarebroker.com/agent/erekle-niniashvili',
 } as const;
 
 /**
