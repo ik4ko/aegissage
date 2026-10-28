@@ -63,6 +63,16 @@ const nextConfig = {
        *                           a permanent rule.
        */
       {
+        /*
+         * Old slug of the food-card article, still indexed by Google on
+         * Oct 28 2026 and returning 404. The article now lives under
+         * /medicare-basics.
+         */
+        source: '/the-dollar900-food-card-ads-what-is-real-and-what-is-a-scam',
+        destination: '/medicare-basics/medicare-food-card-ads',
+        permanent: true,
+      },
+      {
         source: '/contact-medicare',
         /*
          * Repointed from /contact when /medicare-coverage-review shipped.

@@ -446,7 +446,12 @@ export function locationMetadata(slug: string): Metadata {
   if (!location) return {};
 
   const path = `/medicare-${location.slug}`;
-  const title = `Medicare in ${location.name}`;
+  /*
+   * Search title leads with the service + place people actually type
+   * ("medicare broker edgewater nj"). The editorial headline stays the H1;
+   * the keyword line sits above it inside the same <h1> (location-landing).
+   */
+  const title = `Medicare Broker in ${location.region}`;
   const ogImage =
     `${site.url}/api/og?title=${encodeURIComponent(title)}` +
     `&kicker=${encodeURIComponent(location.region)}` +

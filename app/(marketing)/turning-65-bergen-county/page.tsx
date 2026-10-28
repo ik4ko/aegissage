@@ -28,7 +28,7 @@ import { advisor, compliance, contactHrefs, site } from '@/lib/site';
  * The page has to be worth reading for someone who never contacts anyone.
  */
 
-const TITLE = 'Turning 65 in Bergen County';
+const TITLE = 'Turning 65 & Medicare in Bergen County, NJ';
 const DESCRIPTION =
   'What actually happens when you turn 65 in Bergen County: which enrollment window applies, what the deadlines are, and how county lines decide your plan options.';
 
@@ -69,7 +69,7 @@ export default function Turning65BergenCountyPage() {
             </p>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl">
-              Turning 65 in Bergen County
+              Turning 65 &amp; Medicare in Bergen County, NJ
             </h1>
 
             <p className="mt-6 text-lg leading-relaxed text-ink-soft sm:text-xl">

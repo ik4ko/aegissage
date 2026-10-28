@@ -26,7 +26,7 @@ import { advisor, compliance, contactHrefs, site } from '@/lib/site';
  * UTM capture is automatic via <AttributionCapture /> in the root layout.
  */
 
-const TITLE = 'Medicare coverage review';
+const TITLE = 'Medicare Plan Review During AEP in Bergen County, NJ';
 const DESCRIPTION =
   'An honest look at whether your current Medicare coverage still fits: what changes each year, what to check, and when changing plans is actually possible.';
 
@@ -67,6 +67,9 @@ export default function MedicareCoverageReviewPage() {
             </p>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl">
+              <span className="mb-3 block font-sans text-lg font-semibold tracking-normal text-navy sm:text-xl">
+                Annual Enrollment Period plan review · Bergen County, NJ
+              </span>
               Does what you have still fit?
             </h1>
 

@@ -46,6 +46,9 @@ export function Hero() {
             </p>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl lg:text-6xl">
+              <span className="mb-3 block font-sans text-lg font-semibold tracking-normal text-ink-soft sm:text-xl">
+                Independent Medicare broker in Edgewater &amp; Bergen County, NJ
+              </span>
               Medicare is not complicated.
               <span className="block text-navy">It is just badly explained.</span>
             </h1>

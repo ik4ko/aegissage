@@ -59,11 +59,43 @@ const serviceAreas = [
     name,
     containedInPlace: { '@type': 'AdministrativeArea', name: 'Bergen County' },
   })),
+  /*
+   * Oct 28 2026: Hudson County, Brooklyn and Queens added. Erekle confirmed
+   * these as served areas and they match the verified Google Business
+   * Profile service area set the same day.
+   */
+  {
+    '@type': 'AdministrativeArea',
+    name: 'Hudson County',
+    containedInPlace: { '@type': 'State', name: 'New Jersey' },
+  },
   { '@type': 'City', name: 'New York City', containedInPlace: { '@type': 'State', name: 'New York' } },
+  {
+    '@type': 'AdministrativeArea',
+    name: 'Brooklyn (Kings County)',
+    containedInPlace: { '@type': 'City', name: 'New York City' },
+  },
+  {
+    '@type': 'AdministrativeArea',
+    name: 'Queens (Queens County)',
+    containedInPlace: { '@type': 'City', name: 'New York City' },
+  },
   { '@type': 'City', name: 'Philadelphia', containedInPlace: { '@type': 'State', name: 'Pennsylvania' } },
 ];
 
-const sameAs = [social.youtube, social.instagram];
+/*
+ * Every profile that is verifiably this business. The Google Business
+ * Profile link is what ties the website entity to the Maps/Search entity for
+ * Google, Gemini and anything else reading the Knowledge Graph.
+ */
+const sameAs = [
+  social.googleBusinessProfile,
+  social.facebook,
+  social.instagram,
+  social.x,
+  social.youtube,
+  social.myMedicareBroker,
+];
 
 const organizationId = `${site.url}#organization`;
 const advisorId = `${site.url}#advisor`;
@@ -95,6 +127,7 @@ export function siteJsonLd() {
         '@type': 'Organization',
         '@id': organizationId,
         name: site.name,
+        alternateName: [...site.alternateNames],
         url: site.url,
         logo: `${site.url}/icon.svg`,
         description: site.description,
@@ -110,7 +143,7 @@ export function siteJsonLd() {
           telephone: phone,
           ...(advisor.emailConfigured ? { email: advisor.email } : {}),
           areaServed: licensedStates.map((state) => `US-${state.code}`),
-          availableLanguage: 'English',
+          availableLanguage: [...site.languages],
         },
       },
       {
@@ -127,11 +160,12 @@ export function siteJsonLd() {
         jobTitle: advisor.credential,
         telephone: phone,
         ...(advisor.emailConfigured ? { email: advisor.email } : {}),
-        sameAs,
+        // The person, not the business: only profiles that are his own.
+        sameAs: [social.youtube, social.myMedicareBroker],
         url: `${site.url}/about`,
         areaServed: serviceAreas,
         knowsAbout,
-        knowsLanguage: 'English',
+        knowsLanguage: [...site.languages],
         worksFor: { '@id': organizationId },
       },
       {
@@ -148,7 +182,18 @@ export function siteJsonLd() {
         '@type': ['ProfessionalService', 'InsuranceAgency'],
         '@id': professionalServiceId,
         name: site.name,
+        alternateName: [...site.alternateNames],
         url: site.url,
+        description: site.metaDescription,
+        availableLanguage: [...site.languages],
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: 'Medicare guidance services',
+          itemListElement: serviceJsonLd().map((service) => ({
+            '@type': 'Offer',
+            itemOffered: { '@id': service['@id'] },
+          })),
+        },
         image: businessImage,
         telephone: phone,
         ...(advisor.emailConfigured ? { email: advisor.email } : {}),
@@ -188,34 +233,72 @@ export function siteJsonLd() {
  * educational; do not add plan, price, savings, eligibility, or outcome claims.
  */
 export function serviceJsonLd() {
+  const service = (slug: string, name: string, description: string, path?: string) => ({
+    '@type': 'Service',
+    '@id': `${site.url}#service-${slug}`,
+    name,
+    serviceType: name,
+    description,
+    ...(path ? { url: `${site.url}${path}` } : {}),
+    availableLanguage: [...site.languages],
+    areaServed: serviceAreas,
+  });
+
+  /*
+   * One entry per service named on the Google Business Profile (Oct 28 2026),
+   * with the same names, so Google, the profile and the site agree. Each
+   * points at the page that explains it where one exists. Descriptions stay
+   * educational: no plan, premium, savings or eligibility claims.
+   */
   return [
-    {
-      '@type': 'Service',
-      '@id': `${site.url}#service-medicare-education`,
-      name: 'Medicare education',
-      serviceType: 'Medicare education and guidance',
-      description:
-        'Plain-English Medicare guides and explanations covering enrollment windows, Medicare parts, provider networks, and prescription formularies.',
-      areaServed: serviceAreas,
-    },
-    {
-      '@type': 'Service',
-      '@id': `${site.url}#service-enrollment-guidance`,
-      name: 'Medicare enrollment guidance',
-      serviceType: 'Medicare enrollment guidance',
-      description:
-        'General education about Medicare enrollment windows, deadlines, and the questions to bring to a coverage conversation.',
-      areaServed: serviceAreas,
-    },
-    {
-      '@type': 'Service',
-      '@id': `${site.url}#service-coverage-guidance`,
-      name: 'Medicare coverage and provider-network guidance',
-      serviceType: 'Medicare coverage and provider-network guidance',
-      description:
-        'Help organizing doctors, prescriptions, ZIP code, and current coverage before comparing Medicare options.',
-      areaServed: serviceAreas,
-    },
+    service(
+      'medicare-advantage',
+      'Medicare Advantage plan comparison and enrollment help',
+      'Comparing Medicare Advantage options against Original Medicare: provider networks (including New York doctors for New Jersey residents), drug coverage and total yearly costs.',
+      '/tools/plan-comparison',
+    ),
+    service(
+      'medigap',
+      'Medicare Supplement (Medigap) guidance',
+      'How Medicare Supplement (Medigap) plans work alongside Original Medicare, how they compare with Medicare Advantage, and the enrollment timing rules in New Jersey, New York and Pennsylvania.',
+      '/medicare-basics/medicare-advantage-vs-medigap',
+    ),
+    service(
+      'part-d',
+      'Medicare Part D prescription drug plan review',
+      'Checking your medications, doses and pharmacy against Part D plan formularies, and explaining the Part D late enrollment penalty.',
+      '/tools/penalty-calculator',
+    ),
+    service(
+      'turning-65',
+      'Turning 65 Medicare help',
+      'When to sign up for Medicare Parts A and B, how to avoid permanent late penalties, what to do if you are still working at 65, and choosing a first plan.',
+      '/turning-65-bergen-county',
+    ),
+    service(
+      'aep-review',
+      'Annual Enrollment Period (AEP) plan review',
+      'A yearly review during the Annual Enrollment Period, October 15 to December 7, of whether your plan still fits your doctors, prescriptions and pharmacy for next year.',
+      '/medicare-coverage-review',
+    ),
+    service(
+      'plan-letters',
+      'Plan change and plan-ending letter help',
+      'Explaining an Annual Notice of Change or a plan non-renewal letter, the deadlines and special enrollment period that may apply, and the options that follow.',
+      '/medicare-plan-ending-letter',
+    ),
+    service(
+      'dual-eligible',
+      'Dual-eligible (Medicare and Medicaid) plan review',
+      'Educational review of Dual-Eligible Special Needs Plans (D-SNPs) and other options for people who have both Medicare and Medicaid.',
+      '/dual-eligible-medicare-medicaid',
+    ),
+    service(
+      'georgian-russian',
+      'Georgian- and Russian-language Medicare help',
+      'Medicare explained in Georgian or Russian: plan comparisons, enrollment at 65, AEP reviews and plan letters, for you or a parent.',
+      '/medicare-help-georgian-russian',
+    ),
   ];
 }
 
