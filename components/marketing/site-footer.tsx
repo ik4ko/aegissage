@@ -44,6 +44,9 @@ function groupLocations() {
  * people search for. Names match the Google Business Profile services.
  */
 const serviceLinks = [
+  { href: '/medicare-advantage-plans-nj', label: 'Medicare Advantage' },
+  { href: '/medicare-supplement-medigap-nj', label: 'Medigap (Medicare Supplement)' },
+  { href: '/medicare-part-d-drug-plans-nj', label: 'Part D drug plans' },
   { href: '/turning-65-bergen-county', label: 'Turning 65' },
   { href: '/medicare-coverage-review', label: 'Annual plan review (AEP)' },
   { href: '/medicare-plan-ending-letter', label: 'Plan-ending & change letters' },

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import { ServicePage, type ServicePageFaq } from '@/components/marketing/service-page';
-import { site } from '@/lib/site';
+import { ServicePage, serviceMetadata, type ServicePageFaq } from '@/components/marketing/service-page';
 
 /**
  * Service page: people with both Medicare and Medicaid.
@@ -16,12 +15,12 @@ const TITLE = 'Dual-Eligible Medicare & Medicaid Plan Help in Bergen County, NJ'
 const DESCRIPTION =
   'Have both Medicare and Medicaid? How dual-eligible plans (D-SNPs) work, when you can change, and what to check. Help in English, Georgian and Russian.';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = serviceMetadata({
+  path: PATH,
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: PATH },
-  openGraph: { type: 'article', title: `${TITLE} — ${site.name}`, description: DESCRIPTION, url: `${site.url}${PATH}` },
-};
+  kicker: 'Medicare + Medicaid · NJ & NY',
+});
 
 const faqs: ServicePageFaq[] = [
   {
