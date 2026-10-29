@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "validate": "node scripts/validate-site.mjs",
+    "indexnow": "node scripts/indexnow.mjs",
     "test:digest": "node scripts/test-digest.mjs",
     "test:math": "node scripts/test-medicare-math.mjs",
     "test:score": "node --experimental-strip-types scripts/test-lead-score.mjs",
