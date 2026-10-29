@@ -5,7 +5,8 @@
 - `lib/seo.ts` owns the sitewide JSON-LD graph: `WebSite`, `Organization`, the named `Person`, the service-area `ProfessionalService`, and the visible `Service` entities.
 - `app/layout.tsx` renders that graph on every public route.
 - `lib/seo.ts` also provides `breadcrumbJsonLd` and `faqJsonLd` helpers.
-- Breadcrumbs are rendered by the applicable route or shared layout. FAQ schema is rendered only on `/medicare-basics` and `/medicare-checklist`, where the exact questions and answers are visible in the page content.
+- Breadcrumbs are rendered by the applicable route or shared layout. FAQ schema is rendered only where the exact questions and answers are visible in the page content: the homepage (`HOME_FAQS` in `app/page.tsx`), `/medicare-basics`, `/medicare-checklist`, and every service page built on `components/marketing/service-page.tsx` (`/medicare-advantage-plans-nj`, `/medicare-supplement-medigap-nj`, `/medicare-part-d-drug-plans-nj`, `/medicare-plan-ending-letter`, `/dual-eligible-medicare-medicaid`, `/medicare-help-georgian-russian`). Each of those renders the visible Q&A and the schema from the same array, so they cannot drift.
+- Article schema: `articleJsonLd()` in `components/marketing/article-layout.tsx` emits `Article` on `/medicare-basics/*`, `BlogPosting` on `/blog/*` and `NewsArticle` on `/news/*`, with dates taken from frontmatter `published` / `updated`, `author` → `#advisor` and `publisher` → `#organization`.
 - `app/sitemap.ts` and `app/robots.ts` generate `sitemap.xml` and `robots.txt`.
 - `next.config.js` redirects the apex `aegissage.com` host to the preferred `www.aegissage.com` host.
 
