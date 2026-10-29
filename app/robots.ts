@@ -21,21 +21,44 @@ const RULE = {
   disallow: ['/api/'],
 } as const;
 
-const AI_CRAWLERS = [
-  'GPTBot',
-  'ChatGPT-User',
+/*
+ * Search and answer-engine agents: these fetch pages to cite them in an
+ * answer, or on a user's behalf. Allowing them is what makes the site
+ * citable in ChatGPT search, Claude, Perplexity, Copilot (via Bing), Apple
+ * and Gemini (Google-Extended governs Gemini grounding/training use).
+ * Oct 29 2026: Claude-SearchBot, Claude-User, Perplexity-User, Bingbot and
+ * Applebot added — they were covered by `*` but not named.
+ */
+const AI_SEARCH_CRAWLERS = [
   'OAI-SearchBot',
-  'ClaudeBot',
-  'anthropic-ai',
+  'ChatGPT-User',
+  'Claude-SearchBot',
+  'Claude-User',
   'PerplexityBot',
+  'Perplexity-User',
   'Google-Extended',
   'GoogleOther',
+  'Bingbot',
+  'Applebot',
+  'DuckAssistBot',
+  'Amazonbot',
+];
+
+/*
+ * Model-training crawlers. Currently allowed. An earlier note said to block
+ * training-only crawlers; that is pending Erekle's decision — do not change
+ * this list without it.
+ */
+const AI_TRAINING_CRAWLERS = [
+  'GPTBot',
+  'ClaudeBot',
+  'anthropic-ai',
   'CCBot',
   'Bytespider',
-  'Amazonbot',
   'Applebot-Extended',
-  'DuckAssistBot',
 ];
+
+const AI_CRAWLERS = [...AI_SEARCH_CRAWLERS, ...AI_TRAINING_CRAWLERS];
 
 export default function robots(): MetadataRoute.Robots {
   return {
