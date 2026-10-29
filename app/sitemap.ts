@@ -77,8 +77,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     // Service pages. The first two were live but missing from the sitemap
-    // until Oct 28 2026; the rest were added that day.
+    // until Oct 28 2026; the next three were added that day, and the
+    // Medicare Advantage / Medigap / Part D pages on Oct 29 2026.
     ...[
+      '/medicare-advantage-plans-nj',
+      '/medicare-supplement-medigap-nj',
+      '/medicare-part-d-drug-plans-nj',
       '/turning-65-bergen-county',
       '/medicare-coverage-review',
       '/medicare-plan-ending-letter',
@@ -90,7 +94,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.9,
     })),
-    { url: `${site.url}/book`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    // /book is deliberately absent: it is a noindex consent interstitial (see
+    // app/(marketing)/book/page.tsx), and listing a noindex URL in the
+    // sitemap sends Google contradictory signals.
     { url: `${site.url}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
   ];
 

@@ -21,10 +21,12 @@ import { CountUp } from '@/components/motion/count-up';
 import { TriageFlow } from '@/components/tools/triage-flow';
 import { DeadlineCapture } from '@/components/forms/deadline-capture';
 import { Button } from '@/components/ui/button';
+import { JsonLd } from '@/components/seo/json-ld';
 import { getArticles, getLatestNews } from '@/lib/content';
 import { locationLandings } from '@/lib/locations';
 import { licensedStates } from '@/lib/states';
 import { advisor, site } from '@/lib/site';
+import { faqJsonLd } from '@/lib/seo';
 
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent(site.tagline)}` +
@@ -103,6 +105,47 @@ const TOOLS = [
     body: 'The guides I send people before our first call. Every Medicare term is a tap away from a plain-English definition.',
   },
 ] as const;
+
+/**
+ * Homepage FAQ — the questions people put to search and AI assistants about a
+ * local broker. Each answer is the exact text in the FAQPage schema below;
+ * `link` renders after the answer and is not part of the schema text.
+ *
+ * Dates: https://www.medicare.gov/health-drug-plans/open-enrollment (Oct 15 –
+ * Dec 7) and https://www.medicare.gov/publications/11219-Understanding-Medicare-Advantage-Medicare-Drug-Plan-Enrollment-Periods.pdf
+ * (Medicare Advantage Open Enrollment, Jan 1 – Mar 31). Plan-ending wording
+ * mirrors /medicare-plan-ending-letter. No promises about price or outcome.
+ */
+const HOME_FAQS: { question: string; answer: string; link?: { href: string; label: string } }[] = [
+  {
+    question: 'Do Medicare brokers charge a fee?',
+    answer:
+      'No. There is no cost to you to talk with me or to compare your options. If you choose to enroll in a plan, the broker is paid by the insurance company, not by you.',
+  },
+  {
+    question: 'When can I change my Medicare plan?',
+    answer:
+      'Each year during the Annual Enrollment Period, October 15 to December 7, with changes starting January 1. If you are in a Medicare Advantage plan, you can also make one change from January 1 to March 31. Outside those dates, a special enrollment period may apply after events such as moving or losing other coverage.',
+    link: { href: '/tools/eligibility-check', label: 'Check which window applies to you' },
+  },
+  {
+    question: 'My plan sent a letter saying it is ending. What now?',
+    answer:
+      'If your plan is not renewing, you can choose new coverage during the Annual Enrollment Period, and people whose plan is ending generally get a special enrollment period after it as well. If you do nothing, you are generally returned to Original Medicare, which can leave you without drug coverage. Bring me the letter and we will go through your options together.',
+    link: { href: '/medicare-plan-ending-letter', label: 'What a plan-ending letter means' },
+  },
+  {
+    question: 'Can I get help in Georgian or Russian?',
+    answer:
+      'Yes. I explain Medicare in English, Georgian or Russian, whether the coverage is for you or for a parent.',
+    link: { href: '/medicare-help-georgian-russian', label: 'Medicare help in Georgian and Russian' },
+  },
+  {
+    question: 'Do you only help people in New Jersey?',
+    answer: `No. I am based in Edgewater, New Jersey, and serve Bergen and Hudson Counties, Brooklyn, Queens and Philadelphia. I am licensed in ${licensedStates.length} states and can help by phone or video anywhere in them.`,
+    link: { href: '/plans', label: `See all ${licensedStates.length} states` },
+  },
+];
 
 export default function HomePage() {
   const guides = getArticles('medicare-basics').slice(0, 3);
@@ -341,6 +384,34 @@ export default function HomePage() {
             </p>
             <SocialLinks className="mt-6" />
           </Reveal>
+        </div>
+      </section>
+
+      {/* ── FAQ ───────────────────────────────────────────────────────── */}
+      <JsonLd data={faqJsonLd(HOME_FAQS)} />
+      <section className="border-t border-line">
+        <div className="container py-14 sm:py-16">
+          <div className="mx-auto max-w-3xl">
+            <SectionHeading kicker="Common questions" title="Questions people ask me first" />
+            <div className="mt-8 divide-y divide-line">
+              {HOME_FAQS.map((faq) => (
+                <div key={faq.question} className="py-6">
+                  <h3 className="font-display text-xl font-bold tracking-[-0.01em] text-ink">
+                    {faq.question}
+                  </h3>
+                  <p className="mt-3 text-lg leading-relaxed text-ink-soft">{faq.answer}</p>
+                  {faq.link ? (
+                    <Link
+                      href={faq.link.href}
+                      className="mt-2 inline-flex min-h-touch items-center font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep"
+                    >
+                      {faq.link.label} →
+                    </Link>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ServicePage, type ServicePageFaq } from '@/components/marketing/service-page';
-import { site } from '@/lib/site';
+import { ServicePage, serviceMetadata, type ServicePageFaq } from '@/components/marketing/service-page';
 
 /**
  * Service page: plan-ending (non-renewal) and plan-change (ANOC) letters.
@@ -17,12 +16,12 @@ const TITLE = 'Medicare Plan Ending or Changing? Letter Help in Bergen County, N
 const DESCRIPTION =
   'Got a letter saying your Medicare plan is ending or changing next year? What it means, your deadlines, and your options. Edgewater-based broker. No cost to talk.';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = serviceMetadata({
+  path: PATH,
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: PATH },
-  openGraph: { type: 'article', title: `${TITLE} — ${site.name}`, description: DESCRIPTION, url: `${site.url}${PATH}` },
-};
+  kicker: 'Plan letters · Bergen County, NJ',
+});
 
 const faqs: ServicePageFaq[] = [
   {

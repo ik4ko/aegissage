@@ -247,7 +247,8 @@ export function serviceJsonLd() {
   /*
    * One entry per service named on the Google Business Profile (Oct 28 2026),
    * with the same names, so Google, the profile and the site agree. Each
-   * points at the page that explains it where one exists. Descriptions stay
+   * points at the page that explains it (Oct 29 2026: Medicare Advantage,
+   * Medigap and Part D moved from articles/tools to their own service pages). Descriptions stay
    * educational: no plan, premium, savings or eligibility claims.
    */
   return [
@@ -255,19 +256,19 @@ export function serviceJsonLd() {
       'medicare-advantage',
       'Medicare Advantage plan comparison and enrollment help',
       'Comparing Medicare Advantage options against Original Medicare: provider networks (including New York doctors for New Jersey residents), drug coverage and total yearly costs.',
-      '/tools/plan-comparison',
+      '/medicare-advantage-plans-nj',
     ),
     service(
       'medigap',
       'Medicare Supplement (Medigap) guidance',
       'How Medicare Supplement (Medigap) plans work alongside Original Medicare, how they compare with Medicare Advantage, and the enrollment timing rules in New Jersey, New York and Pennsylvania.',
-      '/medicare-basics/medicare-advantage-vs-medigap',
+      '/medicare-supplement-medigap-nj',
     ),
     service(
       'part-d',
       'Medicare Part D prescription drug plan review',
       'Checking your medications, doses and pharmacy against Part D plan formularies, and explaining the Part D late enrollment penalty.',
-      '/tools/penalty-calculator',
+      '/medicare-part-d-drug-plans-nj',
     ),
     service(
       'turning-65',
@@ -332,7 +333,7 @@ export function localBusinessJsonLd(options: {
     url: `${site.url}${options.path}`,
     image: businessImage,
     telephone: phone,
-    email: advisor.email,
+    ...(advisor.emailConfigured ? { email: advisor.email } : {}),
     areaServed: options.areaServed,
     knowsAbout,
     parentOrganization: { '@id': organizationId },

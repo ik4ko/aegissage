@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Reveal } from '@/components/motion/reveal';
 import { ContactActions } from '@/components/marketing/contact-actions';
@@ -10,7 +11,9 @@ import { site } from '@/lib/site';
 /**
  * Shared layout for the single-service pages added Oct 28 2026
  * (/medicare-plan-ending-letter, /dual-eligible-medicare-medicaid,
- * /medicare-help-georgian-russian).
+ * /medicare-help-georgian-russian) and Oct 29 2026
+ * (/medicare-advantage-plans-nj, /medicare-supplement-medigap-nj,
+ * /medicare-part-d-drug-plans-nj).
  *
  * Each page exists so a search for that exact need — and an AI assistant
  * asked about it — lands on a page that answers it, instead of a homepage
@@ -25,6 +28,44 @@ import { site } from '@/lib/site';
  * FAQ schema mirrors the visible questions and answers word for word.
  */
 export type ServicePageFaq = { question: string; answer: string };
+
+/**
+ * Metadata for a service page: canonical, Open Graph and Twitter card, with
+ * an absolute /api/og image — the same pattern as locationMetadata() in
+ * lib/locations.ts, so a shared service-page link renders a card.
+ */
+export function serviceMetadata(options: {
+  path: string;
+  title: string;
+  description: string;
+  /** Small label above the OG headline. */
+  kicker: string;
+}): Metadata {
+  const { path, title, description, kicker } = options;
+  const ogImage =
+    `${site.url}/api/og?title=${encodeURIComponent(title)}` +
+    `&kicker=${encodeURIComponent(kicker)}` +
+    `&subtitle=${encodeURIComponent(description)}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      type: 'article',
+      title: `${title} — ${site.name}`,
+      description,
+      url: `${site.url}${path}`,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} — ${site.name}`,
+      description,
+      images: [ogImage],
+    },
+  };
+}
 
 export function ServicePage(props: {
   path: string;

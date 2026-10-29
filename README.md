@@ -78,6 +78,9 @@ Vercel deploy from this repository's root — no subdirectory offset.
   sitemap and every absolute OG image URL.
 - `aegissage.com` is dedicated to this project. Point it at the Vercel project
   when ready; no DNS changes have been made from here.
+- **IndexNow (manual, after each deploy):** `npm run indexnow` reads the live
+  sitemap and submits every URL to IndexNow (Bing → ChatGPT search/Copilot).
+  The key file is `public/<key>.txt`; the key itself is in `scripts/indexnow.mjs`.
 
 ## Database
 

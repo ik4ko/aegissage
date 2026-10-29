@@ -136,11 +136,17 @@ export function ArticleLayout({
   );
 }
 
-/** Article structured data, so search results show the byline and date. */
+/**
+ * Article structured data, so search results show the byline and date.
+ *
+ * `Article` for /medicare-basics, `BlogPosting` for /blog, `NewsArticle` for
+ * /news. Dates come only from frontmatter `published` / `updated`, which the
+ * content guard requires on every file — nothing here invents a date.
+ */
 export function articleJsonLd(
   article: Article,
   url: string,
-  type: 'Article' | 'NewsArticle' = 'Article',
+  type: 'Article' | 'BlogPosting' | 'NewsArticle' = 'Article',
 ) {
   const schemaDate = (value: string) =>
     /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00Z` : value;
@@ -161,6 +167,7 @@ export function articleJsonLd(
     author: { '@id': `${site.url}#advisor`, url: `${site.url}/about` },
     publisher: { '@id': `${site.url}#organization` },
     articleSection: article.category,
+    inLanguage: 'en-US',
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
   };
 }

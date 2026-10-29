@@ -58,7 +58,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<Para
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(articleJsonLd(article, `${site.url}${article.href}`)),
+          __html: JSON.stringify(articleJsonLd(article, `${site.url}${article.href}`, 'BlogPosting')),
         }}
       />
       <ArticleLayout

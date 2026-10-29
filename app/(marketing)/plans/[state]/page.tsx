@@ -43,13 +43,20 @@ export async function generateMetadata({
   const state = getStateBySlug(slug);
   if (!state) return {};
 
-  const title = `Medicare in ${state.name}`;
+  /*
+   * Oct 29 2026: was "Medicare in {State}", which competed with the
+   * /medicare-new-jersey and /medicare-new-york-city landings for the same
+   * query. "· Licensed Broker" was also requested but cannot fit: with the
+   * " · AegisSage" template suffix it puts every state over 60 characters.
+   * Longest result: "Medicare Enrollment Rules in North Carolina · AegisSage" (55).
+   */
+  const title = `Medicare Enrollment Rules in ${state.name}`;
   // `state.note` is a full sentence of local detail; appending it pushed this
   // past 240 characters and Google truncated it. The note still renders on the
   // page — it just does not belong in a search-result description.
   const description = `How Medicare enrollment works in ${state.name}, and how to reach Erekle Niniashvili, an independent Medicare broker covering the state.`;
   const ogImage =
-    `${site.url}/api/og?title=${encodeURIComponent(`Medicare in ${state.name}`)}` +
+    `${site.url}/api/og?title=${encodeURIComponent(title)}` +
     `&kicker=${encodeURIComponent(state.code)}` +
     `&subtitle=${encodeURIComponent('Licensed here. Independent. Reachable by phone.')}`;
 

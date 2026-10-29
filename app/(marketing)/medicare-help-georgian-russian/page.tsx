@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { ServicePage, type ServicePageFaq } from '@/components/marketing/service-page';
-import { advisor, site } from '@/lib/site';
+import { ServicePage, serviceMetadata, type ServicePageFaq } from '@/components/marketing/service-page';
+import { advisor } from '@/lib/site';
 
 /**
  * Service page: Medicare help in Georgian and Russian.
@@ -21,12 +21,12 @@ const TITLE = 'Georgian & Russian-Speaking Medicare Broker in NJ & NY';
 const DESCRIPTION =
   'Medicare help in Georgian (ქართულად) and Russian (на русском) from an independent broker in Edgewater, NJ. Serving Bergen and Hudson Counties, Brooklyn and Queens.';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = serviceMetadata({
+  path: PATH,
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: PATH },
-  openGraph: { type: 'article', title: `${TITLE} — ${site.name}`, description: DESCRIPTION, url: `${site.url}${PATH}` },
-};
+  kicker: 'English · Georgian · Russian',
+});
 
 const faqs: ServicePageFaq[] = [
   {
