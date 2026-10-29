@@ -333,7 +333,7 @@ export function localBusinessJsonLd(options: {
     url: `${site.url}${options.path}`,
     image: businessImage,
     telephone: phone,
-    email: advisor.email,
+    ...(advisor.emailConfigured ? { email: advisor.email } : {}),
     areaServed: options.areaServed,
     knowsAbout,
     parentOrganization: { '@id': organizationId },

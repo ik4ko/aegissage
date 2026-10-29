@@ -94,7 +94,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.9,
     })),
-    { url: `${site.url}/book`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    // /book is deliberately absent: it is a noindex consent interstitial (see
+    // app/(marketing)/book/page.tsx), and listing a noindex URL in the
+    // sitemap sends Google contradictory signals.
     { url: `${site.url}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
   ];
 

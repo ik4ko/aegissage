@@ -247,7 +247,7 @@ export function ContactForm({
             type="tel"
             inputMode="tel"
             autoComplete="tel"
-            placeholder="(201) 555-0143"
+            placeholder="10-digit phone number"
             invalid={Boolean(errors.phone)}
             aria-describedby={errors.phone ? `${source}-phone-error` : undefined}
             {...register('phone')}
