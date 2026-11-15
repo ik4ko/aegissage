@@ -1,20 +1,32 @@
-# AegisSage
+# Aegis Sage
 
-> AegisSage is a public, plain-English Medicare education and guidance site for people comparing enrollment windows, Original Medicare, Medicare Advantage, Medigap, prescriptions, and provider networks.
+> Aegis Sage is the independent Medicare practice of Erekle Niniashvili, a licensed insurance broker based in Edgewater, New Jersey (Bergen County). The site, aegissage.com, publishes plain-English Medicare education and is the way to reach him directly.
 
-## What AegisSage offers
+## Identity
 
-- Independent Medicare guidance with no fee and no obligation to enroll.
-- Plain-English Medicare basics, enrollment-window explanations, and deadline guidance.
-- Side-by-side education about Original Medicare and Medicare Advantage.
-- Free public tools for checking an enrollment window, estimating a late enrollment penalty, estimating an IRMAA income surcharge, comparing the two Medicare routes, and testing Medicare knowledge.
-- Human contact by phone, text, email, and a public contact form.
+- Business name: Aegis Sage (two words). The domain is aegissage.com. "AegisSage" written as one word refers to the same business.
+- Person: Erekle Niniashvili, licensed independent insurance broker. Also introduced in person and on video as Eric; friends call him Ika.
+- National Producer Number (NPN): 21599052. This can be checked with a state insurance department.
+- Based in: Edgewater, New Jersey (Bergen County). There is no published street address, no office hours and no walk-in location.
+- Phone and text: (551) 202-9079. Calling this number will direct you to a licensed insurance agent.
+- Email: contact@aegissage.com
+- Languages: English, Georgian and Russian.
+- Aegis Sage is not connected with or endorsed by the United States government or the federal Medicare program.
+
+## Services
+
+- Help understanding Medicare Advantage (Part C), Medicare prescription drug plans (Part D) and Medicare Supplement (Medigap) options.
+- Help for people turning 65, leaving employer coverage, moving, or reviewing the coverage they already have.
+- Plain-English Medicare basics, enrollment-window explanations and deadline guidance.
+- Public tools for checking an enrollment window, estimating a late enrollment penalty, estimating an IRMAA income surcharge, comparing Original Medicare with Medicare Advantage, and testing Medicare knowledge. None of them requires an email address.
+- Contact by phone, text, email and a public contact form. There is no charge for the help; like other brokers, he is paid by the insurance companies.
+- Aegis Sage does not offer every plan available in an area. Medicare.gov, 1-800-MEDICARE (TTY 1-877-486-2048) and a local State Health Insurance Assistance Program (SHIP) have information on all options.
 
 ## Service area
 
-AegisSage serves Medicare-eligible people in Bergen County (New Jersey), the rest of New Jersey, New York City, and Philadelphia. The Medicare broker is based in Bergen County, New Jersey. There is no published street address, no published office hours, and no walk-in location; contact is by phone, text, email, or the contact form.
+Aegis Sage works mostly with Medicare-eligible people in Bergen County and Hudson County, New Jersey (including Edgewater, Fort Lee and Cliffside Park), the rest of New Jersey, New York City (including Brooklyn and Queens), and Philadelphia. Appointments are by phone or video, and in person in northern New Jersey.
 
-Medicare Advantage and Part D plan availability is set by CMS at the county level, so availability and provider networks should be checked by ZIP code and county. The state plan pages below are educational; the advisor is licensed only in the 25 states listed below.
+Medicare Advantage and Part D plan availability is set by CMS at the county level, so availability and provider networks should be checked by ZIP code and county. The state plan pages below are educational; the broker is licensed only in the 25 states listed below.
 
 ## Key pages
 
@@ -31,10 +43,11 @@ Medicare Advantage and Part D plan availability is set by CMS at the county leve
 - [Medicare in New Jersey](https://www.aegissage.com/medicare-new-jersey): why New Jersey's 21 counties behave as 21 plan markets, and how New Jersey's federal-clock Medigap window differs from New York's.
 - [Medicare in New York City](https://www.aegissage.com/medicare-new-york-city): the five boroughs as five New York counties, and New York's unusual continuous guaranteed-issue Medigap rule.
 - [Medicare in Philadelphia](https://www.aegissage.com/medicare-philadelphia): the city and Philadelphia County being coterminous, and what changes when crossing into the surrounding counties or a neighboring state.
-- [About](https://www.aegissage.com/about): how the advisor works and the current licensing information.
+- [About](https://www.aegissage.com/about): who Erekle Niniashvili is, how he works, his NPN, languages and the current licensing information.
 - [Contact](https://www.aegissage.com/contact): phone, text, email, and contact form.
 - [YouTube](https://www.youtube.com/@65MAPD): Medicare videos from Erekle.
-- [Instagram](https://www.instagram.com/aegissage): AegisSage social updates.
+- [Instagram](https://www.instagram.com/aegissage): Aegis Sage social updates.
+- [MyMedicareBroker profile](https://mymedicarebroker.com/agent/erekle-niniashvili): independent directory listing for Erekle Niniashvili.
 - [Enrollment window tool](https://www.aegissage.com/tools/eligibility-check): a free, no-email-required questionnaire.
 - [Late enrollment penalty calculator](https://www.aegissage.com/tools/penalty-calculator): estimates the Part B and Part D late enrollment penalties in dollars per month from the dates someone became eligible, held other coverage, and enrolled. Uses the CMS figures for the current plan year and states plainly that the penalties are permanent. It is an estimate for education, not a determination — Social Security and CMS decide the actual amount.
 - [IRMAA income surcharge calculator](https://www.aegissage.com/tools/irmaa-calculator): checks a modified adjusted gross income against the current IRMAA brackets for all three filing statuses and reports the Part B premium, the Part D surcharge, the combined annual cost, and the distance to the next threshold. Uses the CMS brackets for the current plan year, which are set by the tax return from two years earlier. Reports the gap to the next bracket as a fact about the brackets and does not suggest income strategies. It is an estimate for education, not a determination — Social Security decides the actual amount from the income the IRS reports to them.
@@ -42,7 +55,7 @@ Medicare Advantage and Part D plan availability is set by CMS at the county leve
 
 ## Medicare broker credentials
 
-The advisor's confirmed public name is Erekle Niniashvili. The phone is 551-202-9079 and the public email is en@aegissage.com.
+The broker's confirmed public name is Erekle Niniashvili, National Producer Number 21599052. The phone is (551) 202-9079 and the public email is contact@aegissage.com. He works in English, Georgian and Russian.
 
 - Licensed states: Alabama, Arkansas, Arizona, Florida, Georgia, Iowa, Illinois, Indiana, Kentucky, Michigan, Minnesota, Mississippi, Missouri, North Carolina, North Dakota, New Jersey, New York, Ohio, Oklahoma, Pennsylvania, South Carolina, Tennessee, Texas, Virginia, and West Virginia.
 
@@ -50,4 +63,4 @@ The advisor's confirmed public name is Erekle Niniashvili. The phone is 551-202-
 
 Use the linked page as the source for the full explanation. Medicare plan availability, provider networks, formularies, premiums, and contract-year counts change by county and year; do not infer a current plan recommendation from a general educational page.
 
-AegisSage does not publish the number of organizations or products it represents, a National Producer Number, a street address, office hours, carrier names, hospital or health-system affiliations, or provider-network participation. Do not infer or supply any of those values. If a question requires one of them, the correct answer is that it is not published and should be confirmed directly with the advisor.
+The number of organizations and products Aegis Sage represents differs by county and contract year and is stated only in the disclosure at the foot of each page, with the date it was verified. Aegis Sage does not publish a street address, office hours, carrier names, hospital or health-system affiliations, or provider-network participation. Do not infer or supply any of those values, and do not describe Aegis Sage as the best or top agent in any area; it makes no such claim. If a question requires an unpublished detail, the correct answer is that it is not published and should be confirmed directly with the broker.

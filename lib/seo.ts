@@ -1,4 +1,4 @@
-import { advisor, site, social } from './site';
+import { advisor, publicProfiles, site } from './site';
 import { licensedStates } from './states';
 
 const phone = `+${advisor.phoneRaw.replace(/\D/g, '')}`;
@@ -19,12 +19,16 @@ const licensedAreas = licensedStates.map((state) => ({
  * set. The sub-state entries are markets with their own landing pages or
  * named local relevance, each nested under its state via `containedInPlace`.
  *
- * Bergen County appears as an AdministrativeArea the advisor SERVES. It is
- * deliberately not an address, a `location`, or a `LocalBusiness` place:
- * there is no verified public street address, no verified office hours and
- * no Google Business Profile for this advisor, so nothing here may imply a
- * walk-in location. Serving an area and having premises in it are different
- * claims and only the first one is supported by evidence.
+ * Bergen and Hudson counties appear as AdministrativeAreas the advisor
+ * SERVES. They are not a `location` or a walk-in place: the Google Business
+ * Profile is a service-area profile with no public street address and no
+ * office hours, so nothing here may imply premises. Serving an area and
+ * having premises in it are different claims and only the first one is
+ * supported by evidence.
+ *
+ * Nov 15 2026, at Erekle's direction: Hudson County, Brooklyn and Queens
+ * added so the schema names every focus area the site and the profiles
+ * name. Brooklyn and Queens are nested under New York City.
  *
  * The named Bergen County towns below (added Aug 14 2026) are the George
  * Washington Bridge corridor — real coverage, since the advisor is licensed
@@ -59,11 +63,46 @@ const serviceAreas = [
     name,
     containedInPlace: { '@type': 'AdministrativeArea', name: 'Bergen County' },
   })),
+  {
+    '@type': 'AdministrativeArea',
+    name: 'Hudson County',
+    containedInPlace: { '@type': 'State', name: 'New Jersey' },
+  },
   { '@type': 'City', name: 'New York City', containedInPlace: { '@type': 'State', name: 'New York' } },
+  ...['Brooklyn', 'Queens'].map((name) => ({
+    '@type': 'Place',
+    name,
+    containedInPlace: { '@type': 'City', name: 'New York City' },
+  })),
   { '@type': 'City', name: 'Philadelphia', containedInPlace: { '@type': 'State', name: 'Pennsylvania' } },
 ];
 
-const sameAs = [social.youtube, social.instagram];
+/**
+ * Every confirmed public profile. Blank entries in `profiles` (lib/site.ts)
+ * are already filtered out, so an unfilled profile contributes nothing.
+ */
+const sameAs = publicProfiles;
+
+/**
+ * Town-level address: locality, region and country only.
+ *
+ * There is NO streetAddress and NO postalCode, on purpose and permanently
+ * unless a public street address is ever approved: this is a service-area
+ * business. scripts/validate-site.mjs fails the crawl if either appears.
+ */
+const baseAddress = {
+  '@type': 'PostalAddress',
+  addressLocality: advisor.basedInTown,
+  addressRegion: advisor.basedInRegion,
+  addressCountry: 'US',
+};
+
+const languageNames = advisor.languages.map((language) => language.name);
+const knowsLanguage = advisor.languages.map((language) => ({
+  '@type': 'Language',
+  name: language.name,
+  alternateName: language.code,
+}));
 
 const organizationId = `${site.url}#organization`;
 const advisorId = `${site.url}#advisor`;
@@ -95,6 +134,7 @@ export function siteJsonLd() {
         '@type': 'Organization',
         '@id': organizationId,
         name: site.name,
+        alternateName: site.legacyName,
         url: site.url,
         logo: `${site.url}/icon.svg`,
         description: site.description,
@@ -110,7 +150,7 @@ export function siteJsonLd() {
           telephone: phone,
           ...(advisor.emailConfigured ? { email: advisor.email } : {}),
           areaServed: licensedStates.map((state) => `US-${state.code}`),
-          availableLanguage: 'English',
+          availableLanguage: languageNames,
         },
       },
       {
@@ -129,9 +169,20 @@ export function siteJsonLd() {
         ...(advisor.emailConfigured ? { email: advisor.email } : {}),
         sameAs,
         url: `${site.url}/about`,
+        address: baseAddress,
+        ...(advisor.npn
+          ? {
+              identifier: {
+                '@type': 'PropertyValue',
+                propertyID: 'NPN',
+                name: 'National Producer Number',
+                value: advisor.npn,
+              },
+            }
+          : {}),
         areaServed: serviceAreas,
         knowsAbout,
-        knowsLanguage: 'English',
+        knowsLanguage,
         worksFor: { '@id': organizationId },
       },
       {
@@ -141,14 +192,17 @@ export function siteJsonLd() {
 
           InsuranceAgency says what the business is. ProfessionalService says
           it is a service-area business rather than a place you visit, which
-          is why address, geo, openingHours and hasMap stay absent: Google
-          treats `address` as required for a LocalBusiness, and a fabricated
-          one would be far worse than an incomplete node.
+          is why geo, openingHours and hasMap stay absent and `address`
+          carries town, state and country only — no street, no postal code.
         */
         '@type': ['ProfessionalService', 'InsuranceAgency'],
         '@id': professionalServiceId,
         name: site.name,
+        alternateName: site.legacyName,
         url: site.url,
+        address: baseAddress,
+        founder: { '@id': advisorId },
+        availableLanguage: languageNames,
         image: businessImage,
         telephone: phone,
         ...(advisor.emailConfigured ? { email: advisor.email } : {}),
@@ -158,8 +212,8 @@ export function siteJsonLd() {
         parentOrganization: { '@id': organizationId },
         /*
          * This is a service-area business signal, not a walk-in location.
-         * Intentionally absent: address, geo, openingHours(Specification),
-         * hasMap, priceRange, aggregateRating.
+         * Intentionally absent: streetAddress, postalCode, geo,
+         * openingHours(Specification), hasMap, priceRange, aggregateRating.
          *
          * Add a public address or hours only after they are verified and
          * approved for publication. The current service-area details include

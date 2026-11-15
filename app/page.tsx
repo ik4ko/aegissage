@@ -336,7 +336,7 @@ export default function HomePage() {
               Short Medicare explanations, wherever you watch.
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-ink-soft">
-              Watch the latest videos on YouTube or follow AegisSage on Instagram. The links
+              Watch the latest videos on YouTube or follow Aegis Sage on Instagram. The links
               open in a new tab, so you can come back to the guides whenever you need them.
             </p>
             <SocialLinks className="mt-6" />

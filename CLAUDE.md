@@ -1,4 +1,4 @@
-# AegisSage.com — project invariants
+# aegissage.com — project invariants
 
 Consumer Medicare brokerage site for one licensed independent agent.
 NOT a SaaS product. Never use: dashboard, seats, pricing tiers, sign in,
@@ -9,8 +9,16 @@ Audience: 65+ and their adult children. iPad/Safari, reading glasses.
 18px+ body, 44px+ tap targets, high contrast, plain language, no urgency tactics.
 
 ## Compliance — never violate
-- TPMO disclaimer renders always-visible in footer, exact CMS wording.
-  Org/product counts live in one config constant with a verified_on date.
+- TPMO disclaimer renders always-visible in footer, exact CMS wording
+  (42 CFR 422.2267(e)(41)). The counted version is the default on every route.
+- TPMO counts: organization and product counts come ONLY from a dated Sunfire
+  recount by Erekle. Medicare Advantage and Part D products only, appointed
+  and certified carriers only. They live in one config value,
+  `tpmoCountsByArea` in lib/site.ts, keyed by area, each with a `countDate`.
+  Recheck every October 1 and whenever contracting changes. An area without
+  a recount is `null` and falls back to Bergen County; it never gets a
+  placeholder, an estimate, or last year's number. The build warns when a
+  count is over 12 months old or predates the last October 1.
 - Never imply Medicare affiliation, endorsement, or being sent by Medicare.
 - Never state or imply eligibility, approval, savings, $0 premium, or a
   specific benefit before a licensed review. No "you qualify" anywhere.
@@ -22,7 +30,45 @@ Audience: 65+ and their adult children. iPad/Safari, reading glasses.
 - No health/condition data in analytics, pixels, URLs, or error logs.
 - Plan-specific claims (premium, benefit, star rating, carrier) require
   source_url + review_date in frontmatter or they do not render.
-- NPN stays blank site-wide. This is intentional — do not "fix" it.
+- NPN is published (About page, schema, llms.txt) as of Nov 15 2026. The only
+  valid value is the one in `advisor.npn`. Never retype it from memory.
+- Never publish the Sunfire recorded-line number. The only public phone is
+  `advisor.phone`. Plan discussion and enrollment happen after a Scope of
+  Appointment, on the recorded line.
+- No superlatives about the broker or any plan ("best", "top", "#1"), no
+  carrier steering, no "free" used in a way that implies a plan benefit, no
+  Medicare or government logos, no counts of affected or displaced members.
+
+## Canonical identity — must match every public profile exactly
+- Business name: Aegis Sage (two words). Domain: aegissage.com.
+  "AegisSage" appears only as schema `alternateName`.
+- Person: Erekle Niniashvili, licensed independent insurance broker.
+  Say "licensed insurance broker", never "licensed Medicare broker".
+- Based in: Edgewater, New Jersey (Bergen County). Town only: no street
+  address, postal code, geo coordinates or office hours, anywhere.
+- Phone: (551) 202-9079. Email: contact@aegissage.com. NPN: 21599052.
+- Languages: English, Georgian, Russian.
+- Focus areas: Edgewater, Fort Lee, Cliffside Park, Bergen County, Hudson
+  County, Brooklyn, Queens, Philadelphia.
+- All of the above live in lib/site.ts. Profile URLs for schema `sameAs` live
+  in `profiles` there; a blank entry means "URL not supplied", never guess one.
+
+## AI-visibility and answer pages
+- Educational first: answer the question in the opening paragraph, in plain
+  language, before any call to action.
+- Every factual claim about Medicare rules cites medicare.gov, cms.gov,
+  ssa.gov or a state agency, with `source_url` and `review_date` frontmatter.
+- No carrier or plan names, premiums, benefits or star ratings of a named
+  plan. Enrollment periods (including the 5-star SEP) are explained
+  generically.
+- Local detail must be real civil geography or a cited state rule. No
+  invented statistics.
+- Each page: FAQ schema matching the visible questions, internal links, the
+  compliant lead form and tap-to-call.
+- Georgian and Russian pages carry the TPMO disclaimer in that language AND
+  in English, and stay marked for native review until Erekle (Georgian) or a
+  fluent reviewer (Russian) signs off in the frontmatter.
+- No fake reviews, no review incentives, no undisclosed forum posting.
 
 ## Do not modify without being asked
 TPMO disclosure component, dynamic state count, Book-a-Time CTA wiring,
@@ -30,7 +76,8 @@ header nav (4 items), LocalBusiness areaServed town list, UTM sessionStorage
 handling, server-side lead scoring, Phase 2 booking pipeline.
 
 ## Facts you must not invent
-Carrier names, plan details, org/product counts, license states, NPN.
+Carrier names, plan details, org/product counts, license states, NPN,
+profile URLs.
 If unverified, stop and ask.
 
 ## Before finishing any task
