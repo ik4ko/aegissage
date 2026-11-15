@@ -68,6 +68,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     { url: `${site.url}/plans`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${site.url}/answers`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${site.url}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${site.url}/videos`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${site.url}/contact`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },

@@ -2,6 +2,7 @@ import 'server-only';
 
 import type { GuardSection } from './build-guard';
 
+import { getArticles } from './content';
 import { locationLandings } from './locations';
 import { planStates } from './states';
 import {
@@ -43,6 +44,8 @@ export function collectTpmoFailures(): GuardSection | null {
   const expected = [
     ...locationLandings.map((location) => `/medicare-${location.slug}`),
     ...planStates.map((state) => `/plans/${state.slug}`),
+    // Answer pages render <ContactForm /> through their template.
+    ...getArticles('answers').map((article) => article.href),
   ];
 
   const missing = expected.filter((route) => !GENERATED_ZIP_ROUTE_SET.has(route));

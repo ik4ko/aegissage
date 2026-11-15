@@ -42,7 +42,7 @@ import type { GuardSection } from './build-guard';
  */
 
 const CONTENT_ROOT = path.join(process.cwd(), 'content');
-const COLLECTIONS = ['medicare-basics', 'blog', 'news'] as const;
+const COLLECTIONS = ['medicare-basics', 'blog', 'news', 'answers'] as const;
 
 /** Every field that must be present and non-empty on every content item. */
 const REQUIRED_FIELDS = [
@@ -182,6 +182,33 @@ function checkFile(relPath: string, failures: Failure[]): void {
   for (const field of REQUIRED_FIELDS) {
     if (isBlank(data[field])) {
       add(`missing or empty required field \`${field}\``);
+    }
+  }
+
+  /*
+    ── Answer pages: sourced, dated, and with real questions ───────────────
+    An answer page exists to be quoted, by people and by AI assistants, so
+    the bar is higher than for an opinion piece: it must name its primary
+    official source, say when it was last checked against it, list every
+    source it relies on, and carry the questions its FAQ schema declares.
+    (CLAUDE.md, "AI-visibility and answer pages".)
+  */
+  if (relPath.startsWith('content/answers/')) {
+    for (const field of ['source_url', 'review_date', 'faq', 'sources']) {
+      if (isBlank(data[field])) add(`answer pages require \`${field}\``);
+    }
+    const official = /^https:\/\/([a-z0-9-]+\.)*(medicare\.gov|cms\.gov|ssa\.gov|nj\.gov|ny\.gov|nyc\.gov|pa\.gov)\//;
+    const urls = [
+      data.source_url,
+      ...(Array.isArray(data.sources) ? data.sources.map((s) => (s as { url?: unknown }).url) : []),
+    ];
+    for (const url of urls) {
+      if (typeof url === 'string' && url !== '' && !official.test(url)) {
+        add(`source "${url}" is not a federal or state government page`);
+      }
+    }
+    if (/\b(best|top-rated|number one|#1)\s+(medicare\s+)?(agent|broker|plan|plans)\b/i.test(body)) {
+      add('body uses a superlative about an agent, broker or plan');
     }
   }
 

@@ -25,11 +25,17 @@ export function ArticleLayout({
   related,
   backHref,
   backLabel,
+  afterBody,
+  afterColumn,
 }: {
   article: Article;
   related: Article[];
   backHref: string;
   backLabel: string;
+  /** Rendered in the reading column, straight after the article body. */
+  afterBody?: React.ReactNode;
+  /** Rendered in the same column after `afterBody`, outside prose styling. */
+  afterColumn?: React.ReactNode;
 }) {
   return (
     <>
@@ -102,6 +108,10 @@ export function ArticleLayout({
             <Reveal className="article-body mt-10">
               <Mdx source={article.body} />
             </Reveal>
+
+            {afterBody}
+
+            {afterColumn}
 
             <hr className="my-12 border-line" />
 

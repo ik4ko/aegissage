@@ -133,6 +133,17 @@ const GENERATED_ZIP_ROUTES = [
   '/plans/texas',
   '/plans/virginia',
   '/plans/west-virginia',
+  // Answer pages — mirrors content/answers/*.mdx
+  '/answers/extra-help-medicare-savings-programs-new-jersey',
+  '/answers/how-to-choose-medicare-agent-bergen-hudson-county',
+  '/answers/leaving-employer-coverage-after-65',
+  '/answers/medicare-advantage-plan-ending-non-renewal-letter',
+  '/answers/medicare-enrollment-periods-explained',
+  '/answers/medicare-help-new-york-city',
+  '/answers/medicare-help-philadelphia',
+  '/answers/medigap-new-jersey',
+  '/answers/moved-medicare-new-jersey-new-york',
+  '/answers/turning-65-new-jersey',
 ] as const;
 
 export const ZIP_ROUTES: ReadonlySet<string> = new Set<string>([
@@ -191,6 +202,8 @@ export const ROUTE_TPMO_AREAS: Readonly<Record<string, TpmoAreaKey[]>> = {
   '/plans/new-york': NYC_AREAS,
   '/medicare-philadelphia': ['philadelphia-pa'],
   '/plans/pennsylvania': ['philadelphia-pa'],
+  '/answers/medicare-help-new-york-city': NYC_AREAS,
+  '/answers/medicare-help-philadelphia': ['philadelphia-pa'],
 };
 
 export type ResolvedTpmoArea = TpmoAreaCount & { key: TpmoAreaKey; label: string };

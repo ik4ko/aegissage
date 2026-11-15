@@ -3,7 +3,7 @@ import path from 'node:path';
 import { parseFrontmatter } from './frontmatter';
 import { readingTime } from './utils';
 
-export type Collection = 'medicare-basics' | 'blog' | 'news';
+export type Collection = 'medicare-basics' | 'blog' | 'news' | 'answers';
 
 export type ArticleFrontmatter = {
   title: string;
@@ -50,6 +50,16 @@ export type ArticleFrontmatter = {
   /** Ordering within the Medicare Basics hub. Lower comes first. */
   order?: number;
   featured?: boolean;
+  /**
+   * `answers` collection only (content/answers/*.mdx). Enforced by
+   * lib/content-guard.ts: an answer page must carry `source_url`,
+   * `review_date`, at least one FAQ item and at least one entry in `sources`.
+   *
+   * `faq` drives BOTH the visible "Common questions" section and the FAQPage
+   * schema, from the same array, so the two cannot drift apart.
+   */
+  faq?: { question: string; answer: string }[];
+  sources?: { title: string; url: string }[];
 };
 
 export type Article = ArticleFrontmatter & {
@@ -66,6 +76,7 @@ const HREF_PREFIX: Record<Collection, string> = {
   'medicare-basics': '/medicare-basics/',
   blog: '/blog/',
   news: '/news/',
+  answers: '/answers/',
 };
 
 function collectionDir(collection: Collection) {
@@ -110,7 +121,7 @@ export function getArticles(collection: Collection): Article[] {
     .filter((f) => f.endsWith('.mdx'))
     .map((f) => parseFile(collection, f))
     .sort((a, b) => {
-      if (collection === 'medicare-basics') {
+      if (collection === 'medicare-basics' || collection === 'answers') {
         const byOrder = (a.order ?? 99) - (b.order ?? 99);
         if (byOrder !== 0) return byOrder;
       }
@@ -129,6 +140,7 @@ export function getAllArticles(): Article[] {
     ...getArticles('medicare-basics'),
     ...getArticles('blog'),
     ...getArticles('news'),
+    ...getArticles('answers'),
   ];
 }
 
