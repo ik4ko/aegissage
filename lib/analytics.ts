@@ -167,12 +167,14 @@ export function trackFormStart(formId: string) {
  */
 export function trackFormSubmit(
   formId: string,
-  detail?: { intent?: string; contactPref?: string },
+  detail?: { intent?: string; contactPref?: string; foundVia?: string },
 ) {
   emit('form_submit', {
     form_id: formId,
     intent: detail?.intent ?? 'unspecified',
     contact_pref: detail?.contactPref ?? 'unspecified',
+    // One token from FOUND_VIA (lib/ai-sources.ts), never free text.
+    found_via: detail?.foundVia || 'unspecified',
   });
 }
 
@@ -418,5 +420,7 @@ export function trackSessionStart(attribution: Record<string, string>) {
     medium: attribution.utm_medium ?? 'none',
     campaign: attribution.utm_campaign ?? 'none',
     landing: attribution.landing ?? '/',
+    // chatgpt | claude | perplexity | gemini | copilot | none
+    ai_source: attribution.aiSource ?? 'none',
   });
 }

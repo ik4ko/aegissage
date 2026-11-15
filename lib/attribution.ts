@@ -26,6 +26,8 @@
  * session-scoped. A tracking cookie would need one.
  */
 
+import { classifyAiSource } from './ai-sources';
+
 const KEY = 'aegissage:attribution';
 
 /** UTM keys we read. Anything else in the query string is ignored entirely. */
@@ -129,6 +131,15 @@ export function captureAttribution(): void {
         // Malformed referrer — skip it rather than store garbage.
       }
     }
+
+    /*
+      Which AI assistant sent this visitor, if any. Derived from the two
+      values captured above and stored as one short token from a fixed list
+      (lib/ai-sources.ts), never the raw URL: an assistant's share links can
+      carry a conversation id, and that must not be kept.
+    */
+    const aiSource = classifyAiSource(data.referrer, data.utm_source);
+    if (aiSource) data.aiSource = aiSource;
 
     window.sessionStorage.setItem(KEY, JSON.stringify(data));
   } catch {

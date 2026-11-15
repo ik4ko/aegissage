@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { FOUND_VIA, PARTS_AB } from '../ai-sources';
 
 export const CONTACT_TOPICS = [
   'I am turning 65 soon',
@@ -58,6 +59,12 @@ export const contactSchema = z
      * treating it as such is the exact TCPA failure mode. The API route and
      * lib/notify/sms.ts both re-check the stored value at send time.
      */
+    /*
+      Optional, fixed-list answers. `''` is what an untouched <select> or
+      radio group submits, so it is accepted and treated as "not answered".
+    */
+    partsAB: z.enum(PARTS_AB).or(z.literal('')).optional(),
+    foundVia: z.enum(FOUND_VIA).or(z.literal('')).optional(),
     consentSms: z.boolean().optional().default(false),
     /** Standalone permission for future marketing/educational email. */
     consentMarketing: z.boolean().optional().default(false),

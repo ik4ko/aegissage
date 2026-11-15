@@ -16,6 +16,7 @@ import { trackContactSubmit, trackFormStart, trackFormSubmit } from '@/lib/analy
 import { getAttribution } from '@/lib/attribution';
 import { cn } from '@/lib/utils';
 import { FORM_STRINGS, localizeError, type FormLocale } from '@/lib/form-strings';
+import { FOUND_VIA, PARTS_AB } from '@/lib/ai-sources';
 import {
   CONTACT_TOPICS,
   contactSchema,
@@ -75,6 +76,8 @@ export function ContactForm({
       source,
       website: '',
       // Both start unticked. A pre-checked consent box is not consent.
+      partsAB: '',
+      foundVia: '',
       consentSms: false,
       consentMarketing: false,
     },
@@ -90,6 +93,7 @@ export function ContactForm({
   }
 
   const preferred = watch('preferredContact');
+  const partsAB = watch('partsAB');
 
   async function onSubmit(values: ContactInput) {
     setStatus('submitting');
@@ -133,6 +137,7 @@ export function ContactForm({
       trackFormSubmit(source, {
         intent: values.topic ?? 'unspecified',
         contactPref: values.preferredContact ?? 'unspecified',
+        foundVia: values.foundVia || 'unspecified',
       });
     } catch (caught) {
       setStatus('error');
@@ -322,6 +327,38 @@ export function ContactForm({
           </select>
         </Field>
 
+        {/*
+          ── Part A and Part B ─────────────────────────────────────────────
+          Asked on every lead form (Erekle's rule, Nov 2026). It is enrollment
+          status, not health information, and it is optional to answer. The
+          hint tells the person NOT to send a Medicare number: this form must
+          never collect one, and the free-text box below is where it would
+          otherwise turn up.
+        */}
+        <fieldset>
+          <legend className="text-base font-semibold text-ink">
+            {t.partsAB}
+            <span className="ml-2 text-sm font-normal text-ink-faint">{t.optional}</span>
+          </legend>
+          <p className="mt-1 text-sm text-ink-faint">{t.partsABHint}</p>
+          <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
+            {PARTS_AB.map((value) => (
+              <label
+                key={value}
+                className={cn(
+                  'flex min-h-touch cursor-pointer items-center justify-center rounded-xl border-2 px-4 text-base font-semibold transition-colors',
+                  partsAB === value
+                    ? 'border-navy bg-navy-soft text-navy-deep'
+                    : 'border-line bg-paper text-ink-soft hover:border-navy/40',
+                )}
+              >
+                <input type="radio" value={value} className="sr-only" {...register('partsAB')} />
+                {t.partsABOptions[value]}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
         <Field
           id={`${source}-message`}
           label={t.message}
@@ -335,6 +372,34 @@ export function ContactForm({
             invalid={Boolean(errors.message)}
             {...register('message')}
           />
+        </Field>
+
+        {/*
+          ── How did you find us? ──────────────────────────────────────────
+          Optional, and a fixed list on purpose: there is no "other, please
+          specify" box, because free text is where personal details end up.
+          The value is one token (lib/ai-sources.ts) stored with the lead and
+          sent to analytics as `found_via`.
+        */}
+        <Field
+          id={`${source}-found-via`}
+          label={t.foundVia}
+          error={err(errors.foundVia?.message)}
+          optionalLabel={t.optional}
+        >
+          <select
+            id={`${source}-found-via`}
+            className="h-14 w-full rounded-xl border-2 border-line bg-paper px-4 text-base text-ink focus-visible:border-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/25"
+            defaultValue=""
+            {...register('foundVia')}
+          >
+            <option value="">{t.foundViaPlaceholder}</option>
+            {FOUND_VIA.map((value) => (
+              <option key={value} value={value}>
+                {t.foundViaOptions[value]}
+              </option>
+            ))}
+          </select>
         </Field>
 
         {/*

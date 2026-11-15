@@ -56,6 +56,8 @@ function summarize(
     `ZIP:       ${payload.zip || '—'}`,
     `Prefers:   ${payload.preferredContact}`,
     `Topic:     ${payload.topic ?? '—'}`,
+    `Parts A+B: ${payload.partsAB || '—'}`,
+    `Found via: ${payload.foundVia || '—'}`,
     `Source:    ${payload.source}`,
     `Submitted: ${meta.submittedAt}`,
   ];

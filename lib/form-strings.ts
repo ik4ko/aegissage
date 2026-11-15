@@ -2,9 +2,10 @@
  * Every visitor-facing string in <ContactForm />, per language.
  *
  * ── Rules for this file ───────────────────────────────────────────────────
- *  1. `en` is the form as it has always read. Do not "improve" it here; a
- *     change to consent wording is a new consent text version (lib/consent.ts)
- *     and needs Erekle's sign-off.
+ *  1. Do not reword `en` casually. A change to consent wording is a new
+ *     consent text version (lib/consent.ts) and needs Erekle's sign-off. The
+ *     English consent was last changed for version contact-form-2026-11, when
+ *     it began naming "Erekle Niniashvili of Aegis Sage" in full.
  *  2. `ka` and `ru` are translations of the same form. They add nothing and
  *     promise nothing the English does not.
  *  3. The consent sentence in `ka` and `ru` is shown TOGETHER WITH its English
@@ -16,6 +17,7 @@
  *     fluent reviewer signs off, the page using these strings is noindex.
  */
 
+import type { FoundVia, PartsAB } from './ai-sources';
 import { CONTACT_TOPICS } from './validations/contact';
 
 export type FormLocale = 'en' | 'ka' | 'ru';
@@ -39,6 +41,12 @@ export type FormStrings = {
   topic: string;
   topicPlaceholder: string;
   topics: Record<Topic, string>;
+  partsAB: string;
+  partsABHint: string;
+  partsABOptions: Record<PartsAB, string>;
+  foundVia: string;
+  foundViaPlaceholder: string;
+  foundViaOptions: Record<FoundVia, string>;
   message: string;
   messageHint: string;
   consent: string;
@@ -100,12 +108,29 @@ const en: FormStrings = {
     'I am helping a parent or relative': 'I am helping a parent or relative',
     'Something else': 'Something else',
   },
+  partsAB: 'Do you have Medicare Part A and Part B?',
+  partsABHint: 'It is on your red, white and blue Medicare card. Do not send me your Medicare number.',
+  partsABOptions: {
+    both: 'Yes, both',
+    one: 'Only one of them',
+    'not-yet': 'Not yet',
+    'not-sure': 'Not sure',
+  },
+  foundVia: 'How did you find us?',
+  foundViaPlaceholder: 'Pick one',
+  foundViaOptions: {
+    chatgpt: 'ChatGPT',
+    claude: 'Claude',
+    perplexity: 'Perplexity',
+    gemini: 'Gemini',
+    google: 'Google search or Google Maps',
+    referral: 'Someone referred me',
+    other: 'Something else',
+  },
   message: 'Anything you want me to know',
   messageHint:
     'Optional. Doctors you want to keep, a letter you got, a deadline you are worried about.',
-  consent:
-    'Yes, Erekle may contact me about Medicare insurance options using the phone number or ' +
-    'email address I provided, including by text message.',
+  consent: CONSENT_ENGLISH_FULL,
   optionalPermissions: 'Optional — you can leave these unchecked',
   consentSms: 'You may send me text messages, including automated ones.',
   consentSmsDetail:
@@ -171,6 +196,25 @@ const ka: FormStrings = {
     'I want to review my current coverage': 'მინდა გადავხედო ჩემს ამჟამინდელ დაზღვევას',
     'I am helping a parent or relative': 'ვეხმარები მშობელს ან ნათესავს',
     'Something else': 'სხვა საკითხი',
+  },
+  partsAB: 'გაქვთ თუ არა Medicare-ის Part A და Part B?',
+  partsABHint: 'ეს მითითებულია თქვენს წითელ-თეთრ-ლურჯ Medicare-ის ბარათზე. Medicare-ის ნომერს ნუ გამომიგზავნით.',
+  partsABOptions: {
+    both: 'დიახ, ორივე',
+    one: 'მხოლოდ ერთ-ერთი',
+    'not-yet': 'ჯერ არა',
+    'not-sure': 'არ ვარ დარწმუნებული',
+  },
+  foundVia: 'როგორ გვიპოვეთ?',
+  foundViaPlaceholder: 'აირჩიეთ ერთი',
+  foundViaOptions: {
+    chatgpt: 'ChatGPT',
+    claude: 'Claude',
+    perplexity: 'Perplexity',
+    gemini: 'Gemini',
+    google: 'Google-ის ძიება ან Google Maps',
+    referral: 'ვიღაცამ მირჩია',
+    other: 'სხვა',
   },
   message: 'რაც გსურთ, რომ ვიცოდე',
   messageHint:
@@ -262,6 +306,25 @@ const ru: FormStrings = {
     'I want to review my current coverage': 'Хочу пересмотреть свою нынешнюю страховку',
     'I am helping a parent or relative': 'Помогаю родителю или родственнику',
     'Something else': 'Другое',
+  },
+  partsAB: 'Есть ли у вас Medicare Part A и Part B?',
+  partsABHint: 'Это указано на вашей красно-бело-синей карте Medicare. Не присылайте мне номер Medicare.',
+  partsABOptions: {
+    both: 'Да, обе',
+    one: 'Только одна из них',
+    'not-yet': 'Пока нет',
+    'not-sure': 'Не уверен(а)',
+  },
+  foundVia: 'Как вы нас нашли?',
+  foundViaPlaceholder: 'Выберите один вариант',
+  foundViaOptions: {
+    chatgpt: 'ChatGPT',
+    claude: 'Claude',
+    perplexity: 'Perplexity',
+    gemini: 'Gemini',
+    google: 'Поиск Google или Google Maps',
+    referral: 'Мне порекомендовали',
+    other: 'Другое',
   },
   message: 'Что мне стоит знать',
   messageHint:
