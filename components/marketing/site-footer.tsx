@@ -5,6 +5,12 @@ import { planStates } from '@/lib/states';
 import { getLocationLanding, locationLandings } from '@/lib/locations';
 import { ShieldMark } from './site-header';
 import { SocialLinks } from './social-links';
+import {
+  HTML_LANG,
+  LANGUAGE_PAGE_PATHS,
+  LANGUAGE_PAGES,
+  publishedLocales,
+} from '@/lib/language-pages';
 
 /**
  * ── Why the footer does not list every state ──────────────────────────────
@@ -53,6 +59,27 @@ export function SiteFooter() {
             hand-offs — you get me.
           </p>
           <SocialLinks className="mt-5" />
+          {/*
+            Language pages. English is always linked; a translation appears
+            here only once it has passed native review (lib/language-pages.ts).
+          */}
+          <p className="mt-5 text-base text-ink-soft">
+            {publishedLocales().map((locale, index) => (
+              <span key={locale}>
+                {index > 0 ? ' · ' : ''}
+                <Link
+                  href={LANGUAGE_PAGE_PATHS[locale]}
+                  hrefLang={HTML_LANG[locale]}
+                  lang={HTML_LANG[locale]}
+                  className="text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
+                >
+                  {locale === 'en'
+                    ? 'Help in Georgian and Russian'
+                    : LANGUAGE_PAGES[locale].languageNames[locale]}
+                </Link>
+              </span>
+            ))}
+          </p>
           <a
             href="https://mymedicarebroker.com/agent/erekle-niniashvili"
             target="_blank"

@@ -15,6 +15,7 @@ import { advisor, compliance, site } from '@/lib/site';
 import { trackContactSubmit, trackFormStart, trackFormSubmit } from '@/lib/analytics';
 import { getAttribution } from '@/lib/attribution';
 import { cn } from '@/lib/utils';
+import { FORM_STRINGS, localizeError, type FormLocale } from '@/lib/form-strings';
 import {
   CONTACT_TOPICS,
   contactSchema,
@@ -40,6 +41,12 @@ type Props = {
   heading?: string;
   intro?: string;
   className?: string;
+  /**
+   * Language of the form's own labels, hints, consent text and messages.
+   * Defaults to English. See lib/form-strings.ts for the rules that apply to
+   * the translated consent wording.
+   */
+  locale?: FormLocale;
 };
 
 export function ContactForm({
@@ -48,7 +55,10 @@ export function ContactForm({
   heading = 'Have me reach out',
   intro = 'Two fields and a note is plenty. I read every one of these myself.',
   className,
+  locale = 'en',
 }: Props) {
+  const t = FORM_STRINGS[locale];
+  const err = (message: string | undefined) => localizeError(t, message);
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -110,7 +120,7 @@ export function ContactForm({
 
       if (!res.ok) {
         const body = (await res.json().catch(() => null)) as { error?: string } | null;
-        throw new Error(body?.error ?? 'Something went wrong on my end.');
+        throw new Error(body?.error ?? t.errorFallback);
       }
 
       setStatus('success');
@@ -124,12 +134,10 @@ export function ContactForm({
         intent: values.topic ?? 'unspecified',
         contactPref: values.preferredContact ?? 'unspecified',
       });
-    } catch (err) {
+    } catch (caught) {
       setStatus('error');
       setServerError(
-        err instanceof Error
-          ? err.message
-          : 'Something went wrong on my end.',
+        caught instanceof Error ? caught.message : t.errorFallback,
       );
       trackContactSubmit(source, 'error');
     }
@@ -142,7 +150,7 @@ export function ContactForm({
         role="status"
       >
         <CheckCircle2 className="h-10 w-10 text-sage" aria-hidden="true" />
-        <h2 className="mt-4 font-display text-2xl font-bold text-ink">Got it — thank you.</h2>
+        <h2 className="mt-4 font-display text-2xl font-bold text-ink">{t.successHeading}</h2>
         {/*
           Says what the system actually does — saved, then emailed to Erekle —
           instead of promising a turnaround nothing here can enforce. The old
@@ -151,14 +159,12 @@ export function ContactForm({
           make on every message.
         */}
         <p className="mt-3 text-base leading-relaxed text-ink-soft">
-          Your message has been saved and sent to Erekle. He reads and answers these himself —
-          there is no assistant and no auto-reply, so it comes back from him.
+          {t.successBody}
         </p>
         <p className="mt-4 text-base leading-relaxed text-ink-soft">
-          If it is time-sensitive, please do not wait on the form. Calling or texting is the
-          fastest way to reach him.
+          {t.successUrgent}
         </p>
-        <ContactActions where={`${source}-success`} className="mt-6" size="md" />
+        <ContactActions where={`${source}-success`} className="mt-6" size="md" labels={t.actions} />
       </div>
     );
   }
@@ -174,9 +180,9 @@ export function ContactForm({
       <div className="mt-6 rounded-xl border-2 border-dashed border-line p-4">
         <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.1em] text-ink-faint">
           <Phone className="h-4 w-4" aria-hidden="true" />
-          Rather skip the form?
+          {t.skipForm}
         </p>
-        <ContactActions where={`${source}-inline`} className="mt-3" size="md" />
+        <ContactActions where={`${source}-inline`} className="mt-3" size="md" labels={t.actions} />
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} onFocus={handleFirstFocus} className="mt-8 space-y-7" noValidate>
@@ -194,8 +200,9 @@ export function ContactForm({
 
         <Field
           id={`${source}-name`}
-          label="Your name"
-          error={errors.name?.message}
+          label={t.name}
+          error={err(errors.name?.message)}
+          optionalLabel={t.optional}
           required
         >
           <Input
@@ -210,14 +217,14 @@ export function ContactForm({
 
         <fieldset>
           <legend className="text-base font-semibold text-ink">
-            How should I get back to you?
+            {t.contactLegend}
           </legend>
           <div className="mt-3 grid gap-2.5 sm:grid-cols-3">
             {(
               [
-                ['phone', 'Call me'],
-                ['text', 'Text me'],
-                ['email', 'Email me'],
+                ['phone', t.callMe],
+                ['text', t.textMe],
+                ['email', t.emailMe],
               ] as const
             ).map(([value, label]) => (
               <label
@@ -238,9 +245,10 @@ export function ContactForm({
 
         <Field
           id={`${source}-phone`}
-          label="Phone number"
-          hint="Digits only is fine."
-          error={errors.phone?.message}
+          label={t.phone}
+          hint={t.phoneHint}
+          error={err(errors.phone?.message)}
+          optionalLabel={t.optional}
         >
           <Input
             id={`${source}-phone`}
@@ -256,8 +264,9 @@ export function ContactForm({
 
         <Field
           id={`${source}-email`}
-          label="Email address"
-          error={errors.email?.message}
+          label={t.email}
+          error={err(errors.email?.message)}
+          optionalLabel={t.optional}
         >
           <Input
             id={`${source}-email`}
@@ -273,9 +282,10 @@ export function ContactForm({
 
         <Field
           id={`${source}-zip`}
-          label="ZIP code"
-          hint="Plan availability is decided county by county — this is how I look yours up."
-          error={errors.zip?.message}
+          label={t.zip}
+          hint={t.zipHint}
+          error={err(errors.zip?.message)}
+          optionalLabel={t.optional}
         >
           <Input
             id={`${source}-zip`}
@@ -289,7 +299,12 @@ export function ContactForm({
           />
         </Field>
 
-        <Field id={`${source}-topic`} label="What is going on?" error={errors.topic?.message}>
+        <Field
+          id={`${source}-topic`}
+          label={t.topic}
+          error={err(errors.topic?.message)}
+          optionalLabel={t.optional}
+        >
           <select
             id={`${source}-topic`}
             className="h-14 w-full rounded-xl border-2 border-line bg-paper px-4 text-base text-ink focus-visible:border-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/25"
@@ -297,11 +312,11 @@ export function ContactForm({
             {...register('topic')}
           >
             <option value="" disabled>
-              Pick the closest one
+              {t.topicPlaceholder}
             </option>
             {CONTACT_TOPICS.map((topic) => (
               <option key={topic} value={topic}>
-                {topic}
+                {t.topics[topic]}
               </option>
             ))}
           </select>
@@ -309,9 +324,10 @@ export function ContactForm({
 
         <Field
           id={`${source}-message`}
-          label="Anything you want me to know"
-          hint="Optional. Doctors you want to keep, a letter you got, a deadline you are worried about."
-          error={errors.message?.message}
+          label={t.message}
+          hint={t.messageHint}
+          error={err(errors.message?.message)}
+          optionalLabel={t.optional}
         >
           <Textarea
             id={`${source}-message`}
@@ -346,9 +362,12 @@ export function ContactForm({
               />
             </span>
             <span className="text-base leading-relaxed text-ink">
-              Yes, {advisor.firstName} may contact me about Medicare insurance
-              options using the phone number or email address I provided, including by
-              text message.
+              {t.consent}
+              {t.consentEnglish ? (
+                <span lang="en" className="mt-2 block text-sm text-ink-soft">
+                  English: {t.consentEnglish}
+                </span>
+              ) : null}
             </span>
           </label>
 
@@ -361,7 +380,7 @@ export function ContactForm({
           */}
           <div className="mt-5 space-y-4 border-t border-line pt-5">
             <p className="text-sm font-semibold uppercase tracking-[0.1em] text-ink-faint">
-              Optional — you can leave these unchecked
+              {t.optionalPermissions}
             </p>
 
             <label className="flex cursor-pointer gap-4">
@@ -382,11 +401,9 @@ export function ContactForm({
                 />
               </span>
               <span className="text-base leading-relaxed text-ink">
-                You may send me text messages, including automated ones.
+                {t.consentSms}
                 <span id={`${source}-sms-detail`} className="mt-1 block text-sm text-ink-soft">
-                  From {advisor.name} at {site.name}. Message frequency varies. Message and
-                  data rates may apply. Reply STOP to opt out or HELP for help at any time.
-                  You do not have to agree to this to get a reply.
+                  {t.consentSmsDetail}
                 </span>
               </span>
             </label>
@@ -408,38 +425,31 @@ export function ContactForm({
                 />
               </span>
               <span className="text-base leading-relaxed text-ink">
-                You may email me occasional Medicare deadline reminders and new guides.
+                {t.consentMarketing}
               </span>
             </label>
           </div>
 
           <p id={`${source}-consent-detail`} className="mt-4 text-sm leading-relaxed text-ink-soft">
-            Submitting this form is a request for information, not an application, and it
-            does not enroll you in anything. There is no cost or obligation.
+            {t.consentDetail}
           </p>
 
           <p className="mt-3 text-sm leading-relaxed text-ink-soft">
-            <strong className="font-semibold text-ink">Where this goes.</strong> Your
-            request is stored securely and added to {advisor.firstName}&rsquo;s own follow-up
-            list, so it is tracked instead of getting lost in an inbox. It is used only to
-            answer you and to keep a record of that conversation. Only {advisor.firstName}{' '}
-            sees it, along with the services that store the data and send his replies.{' '}
-            <strong className="font-semibold text-ink">
-              I do not sell your information, and I do not share it with other agents,
-              agencies or lead buyers.
-            </strong>{' '}
-            You can ask me to delete it at any time. See the{' '}
+            <strong className="font-semibold text-ink">{t.privacyLead}</strong>{' '}
+            {t.privacyBody}{' '}
+            <strong className="font-semibold text-ink">{t.privacyPromise}</strong>{' '}
+            {t.privacyDelete} {t.privacyLinkBefore}{' '}
             <Link
               href="/privacy"
               className="font-semibold text-navy underline underline-offset-4"
             >
-              privacy notice
-            </Link>{' '}
-            for the details.
+              {t.privacyLink}
+            </Link>
+            {t.privacyLinkAfter === '.' ? '.' : ` ${t.privacyLinkAfter}`}
           </p>
 
           <p className="mt-3 text-sm leading-relaxed text-ink-soft">
-            You can always compare every option available to you at{' '}
+            {t.compareBefore}{' '}
             <a
               href={compliance.medicareGovUrl}
               target="_blank"
@@ -448,12 +458,12 @@ export function ContactForm({
             >
               medicare.gov
             </a>{' '}
-            or by calling {compliance.medicarePhone}.
+            {t.compareOr} {compliance.medicarePhone}.
           </p>
 
           {errors.consent ? (
             <p className="mt-3 text-sm font-semibold text-ember-deep" role="alert">
-              {errors.consent.message}
+              {err(errors.consent.message)}
             </p>
           ) : null}
         </div>
@@ -463,12 +473,12 @@ export function ContactForm({
             {status === 'submitting' ? (
               <>
                 <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
-                Sending…
+                {t.sending}
               </>
             ) : (
               /* Named. "Send this to me" is ambiguous read on its own —
                  a screen-reader user hears it as sending it to themselves. */
-              `Send this to ${advisor.firstName}`
+              t.submit
             )}
           </Button>
 
@@ -477,10 +487,9 @@ export function ContactForm({
               role="alert"
               className="mt-4 rounded-xl border-2 border-ember/40 bg-ember-soft p-4 text-base text-ember-deep"
             >
-              <p className="font-semibold">{serverError}</p>
+              <p className="font-semibold">{err(serverError ?? undefined)}</p>
               <p className="mt-1.5">
-                Do not let my website be the reason you do not get an answer — call or text
-                me at {advisor.phone}.
+                {t.errorTail} {advisor.phone}.
               </p>
             </div>
           ) : null}

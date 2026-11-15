@@ -105,7 +105,12 @@ export default function AboutPage() {
               </span>
               <span className="flex items-center gap-2">
                 <Languages className="h-5 w-5 text-sage" aria-hidden="true" />
-                {LANGUAGE_LIST}
+                <Link
+                  href="/medicare-help-georgian-russian"
+                  className="underline decoration-line underline-offset-4 hover:decoration-navy"
+                >
+                  {LANGUAGE_LIST}
+                </Link>
               </span>
               {advisor.npn ? (
                 <span className="flex items-center gap-2">

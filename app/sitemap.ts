@@ -3,6 +3,7 @@ import { getAllArticles } from '@/lib/content';
 import { planStates } from '@/lib/states';
 import { locationLandings } from '@/lib/locations';
 import { site } from '@/lib/site';
+import { LANGUAGE_PAGE_PATHS, publishedLocales } from '@/lib/language-pages';
 /*
   Imported for its side effect: runs every build-time guard and throws one
   combined report if any of them find a problem.
@@ -77,6 +78,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     { url: `${site.url}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
+    /*
+      Language pages. Only versions that have passed native review are
+      listed; an unreviewed translation is noindex and must not be advertised
+      here either. See TRANSLATION_REVIEW in lib/language-pages.ts.
+    */
+    ...publishedLocales().map((locale) => ({
+      url: `${site.url}${LANGUAGE_PAGE_PATHS[locale]}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
   ];
 
   // Local landings are derived from lib/locations.ts rather than listed by

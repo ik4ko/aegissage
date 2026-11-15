@@ -26,6 +26,8 @@ type Props = {
    * switches them to the light-on-dark equivalents.
    */
   onDark?: boolean;
+  /** Button text in another language. Defaults to the English labels. */
+  labels?: { call: string; book: string; text: string; email: string };
 };
 
 export function ContactActions({
@@ -35,6 +37,7 @@ export function ContactActions({
   className,
   includeEmail = true,
   onDark = false,
+  labels,
 }: Props) {
   const darkFocus = onDark
     ? 'focus-visible:ring-white/60 focus-visible:ring-offset-navy-deep'
@@ -51,7 +54,7 @@ export function ContactActions({
       <Button asChild size={size} variant="primary" className={cn(darkFocus)}>
         <a href={contactHrefs.tel} onClick={() => trackContactIntent('call', where)}>
           <Phone className="h-5 w-5" aria-hidden="true" />
-          Call {advisor.phone}
+          {labels?.call ?? `Call ${advisor.phone}`}
         </a>
       </Button>
 
@@ -61,7 +64,7 @@ export function ContactActions({
           onClick={() => trackContactIntent('book', where)}
         >
           <CalendarClock className="h-5 w-5" aria-hidden="true" />
-          Book a Time
+          {labels?.book ?? 'Book a Time'}
         </a>
       </Button>
 
@@ -78,7 +81,7 @@ export function ContactActions({
         */}
         <a href={contactHrefs.sms} onClick={() => trackContactIntent('text', where)}>
           <MessageSquareText className="h-5 w-5" aria-hidden="true" />
-          Text {advisor.firstName}
+          {labels?.text ?? `Text ${advisor.firstName}`}
         </a>
       </Button>
 
@@ -91,7 +94,7 @@ export function ContactActions({
         >
           <a href={contactHrefs.mailto} onClick={() => trackContactIntent('email', where)}>
             <Mail className="h-5 w-5" aria-hidden="true" />
-            Email {advisor.firstName}
+            {labels?.email ?? `Email ${advisor.firstName}`}
           </a>
         </Button>
       ) : null}

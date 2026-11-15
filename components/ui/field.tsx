@@ -20,6 +20,7 @@ export function Field({
   hint,
   error,
   required,
+  optionalLabel = 'optional',
   children,
 }: {
   id: string;
@@ -27,6 +28,8 @@ export function Field({
   hint?: string;
   error?: string;
   required?: boolean;
+  /** Text of the "optional" marker, for forms in another language. */
+  optionalLabel?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -39,7 +42,7 @@ export function Field({
             *
           </span>
         ) : (
-          <span className="ml-2 text-sm font-normal text-ink-faint">optional</span>
+          <span className="ml-2 text-sm font-normal text-ink-faint">{optionalLabel}</span>
         )}
       </Label>
       {hint ? <p className="mt-1 text-sm text-ink-faint">{hint}</p> : null}
