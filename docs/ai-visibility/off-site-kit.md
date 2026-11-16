@@ -30,13 +30,13 @@ Aegis Sage is the independent Medicare practice of Erekle Niniashvili, a license
 Aegis Sage · Erekle Niniashvili, independent Medicare broker, Edgewater NJ. English, Georgian, Russian. (551) 202-9079
 ```
 
-**TPMO sentence: PENDING YOUR SUNFIRE RECOUNT.** Once the counts are in, append this to the long description, with the two numbers from `tpmoCountsByArea` for Bergen County:
+**TPMO sentence (Bergen County recount of 2026-11-16).** Append this to the long description. The numbers must match `tpmoCountsByArea['bergen-nj']` in `lib/site.ts`; if you change 31 to 26 there, change it here and on every profile where you pasted it:
 
 ```
-We do not offer every plan available in your area. Currently we represent [N] organizations which offer [M] products in your area. Please contact Medicare.gov, 1-800-MEDICARE, or your local State Health Insurance Program to get information on all of your options.
+We do not offer every plan available in your area. Currently we represent 5 organizations which offer 31 products in your area. Please contact Medicare.gov, 1-800-MEDICARE, or your local State Health Insurance Program to get information on all of your options.
 ```
 
-Do not paste the bracketed version anywhere. Google's description limit is 750 characters; with the TPMO sentence the long description is over that, so on Google use the long description up to "aegissage.com." and then the TPMO sentence. Ask Pinnacle whether a profile description counts as marketing material that needs the disclaimer at all; if it does not, the long description above stands as written.
+These are Bergen County figures. A profile aimed at New York City or Philadelphia should not carry them until those counties are recounted. Google's description limit is 750 characters; with the TPMO sentence the long description is over that, so on Google use the long description up to "aegissage.com." and then the TPMO sentence. Ask Pinnacle whether a profile description counts as marketing material that needs the disclaimer at all; if it does not, the long description above stands as written.
 
 **Same on every profile:**
 
