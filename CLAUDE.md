@@ -12,13 +12,18 @@ Audience: 65+ and their adult children. iPad/Safari, reading glasses.
 - TPMO disclaimer renders always-visible in footer, exact CMS wording
   (42 CFR 422.2267(e)(41)). The counted version is the default on every route.
 - TPMO counts: organization and product counts come ONLY from a dated Sunfire
-  recount by Erekle. Medicare Advantage and Part D products only, appointed
-  and certified carriers only. They live in one config value,
+  recount by Erekle with "Appointed Only" switched on, for the plan year
+  being sold. Medicare Advantage and Part D products only (MA/MAPD, SNP,
+  PDP); Medigap is never in this number. They live in one config value,
   `tpmoCountsByArea` in lib/site.ts, keyed by area, each with a `countDate`.
-  Recheck every October 1 and whenever contracting changes. An area without
-  a recount is `null` and falls back to Bergen County; it never gets a
-  placeholder, an estimate, or last year's number. The build warns when a
-  count is over 12 months old or predates the last October 1.
+  Recheck every October 1 and on any contracting change. An area without a
+  recount is `null`; it never gets a placeholder, an estimate, or last
+  year's number. The build warns when a count is over 12 months old or
+  predates the last October 1.
+- Fallback rule: a page about a place with no count of its own (New York
+  City, Philadelphia, other state pages) states the Bergen County figures
+  and says "in Bergen County, NJ" in place of "in your area". Never let a
+  page imply Bergen numbers apply somewhere else.
 - Never imply Medicare affiliation, endorsement, or being sent by Medicare.
 - Never state or imply eligibility, approval, savings, $0 premium, or a
   specific benefit before a licensed review. No "you qualify" anywhere.
@@ -50,8 +55,20 @@ Audience: 65+ and their adult children. iPad/Safari, reading glasses.
 - Languages: English, Georgian, Russian.
 - Focus areas: Edgewater, Fort Lee, Cliffside Park, Bergen County, Hudson
   County, Brooklyn, Queens, Philadelphia.
-- All of the above live in lib/site.ts. Profile URLs for schema `sameAs` live
-  in `profiles` there; a blank entry means "URL not supplied", never guess one.
+- All of the above live in lib/site.ts. Agency profile URLs for schema
+  `sameAs` live in `profiles`; Erekle's personal LinkedIn and Facebook live in
+  `personProfiles` and go on the Person node only. A blank entry means "URL
+  not supplied", never guess one.
+
+## Ready-to-sell carriers, plan year 2027 (MA/PD) — reference, as told by Erekle Nov 16 2026
+Do not publish this list or derive a count from it; counts come from the recount.
+- NJ: Aetna, Anthem/Wellpoint, Clover, Humana, UnitedHealthcare, Devoted
+  (no Bergen plans). Jefferson: TBD.
+- NY: Aetna, Humana, UnitedHealthcare, Devoted, plus Healthfirst,
+  EmblemHealth, MetroPlus (off-Sunfire, via Applied General).
+- PA: Aetna, Clover, Humana, UnitedHealthcare, Devoted, plus Jefferson
+  (off-Sunfire).
+- Horizon/Braven: not in his Sunfire MA/PD list. Exclude.
 
 ## AI-visibility and answer pages
 - Educational first: answer the question in the opening paragraph, in plain
