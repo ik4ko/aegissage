@@ -42,6 +42,13 @@ import type { ResolvedTpmoArea } from '@/lib/tpmo';
  *  gets here, so there is no code path that prints a blank, a zero or a
  *  guess.
  *
+ *  ── A page about a place with no count of its own ─────────────────────
+ *  New York City, Philadelphia and the other state pages have no recount
+ *  yet. They state the Bergen County figures and end the sentence "in
+ *  Bergen County, NJ" instead of "in your area", so the page does not
+ *  imply those numbers apply there. This is the second place this file
+ *  departs from the standardized sentence, also pending Pinnacle.
+ *
  *  ── Several areas on one page ─────────────────────────────────────────
  *  A page about New York City covers five counties whose counts can differ.
  *  When the resolved areas do not all share the same two numbers, each is
@@ -84,7 +91,7 @@ export function TpmoDisclaimer({ areas }: { areas: ResolvedTpmoArea[] }) {
       ) : single ? (
         <>
           Currently we represent {single.organizationCount} organizations which offer{' '}
-          {single.productCount} products in your area.
+          {single.productCount} products in {single.scope ?? 'your area'}.
         </>
       ) : (
         areas.map((area, index) => (

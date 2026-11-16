@@ -1,4 +1,4 @@
-import { advisor, publicProfiles, site } from './site';
+import { advisor, personPublicProfiles, publicProfiles, site } from './site';
 import { licensedStates } from './states';
 
 const phone = `+${advisor.phoneRaw.replace(/\D/g, '')}`;
@@ -167,7 +167,7 @@ export function siteJsonLd() {
         jobTitle: advisor.credential,
         telephone: phone,
         ...(advisor.emailConfigured ? { email: advisor.email } : {}),
-        sameAs,
+        sameAs: personPublicProfiles,
         url: `${site.url}/about`,
         address: baseAddress,
         ...(advisor.npn
