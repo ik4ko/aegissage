@@ -238,11 +238,16 @@ export const profiles = {
   myMedicareBroker: 'https://mymedicarebroker.com/agent/erekle-niniashvili',
   youtube: social.youtube,
   instagram: social.instagram,
-  googleBusinessProfile: '',
-  facebook: '',
-  linkedin: '',
-  x: '',
-  nextdoor: '',
+  /*
+    Erekle's share link (https://share.google/42JWvNkUyjneKGW9n, Nov 16 2026)
+    redirects to this Knowledge Graph ID. It is the stable identifier the
+    redirect exposed; it did not expose a Maps cid. If you want the
+    https://maps.google.com/?cid=… form instead, copy it from "Share" on the
+    Maps listing and replace this line.
+  */
+  googleBusinessProfile: 'https://www.google.com/search?kgmid=/g/11ntt3m2k1',
+  x: 'https://x.com/AegisSage',
+  nextdoor: 'https://nextdoor.com/page/aegis-sage-medicare-edgewater-nj',
   bingPlaces: '',
   appleBusinessConnect: '',
   yelp: '',
@@ -251,9 +256,26 @@ export const profiles = {
   medicareAgentsHub: '',
 } as const;
 
-export const publicProfiles: string[] = Object.values(profiles).filter(
-  (url) => url.trim().length > 0,
-);
+/**
+ * Profiles that belong to Erekle personally. They go on the schema Person
+ * node only, never on the Organization or the agency node: the Facebook
+ * profile is a personal one, not a business page.
+ */
+export const personProfiles = {
+  linkedin: 'https://www.linkedin.com/in/erekle-niniashvili-93b37489/',
+  facebook: 'https://www.facebook.com/ika.ika.45695/',
+} as const;
+
+const nonBlank = (urls: readonly string[]) => urls.filter((url) => url.trim().length > 0);
+
+/** Agency profiles: Organization and InsuranceAgency `sameAs`. */
+export const publicProfiles: string[] = nonBlank(Object.values(profiles));
+
+/** Person `sameAs`: his own profiles plus his MyMedicareBroker agent page. */
+export const personPublicProfiles: string[] = nonBlank([
+  ...Object.values(personProfiles),
+  profiles.myMedicareBroker,
+]);
 
 /**
  * CMS Medicare Communications and Marketing Guidelines (MCMG) require a
@@ -296,6 +318,8 @@ export const compliance = {
  * counted.
  *
  * ── The rule (set by Erekle, Nov 15 2026) ─────────────────────────────────
+ *  0. Sunfire, with "Appointed Only" switched ON, for the plan year being
+ *     sold. Count organizations and products shown for the area's ZIP.
  *  1. Every count comes from a dated Sunfire recount. Never guessed, rounded,
  *     incremented by hand, carried over from a previous year, or inferred
  *     from a carrier list.
@@ -315,9 +339,11 @@ export const compliance = {
  * Whether pages about one area must carry that area's own counts, and how a
  * page covering several counties (New York City) should state them. Until
  * that is answered: a page mapped to an area in lib/tpmo.ts uses that area's
- * counts when they exist, and everything else falls back to Bergen County.
- * The fallback is a known gap on pages about other places, not a settled
- * reading of the rule.
+ * counts when they exist. A page about a place outside Bergen County that
+ * has no count of its own states the Bergen figures and says so: "in Bergen
+ * County, NJ" replaces "in your area" (`TPMO_FALLBACK_SCOPE`). That is a
+ * deliberate departure from the standardized sentence so the page does not
+ * imply Bergen numbers apply elsewhere; it is pending Pinnacle's answer.
  */
 export type TpmoAreaCount = {
   organizationCount: number;
@@ -341,28 +367,29 @@ export const TPMO_AREAS = {
 export type TpmoAreaKey = keyof typeof TPMO_AREAS;
 
 export const TPMO_FALLBACK_AREA: TpmoAreaKey = 'bergen-nj';
+/** How the fallback area is named when its counts appear on another place's page. */
+export const TPMO_FALLBACK_SCOPE = 'Bergen County, NJ';
 
 export const tpmoCountsByArea: Record<TpmoAreaKey, TpmoAreaCount | null> = {
   /*
-    ── PENDING RECOUNT (Nov 15 2026) ──────────────────────────────────────
-    These are the August 2026 figures that were already live, kept unchanged
-    at Erekle's direction until his same-day Sunfire recount arrives. Two
-    known problems, both fixed by that recount:
+    Recounted by Erekle in Sunfire on 2026-11-16, plan year 2027, "Appointed
+    Only" on, ZIP 07020. Organizations: Aetna, Clover, Humana,
+    UnitedHealthcare, Wellpoint.
 
-      - 65 was counted as 26 Medicare Advantage + 39 Medigap. Medigap does
-        not belong in this number (rule 2 above).
-      - The October recount this comment's predecessor called for has not
-        been entered, so the figures predate the current plan year.
-
-    Replace all three values together. Do not edit one number on its own.
+    ── CONFIRM BEFORE MERGE: productCount 31 or 26 ───────────────────────
+    His note read "25 MA/MAPD + 5 SNP if separate + 1 PDP". 31 assumes the
+    5 SNPs are NOT already inside the 25. If they are, this is 26.
   */
   'bergen-nj': {
-    organizationCount: 6,
-    productCount: 65,
-    countDate: '2026-08',
-    source: 'Sunfire, appointed carriers only, Bergen County NJ (August 2026)',
+    organizationCount: 5,
+    productCount: 31,
+    countDate: '2026-11-16',
+    source:
+      'Sunfire, Appointed Only, plan year 2027, ZIP 07020 (Bergen County NJ): 25 MA/MAPD + 5 SNP + 1 PDP',
   },
-  // Awaiting Erekle's per-county Sunfire recount. Leave null until then.
+  // Not recounted yet. Leave null: pages about these places then state the
+  // Bergen figures scoped "in Bergen County, NJ" (see lib/tpmo.ts). To finish,
+  // follow docs/HANDOFF.md and replace null with a full TpmoAreaCount.
   'kings-ny': null,
   'queens-ny': null,
   'new-york-ny': null,
