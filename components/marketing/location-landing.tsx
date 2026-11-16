@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { CtaBand } from './cta-band';
 import { ContactActions } from './contact-actions';
 import { ContactForm } from '@/components/forms/contact-form';
+import { MedigapLine } from './medigap-line';
 import { TrustBar } from './trust-bar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -152,6 +153,8 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
                 <li key={question}>{question}</li>
               ))}
             </ul>
+
+            <MedigapLine state={location.inState} />
 
             <div className="not-prose mt-10 flex flex-wrap gap-3">
               <Button asChild size="lg">

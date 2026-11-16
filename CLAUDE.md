@@ -24,6 +24,15 @@ Audience: 65+ and their adult children. iPad/Safari, reading glasses.
   City, Philadelphia, other state pages) states the Bergen County figures
   and says "in Bergen County, NJ" in place of "in your area". Never let a
   page imply Bergen numbers apply somewhere else.
+- Medigap is separate from the TPMO count and never included in it. Medigap
+  carriers live in `medigapCarriersByState` in lib/medigap.ts, keyed by
+  state, confirmed by Erekle with a date. A state that is `null` (NY and PA
+  today) shows no Medigap line. Fixed wording: "Medicare Supplement (Medigap)
+  plans offered through [carriers], where available." No prices, rankings
+  or logos.
+- Lead forms may ask whether the person has Medicare Part A and Part B
+  (four fixed choices, optional). Never a Medicare number, SSN or date of
+  birth.
 - Never imply Medicare affiliation, endorsement, or being sent by Medicare.
 - Never state or imply eligibility, approval, savings, $0 premium, or a
   specific benefit before a licensed review. No "you qualify" anywhere.

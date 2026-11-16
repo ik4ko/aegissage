@@ -13,6 +13,8 @@ import { advisor, contactHrefs } from '@/lib/site';
 import { trackContactSubmit, trackFormStart, trackFormSubmit } from '@/lib/analytics';
 import { captureAttribution, getAttribution } from '@/lib/attribution';
 import { BOOKING_SOURCE } from '@/lib/consent';
+import { PARTS_AB } from '@/lib/ai-sources';
+import { PartsABField } from './parts-ab-field';
 
 /**
  * ══════════════════════════════════════════════════════════════════════════
@@ -86,6 +88,8 @@ const bookingSchema = z.object({
   consent: z.literal(true, {
     errorMap: () => ({ message: 'Please check the box so I know it is okay to contact you.' }),
   }),
+  /** Optional. Enrollment status only: never a Medicare number or a date of birth. */
+  partsAB: z.enum(PARTS_AB).or(z.literal('')).optional(),
   /** Honeypot. Real people leave it empty; the API returns a plain 200. */
   website: z.string().max(200).optional(),
 });
@@ -199,6 +203,7 @@ export function BookingForm() {
     register,
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm<BookingInput>({
     resolver: zodResolver(bookingSchema),
@@ -207,6 +212,7 @@ export function BookingForm() {
       email: '',
       phone: '',
       website: '',
+      partsAB: '',
       // Unticked. A pre-checked consent box is not consent.
       consent: false as unknown as true,
     },
@@ -252,6 +258,7 @@ export function BookingForm() {
           consent: true,
           // Explicit. This form never collects SMS consent.
           consentSms: false,
+          partsAB: values.partsAB || '',
           source: SOURCE,
           bookingStatus: 'intent',
           website: values.website,
@@ -350,6 +357,8 @@ export function BookingForm() {
             />
           </Field>
         </div>
+
+        <PartsABField registration={register('partsAB')} selected={watch('partsAB')} />
 
         {/*
           Consent sits above the button and is visible before anything is sent —
