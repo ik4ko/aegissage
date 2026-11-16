@@ -1,6 +1,7 @@
 import {
   TPMO_AREAS,
   TPMO_FALLBACK_AREA,
+  TPMO_FALLBACK_SCOPE,
   tpmoCountsByArea,
   type TpmoAreaCount,
   type TpmoAreaKey,
@@ -206,7 +207,25 @@ export const ROUTE_TPMO_AREAS: Readonly<Record<string, TpmoAreaKey[]>> = {
   '/answers/medicare-help-philadelphia': ['philadelphia-pa'],
 };
 
-export type ResolvedTpmoArea = TpmoAreaCount & { key: TpmoAreaKey; label: string };
+export type ResolvedTpmoArea = TpmoAreaCount & {
+  key: TpmoAreaKey;
+  label: string;
+  /**
+   * Set when these counts are the fallback area's and the page is about a
+   * different place. The disclaimer then says "in {scope}" instead of "in
+   * your area", so it never implies the numbers apply where the page is about.
+   */
+  scope?: string;
+};
+
+/**
+ * True for a route about a place outside the fallback area: anything mapped
+ * in ROUTE_TPMO_AREAS, and every state plan page except New Jersey's.
+ */
+export function isOutOfAreaRoute(path: string): boolean {
+  if (path in ROUTE_TPMO_AREAS) return true;
+  return path.startsWith('/plans/') && path !== '/plans/new-jersey';
+}
 
 function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {
   const count = tpmoCountsByArea[key];
@@ -217,7 +236,8 @@ function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {
  * The verified counts a route should state, most specific first.
  *
  *  - areas mapped to the route that have a count → those
- *  - otherwise the fallback area, if it has a count
+ *  - otherwise the fallback area, if it has a count; on a route about
+ *    another place it carries `scope`, so the sentence names Bergen County
  *  - otherwise [] → the caller renders the count-free wording
  */
 export function tpmoAreasFor(pathname: string | null): ResolvedTpmoArea[] {
@@ -229,7 +249,8 @@ export function tpmoAreasFor(pathname: string | null): ResolvedTpmoArea[] {
   if (mapped.length > 0) return mapped;
 
   const fallback = resolve(TPMO_FALLBACK_AREA);
-  return fallback ? [fallback] : [];
+  if (!fallback) return [];
+  return [isOutOfAreaRoute(path) ? { ...fallback, scope: TPMO_FALLBACK_SCOPE } : fallback];
 }
 
 /** 'YYYY-MM' or 'YYYY-MM-DD' → "November 2026" / "November 15, 2026". */
