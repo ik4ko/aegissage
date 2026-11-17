@@ -27,7 +27,7 @@ Aegis Sage is the independent Medicare practice of Erekle Niniashvili, a license
 **Short description (X, Instagram, Nextdoor):**
 
 ```
-Aegis Sage · Erekle Niniashvili, independent Medicare broker, Edgewater NJ. English, Georgian, Russian. (551) 202-9079
+Aegis Sage · Erekle Niniashvili, licensed insurance broker, Edgewater NJ. Medicare help in English, Georgian, Russian. (551) 202-9079
 ```
 
 **TPMO sentence (Bergen County recount of 2026-11-16).** Append this to the long description. The numbers must match `tpmoCountsByArea['bergen-nj']` in `lib/site.ts`; if you change 31 to 26 there, change it here and on every profile where you pasted it:
@@ -46,13 +46,29 @@ These are Bergen County figures. A profile aimed at New York City or Philadelphi
 | Website | https://www.aegissage.com |
 | Email | contact@aegissage.com |
 | Location | Edgewater, NJ. Service-area business. No street address shown. |
-| Service areas | Edgewater, Fort Lee, Cliffside Park, Bergen County, Hudson County, Brooklyn, Queens, Philadelphia |
-| Category | Insurance agency (or the closest: Insurance broker, Health insurance agency) |
+| Service areas | Bergen County (Edgewater, Fort Lee, Cliffside Park, Palisades Park, Englewood, Hackensack, Teaneck, Paramus, Fair Lawn), Hudson County (Jersey City, Hoboken, Union City, West New York, North Bergen, Weehawken), Brooklyn, Queens, Philadelphia. Where a platform caps the list, use: Bergen County NJ, Hudson County NJ, Brooklyn NY, Queens NY, Philadelphia PA. |
+| How you meet | In person in Bergen and Hudson counties; phone or video for New York City and Philadelphia (Erekle, Nov 17 2026). |
+| Hours | **By appointment.** Leave set hours blank. CLAUDE.md rules out publishing office hours anywhere, so ask Erekle before entering real hours on any platform. If a platform will not save without hours, choose its "by appointment" or "always open, call first" option, not specific times. |
+| Category | Insurance agency. Per platform, see the table below. |
 | Languages | English, Georgian, Russian |
 
 Never enter the recorded-line number on any profile.
 
 ---
+
+### What each listing feeds, and its category
+
+Same name, phone, website and description everywhere. Only the category label differs, because each platform names it differently. Labels change, so pick the closest match.
+
+| Listing | What it feeds | Category to choose |
+|---|---|---|
+| Google Business Profile | Google Search and Maps, Google Assistant, Gemini answers | Insurance agency (add Insurance broker as a secondary category if offered) |
+| Apple Business Connect | Apple Maps, Siri, Spotlight search on iPhone and iPad, Apple's on-device answers | Insurance Agency |
+| Bing Places | Bing Search and Maps, Microsoft Copilot, ChatGPT search (which uses Bing's index) | Insurance Agency (or Insurance Agents) |
+| Yelp | Yelp, Apple Maps reviews and photos, Amazon Alexa local business answers, many car and phone navigation apps | Insurance (Financial Services). Add Health Insurance if offered |
+| BBB | BBB business profile, a trust signal that ranks in Google and Bing for the business name and for "Medicare" category searches | Medicare (BBB has a Medicare category), plus Insurance Agency |
+| Nextdoor business page | Neighbor recommendations in Edgewater and nearby towns, Nextdoor's local search | Insurance |
+| medicareagentshub.com | The directory that appeared in 14 of 20 local searches in the Nov 17 audit, so AI search tools quote it for "Medicare agent near me" | Agent profile (Medicare). No category choice |
 
 ## 2. Claim checklist
 
@@ -111,7 +127,21 @@ This directory came up for nearly every town I searched, so it is the one most w
 3. If it does: use your full name, NPN, "Aegis Sage", the long description, your three languages, and list Edgewater, Fort Lee and Cliffside Park as towns served.
 4. Read their terms for how they handle people who contact you through the listing. If they sell or share those contacts with other agents, do not list.
 
-### After all six
+### Nextdoor business page
+
+Why it matters: neighbors in Edgewater, Fort Lee and Cliffside Park ask Nextdoor "who can help my mother with Medicare?" A business page lets them recommend you by name.
+
+1. Go to business.nextdoor.com and choose **Claim or create a free business page**. Sign in with your personal Nextdoor account (it must be a real neighbor account).
+2. Search for "Aegis Sage". If nothing comes up, create it.
+3. Business name: **Aegis Sage**. Category: **Insurance**. Phone, website and email exactly as in the table above.
+4. Address: choose the option to **hide your address** and show a service area. If Nextdoor will not hide it, use "Edgewater, NJ" only. Never a street address.
+5. Paste the **short description** in the headline field and the long description in "About".
+6. Hours: leave blank or choose "by appointment" (see the Hours row above).
+7. Skip paid ads ("Local Deals" or sponsored posts).
+8. Do not ask neighbors for recommendations in exchange for anything. Neighbors can recommend you on their own; you can thank them publicly.
+9. Post only the calm, educational posts from `content-calendar-4-weeks.md` (PR #22). No plan names, no "best".
+
+### After all seven
 
 - Send me each live profile URL, plus Facebook, LinkedIn, X, Nextdoor and your Google share link. They go into `profiles` in `lib/site.ts`.
 - Check that the phone number, website and spelling "Aegis Sage" are identical on every one.
