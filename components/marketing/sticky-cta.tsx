@@ -78,13 +78,13 @@ export function StickyCta() {
             indication of who is being called. The aria-label names the action
             and the person; the number is still dialled either way.
           */
-          aria-label={`Call ${advisor.name}, ${advisor.credential}, at ${advisor.phone}`}
+          aria-label={`Call ${advisor.phone}, ${advisor.name}, ${advisor.credential}`}
           /*
             The focus ring is white, not the navy used elsewhere on this site.
             This bar is navy-deep, and `ring-navy/30` over it is effectively
             invisible — a focus indicator that cannot be seen is not one.
           */
-          className="flex h-touch w-full min-w-0 flex-1 items-center justify-center gap-2 rounded-xl bg-ember px-5 text-base font-semibold text-white transition-colors hover:bg-ember-deep active:translate-y-px focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/80"
+          className="flex h-touch w-full min-w-0 flex-1 items-center justify-center gap-2 rounded-xl bg-ember px-5 text-base font-semibold text-white transition-colors hover:bg-ember-deep active:translate-y-px focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white"
         >
           <Phone className="h-5 w-5 shrink-0" aria-hidden="true" />
           <span className="whitespace-nowrap">Call {advisor.phone}</span>
@@ -94,7 +94,7 @@ export function StickyCta() {
             href={contactHrefs.sms}
             onClick={() => trackContactIntent('text', 'sticky-cta')}
             aria-label={`Text ${advisor.name} at ${advisor.phone}`}
-            className="flex h-touch shrink-0 items-center justify-center gap-1.5 rounded-xl border-2 border-white/70 px-3 text-base font-semibold text-white transition-colors hover:bg-white/10 active:translate-y-px focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/80"
+            className="flex h-touch shrink-0 items-center justify-center gap-1.5 rounded-xl border-2 border-white/70 px-3 text-base font-semibold text-white transition-colors hover:bg-white/10 active:translate-y-px focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white"
           >
             <MessageSquareText className="h-5 w-5 shrink-0" aria-hidden="true" />
             <span>Text</span>

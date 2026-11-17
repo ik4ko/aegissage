@@ -74,7 +74,7 @@ export function VideoEmbed({
             <button
               type="button"
               onClick={play}
-              className="group absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-4 bg-navy-deep p-6 text-center transition-colors hover:bg-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
+              className="group absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-4 bg-navy-deep p-6 text-center transition-colors hover:bg-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white"
             >
               <span className="grid h-16 w-16 place-items-center rounded-full bg-ember shadow-lift transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100">
                 <Play className="ml-1 h-8 w-8 text-white" aria-hidden="true" />

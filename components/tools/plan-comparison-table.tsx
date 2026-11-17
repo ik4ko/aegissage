@@ -146,7 +146,7 @@ export function PlanComparisonTable() {
               onClick={() => chooseRoute(key)}
               className={cn(
                 'min-h-touch rounded-xl px-3 text-base font-semibold transition-colors',
-                'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30',
+                'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy',
                 mobileRoute === key ? 'bg-navy text-white' : 'text-ink-soft',
               )}
             >

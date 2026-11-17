@@ -188,7 +188,7 @@ export default function HomePage() {
               <RevealItem key={href}>
                 <Link
                   href={href}
-                  className="group flex h-full flex-col rounded-2xl border border-line bg-cream p-7 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lift focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+                  className="group flex h-full flex-col rounded-2xl border border-line bg-cream p-7 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-lift focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
                 >
                   <span className="grid h-12 w-12 place-items-center rounded-xl bg-navy-soft text-navy">
                     <Icon className="h-6 w-6" aria-hidden="true" />

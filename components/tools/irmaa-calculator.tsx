@@ -167,7 +167,7 @@ export function IrmaaCalculator() {
               touch();
               setRawMagi(e.target.value);
             }}
-            className="min-h-touch w-full rounded-xl border-2 border-line bg-cream py-3 pl-11 pr-5 font-display text-2xl font-bold tracking-[-0.02em] text-ink transition-colors hover:border-navy/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+            className="min-h-touch w-full rounded-xl border-2 border-line bg-cream py-3 pl-11 pr-5 font-display text-2xl font-bold tracking-[-0.02em] text-ink transition-colors hover:border-navy/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
           />
         </div>
 
@@ -194,7 +194,7 @@ export function IrmaaCalculator() {
                   aria-pressed={selected}
                   className={cn(
                     'group flex min-h-touch w-full items-center gap-4 rounded-2xl border-2 p-4 text-left transition-all duration-150',
-                    'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30',
+                    'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy',
                     selected
                       ? 'border-navy bg-navy-soft'
                       : 'border-line bg-cream hover:border-navy/50 hover:bg-navy-soft/40',
@@ -338,7 +338,13 @@ export function IrmaaCalculator() {
           {IRMAA_YEAR} brackets · {FILING_STATUS_LABELS[filing]}
         </p>
 
-        <div className="mt-4 overflow-x-auto">
+        {/* Focusable so keyboard users can scroll the table sideways on a phone. */}
+        <div
+          className="mt-4 overflow-x-auto rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
+          tabIndex={0}
+          role="region"
+          aria-label="IRMAA brackets table"
+        >
           <table className="w-full min-w-[30rem] border-collapse text-left text-base">
             <caption className="sr-only">
               {IRMAA_YEAR} IRMAA brackets for {FILING_STATUS_LABELS[filing]}, showing the income

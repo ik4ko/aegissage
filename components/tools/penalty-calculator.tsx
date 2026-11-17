@@ -253,7 +253,7 @@ export function PenaltyCalculator() {
           <button
             type="button"
             onClick={back}
-            className="inline-flex min-h-touch items-center gap-1.5 rounded-lg px-2 text-base font-semibold text-navy hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+            className="inline-flex min-h-touch items-center gap-1.5 rounded-lg px-2 text-base font-semibold text-navy hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
           >
             <ArrowLeft className="h-5 w-5" aria-hidden="true" />
             Back
@@ -345,7 +345,7 @@ export function PenaltyCalculator() {
                       aria-pressed={selected}
                       className={cn(
                         'group flex min-h-[4.25rem] w-full items-center gap-4 rounded-2xl border-2 p-5 text-left transition-all duration-150',
-                        'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30',
+                        'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy',
                         selected
                           ? 'border-navy bg-navy-soft'
                           : 'border-line bg-paper hover:border-navy/50 hover:bg-navy-soft/40',
@@ -500,7 +500,7 @@ function MonthYear({
   );
 
   const selectClass =
-    'min-h-touch w-full rounded-xl border-2 border-line bg-paper px-4 text-lg text-ink transition-colors hover:border-navy/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30';
+    'min-h-touch w-full rounded-xl border-2 border-line bg-paper px-4 text-lg text-ink transition-colors hover:border-navy/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy';
 
   return (
     <fieldset className={compact ? 'mt-4' : 'mt-8'}>
@@ -574,7 +574,7 @@ function DayOfMonth({
         Do you know the exact day? <span className="font-normal text-ink-faint">(optional)</span>
       </span>
       <select
-        className="mt-2 min-h-touch w-full rounded-xl border-2 border-line bg-paper px-4 text-lg text-ink transition-colors hover:border-navy/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+        className="mt-2 min-h-touch w-full rounded-xl border-2 border-line bg-paper px-4 text-lg text-ink transition-colors hover:border-navy/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
         value={value ?? ''}
         onChange={(e) => onChange(e.target.value ? Number(e.target.value) : undefined)}
       >
@@ -633,7 +633,7 @@ function EnrollmentBlock({
         aria-pressed={notYet}
         className={cn(
           'mt-4 flex min-h-touch w-full items-center gap-3 rounded-xl border-2 p-3 text-left transition-all duration-150',
-          'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30',
+          'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy',
           notYet ? 'border-navy bg-navy-soft' : 'border-line hover:border-navy/50',
         )}
       >

@@ -143,7 +143,7 @@ export default function MedicareGlossaryPage() {
               className="scroll-mt-24 rounded-2xl border border-line bg-paper p-6 target:border-navy target:ring-2 target:ring-navy/20"
             >
               <h2 className="font-display text-2xl font-bold tracking-[-0.02em] text-ink">
-                <a href={`#${entry.slug}`} className="hover:underline">
+                <a href={`#${entry.slug}`} className="inline-flex min-h-touch items-center hover:underline">
                   {entry.term}
                 </a>
               </h2>

@@ -89,7 +89,7 @@ export default function PlansPage() {
             <li key={location.slug}>
               <Link
                 href={`/medicare-${location.slug}`}
-                className="flex h-full min-h-touch flex-col justify-center rounded-2xl border-2 border-line bg-paper px-6 py-5 shadow-card transition-colors hover:border-navy/40 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+                className="flex h-full min-h-touch flex-col justify-center rounded-2xl border-2 border-line bg-paper px-6 py-5 shadow-card transition-colors hover:border-navy/40 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
               >
                 <span className="font-display text-xl font-bold tracking-[-0.02em] text-ink">
                   Medicare in {location.name}
@@ -124,7 +124,7 @@ export default function PlansPage() {
                     <li key={state.code}>
                       <Link
                         href={`/plans/${state.slug}`}
-                        className="flex min-h-touch items-center gap-3 rounded-2xl border border-line bg-cream px-5 text-lg font-semibold text-ink-soft transition-colors hover:border-navy/40 hover:text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+                        className="flex min-h-touch items-center gap-3 rounded-2xl border border-line bg-cream px-5 text-lg font-semibold text-ink-soft transition-colors hover:border-navy/40 hover:text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
                       >
                         <span className="text-sm font-bold text-ink-faint">{state.code}</span>
                         {state.name}

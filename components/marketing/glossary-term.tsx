@@ -4,6 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { glossary, isGlossaryKey } from '@/lib/glossary';
 import { trackGlossaryOpen } from '@/lib/analytics';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 /**
  * Inline jargon explainer. Click/tap driven rather than hover, because the
@@ -15,9 +16,12 @@ import Link from 'next/link';
 export function GlossaryTerm({
   k,
   children,
+  className,
 }: {
   k: string;
   children?: React.ReactNode;
+  /** Extra classes for the trigger, e.g. a full 48px row when it stands alone in a list. */
+  className?: string;
 }) {
   if (!isGlossaryKey(k)) {
     // A typo'd key should degrade to plain text, never crash an article.
@@ -36,7 +40,10 @@ export function GlossaryTerm({
         <button
           type="button"
           onClick={() => trackGlossaryOpen(k)}
-          className="inline items-baseline rounded px-0.5 text-left font-semibold text-navy underline decoration-ember decoration-dotted decoration-2 underline-offset-4 hover:decoration-solid focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+          className={cn(
+            'inline items-baseline rounded px-0.5 text-left font-semibold text-navy underline decoration-ember decoration-dotted decoration-2 underline-offset-4 hover:decoration-solid focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy',
+            className,
+          )}
         >
           {label}
           <span className="sr-only"> — what this means</span>

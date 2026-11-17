@@ -40,7 +40,7 @@ export function ContactActions({
   labels,
 }: Props) {
   const darkFocus = onDark
-    ? 'focus-visible:ring-white/60 focus-visible:ring-offset-navy-deep'
+    ? 'focus-visible:ring-white focus-visible:ring-offset-navy-deep'
     : undefined;
 
   return (
