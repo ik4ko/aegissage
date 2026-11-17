@@ -275,7 +275,9 @@ export function isOutOfAreaRoute(path: string): boolean {
  * Bergen figures always say "in Bergen County, NJ" there (Erekle, Nov 16 2026).
  */
 export function usesFallbackScope(path: string): boolean {
-  return isOutOfAreaRoute(path) || path.startsWith('/answers/');
+  // /medicare-questions is a hub of short answers read by people anywhere,
+  // like the answer pages, so it follows the same rule (Nov 17 2026).
+  return isOutOfAreaRoute(path) || path.startsWith('/answers/') || path === '/medicare-questions';
 }
 
 function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {

@@ -68,6 +68,13 @@ export default function AnswersIndexPage() {
             </Link>
             .
           </p>
+          <p className="mt-4 text-lg leading-relaxed text-ink-soft">
+            Want the short version?{' '}
+            <Link href="/medicare-questions" className="font-semibold text-navy underline">
+              30 Medicare questions, answered in a few plain sentences each
+            </Link>
+            .
+          </p>
         </div>
       </section>
 

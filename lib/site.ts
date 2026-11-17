@@ -185,6 +185,21 @@ export const site = {
   serviceArea: 'Bergen and Hudson counties in New Jersey, New York City, and Philadelphia',
 } as const;
 
+/**
+ * Site switches. Flip a value here; nothing else needs to change.
+ *
+ * `textButton` (Erekle, Nov 17 2026, default ON): shows the Text button next to
+ * Call, including in the phone sticky bar, with the note "Texting is fine. I'll
+ * reply during business hours." It is a plain sms: link to `advisor.phone`.
+ * Nothing is sent automatically and there are no auto-replies.
+ */
+export const features = {
+  textButton: true,
+} as const;
+
+/** Shown next to the Text button while `features.textButton` is on. */
+export const TEXT_NOTE = "Texting is fine. I'll reply during business hours.";
+
 export const contactHrefs = {
   tel: `tel:${advisor.phoneE164}`,
   sms: `sms:${advisor.phoneE164}`,

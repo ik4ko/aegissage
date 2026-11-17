@@ -7,7 +7,7 @@ import { TrustBar } from './trust-bar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/json-ld';
-import { breadcrumbJsonLd, localBusinessJsonLd } from '@/lib/seo';
+import { breadcrumbJsonLd, localBusinessJsonLd, speakableJsonLd } from '@/lib/seo';
 import { advisor, site } from '@/lib/site';
 import { getArticle } from '@/lib/content';
 import { formatCountDate } from '@/lib/tpmo';
@@ -103,6 +103,13 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
   return (
     <>
       <JsonLd data={breadcrumbJsonLd(crumbs)} />
+      <JsonLd
+        data={speakableJsonLd({
+          url,
+          name: `Medicare in ${location.name}`,
+          cssSelector: ['h1 + p', '.article-body h2 + p'],
+        })}
+      />
       {/*
         Per-page LocalBusiness/InsuranceAgency node, scoped to this one place.
         `context.Location` is the page's own full place name, already used for

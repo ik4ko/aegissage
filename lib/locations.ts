@@ -401,27 +401,27 @@ export const locationLandings: LocationLanding[] = [
       'Fort Lee is the western anchorage of the George Washington Bridge — Manhattan is close enough to see, and for a lot of longtime residents, close enough that their doctors are there too. That closeness is exactly what makes the Medicare Advantage network question sharper here than almost anywhere else I work.',
     sections: [
       {
-        heading: 'A town built around the bridge',
+        heading: 'Does living next to the bridge change my Medicare plan options?',
         paragraphs: [
+          'No. Fort Lee is in Bergen County, New Jersey, so your Medicare Advantage and Part D choices are the plans approved for Bergen County. How close Manhattan feels does not change that. What it can change is whether your Manhattan doctors are in a plan’s network.',
           'Fort Lee is dense and largely high-rise, and it faces the Washington Heights neighborhood of Manhattan directly across the Hudson. Plenty of people here have spent decades going back and forth — for work, for family, for a doctor they have seen since before the bridge traffic got bad.',
-          'None of that changes which county governs your Medicare Advantage and Part D plan menu. Fort Lee is Bergen County, New Jersey, and the plans available to you are the ones approved for a New Jersey service area — regardless of how close Manhattan feels.',
         ],
       },
       {
-        heading: 'Close by geography, separate by network',
+        heading: 'Can I keep my Manhattan doctor on a New Jersey plan?',
         paragraphs: [
-          'Original Medicare does not care about the bridge — any provider who accepts Medicare assignment can see you, on either side of the river. Medicare Advantage is different, because those plans are built around a contracted network tied to a specific service area, and a network approved for New Jersey may or may not reach a specific practice in Manhattan.',
+          'It depends on the plan. Original Medicare works with any doctor who accepts Medicare, on either side of the river. A Medicare Advantage plan has a network built for New Jersey, so check each Manhattan doctor by name before you join.',
           'I am not going to guess on a web page whether your specific doctor is in a specific network — that changes by plan and by year. What I can tell you is that in Fort Lee, more than in most towns I work in, this is the question that actually decides which plan makes sense.',
         ],
       },
       {
-        heading: 'A community with deep, longstanding ties on both sides of the river',
+        heading: 'Why does the doctor check matter so much in Fort Lee?',
         paragraphs: [
-          'Fort Lee has one of the larger Korean-American communities in New Jersey, alongside residents with roots across dozens of other countries, and many families here have relationships — medical, professional, personal — that run straight across the bridge into New York. That pattern is exactly why the network check matters more here than the premium does.',
+          'Many Fort Lee families, including one of the larger Korean-American communities in New Jersey, have doctors, jobs and relatives across the bridge in New York. When your care crosses a state line, the network matters more than the premium, so it is the first thing to check.',
         ],
       },
       {
-        heading: 'What to have written down before we talk',
+        heading: 'What should I have written down before calling about Medicare?',
         paragraphs: [
           'Three things, in this order: your ZIP code, every doctor and facility you want to keep — on either side of the bridge — and every prescription you take with its dose. That is what turns a general conversation into a specific one.',
         ],
@@ -454,23 +454,23 @@ export const locationLandings: LocationLanding[] = [
       'Edgewater is a narrow strip of land along the Hudson River, with the Palisades cliff at its back and a ferry to Manhattan at its front. I grew up here, so I know firsthand how many people in this town have a foot on each side of the river — a ferry commute, a doctor in the city, family in both places.',
     sections: [
       {
-        heading: 'A river town, and a fast-growing one',
+        heading: 'Does moving to Edgewater change my Medicare options?',
         paragraphs: [
+          'It can. Edgewater is in Bergen County, New Jersey, and your Medicare Advantage and Part D choices come from the Bergen County list. If you moved here from another county or from New York, your old plan may not work here, so check soon.',
           'Edgewater has grown quickly over the last decade, and that means the town is a genuine mix of people who have been here for decades and people who just arrived. Both groups tend to ask me the same first question, just from different directions: newer residents ask what changes when they move here; longtime residents ask what changes if their doctor is somewhere they have always gone, across the river.',
-          'The answer starts in the same place either way. Edgewater is Bergen County, New Jersey, and that is the service area your Medicare Advantage and Part D plan choices are built around.',
         ],
       },
       {
-        heading: 'The ferry connects two states — and two different rulebooks',
+        heading: 'Will a New Jersey plan cover my doctor across the river?',
         paragraphs: [
+          'Original Medicare will, as long as the doctor accepts Medicare. A Medicare Advantage plan may or may not, because its network is built for a New Jersey service area. If you take the ferry to a doctor in Manhattan, check that doctor by name first.',
           'A lot of Edgewater life runs through the ferry landing, and a lot of that traffic is people heading into Manhattan for work, for family, or for a doctor they have seen for years. Original Medicare travels with you on that ferry without any issue — any provider who accepts Medicare assignment can see you, no matter which side of the river they are on.',
-          'Medicare Advantage plans work differently, because they are built around a contracted network approved for a specific service area. A plan approved for New Jersey may or may not include a specific practice across the water, and that is worth checking by provider name rather than assuming either way.',
         ],
       },
       {
-        heading: 'What to have written down before we talk',
+        heading: 'What do I need ready for a Medicare call?',
         paragraphs: [
-          'Your ZIP code, every doctor and facility you want to keep — including anywhere you go across the river — and every prescription you take with its dose. That is the difference between a real answer and a guess.',
+          'Your Medicare card, your ZIP code, every doctor and facility you want to keep, including anywhere you go across the river, and every prescription you take with its dose. That is the difference between a real answer and a guess.',
         ],
       },
     ],
@@ -501,22 +501,21 @@ export const locationLandings: LocationLanding[] = [
       'Cliffside Park is about one square mile and among the most densely populated municipalities in the state — and roughly one in five residents is 65 or older. In a town this size, Medicare questions tend to travel fast between neighbors, which is exactly why I would rather you get a straight answer than a secondhand one.',
     sections: [
       {
-        heading: 'A small town carrying a lot of people — and a lot of Medicare-age residents',
+        heading: 'Does living in such a dense town change my plan choices?',
         paragraphs: [
-          'Cliffside Park sits at roughly one square mile with over 25,000 residents, making it one of the most densely populated towns in New Jersey. About one in five residents is 65 or older, which is a meaningfully larger share than the county average.',
-          'That density does not change the underlying rule: Cliffside Park is Bergen County, and your Medicare Advantage and Part D plan choices are set at the county level, same as every other town covered on this site.',
+          'No. Cliffside Park is about one square mile with over 25,000 residents, and about one in five is 65 or older. But plan choices are set by county, so you choose from the same Bergen County list as every other town nearby.',
         ],
       },
       {
-        heading: 'A genuinely diverse community',
+        heading: 'Does my language or background change Medicare enrollment?',
         paragraphs: [
-          'Cliffside Park has a large foreign-born population and a majority of residents speak a language other than English at home. Medicare enrollment rules and deadlines apply exactly the same regardless of where you or your family are from — the part that varies is making sure the specific plan you are looking at actually covers the specific doctors and pharmacy you already use.',
+          'No. Medicare rules and deadlines are the same wherever you or your family are from. Cliffside Park has a large foreign-born population, and what differs from home to home is which doctors and pharmacy you use. Check those against any plan before you join.',
         ],
       },
       {
-        heading: 'What to have written down before we talk',
+        heading: 'What should I bring to a Medicare conversation?',
         paragraphs: [
-          'Your ZIP code, every doctor and facility you want to keep, and every prescription you take with its dose. In a town this compact, it is tempting to assume everyone nearby has the same plan or the same answer — they usually do not, because those three things are different for every household.',
+          'Your ZIP code, every doctor and facility you want to keep, and every prescription with its dose. In a town this compact, it is tempting to assume a neighbor’s answer fits you. It usually does not, because those three things differ for every household.',
         ],
       },
     ],
@@ -557,23 +556,22 @@ export const locationLandings: LocationLanding[] = [
       'Hackensack is the seat of Bergen County government. The county’s free Medicare counselors work out of One Bergen County Plaza, right in the city. So if you live here, two kinds of help are close by: free, neutral counseling from the county, and a licensed broker you can call to compare plans.',
     sections: [
       {
-        heading: 'Free county counseling and a broker do different jobs',
+        heading: 'Should I call SHIP or a broker first?',
         paragraphs: [
-          'SHIP counselors explain how Medicare works and help with problems, such as a denied claim or a bill you do not understand. They do not sell anything. That makes them a good first stop if you just want the rules explained.',
-          'I am a licensed insurance broker. I can look at the plans sold in Bergen County, check your doctors and drugs against them, and help you enroll if you decide to. Many people use both kinds of help, and that is fine with me.',
+          'Either is fine, and many people use both. Bergen County’s SHIP counselors in Hackensack explain Medicare and help with problems, and they sell nothing. A licensed broker like me can compare the plans sold in Bergen County against your doctors and drugs, and help you enroll.',
         ],
       },
       {
-        heading: 'Your plan menu is set for all of Bergen County',
+        heading: 'Is the plan menu in Hackensack different from other Bergen towns?',
         paragraphs: [
-          'Medicare Advantage and Part D plans are approved county by county. Hackensack has the same plan menu as every other Bergen County town. What changes from person to person is which doctors you use and which drugs you take.',
+          'No. Medicare Advantage and Part D plans are approved county by county, so Hackensack has the same plan menu as the rest of Bergen County. What changes from person to person is which doctors you see and which drugs you take, and that is what we check.',
           'If you are thinking about moving across the Hackensack River or out of the county, ask before you move. Leaving your plan’s service area opens a Special Enrollment Period, and the timing depends on when you tell the plan.',
         ],
       },
       {
-        heading: 'How I help people in Hackensack',
+        heading: 'How do I reach a Medicare broker in Hackensack?',
         paragraphs: [
-          `Call or text ${PHONE}. I speak English, Georgian and Russian. Have your Medicare card nearby, a list of your doctors, and your pill bottles or a drug list. There is no fee to talk with me. If you prefer to meet in person in Hackensack, we can set that up.`,
+          `Call or text me at ${PHONE}. I speak English, Georgian and Russian, and we can also meet in person in Hackensack. Have your Medicare card, your doctor list and your pill bottles or a drug list nearby. There is no fee to talk.`,
         ],
       },
     ],
@@ -619,23 +617,23 @@ export const locationLandings: LocationLanding[] = [
       'Englewood is a small city in eastern Bergen County, a short drive from the George Washington Bridge. People who call me from Englewood often have a doctor they have seen for many years, some in town and some in New York. Keeping that doctor is usually what they care about most.',
     sections: [
       {
-        heading: 'Keeping your doctor is something you can check',
+        heading: 'Can I keep my doctor if I join a Medicare plan?',
         paragraphs: [
-          'With Original Medicare, you can see any doctor in the country who accepts Medicare. A Medicare Advantage plan is different. It has a network, and the network is built for the county where you live.',
+          'With Original Medicare, yes, if your doctor accepts Medicare, anywhere in the country. A Medicare Advantage plan has a network built for your county, so the answer depends on the plan. Many people in Englewood see doctors in New York too, so check each name first.',
           'So the real question is not which plan is popular. It is whether your own doctors are in the network of the plan you are thinking about. We can check that name by name before you sign anything.',
         ],
       },
       {
-        heading: 'Still working, or just retired',
+        heading: 'Do I need Part B if I am still working at 65?',
         paragraphs: [
           'Some people in Englewood keep working past 65 and keep coverage from their job. Whether you need Part B right away depends on the size of the employer and the kind of coverage. Getting this wrong can mean a late penalty that lasts for life, so it is worth checking.',
           'If you are about to retire, the order matters. Line up Part B and any other coverage before the job coverage ends, so there is no gap.',
         ],
       },
       {
-        heading: 'Talking with me from Englewood',
+        heading: 'How do I talk with a Medicare broker in Englewood?',
         paragraphs: [
-          `The easiest way is a phone call to ${PHONE}. Tell me your ZIP code, your doctors and your drugs. If you would rather write it down first, the form on this page works too, and I will call you back. I also meet people in person in Englewood.`,
+          `Call me at ${PHONE}, or fill in the form on this page and I will call you back. Tell me your ZIP code, your doctors and your drugs. I also meet people in person in Englewood. There is no fee to talk with me.`,
         ],
       },
     ],
@@ -681,23 +679,21 @@ export const locationLandings: LocationLanding[] = [
       'Teaneck is a township in the middle of Bergen County. Most calls I get from Teaneck are about timing: someone is turning 65, leaving a job, or wondering whether to change plans this fall. Medicare has a clock, and doing things in the right order saves trouble later.',
     sections: [
       {
-        heading: 'Turning 65 in Teaneck',
+        heading: 'When can I sign up for Medicare in Teaneck?',
         paragraphs: [
-          'Your first chance to sign up is a seven-month window around the month you turn 65. It starts three months before your birthday month and ends three months after it.',
-          'If you already get Social Security, you are usually signed up for Part A and Part B on your own, and your card comes in the mail. If you do not, you sign up through Social Security. Either way, the plan choices come after that.',
+          'Your first window is seven months around your 65th birthday: three months before your birthday month, that month, and three months after. If you already get Social Security, you are usually signed up for Part A and Part B automatically, and your card arrives by mail.',
         ],
       },
       {
-        heading: 'Changing plans in the fall',
+        heading: 'When can I change my Medicare plan each year?',
         paragraphs: [
-          'Each year from October 15 to December 7, anyone with Medicare can change their health or drug plan. The new plan starts January 1.',
-          'Read the Annual Notice of Change your plan mails in the fall. It lists what will be different next year. If your doctors or drugs are affected, that is the time to look at other plans.',
+          'From October 15 to December 7 each year, anyone with Medicare can change their health or drug plan, and the new plan starts January 1. Before then, read the Annual Notice of Change your plan mails in the fall. It lists what will be different.',
         ],
       },
       {
-        heading: 'Calling me from Teaneck',
+        heading: 'How do I reach a Medicare broker from Teaneck?',
         paragraphs: [
-          `My number is ${PHONE}. You can call or text. If English is not your first language, I also speak Georgian and Russian. A family member is always welcome on the call, or at the kitchen table if you would rather meet in person.`,
+          `Call or text me at ${PHONE}. If English is not your first language, I also speak Georgian and Russian. A family member is always welcome, on the phone or at the kitchen table if you would rather meet in person in Teaneck.`,
         ],
       },
     ],
@@ -743,23 +739,21 @@ export const locationLandings: LocationLanding[] = [
       'Paramus sits where Route 4 and Route 17 meet, in the middle of Bergen County. People here call me most often after a letter arrives: a plan is changing, a plan is ending, or a drug is no longer covered. This page explains what those letters mean and what choices you have.',
     sections: [
       {
-        heading: 'If your plan is ending',
+        heading: 'What happens if my Medicare Advantage plan is ending?',
         paragraphs: [
-          'Sometimes a Medicare Advantage plan leaves the county at the end of the year. The plan must send you a letter, often called a non-renewal notice.',
-          'That letter gives you a special window to choose a new plan. If you do nothing, you go back to Original Medicare, and you may need to pick a drug plan. Do not let the letter sit in a drawer.',
+          'Your plan must send a letter, often called a non-renewal notice. It gives you a special window to choose a new plan. If you do nothing, you go back to Original Medicare and may need a drug plan, so do not let the letter sit in a drawer.',
         ],
       },
       {
-        heading: 'If your plan is only changing',
+        heading: 'What can I do if my plan is changing next year?',
         paragraphs: [
-          'Most plans do not end. They change. Costs, networks and the drug list can all be different next year.',
-          'You can switch during the fall window, October 15 to December 7. If you are in a Medicare Advantage plan, there is also a window from January 1 to March 31 to make one change.',
+          'Most plans change rather than end: costs, networks and the drug list can all be different next year. You can switch from October 15 to December 7. If you are in a Medicare Advantage plan, you can also make one change from January 1 to March 31.',
         ],
       },
       {
-        heading: 'Getting help from Paramus',
+        heading: 'Can someone go through my Medicare letter with me?',
         paragraphs: [
-          `Call or text ${PHONE} and have the letter in front of you. Read me the top of it and we will work out which window applies. You can also fill in the form on this page. If the letter is long, we can go through it together in person.`,
+          `Yes. Call or text me at ${PHONE} with the letter in front of you, read me the top of it, and we will work out which window applies. If the letter is long, we can go through it together in person in Paramus.`,
         ],
       },
     ],
@@ -805,23 +799,21 @@ export const locationLandings: LocationLanding[] = [
       'Fair Lawn is on the western edge of Bergen County, right next to Paterson and Hawthorne in Passaic County. A move of a mile or two can put you in a different county. For Medicare Advantage and Part D, a different county can mean a different set of plans.',
     sections: [
       {
-        heading: 'A short move can be a county change',
+        heading: 'Does a short move from Fair Lawn change my Medicare plan?',
         paragraphs: [
-          'Plans are approved for a service area, and service areas are built from counties. Moving from Fair Lawn to Glen Rock keeps you in Bergen County. Moving to Paterson or Hawthorne puts you in Passaic County.',
-          'If your plan does not serve the new county, you get a Special Enrollment Period to pick a new one. Tell your plan before you move if you can. The window can start earlier that way.',
+          'It can. Moving to Glen Rock keeps you in Bergen County, but moving to Paterson or Hawthorne puts you in Passaic County. If your plan does not serve the new county, you get a Special Enrollment Period to pick a new one. Tell your plan early.',
         ],
       },
       {
-        heading: 'Retiree coverage and Medigap',
+        heading: 'Should I keep retiree coverage when I get Medicare?',
         paragraphs: [
-          'Some people in Fair Lawn have retiree coverage from a former employer or union. Before you change anything, ask the plan how it works with Medicare. Dropping retiree coverage can be hard to undo.',
-          'If you are looking at Medigap, the six months after your Part B starts is the safest time to buy it. During those months, you cannot be turned down for health reasons.',
+          'Ask the retiree plan how it works with Medicare before you change anything, because dropping retiree coverage can be hard to undo. For Medigap, the six months after your Part B starts is the safest time to buy, because you cannot be turned down for health reasons.',
         ],
       },
       {
-        heading: 'Working with me from Fair Lawn',
+        heading: 'How can I meet with a Medicare broker in Fair Lawn?',
         paragraphs: [
-          `Call or text ${PHONE}. If you are planning a move, tell me both addresses. I will tell you what changes and what does not. We can talk on the phone or meet in Fair Lawn, whichever is easier.`,
+          `Call or text me at ${PHONE}, and we can talk on the phone or meet in Fair Lawn, whichever is easier. If you are planning a move, tell me both addresses, and I will tell you what changes and what does not.`,
         ],
       },
     ],
@@ -867,23 +859,21 @@ export const locationLandings: LocationLanding[] = [
       'Palisades Park is a small borough in southeastern Bergen County, next to Fort Lee and Ridgefield. Many families here help an older parent with Medicare. This page is for them too: what to gather, where to get free help, and what to ask any agent before you trust them.',
     sections: [
       {
-        heading: 'What to gather before the call',
+        heading: 'What should my parent bring to a Medicare call?',
         paragraphs: [
-          'Bring three things: the red, white and blue Medicare card, a list of every doctor, and every medicine with its dose. Pill bottles work if there is no list.',
-          'If you are helping a parent, sit with them for the call. I will need to talk with them directly before any enrollment, and they should hear the choices in their own words.',
+          'Three things: the red, white and blue Medicare card, a list of every doctor, and every medicine with its dose. Pill bottles work if there is no list. If you are helping a parent, sit with them, because I need to talk with them directly.',
         ],
       },
       {
-        heading: 'Help paying Medicare costs',
+        heading: 'Is there help paying Medicare costs in New Jersey?',
         paragraphs: [
-          'New Jersey has programs that can help with premiums and drug costs for people with lower incomes. Extra Help is the federal program for drug costs. Medicare Savings Programs can pay the Part B premium.',
-          'The rules depend on income and savings, and they change each year. The county SHIP office can help you apply, and so can I.',
+          'Yes, for people with lower incomes. Extra Help lowers drug costs, and Medicare Savings Programs can pay the Part B premium. The rules depend on income and savings and change each year. The county SHIP office can help you apply for free, and so can I.',
         ],
       },
       {
-        heading: 'Checking any agent, including me',
+        heading: 'How do I check that a Medicare agent is licensed?',
         paragraphs: [
-          `Ask for a license number and look it up with the state. Ask whether there is a fee. With me there is no fee, my license can be checked on the About page, and my number is ${PHONE}. I can meet you and your parent in person in Palisades Park.`,
+          'Ask for a license number and look it up with the state, and ask whether there is a fee. With me there is no fee, and my license can be checked on the About page. I can also meet you and your parent in person in Palisades Park.',
         ],
       },
     ],
@@ -930,23 +920,21 @@ export const locationLandings: LocationLanding[] = [
       'Jersey City is the seat of Hudson County. Both the county’s free Medicare counselors and the city’s Division of Senior Affairs are here. If you have Medicare and Medicaid, or need help with costs, start with them. If you want to compare plans and enroll, you can call me.',
     sections: [
       {
-        heading: 'Hudson County is its own plan market',
+        heading: 'Are Medicare plans in Jersey City the same as in Bergen County?',
         paragraphs: [
-          'Medicare Advantage and Part D plans are approved by county. Hudson County has its own list of plans, separate from Bergen County next door.',
-          'So advice from a friend in Fort Lee or Hackensack may not fit you. The plan they have may not be sold in Jersey City at all.',
+          'No. Medicare Advantage and Part D plans are approved by county, and Hudson County has its own list. A plan a friend has in Fort Lee or Hackensack may not be sold in Jersey City at all, so advice from across the county line may not fit you.',
         ],
       },
       {
-        heading: 'Medicare and Medicaid together',
+        heading: 'How do Medicare and Medicaid work together?',
         paragraphs: [
-          'Some people have both Medicare and New Jersey Medicaid. Medicare pays first. Medicaid can help with what Medicare leaves, like premiums and copays.',
-          'People with both have more chances during the year to change plans. There are also plans built only for people with both. Ask before you switch, so your Medicare and Medicaid keep working together.',
+          'Medicare pays first, and New Jersey Medicaid can help with what Medicare leaves, like premiums and copays. People with both have more chances during the year to change plans, and some plans are built only for them. Ask before you switch, so the two keep working together.',
         ],
       },
       {
-        heading: 'Reaching me from Jersey City',
+        heading: 'How do I reach a Medicare broker in Jersey City?',
         paragraphs: [
-          `Call or text ${PHONE}. I work with people across Hudson County by phone or in person, in English, Georgian or Russian.`,
+          `Call or text me at ${PHONE}. I work with people across Hudson County by phone or in person, in English, Georgian or Russian. Free, neutral counseling is also available in Jersey City through the Hudson County SHIP office listed on this page.`,
         ],
       },
     ],
@@ -994,23 +982,21 @@ export const locationLandings: LocationLanding[] = [
       'Hoboken is about one square mile on the Hudson, across from Manhattan. A lot of people here work in the city, and some keep working well past 65. The Medicare questions I hear from Hoboken are mostly about jobs: do I need Part B yet, and what happens when I stop working?',
     sections: [
       {
-        heading: 'Still working at 65',
+        heading: 'Do I need Part B if I am still working at 65 in Hoboken?',
         paragraphs: [
-          'If you have health coverage from your own job or your spouse’s, you may be able to wait on Part B without a penalty. It depends on the employer’s size and the type of coverage.',
-          'When that coverage ends, you get eight months to sign up for Part B. Do not count on more time than that.',
+          'Maybe not. If you have health coverage from your own job or your spouse’s current job, you may be able to wait on Part B without a penalty, depending on the employer’s size and the coverage. When that coverage ends, you get eight months to sign up.',
         ],
       },
       {
-        heading: 'COBRA does not buy you more time',
+        heading: 'Does COBRA give me more time to sign up for Medicare?',
         paragraphs: [
-          'Many people think COBRA counts as job coverage for Medicare. It does not. The eight-month window starts when the job or the job coverage ends, not when COBRA ends.',
-          'If you wait until COBRA runs out, you can miss the window and pay a Part B penalty for life. This is one of the most common mistakes I see.',
+          'No. COBRA does not count as job coverage for Medicare. The eight-month window starts when the job or the job coverage ends, not when COBRA ends. If you wait for COBRA to run out, you can miss the window and pay a Part B penalty for life.',
         ],
       },
       {
-        heading: 'Talking with me from Hoboken',
+        heading: 'How can I talk with a Medicare broker in Hoboken?',
         paragraphs: [
-          `Call or text ${PHONE}. Tell me when your job coverage ends, and I will lay out the dates for you. We can also meet in person in Hoboken.`,
+          `Call or text me at ${PHONE} and tell me when your job coverage ends. I will lay out the dates for you, so nothing is missed. We can also meet in person in Hoboken if that is easier for you.`,
         ],
       },
     ],
@@ -1057,23 +1043,21 @@ export const locationLandings: LocationLanding[] = [
       'Union City is one of the most crowded cities in the country, with Bergenline Avenue running through the middle. Neighbors share news fast here, including news about Medicare plans. But the right plan for a neighbor may be wrong for you, because your doctors and drugs are different.',
     sections: [
       {
-        heading: 'Why a neighbor’s plan may not fit you',
+        heading: 'Should I join the same Medicare plan as my neighbor?',
         paragraphs: [
-          'Everyone in Union City chooses from the same Hudson County list of plans. That is where the sameness ends.',
-          'One plan may cover your neighbor’s drugs well and yours badly. One may include your neighbor’s doctor and not yours. The only way to know is to check your own list.',
+          'Not without checking. Everyone in Union City chooses from the same Hudson County list, but one plan may cover your neighbor’s drugs well and yours badly, or include their doctor and not yours. The only way to know is to check your own doctors and drugs.',
         ],
       },
       {
-        heading: 'If money is tight',
+        heading: 'Is there help with Medicare costs if money is tight?',
         paragraphs: [
-          'There are programs that help with Medicare costs. Extra Help lowers drug costs. Medicare Savings Programs can pay the Part B premium. New Jersey Medicaid can help with more.',
-          'You apply based on income and savings. The county SHIP counselors can help you apply for free. I can also tell you which programs are worth a look.',
+          'Yes. Extra Help lowers drug costs, Medicare Savings Programs can pay the Part B premium, and New Jersey Medicaid can help with more. You apply based on income and savings. The county SHIP counselors can help you apply for free, and I can point you to programs.',
         ],
       },
       {
-        heading: 'Calling me from Union City',
+        heading: 'How do I reach a Medicare broker in Union City?',
         paragraphs: [
-          `My number is ${PHONE}, for a call or a text. Have your Medicare card, your doctor list and your drug list nearby. Meeting in person in Union City works too.`,
+          `Call or text me at ${PHONE}. Have your Medicare card, your doctor list and your drug list nearby. Meeting in person in Union City works too, and your son or daughter is welcome to join the call or the visit.`,
         ],
       },
     ],
@@ -1120,23 +1104,21 @@ export const locationLandings: LocationLanding[] = [
       'Despite the name, West New York is a town in Hudson County, New Jersey, on the cliffs above the Hudson River. The name confuses mail and websites, and it can confuse plan searches too. Your plans are the ones sold in Hudson County, New Jersey.',
     sections: [
       {
-        heading: 'Make sure the search uses your ZIP code',
+        heading: 'Is West New York in New York or New Jersey for Medicare?',
         paragraphs: [
-          'When you look up plans online, search by your ZIP code, not by the town name. A search for "West New York" can show New York results.',
-          'The same goes for any mailer. If it shows plans for New York State, it is not about you.',
+          'New Jersey. West New York is a town in Hudson County, on the cliffs above the Hudson River. When you look up plans online, search by your ZIP code, not the town name, because a search for West New York can show New York State plans.',
         ],
       },
       {
-        heading: 'Your sign-up windows',
+        heading: 'When can I sign up for or change Medicare in West New York?',
         paragraphs: [
-          'When you turn 65, you have seven months to sign up: three before your birthday month, the month itself, and three after.',
-          'After that, the main window is October 15 to December 7 each year. Other windows open for things like a move or losing job coverage.',
+          'When you turn 65, you have seven months: three before your birthday month, that month, and three after. After that, the main window to change plans is October 15 to December 7 each year. Other windows open after a move or losing job coverage.',
         ],
       },
       {
-        heading: 'Calling me from West New York',
+        heading: 'How do I reach a Medicare broker in West New York?',
         paragraphs: [
-          `Call or text ${PHONE}. Tell me your ZIP code first, and I will only show you plans that are actually sold where you live. In-person meetings in West New York are fine as well.`,
+          `Call or text me at ${PHONE}. Tell me your ZIP code first, and I will only show you plans that are actually sold where you live. In-person meetings in West New York are fine as well, and there is no fee to talk.`,
         ],
       },
     ],
@@ -1183,23 +1165,21 @@ export const locationLandings: LocationLanding[] = [
       'The name trips people up. North Bergen is a township in Hudson County, on the Bergen County line. Medicare plans are sold by county, so North Bergen residents choose from the Hudson County list, not the Bergen one.',
     sections: [
       {
-        heading: 'Why the county matters more than the name',
+        heading: 'Is North Bergen in Bergen County for Medicare?',
         paragraphs: [
-          'A friend in Fairview, just over the line, lives in Bergen County. Their plan list can be different from yours.',
-          'If you move across that line, even a few blocks, you change counties. If your plan does not serve the new county, you can pick a new one during a Special Enrollment Period.',
+          'No. North Bergen is a township in Hudson County, on the Bergen County line, so you choose from the Hudson County plan list. A friend in Fairview, just over the line, lives in Bergen County and may have different plans. Moving across that line changes your county.',
         ],
       },
       {
-        heading: 'Moving in from New York',
+        heading: 'Does my New York Medicare plan work after I move to North Bergen?',
         paragraphs: [
-          'Many people move to North Bergen from New York. A New York Medicare Advantage or Part D plan does not follow you across the river.',
-          'Medigap rules also differ. New York lets you buy Medigap at any time without health questions. New Jersey does not work that way after your first six months, so check before you drop a policy.',
+          'A New York Medicare Advantage or Part D plan does not follow you across the river, so you will need a New Jersey plan. Medigap rules differ too: New York lets you buy Medigap at any time, but New Jersey does not after your first six months.',
         ],
       },
       {
-        heading: 'Reaching me from North Bergen',
+        heading: 'How do I reach a Medicare broker in North Bergen?',
         paragraphs: [
-          `Call or text ${PHONE}. If you just moved, tell me your old and new addresses and the date you moved. I can come to you in North Bergen if that is easier.`,
+          `Call or text me at ${PHONE}. If you just moved, tell me your old and new addresses and the date you moved, so we know which window applies. I can come to you in North Bergen if that is easier.`,
         ],
       },
     ],
@@ -1251,23 +1231,21 @@ export const locationLandings: LocationLanding[] = [
       'Weehawken is the New Jersey end of the Lincoln Tunnel, with ferries to Manhattan from the waterfront. Many people here see doctors in the city. That is the first thing to check before choosing a Medicare plan.',
     sections: [
       {
-        heading: 'A New Jersey plan with New York doctors',
+        heading: 'Will a Weehawken Medicare plan cover my Manhattan doctors?',
         paragraphs: [
-          'Weehawken is in Hudson County, so you choose from Hudson County plans. Some of those plans include doctors in Manhattan. Some do not.',
-          'With Original Medicare, any doctor who accepts Medicare will see you, on either side of the river. With Medicare Advantage, check each doctor by name.',
+          'It depends on the plan. Weehawken is in Hudson County, so you choose from Hudson County plans, and some include Manhattan doctors while others do not. With Original Medicare, any doctor who accepts Medicare will see you. With Medicare Advantage, check each doctor by name.',
         ],
       },
       {
-        heading: 'Moving across the river',
+        heading: 'What changes if I move between Manhattan and Weehawken?',
         paragraphs: [
-          'Some people move from Manhattan to Weehawken, or the other way. A move between states means a new plan for Medicare Advantage and Part D.',
-          'Your Part A and Part B stay the same. Only the private plans change. Tell your plan about the move as early as you can.',
+          'Your Part A and Part B stay the same. Only the private plans change: a move between states means a new Medicare Advantage or Part D plan. Tell your plan about the move as early as you can, so your window to choose a new one starts on time.',
         ],
       },
       {
-        heading: 'Calling me from Weehawken',
+        heading: 'How do I reach a Medicare broker in Weehawken?',
         paragraphs: [
-          `Call or text ${PHONE}. Have your doctors’ names and addresses ready, including the ones in New York. If you would rather sit down together, I meet people in person in Weehawken.`,
+          `Call or text me at ${PHONE}. Have your doctors’ names and addresses ready, including the ones in New York, so we can check them. If you would rather sit down together, I meet people in person in Weehawken, at no cost.`,
         ],
       },
     ],
@@ -1304,23 +1282,21 @@ export const locationLandings: LocationLanding[] = [
       'Brooklyn is Kings County, and Brighton Beach and Sheepshead Bay are home to many Russian-speaking families. I speak Russian. If you or your parents would rather go over Medicare in Russian, we can do the whole call that way.',
     sections: [
       {
-        heading: 'Help in Russian',
+        heading: 'Can I get help with Medicare in Russian in Brooklyn?',
         paragraphs: [
-          'Medicare words are hard in any language. It helps to hear "deductible" and "network" explained in the language you think in.',
-          'Your adult children are welcome on the call too. Some families do part in English and part in Russian. That is fine.',
+          'Yes. I speak Russian, and we can do the whole call in Russian, or part in English and part in Russian if your children join. Medicare words like deductible and network are easier to understand in the language you think in. I work by phone or video.',
         ],
       },
       {
-        heading: 'New York Medigap rules are different',
+        heading: 'How are New York Medigap rules different?',
         paragraphs: [
-          'In New York, Medigap insurers must sell to you at any time of year, whatever your health. In most states, including New Jersey, that is not true after your first six months.',
-          'That gives Brooklyn residents more room to change their minds later. It does not decide the price or whether Medigap is right for you.',
+          'In New York, Medigap insurers must sell to you at any time of year, whatever your health. In most states, including New Jersey, that is not true after your first six months. It gives you more room to change your mind later, but it does not set the price.',
         ],
       },
       {
-        heading: 'Medicare with Medicaid in Brooklyn',
+        heading: 'What if I have both Medicare and Medicaid in Brooklyn?',
         paragraphs: [
-          `Many people in Brooklyn have both Medicare and Medicaid. If that is you, there are special plans and extra chances to change plans. Call or text ${PHONE} and we will check what you have now before changing anything. For Brooklyn, I work by phone or video call.`,
+          `Then there are special plans for people with both, and extra chances to change plans during the year. Call or text me at ${PHONE}, and we will check what you have now before changing anything. For Brooklyn, I work by phone or video call.`,
         ],
       },
     ],
@@ -1377,23 +1353,21 @@ export const locationLandings: LocationLanding[] = [
       'Queens is its own county, Queens County. Forest Hills and Rego Park have large Russian-speaking communities, and many families there help a parent with Medicare. I can go through it in Russian or English, whichever is easier for you.',
     sections: [
       {
-        heading: 'Queens is one county, with its own plans',
+        heading: 'Does my Medicare plan change if I move within New York City?',
         paragraphs: [
-          'Medicare Advantage and Part D plans are sold by county. Each New York City borough is a county, so Queens has its own plan list.',
-          'If you move to Brooklyn or Long Island, you change counties. Your plan may not follow you, and a new window to choose opens.',
+          'It can. Each borough is its own county, and Medicare Advantage and Part D plans are sold by county, so Queens has its own plan list. Moving to Brooklyn or Long Island changes your county, and a new window opens to choose a plan.',
         ],
       },
       {
-        heading: 'Seeing the doctors you already know',
+        heading: 'How do I keep my Russian-speaking doctor on a Medicare plan?',
         paragraphs: [
-          'Many people in Forest Hills and Rego Park have seen the same doctors for years, often doctors who speak Russian. Before you join a Medicare Advantage plan, check each one by name.',
-          'With Original Medicare, any doctor who accepts Medicare can see you. That choice trades a network for a different way of paying.',
+          'Check each doctor by name before you join a Medicare Advantage plan, because its network decides who you can see. With Original Medicare, any doctor who accepts Medicare can see you. Many people in Forest Hills and Rego Park check this first.',
         ],
       },
       {
-        heading: 'Calling me from Queens',
+        heading: 'How can I get Medicare help in Russian in Queens?',
         paragraphs: [
-          `Call or text ${PHONE}. Say whether you want to talk in Russian or English. If a son or daughter helps you, they can join the call. I help people in Queens by phone or video call.`,
+          `Call or text me at ${PHONE} and say whether you want to talk in Russian or English. If a son or daughter helps you with Medicare, they can join the call. I help people in Queens by phone or video call, and there is no fee.`,
         ],
       },
     ],
