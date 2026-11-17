@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import Link from 'next/link';
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { ContactForm } from '@/components/forms/contact-form';
@@ -44,20 +45,33 @@ export function languagePageMetadata(locale: PageLocale): Metadata {
   const page = LANGUAGE_PAGES[locale];
   const path = LANGUAGE_PAGE_PATHS[locale];
   const reviewed = TRANSLATION_REVIEW[locale].reviewed;
-  return {
-    title: page.metaTitle,
-    description: page.metaDescription,
-    alternates: { canonical: path, languages: alternateLanguages() },
-    // An unreviewed translation must not be indexed. See lib/language-pages.ts.
-    robots: reviewed ? { index: true, follow: true } : { index: false, follow: true },
-    openGraph: {
-      type: 'article',
+  return withShareCard(
+    {
       title: page.metaTitle,
       description: page.metaDescription,
-      url: `${site.url}${path}`,
-      locale: HTML_LANG[locale].replace('-', '_'),
+      alternates: { canonical: path, languages: alternateLanguages() },
+      // An unreviewed translation must not be indexed. See lib/language-pages.ts.
+      robots: reviewed ? { index: true, follow: true } : { index: false, follow: true },
+      openGraph: {
+        type: 'article',
+        title: page.metaTitle,
+        description: page.metaDescription,
+        url: `${site.url}${path}`,
+        locale: HTML_LANG[locale].replace('-', '_'),
+      },
     },
-  };
+    {
+      path,
+      kicker: 'Medicare help',
+      /*
+        The share image is drawn in English for all three versions. The image
+        font has Latin glyphs only, so Georgian or Russian text would come out
+        as empty boxes. The card's title and description stay in the page's
+        own language.
+      */
+      imageTitle: 'Medicare help in Georgian and Russian',
+    },
+  );
 }
 
 export function LanguageHelpPage({ locale }: { locale: PageLocale }) {

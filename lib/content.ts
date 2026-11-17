@@ -60,6 +60,12 @@ export type ArticleFrontmatter = {
    */
   faq?: { question: string; answer: string }[];
   sources?: { title: string; url: string }[];
+  /**
+   * `answers` only: the slugs of exactly three other answer pages, chosen by
+   * hand because they are the questions a reader of this page asks next.
+   * Enforced by lib/content-guard.ts (three, distinct, existing, not itself).
+   */
+  related?: string[];
 };
 
 export type Article = ArticleFrontmatter & {
@@ -147,6 +153,17 @@ export function getAllArticles(): Article[] {
 /** Most recent news items, newest first. */
 export function getLatestNews(limit = 3): Article[] {
   return getArticles('news').slice(0, limit);
+}
+
+/**
+ * The three related answers an answer page names in its frontmatter, in the
+ * order written. A slug that does not resolve is skipped here and reported
+ * by the content guard, which fails the build.
+ */
+export function getRelatedAnswers(article: Article): Article[] {
+  return (article.related ?? [])
+    .map((slug) => getArticle('answers', slug))
+    .filter((item): item is Article => Boolean(item) && item!.slug !== article.slug);
 }
 
 /** Up to `limit` other articles, preferring the same collection. */

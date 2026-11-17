@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { CalendarClock, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +12,7 @@ import { advisor, contactHrefs } from '@/lib/site';
 import { trackContactSubmit, trackFormStart, trackFormSubmit } from '@/lib/analytics';
 import { captureAttribution, getAttribution } from '@/lib/attribution';
 import { BOOKING_SOURCE } from '@/lib/consent';
-import { PARTS_AB } from '@/lib/ai-sources';
+import { bookingSchema, type BookingInput } from '@/lib/validations/booking';
 import { PartsABField } from './parts-ab-field';
 
 /**
@@ -63,38 +62,6 @@ import { PartsABField } from './parts-ab-field';
   recording the ContactForm's consent version against wording it never showed.
 */
 const SOURCE = BOOKING_SOURCE;
-
-const bookingSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, 'Please enter your name.')
-    .max(80, 'That name is too long.'),
-  email: z
-    .string()
-    .trim()
-    .min(1, 'Please enter your email address.')
-    .max(160, 'That email address is too long.')
-    .email('Please enter a valid email address.'),
-  phone: z
-    .string()
-    .trim()
-    .regex(
-      /^\+?1?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
-      'Please enter a 10-digit phone number.',
-    )
-    .or(z.literal(''))
-    .optional(),
-  consent: z.literal(true, {
-    errorMap: () => ({ message: 'Please check the box so I know it is okay to contact you.' }),
-  }),
-  /** Optional. Enrollment status only: never a Medicare number or a date of birth. */
-  partsAB: z.enum(PARTS_AB).or(z.literal('')).optional(),
-  /** Honeypot. Real people leave it empty; the API returns a plain 200. */
-  website: z.string().max(200).optional(),
-});
-
-type BookingInput = z.input<typeof bookingSchema>;
 
 export function BookingForm() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'booked'>('idle');
@@ -212,7 +179,6 @@ export function BookingForm() {
       email: '',
       phone: '',
       website: '',
-      partsAB: '',
       // Unticked. A pre-checked consent box is not consent.
       consent: false as unknown as true,
     },
@@ -258,7 +224,7 @@ export function BookingForm() {
           consent: true,
           // Explicit. This form never collects SMS consent.
           consentSms: false,
-          partsAB: values.partsAB || '',
+          partsAB: values.partsAB,
           source: SOURCE,
           bookingStatus: 'intent',
           website: values.website,
@@ -358,7 +324,13 @@ export function BookingForm() {
           </Field>
         </div>
 
-        <PartsABField registration={register('partsAB')} selected={watch('partsAB')} />
+        <PartsABField
+          registration={register('partsAB')}
+          selected={watch('partsAB')}
+          error={errors.partsAB?.message}
+          idPrefix={SOURCE}
+          className="mt-6"
+        />
 
         {/*
           Consent sits above the button and is visible before anything is sent —

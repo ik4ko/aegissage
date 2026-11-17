@@ -101,6 +101,22 @@ export const advisor = {
    * other consumer (lib/states.ts, hero/trust-bar copy, /plans, footer,
    * schema areaServed, llms.txt, sitemap) derives from this array.
    */
+  /**
+   * How long Erekle has worked in Medicare, in his words (Nov 2026). Never
+   * round this up, and never turn it into "years of experience" marketing.
+   */
+  medicareExperience: 'about two years',
+  /**
+   * Public license lookups, so anyone can verify the license themselves.
+   * Both URLs were checked live on Nov 16 2026. Search by name or by NPN.
+   */
+  licenseLookup: [
+    { label: 'NIPR license lookup (all states)', href: 'https://nipr.com/help/look-up-a-license' },
+    {
+      label: 'New Jersey Department of Banking and Insurance, licensing',
+      href: 'https://www.nj.gov/dobi/inslic.htm',
+    },
+  ],
   licensedStates: [
     'AL', 'AR', 'AZ', 'FL', 'GA', 'IA', 'IL', 'IN', 'KY', 'MI', 'MN', 'MS',
     'MO', 'NC', 'ND', 'NJ', 'NY', 'OH', 'OK', 'PA', 'SC', 'TN', 'TX', 'VA', 'WV',
@@ -406,6 +422,8 @@ export const tpmoCountsByArea: Record<TpmoAreaKey, TpmoAreaCount | null> = {
 export const nav = [
   { href: '/medicare-basics', label: 'Basics' },
   { href: '/answers', label: 'Answers' },
+  { href: '/medicare-glossary', label: 'Glossary' },
+  { href: '/medicare-enrollment-calendar', label: 'Enrollment calendar' },
   { href: '/medicare-checklist', label: 'Checklist' },
   // "Enrollment Check" says what it answers; "Eligibility Check" was read as
   // a means test rather than a deadline lookup.
@@ -415,6 +433,9 @@ export const nav = [
   { href: '/blog', label: 'Articles' },
   { href: '/videos', label: 'Videos' },
   { href: '/about', label: 'About' },
+  { href: '/how-we-are-paid', label: 'How I am paid' },
+  { href: '/editorial-policy', label: 'Editorial policy' },
+  { href: '/accessibility', label: 'Accessibility' },
   { href: '/partners', label: 'For organizations' },
 ] as const;
 

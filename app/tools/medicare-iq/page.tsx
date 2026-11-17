@@ -55,6 +55,8 @@ export async function generateMetadata({
     description: DESCRIPTION,
     alternates: { canonical: '/tools/medicare-iq' },
     openGraph: {
+      type: 'website',
+      url: `${site.url}/tools/medicare-iq`,
       title: ogTitle,
       description: DESCRIPTION,
       images: [{ url: ogUrl, width: 1200, height: 630, alt: ogTitle }],

@@ -9,14 +9,17 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "validate": "node scripts/validate-site.mjs",
+    "check:links": "node scripts/check-external-links.mjs",
     "test:digest": "node scripts/test-digest.mjs",
     "test:math": "node scripts/test-medicare-math.mjs",
     "test:score": "node --experimental-strip-types scripts/test-lead-score.mjs",
-    "test": "npm run test:math && npm run test:score && npm run test:digest && npm run test:frontmatter",
+    "test": "npm run test:math && npm run test:score && npm run test:digest && npm run test:frontmatter && npm run test:forms && npm run test:glossary",
+    "test:glossary": "node --experimental-strip-types --no-warnings scripts/test-glossary.mjs",
+    "test:forms": "node --experimental-strip-types --no-warnings scripts/test-lead-forms.mjs",
     "test:frontmatter": "node --experimental-strip-types scripts/test-frontmatter.mjs"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.10.0",
+    "@hookform/resolvers": "^5.9.2",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-checkbox": "^1.1.4",
     "@radix-ui/react-label": "^2.1.2",
@@ -34,7 +37,7 @@
     "js-yaml": "^4.3.2",
     "lucide-react": "^0.474.0",
     "motion": "^12.42.2",
-    "next": "^16.4.2",
+    "next": "^16.4.6",
     "next-mdx-remote": "^6.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
@@ -44,7 +47,7 @@
     "resend": "^4.1.1",
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.6.0",
-    "zod": "^3.24.1"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
@@ -53,7 +56,7 @@
     "@types/react-dom": "^19.0.3",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.4.2",
+    "eslint-config-next": "^16.4.6",
     "postcss": "^8.5.23",
     "supabase": "^2.110.0",
     "tailwindcss": "^3.4.17",

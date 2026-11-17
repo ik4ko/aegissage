@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import { CalendarClock, Clock, Phone } from 'lucide-react';
 import { BookingForm } from '@/components/forms/booking-form';
 import { Reveal } from '@/components/motion/reveal';
@@ -23,13 +24,16 @@ import { advisor, contactHrefs, site } from '@/lib/site';
  * form with no context about what they are booking. The pages that should
  * rank are the ones that explain something and then link here.
  */
-export const metadata: Metadata = {
-  title: 'Book a time',
-  description:
-    'Book a 60-minute Medicare conversation with Erekle Niniashvili. No cost, no obligation, and no enrollment happens on the call.',
-  alternates: { canonical: '/book' },
-  robots: { index: false, follow: true },
-};
+export const metadata: Metadata = withShareCard(
+  {
+    title: 'Book a time',
+    description:
+      'Book a 60-minute Medicare conversation with Erekle Niniashvili. No cost, no obligation, and no enrollment happens on the call.',
+    alternates: { canonical: '/book' },
+    robots: { index: false, follow: true },
+  },
+  { path: '/book', kicker: 'Book a time' },
+);
 
 export default function BookPage() {
   return (

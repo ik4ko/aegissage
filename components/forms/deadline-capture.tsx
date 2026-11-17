@@ -3,7 +3,6 @@
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +12,7 @@ import { advisor } from '@/lib/site';
 import { trackContactSubmit, trackFormStart, trackFormSubmit } from '@/lib/analytics';
 import { getAttribution } from '@/lib/attribution';
 import { HOMEPAGE_CAPTURE_SOURCE } from '@/lib/consent';
-import { PARTS_AB } from '@/lib/ai-sources';
+import { captureSchema, type CaptureInput } from '@/lib/validations/capture';
 import { PartsABField } from './parts-ab-field';
 
 /**
@@ -63,40 +62,6 @@ import { PartsABField } from './parts-ab-field';
 */
 const SOURCE = HOMEPAGE_CAPTURE_SOURCE;
 
-const captureSchema = z.object({
-  firstName: z
-    .string()
-    .trim()
-    .min(2, 'Please enter your first name.')
-    .max(80, 'That name is too long.'),
-  email: z
-    .string()
-    .trim()
-    .min(1, 'Please enter your email address.')
-    .max(160, 'That email address is too long.')
-    .email('Please enter a valid email address.'),
-  zip: z
-    .string()
-    .trim()
-    .regex(/^\d{5}$/, 'Please enter a 5-digit ZIP code.'),
-  /** Native month input — "YYYY-MM" or empty. Optional by design. */
-  turns65: z
-    .string()
-    .trim()
-    .regex(/^\d{4}-\d{2}$/, 'Please pick a month and year.')
-    .or(z.literal(''))
-    .optional(),
-  consent: z.literal(true, {
-    errorMap: () => ({ message: 'Please check the box so I know it is okay to email you.' }),
-  }),
-  /** Optional. Enrollment status only: never a Medicare number or a date of birth. */
-  partsAB: z.enum(PARTS_AB).or(z.literal('')).optional(),
-  /** Honeypot. Real people leave it empty; the API returns a plain 200. */
-  website: z.string().max(200).optional(),
-});
-
-type CaptureInput = z.input<typeof captureSchema>;
-
 export function DeadlineCapture() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'sent' | 'error'>('idle');
   const [serverError, setServerError] = useState<string | null>(null);
@@ -127,7 +92,6 @@ export function DeadlineCapture() {
       zip: '',
       turns65: '',
       website: '',
-      partsAB: '',
       // Unticked. A pre-checked consent box is not consent.
       consent: false as unknown as true,
     },
@@ -159,7 +123,7 @@ export function DeadlineCapture() {
           // Explicit, not merely omitted. This form never collects SMS
           // consent and must never appear to.
           consentSms: false,
-          partsAB: values.partsAB || '',
+          partsAB: values.partsAB,
           source: SOURCE,
           website: values.website,
           context: {
@@ -290,7 +254,13 @@ export function DeadlineCapture() {
           </Field>
         </div>
 
-        <PartsABField registration={register('partsAB')} selected={watch('partsAB')} />
+        <PartsABField
+          registration={register('partsAB')}
+          selected={watch('partsAB')}
+          error={errors.partsAB?.message}
+          idPrefix={SOURCE}
+          className="mt-6"
+        />
 
         {/*
           Consent sits ABOVE the submit button and is visible before anything

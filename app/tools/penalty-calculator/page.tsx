@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import { PenaltyCalculator } from '@/components/tools/penalty-calculator';
 import { JsonLd } from '@/components/seo/json-ld';
 import { Badge } from '@/components/ui/badge';
@@ -11,23 +12,26 @@ const TITLE = 'What would a Medicare late enrollment penalty cost you?';
 const DESCRIPTION =
   'Estimate the Part B and Part D late enrollment penalties in plain dollars, using the current CMS figures. No signup, no email, nothing sent anywhere.';
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/tools/penalty-calculator' },
-  openGraph: {
+export const metadata: Metadata = withShareCard(
+  {
     title: TITLE,
     description: DESCRIPTION,
-    images: [
-      {
-        url: `/api/og?title=${encodeURIComponent('What would a late penalty actually cost?')}&kicker=${encodeURIComponent(`Free · ${COSTS_YEAR} figures · No email`)}&subtitle=${encodeURIComponent('Part B and Part D, in plain dollars per month.')}`,
-        width: 1200,
-        height: 630,
-        alt: TITLE,
-      },
-    ],
+    alternates: { canonical: '/tools/penalty-calculator' },
+    openGraph: {
+      title: TITLE,
+      description: DESCRIPTION,
+      images: [
+        {
+          url: `/api/og?title=${encodeURIComponent('What would a late penalty actually cost?')}&kicker=${encodeURIComponent(`Free · ${COSTS_YEAR} figures · No email`)}&subtitle=${encodeURIComponent('Part B and Part D, in plain dollars per month.')}`,
+          width: 1200,
+          height: 630,
+          alt: TITLE,
+        },
+      ],
+    },
   },
-};
+  { path: '/tools/penalty-calculator' },
+);
 
 export default function PenaltyCalculatorPage() {
   return (

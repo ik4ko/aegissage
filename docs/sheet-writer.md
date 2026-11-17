@@ -12,10 +12,11 @@ Inside the JSON body, under `attribution`:
 |----------------|-------------------------|--------|
 | `found_via`    | `attribution.foundVia`  | `chatgpt`, `claude`, `perplexity`, `gemini`, `google`, `referral`, `other`, or absent |
 | `ai_source`    | `attribution.aiSource`  | detected from the referrer or `utm_source` (for example `chatgpt`, `perplexity`), or absent |
-| `has_part_a_b` | `attribution.partsAB`   | `both`, `one`, `not-yet`, `not-sure`, or absent |
+| `has_part_a_b` | `attribution.partsAB`   | `yes`, `no`, `not-sure`. Rows from before Nov 16 2026 may show `both`, `one`, `not-yet` or be blank |
 
 `found_via` is what the person chose. `ai_source` is what the browser showed.
-They can disagree; keep both. All three are optional, so blank cells are normal.
+They can disagree; keep both. `found_via` and `ai_source` are optional, so blank cells are normal.
+`has_part_a_b` is required on every form from Nov 16 2026: Yes, No or Not sure.
 
 ## Paste this into the Apps Script project
 
@@ -71,9 +72,9 @@ Deploy. Without a new version the live web app keeps running the old code.
 
 ## Check it
 
-1. Submit the contact form on the Vercel preview. Choose "ChatGPT" under
-   "How did you find us?" and "Both" for Part A and Part B.
-2. The new row should show `chatgpt` and `both`. `ai_source` stays blank
+1. Submit the contact form on aegissage.com/contact. Choose "ChatGPT" under
+   "How did you find us?" and "Not sure" for Part A and Part B.
+2. The new row should show `chatgpt` and `not-sure`. `ai_source` stays blank
    unless you arrived from an AI site or with `?utm_source=chatgpt.com`.
 3. If the three headers appear but the cells are blank, the script is reading
    a different object. Log `Object.keys(payload)` once and check for

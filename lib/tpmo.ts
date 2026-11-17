@@ -135,16 +135,26 @@ const GENERATED_ZIP_ROUTES = [
   '/plans/virginia',
   '/plans/west-virginia',
   // Answer pages — mirrors content/answers/*.mdx
+  '/answers/cobra-and-medicare',
   '/answers/extra-help-medicare-savings-programs-new-jersey',
+  '/answers/how-to-check-if-a-doctor-is-in-a-medicare-plan',
   '/answers/how-to-choose-medicare-agent-bergen-hudson-county',
+  '/answers/how-to-switch-medicare-plans',
   '/answers/leaving-employer-coverage-after-65',
   '/answers/medicare-advantage-plan-ending-non-renewal-letter',
+  '/answers/medicare-and-medicaid-together',
   '/answers/medicare-enrollment-periods-explained',
   '/answers/medicare-help-new-york-city',
   '/answers/medicare-help-philadelphia',
+  '/answers/medicare-while-still-working',
   '/answers/medigap-new-jersey',
+  '/answers/medigap-underwriting-new-jersey-new-york',
   '/answers/moved-medicare-new-jersey-new-york',
+  '/answers/moving-between-new-jersey-new-york-pennsylvania',
+  '/answers/retiree-coverage-and-medicare',
   '/answers/turning-65-new-jersey',
+  '/answers/va-health-care-and-medicare',
+  '/answers/what-to-bring-to-a-medicare-appointment',
 ] as const;
 
 export const ZIP_ROUTES: ReadonlySet<string> = new Set<string>([
@@ -227,6 +237,16 @@ export function isOutOfAreaRoute(path: string): boolean {
   return path.startsWith('/plans/') && path !== '/plans/new-jersey';
 }
 
+/**
+ * True when the fallback counts must name their area instead of saying "in
+ * your area": every route about another place, and every answer page. Answer
+ * pages are read by people anywhere (many arrive from AI search), so the
+ * Bergen figures always say "in Bergen County, NJ" there (Erekle, Nov 16 2026).
+ */
+export function usesFallbackScope(path: string): boolean {
+  return isOutOfAreaRoute(path) || path.startsWith('/answers/');
+}
+
 function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {
   const count = tpmoCountsByArea[key];
   return count ? { ...count, key, label: TPMO_AREAS[key] } : null;
@@ -237,7 +257,8 @@ function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {
  *
  *  - areas mapped to the route that have a count → those
  *  - otherwise the fallback area, if it has a count; on a route about
- *    another place it carries `scope`, so the sentence names Bergen County
+ *    another place, or an answer page, it carries `scope`, so the sentence
+ *    names Bergen County
  *  - otherwise [] → the caller renders the count-free wording
  */
 export function tpmoAreasFor(pathname: string | null): ResolvedTpmoArea[] {
@@ -250,7 +271,7 @@ export function tpmoAreasFor(pathname: string | null): ResolvedTpmoArea[] {
 
   const fallback = resolve(TPMO_FALLBACK_AREA);
   if (!fallback) return [];
-  return [isOutOfAreaRoute(path) ? { ...fallback, scope: TPMO_FALLBACK_SCOPE } : fallback];
+  return [usesFallbackScope(path) ? { ...fallback, scope: TPMO_FALLBACK_SCOPE } : fallback];
 }
 
 /** 'YYYY-MM' or 'YYYY-MM-DD' → "November 2026" / "November 15, 2026". */

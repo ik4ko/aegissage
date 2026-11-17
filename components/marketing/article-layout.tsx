@@ -14,6 +14,15 @@ import { breadcrumbJsonLd } from '@/lib/seo';
 import { advisor, site } from '@/lib/site';
 
 /**
+ * True only when the frontmatter names the advisor as `reviewed_by`. The
+ * byline and the schema's `reviewedBy` both state that he reviewed the page,
+ * so neither may render on the strength of the field merely being filled in.
+ */
+export function reviewedByAdvisor(article: Article): boolean {
+  return article.reviewed_by?.trim() === advisor.name;
+}
+
+/**
  * Shared long-form layout for both content collections.
  *
  * The measure is capped at 68 characters — the single biggest readability
@@ -27,6 +36,7 @@ export function ArticleLayout({
   backLabel,
   afterBody,
   afterColumn,
+  relatedHeading = 'Read next',
 }: {
   article: Article;
   related: Article[];
@@ -36,6 +46,8 @@ export function ArticleLayout({
   afterBody?: React.ReactNode;
   /** Rendered in the same column after `afterBody`, outside prose styling. */
   afterColumn?: React.ReactNode;
+  /** Heading over the related cards. */
+  relatedHeading?: string;
 }) {
   return (
     <>
@@ -89,6 +101,23 @@ export function ArticleLayout({
                   {article.title}
                 </h1>
 
+                {/*
+                  Byline on every guide and answer page. It links to the
+                  credentials section so a reader can verify the license.
+                  "Written and reviewed by" is a statement of fact: a page
+                  carries it only because its frontmatter names him as
+                  `reviewed_by`. Do not show it for anyone else's name.
+                */}
+                {reviewedByAdvisor(article) ? (
+                  <p className="mt-4 text-base text-ink-soft" data-byline>
+                    Written and reviewed by{' '}
+                    <Link href="/about#credentials" className="font-semibold text-navy underline">
+                      {advisor.name}
+                    </Link>
+                    , licensed insurance broker{advisor.npn ? `, NPN ${advisor.npn}` : ''}
+                  </p>
+                ) : null}
+
                 <p className="mt-5 text-xl leading-relaxed text-ink-soft">
                   {article.description}
                 </p>
@@ -106,7 +135,7 @@ export function ArticleLayout({
             <ShareBar path={article.href} title={article.title} />
 
             <Reveal className="article-body mt-10">
-              <Mdx source={article.body} />
+              <Mdx source={article.body} glossaryLinks={article.collection === 'answers'} />
             </Reveal>
 
             {afterBody}
@@ -128,7 +157,7 @@ export function ArticleLayout({
         <section className="border-t border-line bg-paper">
           <div className="container py-14 sm:py-16">
             <h2 className="font-display text-2xl font-bold tracking-[-0.02em] text-ink sm:text-3xl">
-              Read next
+              {relatedHeading}
             </h2>
             <RevealGroup className="mt-8 grid gap-5 md:grid-cols-3">
               {related.map((item) => (
@@ -171,6 +200,15 @@ export function articleJsonLd(
     author: { '@id': `${site.url}#advisor`, url: `${site.url}/about` },
     publisher: { '@id': `${site.url}#organization` },
     articleSection: article.category,
-    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url,
+      ...(reviewedByAdvisor(article)
+        ? {
+            reviewedBy: { '@id': `${site.url}#advisor` },
+            lastReviewed: schemaDate(article.review_date ?? article.updated),
+          }
+        : {}),
+    },
   };
 }

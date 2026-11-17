@@ -599,7 +599,7 @@ const ATTRIBUTION_KEYS = [
 ];
 
 /**
- * The stored `context`, with the two optional fixed-list answers folded in.
+ * The stored `context`, with the two fixed-list answers folded in.
  *
  * They live in `context` rather than in columns of their own so that adding
  * them needs no migration: `contacts.context` is already JSON, and the form

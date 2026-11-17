@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { JsonLd } from '@/components/seo/json-ld';
 import { Button } from '@/components/ui/button';
 import { breadcrumbJsonLd } from '@/lib/seo';
+import { withShareCard } from '@/lib/page-metadata';
 import { advisor, contactHrefs, site } from '@/lib/site';
 
 /**
@@ -21,12 +22,15 @@ import { advisor, contactHrefs, site } from '@/lib/site';
 const TITLE = 'For organizations: a Medicare resource for the people you serve';
 const DESCRIPTION = `How medical groups, senior living communities, town senior programs, elder law firms and employers can point people to ${advisor.name} of ${site.searchName} for plan-neutral Medicare education. No fees, no lists.`;
 
-export const metadata: Metadata = {
-  title: 'For partner organizations',
-  description: DESCRIPTION.slice(0, 158),
-  alternates: { canonical: '/partners' },
-  openGraph: { type: 'website', url: `${site.url}/partners`, title: TITLE, description: DESCRIPTION },
-};
+export const metadata: Metadata = withShareCard(
+  {
+    title: 'For partner organizations',
+    description: DESCRIPTION.slice(0, 158),
+    alternates: { canonical: '/partners' },
+    openGraph: { type: 'website', url: `${site.url}/partners`, title: TITLE, description: DESCRIPTION },
+  },
+  { path: '/partners', kicker: 'For organizations' },
+);
 
 const WHO = [
   {

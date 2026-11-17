@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import { ArticleCard } from '@/components/marketing/article-card';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { TrustBar } from '@/components/marketing/trust-bar';
@@ -11,23 +12,26 @@ const TITLE = 'Articles';
 const DESCRIPTION =
   'Things I keep having to explain, written down once. Myths, mailers, deadlines and the occasional rant about how Medicare gets marketed.';
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/blog' },
-  openGraph: {
-    title: `${TITLE} — straight talk about Medicare`,
+export const metadata: Metadata = withShareCard(
+  {
+    title: TITLE,
     description: DESCRIPTION,
-    images: [
-      {
-        url: `/api/og?title=${encodeURIComponent('Things I keep having to explain')}&kicker=${encodeURIComponent('Articles')}&subtitle=${encodeURIComponent('Written down once, so I can send the link instead.')}`,
-        width: 1200,
-        height: 630,
-        alt: TITLE,
-      },
-    ],
+    alternates: { canonical: '/blog' },
+    openGraph: {
+      title: `${TITLE} — straight talk about Medicare`,
+      description: DESCRIPTION,
+      images: [
+        {
+          url: `/api/og?title=${encodeURIComponent('Things I keep having to explain')}&kicker=${encodeURIComponent('Articles')}&subtitle=${encodeURIComponent('Written down once, so I can send the link instead.')}`,
+          width: 1200,
+          height: 630,
+          alt: TITLE,
+        },
+      ],
+    },
   },
-};
+  { path: '/blog' },
+);
 
 export default function BlogPage() {
   const articles = getArticles('blog');

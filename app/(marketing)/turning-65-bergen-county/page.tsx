@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import Link from 'next/link';
 import { CalendarClock, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -32,17 +33,20 @@ const TITLE = 'Turning 65 in Bergen County';
 const DESCRIPTION =
   'What actually happens when you turn 65 in Bergen County: which enrollment window applies, what the deadlines are, and how county lines decide your plan options.';
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/turning-65-bergen-county' },
-  openGraph: {
-    type: 'article',
-    title: `${TITLE} — ${site.name}`,
+export const metadata: Metadata = withShareCard(
+  {
+    title: TITLE,
     description: DESCRIPTION,
-    url: `${site.url}/turning-65-bergen-county`,
+    alternates: { canonical: '/turning-65-bergen-county' },
+    openGraph: {
+      type: 'article',
+      title: `${TITLE} — ${site.name}`,
+      description: DESCRIPTION,
+      url: `${site.url}/turning-65-bergen-county`,
+    },
   },
-};
+  { path: '/turning-65-bergen-county', kicker: 'Turning 65', type: 'article' },
+);
 
 export default function Turning65BergenCountyPage() {
   return (

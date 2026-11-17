@@ -4,7 +4,7 @@ Consumer Medicare brokerage site for one licensed independent agent.
 NOT a SaaS product. Never use: dashboard, seats, pricing tiers, sign in,
 book of business, upload your roster, plan-switch detection.
 
-Stack: Next.js 15 App Router, TypeScript, Supabase, Vercel.
+Stack: Next.js 16 App Router (16.4.6), React 19, TypeScript, zod 4, Supabase, Vercel.
 Audience: 65+ and their adult children. iPad/Safari, reading glasses.
 18px+ body, 44px+ tap targets, high contrast, plain language, no urgency tactics.
 
@@ -23,16 +23,17 @@ Audience: 65+ and their adult children. iPad/Safari, reading glasses.
 - Fallback rule: a page about a place with no count of its own (New York
   City, Philadelphia, other state pages) states the Bergen County figures
   and says "in Bergen County, NJ" in place of "in your area". Never let a
-  page imply Bergen numbers apply somewhere else.
+  page imply Bergen numbers apply somewhere else. Every /answers/ page
+  follows the same rule ("in Bergen County, NJ"), whatever its topic.
 - Medigap is separate from the TPMO count and never included in it. Medigap
   carriers live in `medigapCarriersByState` in lib/medigap.ts, keyed by
   state, confirmed by Erekle with a date. A state that is `null` (NY and PA
   today) shows no Medigap line. Fixed wording: "Medicare Supplement (Medigap)
   plans offered through [carriers], where available." No prices, rankings
   or logos.
-- Lead forms may ask whether the person has Medicare Part A and Part B
-  (four fixed choices, optional). Never a Medicare number, SSN or date of
-  birth.
+- Every lead form asks whether the person has Medicare Part A and Part B.
+  The answer is required and has three fixed choices: Yes, No, Not sure
+  (Erekle, Nov 16 2026). Never a Medicare number, SSN or date of birth.
 - Never imply Medicare affiliation, endorsement, or being sent by Medicare.
 - Never state or imply eligibility, approval, savings, $0 premium, or a
   specific benefit before a licensed review. No "you qualify" anywhere.
@@ -95,6 +96,25 @@ Do not publish this list or derive a count from it; counts come from the recount
   in English, and stay marked for native review until Erekle (Georgian) or a
   fluent reviewer (Russian) signs off in the frontmatter.
 - No fake reviews, no review incentives, no undisclosed forum posting.
+
+## Reference hub (glossary, enrollment calendar, linking)
+- /medicare-glossary reads lib/medicare-glossary.ts: 40 terms, each 2 to 3
+  plain sentences with a medicare.gov or cms.gov source. No dollar amounts,
+  no years. Never change a term's `slug`; it is a public anchor.
+- /medicare-enrollment-calendar reads lib/enrollment-calendar.ts. Every
+  window is a rule ("October 15 to December 7 each year"), never a
+  year-specific date, and names its official source. A state rule cites that
+  state's own agency.
+- Answer pages link the first mention of each glossary term automatically
+  (lib/glossary-autolink.ts). Each answer page lists exactly three other
+  answer slugs under `related:`; the build fails otherwise.
+- A new answer page must also be added to the answer list in lib/tpmo.ts, or
+  the build fails. A page about one place outside Bergen County also goes in
+  ROUTE_TPMO_AREAS.
+- Every page gets its own share card: use `pageMetadata()` for a new page or
+  `withShareCard()` around existing metadata (lib/page-metadata.ts).
+- `npm run check:links` checks external links against the built site. Run it
+  by hand before a content release; it needs the open internet.
 
 ## Crawler and search policy
 - robots.txt (app/robots.ts) allows every public page to search engines, AI

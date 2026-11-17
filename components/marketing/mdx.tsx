@@ -6,6 +6,7 @@ import { Callout, KeyPoints, PullQuote, VideoEmbed } from './prose';
 import { GlossaryTerm } from './glossary-term';
 import { ContactActions } from './contact-actions';
 import { Button } from '@/components/ui/button';
+import { remarkGlossaryLinks } from '@/lib/glossary-autolink';
 
 /**
  * Components available inside article MDX. Anything an article needs must be
@@ -51,14 +52,25 @@ const components = {
   Button,
 };
 
-export function Mdx({ source }: { source: string }) {
+export function Mdx({
+  source,
+  glossaryLinks = false,
+}: {
+  source: string;
+  /**
+   * Link the first mention of each glossary term to /medicare-glossary.
+   * On for answer pages. Off elsewhere: the guides already explain terms in
+   * place with <G>, and two kinds of term link in one article is noise.
+   */
+  glossaryLinks?: boolean;
+}) {
   return (
     <MDXRemote
       source={source}
       components={components}
       options={{
         mdxOptions: {
-          remarkPlugins: [remarkGfm],
+          remarkPlugins: glossaryLinks ? [remarkGfm, remarkGlossaryLinks] : [remarkGfm],
           rehypePlugins: [rehypeSlug],
         },
       }}
