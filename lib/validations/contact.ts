@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { FOUND_VIA, PARTS_AB } from '../ai-sources';
+import { FOUND_VIA, PARTS_AB, PARTS_AB_LEGACY, PARTS_AB_REQUIRED } from '../ai-sources';
 
 export const CONTACT_TOPICS = [
   'I am turning 65 soon',
@@ -60,10 +60,19 @@ export const contactSchema = z
      * lib/notify/sms.ts both re-check the stored value at send time.
      */
     /*
-      Optional, fixed-list answers. `''` is what an untouched <select> or
-      radio group submits, so it is accepted and treated as "not answered".
+      Required: Yes, No or Not sure. An unanswered radio group arrives as
+      '', null or undefined and all three get the same message. Answers from
+      the older four-choice question are mapped first (PARTS_AB_LEGACY) so a
+      page left open across the deploy still submits.
     */
-    partsAB: z.enum(PARTS_AB).or(z.literal('')).optional(),
+    partsAB: z.preprocess(
+      (value) => (typeof value === 'string' && value in PARTS_AB_LEGACY ? PARTS_AB_LEGACY[value] : value),
+      z.enum(PARTS_AB, { error: PARTS_AB_REQUIRED }),
+    ),
+    /*
+      Optional, fixed-list answer. `''` is what an untouched <select>
+      submits, so it is accepted and treated as "not answered".
+    */
     foundVia: z.enum(FOUND_VIA).or(z.literal('')).optional(),
     consentSms: z.boolean().optional().default(false),
     /** Standalone permission for future marketing/educational email. */

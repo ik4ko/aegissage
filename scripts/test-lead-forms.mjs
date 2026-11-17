@@ -9,7 +9,7 @@
  *
  * What it pins down:
  *   - a valid submission parses to exactly the expected fields
- *   - the Part A/B question is optional, and only the four fixed answers pass
+ *   - the Part A/B question is required: Yes, No or Not sure, nothing else
  *   - consent must be an explicit `true`; SMS and marketing consent are
  *     separate, default to false, and are never inferred from anything else
  *   - no schema accepts a Medicare number, SSN, date of birth or health field
@@ -49,7 +49,7 @@ const { contactSchema } = await import('../lib/validations/contact.ts');
 const { bookingSchema } = await import('../lib/validations/booking.ts');
 const { captureSchema } = await import('../lib/validations/capture.ts');
 const { leadPayloadSchema, assertNoProhibitedFields } = await import('../lib/crm/contract.ts');
-const { PARTS_AB } = await import('../lib/ai-sources.ts');
+const { PARTS_AB, PARTS_AB_REQUIRED } = await import('../lib/ai-sources.ts');
 const { scoreLead } = await import('../lib/lead-score.ts');
 const { zodResolver } = await import('@hookform/resolvers/zod');
 
@@ -92,6 +92,10 @@ function parse(schema, input) {
 
 const CONSENT_CONTACT = 'Please check the box so I know it is okay to contact you.';
 const CONSENT_EMAIL = 'Please check the box so I know it is okay to email you.';
+const PARTS_AB_MESSAGE = 'Please choose Yes, No or Not sure.';
+
+/** What an unanswered radio group can arrive as. */
+const UNANSWERED = [undefined, '', null];
 
 /** Fields no lead form may ever accept. */
 const PROHIBITED = {
@@ -121,7 +125,7 @@ const validContact = {
   topic: 'I am turning 65 soon',
   preferredContact: 'phone',
   message: ' Call after 3. ',
-  partsAB: 'both',
+  partsAB: 'yes',
   foundVia: 'google',
   consent: true,
 };
@@ -136,7 +140,7 @@ ok('valid submission parses to exactly the expected fields', () => {
     preferredContact: 'phone',
     message: 'Call after 3.',
     source: 'contact-form',
-    partsAB: 'both',
+    partsAB: 'yes',
     foundVia: 'google',
     consent: true,
     consentSms: false,
@@ -144,36 +148,52 @@ ok('valid submission parses to exactly the expected fields', () => {
   });
 });
 
-ok('smallest valid submission: name, one way to reach them, consent', () => {
-  assert.deepEqual(parse(contactSchema, { name: 'Jo', phone: '5515550100', consent: true }), {
+ok('smallest valid submission: name, one way to reach them, Part A/B, consent', () => {
+  assert.deepEqual(parse(contactSchema, { name: 'Jo', phone: '5515550100', partsAB: 'not-sure', consent: true }), {
     name: 'Jo',
     phone: '5515550100',
     preferredContact: 'phone',
     source: 'contact-form',
+    partsAB: 'not-sure',
     consent: true,
     consentSms: false,
     consentMarketing: false,
   });
-  parse(contactSchema, { name: 'Jo', email: 'jo@example.com', preferredContact: 'email', consent: true });
+  parse(contactSchema, { name: 'Jo', email: 'jo@example.com', preferredContact: 'email', partsAB: 'no', consent: true });
 });
 
-ok('Part A/B is optional: a missing or blank answer is accepted', () => {
-  const { partsAB: _omit, ...withoutAnswer } = validContact;
-  assert.equal('partsAB' in parse(contactSchema, withoutAnswer), false);
-  assert.equal(parse(contactSchema, { ...validContact, partsAB: '' }).partsAB, '');
+ok('Part A/B is required: a missing answer is rejected, with the visitor-facing message', () => {
+  assert.equal(PARTS_AB_REQUIRED, PARTS_AB_MESSAGE);
+  for (const partsAB of UNANSWERED) {
+    const input = { ...validContact, partsAB };
+    if (partsAB === undefined) delete input.partsAB;
+    assert.deepEqual(errorsOf(contactSchema, input), { partsAB: PARTS_AB_MESSAGE }, `partsAB=${JSON.stringify(partsAB)}`);
+  }
 });
 
-ok('Part A/B accepts only the four fixed answers', () => {
-  assert.deepEqual([...PARTS_AB], ['both', 'one', 'not-yet', 'not-sure']);
+ok('Part A/B accepts Yes, No and Not sure, and nothing else', () => {
+  assert.deepEqual([...PARTS_AB], ['yes', 'no', 'not-sure']);
   for (const answer of PARTS_AB) {
     assert.equal(parse(contactSchema, { ...validContact, partsAB: answer }).partsAB, answer);
   }
-  for (const bad of ['Both', 'none', 'yes', '1EG4-TE5-MK73', 5, null, true]) {
+  assert.equal(parse(contactSchema, { ...validContact, partsAB: 'not-sure' }).partsAB, 'not-sure');
+  for (const bad of ['Yes', 'YES', 'maybe', 'none', '1EG4-TE5-MK73', 5, true, {}]) {
     assert.deepEqual(
-      Object.keys(errorsOf(contactSchema, { ...validContact, partsAB: bad })),
-      ['partsAB'],
+      errorsOf(contactSchema, { ...validContact, partsAB: bad }),
+      { partsAB: PARTS_AB_MESSAGE },
       `partsAB=${JSON.stringify(bad)} must be rejected`,
     );
+  }
+});
+
+ok('a page left open from before the change still submits: old answers are mapped', () => {
+  // Server only. Having both parts is "yes"; having one or neither is "no".
+  assert.equal(parse(contactSchema, { ...validContact, partsAB: 'both' }).partsAB, 'yes');
+  assert.equal(parse(contactSchema, { ...validContact, partsAB: 'one' }).partsAB, 'no');
+  assert.equal(parse(contactSchema, { ...validContact, partsAB: 'not-yet' }).partsAB, 'no');
+  // The two short forms never showed the old answers to a current page.
+  for (const schema of [bookingSchema, captureSchema]) {
+    assert.equal(schema.safeParse({ partsAB: 'both' }).error.issues.some((issue) => issue.path[0] === 'partsAB'), true);
   }
 });
 
@@ -274,7 +294,7 @@ ok('required fields and the exact messages a visitor sees', () => {
 });
 
 ok('needs an email or a phone, matching the chosen way to be reached', () => {
-  const base = { name: 'Jane Doe', consent: true };
+  const base = { name: 'Jane Doe', partsAB: 'yes', consent: true };
   assert.deepEqual(errorsOf(contactSchema, { ...base, email: '', phone: '' }), {
     email: 'Please give me either an email address or a phone number so I can reach you.',
     phone: 'You chose phone or text — please add your phone number.',
@@ -343,7 +363,7 @@ ok('scoreLead() receives the same inputs the route reads from a parsed submissio
     consent: true,
     consentMarketing: true,
     consentSms: false,
-    partsAB: '',
+    partsAB: 'no',
     source: 'homepage-deadline-capture',
     website: '',
     context: { turns65: '2026-09', utm_source: 'newsletter' },
@@ -356,7 +376,7 @@ ok('scoreLead() receives the same inputs the route reads from a parsed submissio
     answers: { turns65: '2026-09', utm_source: 'newsletter' },
     turns65: '2026-09',
     foundVia: null,
-    partsAB: null,
+    partsAB: 'no',
     now: NOW,
   });
   assert.equal(scoreLead(capture), 'A');
@@ -368,7 +388,7 @@ ok('scoreLead() receives the same inputs the route reads from a parsed submissio
     context: { timing: '1-3-months', age: 'turning-65', enrolled: 'a-and-b' },
   }));
   assert.deepEqual(quiz.answers, { timing: '1-3-months', age: 'turning-65', enrolled: 'a-and-b' });
-  assert.equal(quiz.partsAB, 'both');
+  assert.equal(quiz.partsAB, 'yes');
   assert.equal(quiz.foundVia, 'google');
   assert.equal(scoreLead(quiz), 'B');
 
@@ -389,7 +409,7 @@ ok('scoreLead() receives the same inputs the route reads from a parsed submissio
   assert.equal(scoreLead(booking), 'A');
 
   // Defaults: no source and no preference given.
-  const bare = inputsFor(parse(contactSchema, { name: 'Jo', phone: '5515550100', consent: true }));
+  const bare = inputsFor(parse(contactSchema, { name: 'Jo', phone: '5515550100', partsAB: 'yes', consent: true }));
   assert.equal(bare.source, 'contact-form');
   assert.equal(bare.preferredContact, 'phone');
   assert.equal(bare.answers, null);
@@ -402,17 +422,25 @@ ok('scoreLead() receives the same inputs the route reads from a parsed submissio
 // ── Booking interstitial ───────────────────────────────────────────────────
 console.log('\nbookingSchema (/book)');
 
-const validBooking = { name: 'Jane Doe', email: 'jane@example.com', phone: '', consent: true, partsAB: '', website: '' };
+const validBooking = { name: 'Jane Doe', email: 'jane@example.com', phone: '', consent: true, partsAB: 'yes', website: '' };
 
-ok('valid submission; phone and Part A/B are optional', () => {
+ok('valid submission; phone is optional', () => {
   assert.deepEqual(parse(bookingSchema, validBooking), validBooking);
-  assert.deepEqual(parse(bookingSchema, { name: 'Jane Doe', email: 'jane@example.com', consent: true }), {
+  assert.deepEqual(parse(bookingSchema, { name: 'Jane Doe', email: 'jane@example.com', partsAB: 'not-sure', consent: true }), {
     name: 'Jane Doe',
     email: 'jane@example.com',
+    partsAB: 'not-sure',
     consent: true,
   });
-  for (const answer of PARTS_AB) parse(bookingSchema, { ...validBooking, partsAB: answer });
-  assert.deepEqual(Object.keys(errorsOf(bookingSchema, { ...validBooking, partsAB: 'none' })), ['partsAB']);
+});
+
+ok('Part A/B is required: Yes, No and Not sure pass, a missing answer is rejected', () => {
+  for (const answer of PARTS_AB) assert.equal(parse(bookingSchema, { ...validBooking, partsAB: answer }).partsAB, answer);
+  for (const partsAB of [...UNANSWERED, 'none', 'both']) {
+    const input = { ...validBooking, partsAB };
+    if (partsAB === undefined) delete input.partsAB;
+    assert.deepEqual(errorsOf(bookingSchema, input), { partsAB: PARTS_AB_MESSAGE }, `partsAB=${JSON.stringify(partsAB)}`);
+  }
 });
 
 ok('unchecked consent is rejected, with the visitor-facing message', () => {
@@ -442,13 +470,20 @@ ok('never accepts a Medicare number, SSN, date of birth or health field', () => 
 // ── Homepage capture band ──────────────────────────────────────────────────
 console.log('\ncaptureSchema (homepage capture)');
 
-const validCapture = { firstName: 'Jane', email: 'jane@example.com', zip: '07020', turns65: '', consent: true, partsAB: '', website: '' };
+const validCapture = { firstName: 'Jane', email: 'jane@example.com', zip: '07020', turns65: '', consent: true, partsAB: 'not-sure', website: '' };
 
-ok('valid submission; birthday month and Part A/B are optional', () => {
+ok('valid submission; birthday month is optional', () => {
   assert.deepEqual(parse(captureSchema, validCapture), validCapture);
   assert.equal(parse(captureSchema, { ...validCapture, turns65: '2027-03' }).turns65, '2027-03');
-  for (const answer of PARTS_AB) parse(captureSchema, { ...validCapture, partsAB: answer });
-  assert.deepEqual(Object.keys(errorsOf(captureSchema, { ...validCapture, partsAB: 'none' })), ['partsAB']);
+});
+
+ok('Part A/B is required: Yes, No and Not sure pass, a missing answer is rejected', () => {
+  for (const answer of PARTS_AB) assert.equal(parse(captureSchema, { ...validCapture, partsAB: answer }).partsAB, answer);
+  for (const partsAB of [...UNANSWERED, 'none', 'both']) {
+    const input = { ...validCapture, partsAB };
+    if (partsAB === undefined) delete input.partsAB;
+    assert.deepEqual(errorsOf(captureSchema, input), { partsAB: PARTS_AB_MESSAGE }, `partsAB=${JSON.stringify(partsAB)}`);
+  }
 });
 
 ok('unchecked consent is rejected, with the visitor-facing message', () => {
@@ -483,23 +518,31 @@ console.log('\nzodResolver (what the form shows before anything is sent)');
 const resolve = (schema, values) =>
   zodResolver(schema)(values, undefined, { fields: {}, shouldUseNativeValidation: false });
 
-const untouched = [
-  ['contact', contactSchema, { name: 'Jane Doe', email: 'jane@example.com', preferredContact: 'email', source: 'contact-form', website: '', partsAB: '', foundVia: '', consentSms: false, consentMarketing: false }, CONSENT_CONTACT],
-  ['booking', bookingSchema, { ...validBooking, consent: false }, CONSENT_CONTACT],
-  ['capture', captureSchema, { ...validCapture, consent: false }, CONSENT_EMAIL],
+const forms = [
+  ['contact', contactSchema, { name: 'Jane Doe', email: 'jane@example.com', preferredContact: 'email', source: 'contact-form', website: '', foundVia: '', consentSms: false, consentMarketing: false }, CONSENT_CONTACT],
+  ['booking', bookingSchema, { name: 'Jane Doe', email: 'jane@example.com', phone: '', website: '' }, CONSENT_CONTACT],
+  ['capture', captureSchema, { firstName: 'Jane', email: 'jane@example.com', zip: '07020', turns65: '', website: '' }, CONSENT_EMAIL],
 ];
-for (const [name, schema, values, message] of untouched) {
-  const blocked = await resolve(schema, values);
-  ok(`${name} form: an unticked consent box blocks the submit with its message`, () => {
-    assert.deepEqual(blocked.values, {});
-    assert.deepEqual(Object.keys(blocked.errors), ['consent']);
-    assert.equal(blocked.errors.consent.message, message);
+for (const [name, schema, values, consentMessage] of forms) {
+  // As the form starts: no Part A/B answer (react-hook-form gives null for an
+  // untouched radio group) and the consent box unticked.
+  const fresh = await resolve(schema, { ...values, partsAB: null, consent: false });
+  ok(`${name} form: untouched, it blocks the submit and asks for Part A/B and consent`, () => {
+    assert.deepEqual(fresh.values, {});
+    assert.deepEqual(Object.keys(fresh.errors).sort(), ['consent', 'partsAB']);
+    assert.equal(fresh.errors.partsAB.message, PARTS_AB_MESSAGE);
+    assert.equal(fresh.errors.consent.message, consentMessage);
   });
-  const allowed = await resolve(schema, { ...values, consent: true });
-  ok(`${name} form: ticking it, with Part A/B left blank, lets the submit through`, () => {
+  const noAnswer = await resolve(schema, { ...values, partsAB: null, consent: true });
+  ok(`${name} form: consent ticked but Part A/B unanswered still blocks`, () => {
+    assert.deepEqual(Object.keys(noAnswer.errors), ['partsAB']);
+    assert.equal(noAnswer.errors.partsAB.message, PARTS_AB_MESSAGE);
+  });
+  const allowed = await resolve(schema, { ...values, partsAB: 'not-sure', consent: true });
+  ok(`${name} form: "Not sure" with consent ticked lets the submit through`, () => {
     assert.deepEqual(allowed.errors, {});
     assert.equal(allowed.values.consent, true);
-    assert.equal(allowed.values.partsAB, '');
+    assert.equal(allowed.values.partsAB, 'not-sure');
   });
 }
 

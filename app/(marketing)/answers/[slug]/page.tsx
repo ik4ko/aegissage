@@ -4,7 +4,7 @@ import { ArticleLayout, articleJsonLd } from '@/components/marketing/article-lay
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { ContactForm } from '@/components/forms/contact-form';
 import { JsonLd } from '@/components/seo/json-ld';
-import { getArticle, getArticles, getRelated } from '@/lib/content';
+import { getArticle, getArticles, getRelatedAnswers } from '@/lib/content';
 import { faqJsonLd } from '@/lib/seo';
 import { advisor, compliance, site } from '@/lib/site';
 import { formatDate } from '@/lib/utils';
@@ -84,7 +84,8 @@ export default async function AnswerPage({ params }: { params: Promise<Params> }
       {faq.length > 0 ? <JsonLd data={faqJsonLd(faq)} /> : null}
       <ArticleLayout
         article={article}
-        related={getRelated(article)}
+        related={getRelatedAnswers(article)}
+        relatedHeading="Related answers"
         backHref="/answers"
         backLabel="All Medicare answers"
         afterBody={

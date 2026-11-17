@@ -12,10 +12,11 @@ Inside the JSON body, under `attribution`:
 |----------------|-------------------------|--------|
 | `found_via`    | `attribution.foundVia`  | `chatgpt`, `claude`, `perplexity`, `gemini`, `google`, `referral`, `other`, or absent |
 | `ai_source`    | `attribution.aiSource`  | detected from the referrer or `utm_source` (for example `chatgpt`, `perplexity`), or absent |
-| `has_part_a_b` | `attribution.partsAB`   | `both`, `one`, `not-yet`, `not-sure`, or absent |
+| `has_part_a_b` | `attribution.partsAB`   | `yes`, `no`, `not-sure`. Rows from before Nov 16 2026 may show `both`, `one`, `not-yet` or be blank |
 
 `found_via` is what the person chose. `ai_source` is what the browser showed.
-They can disagree; keep both. All three are optional, so blank cells are normal.
+They can disagree; keep both. `found_via` and `ai_source` are optional, so blank cells are normal.
+`has_part_a_b` is required on every form from Nov 16 2026: Yes, No or Not sure.
 
 ## Paste this into the Apps Script project
 

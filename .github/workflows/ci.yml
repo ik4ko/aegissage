@@ -60,6 +60,12 @@ jobs:
       - name: Lead form validation tests
         run: npm run test:forms
 
+      # Glossary, enrollment calendar and answer-page linking: 40 sourced
+      # terms, windows written as rules with no year, official sources only,
+      # no carrier names, three related answers per page.
+      - name: Reference hub tests
+        run: npm run test:glossary
+
       - name: Production build
         run: npm run build
         env:

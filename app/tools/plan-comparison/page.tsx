@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import Link from 'next/link';
 import { PlanComparisonTable } from '@/components/tools/plan-comparison-table';
 import { CtaBand } from '@/components/marketing/cta-band';
@@ -14,23 +15,26 @@ const TITLE = 'Original Medicare vs. Medicare Advantage, side by side';
 const DESCRIPTION =
   'The structural differences between the two routes through Medicare, laid out plainly. No plan names, no rankings — just how each one is built and what that means for you.';
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/tools/plan-comparison' },
-  openGraph: {
+export const metadata: Metadata = withShareCard(
+  {
     title: TITLE,
     description: DESCRIPTION,
-    images: [
-      {
-        url: `/api/og?title=${encodeURIComponent('Original Medicare vs. Medicare Advantage')}&kicker=${encodeURIComponent('Side by side')}&subtitle=${encodeURIComponent('Two routes. One decision that is hard to undo. Here is the honest comparison.')}`,
-        width: 1200,
-        height: 630,
-        alt: TITLE,
-      },
-    ],
+    alternates: { canonical: '/tools/plan-comparison' },
+    openGraph: {
+      title: TITLE,
+      description: DESCRIPTION,
+      images: [
+        {
+          url: `/api/og?title=${encodeURIComponent('Original Medicare vs. Medicare Advantage')}&kicker=${encodeURIComponent('Side by side')}&subtitle=${encodeURIComponent('Two routes. One decision that is hard to undo. Here is the honest comparison.')}`,
+          width: 1200,
+          height: 630,
+          alt: TITLE,
+        },
+      ],
+    },
   },
-};
+  { path: '/tools/plan-comparison' },
+);
 
 export default function PlanComparisonPage() {
   return (

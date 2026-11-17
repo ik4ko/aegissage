@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import Link from 'next/link';
 import { JsonLd } from '@/components/seo/json-ld';
 import { breadcrumbJsonLd } from '@/lib/seo';
@@ -9,12 +10,15 @@ const DESCRIPTION = 'The accessibility statement for aegissage.com: what the sit
 /** Date this page was last reviewed by Erekle. Update it when the text changes. */
 const REVIEWED = 'November 16, 2026';
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/accessibility' },
-  openGraph: { type: 'website', url: `${site.url}/accessibility`, title: TITLE, description: DESCRIPTION },
-};
+export const metadata: Metadata = withShareCard(
+  {
+    title: TITLE,
+    description: DESCRIPTION,
+    alternates: { canonical: '/accessibility' },
+    openGraph: { type: 'website', url: `${site.url}/accessibility`, title: TITLE, description: DESCRIPTION },
+  },
+  { path: '/accessibility', kicker: 'Accessibility' },
+);
 
 export default function Page() {
   return (

@@ -68,6 +68,20 @@ export default function NotFound() {
                 </Link>
               </li>
             ))}
+            {[
+              { href: '/answers', label: 'Medicare answers' },
+              { href: '/medicare-glossary', label: 'Glossary' },
+              { href: '/medicare-enrollment-calendar', label: 'Enrollment calendar' },
+            ].map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="inline-flex min-h-touch items-center text-base text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
             <li>
               <Link
                 href="/plans"

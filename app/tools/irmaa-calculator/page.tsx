@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import { IrmaaCalculator } from '@/components/tools/irmaa-calculator';
 import { JsonLd } from '@/components/seo/json-ld';
 import { Badge } from '@/components/ui/badge';
@@ -11,23 +12,26 @@ const TITLE = 'Would you owe a Medicare IRMAA surcharge?';
 const DESCRIPTION =
   'Check your Medicare Part B and Part D income surcharge against the current IRMAA brackets, and see how far you are from the next one. No email required.';
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/tools/irmaa-calculator' },
-  openGraph: {
+export const metadata: Metadata = withShareCard(
+  {
     title: TITLE,
     description: DESCRIPTION,
-    images: [
-      {
-        url: `/api/og?title=${encodeURIComponent('Would you owe an IRMAA surcharge?')}&kicker=${encodeURIComponent(`Free · ${IRMAA_YEAR} brackets · No email`)}&subtitle=${encodeURIComponent('Part B and Part D income surcharges, in plain dollars.')}`,
-        width: 1200,
-        height: 630,
-        alt: TITLE,
-      },
-    ],
+    alternates: { canonical: '/tools/irmaa-calculator' },
+    openGraph: {
+      title: TITLE,
+      description: DESCRIPTION,
+      images: [
+        {
+          url: `/api/og?title=${encodeURIComponent('Would you owe an IRMAA surcharge?')}&kicker=${encodeURIComponent(`Free · ${IRMAA_YEAR} brackets · No email`)}&subtitle=${encodeURIComponent('Part B and Part D income surcharges, in plain dollars.')}`,
+          width: 1200,
+          height: 630,
+          alt: TITLE,
+        },
+      ],
+    },
   },
-};
+  { path: '/tools/irmaa-calculator' },
+);
 
 export default function IrmaaCalculatorPage() {
   return (

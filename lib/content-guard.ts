@@ -197,7 +197,7 @@ function checkFile(relPath: string, failures: Failure[]): void {
     for (const field of ['source_url', 'review_date', 'faq', 'sources']) {
       if (isBlank(data[field])) add(`answer pages require \`${field}\``);
     }
-    const official = /^https:\/\/([a-z0-9-]+\.)*(medicare\.gov|cms\.gov|ssa\.gov|nj\.gov|ny\.gov|nyc\.gov|pa\.gov)\//;
+    const official = /^https:\/\/([a-z0-9-]+\.)*(medicare\.gov|cms\.gov|ssa\.gov|va\.gov|nj\.gov|ny\.gov|nyc\.gov|pa\.gov)\//;
     const urls = [
       data.source_url,
       ...(Array.isArray(data.sources) ? data.sources.map((s) => (s as { url?: unknown }).url) : []),
@@ -209,6 +209,28 @@ function checkFile(relPath: string, failures: Failure[]): void {
     }
     if (/\b(best|top-rated|number one|#1)\s+(medicare\s+)?(agent|broker|plan|plans)\b/i.test(body)) {
       add('body uses a superlative about an agent, broker or plan');
+    }
+
+    /*
+      Three related answers, named by hand. Checked here so a renamed or
+      deleted page cannot leave another page pointing at nothing.
+    */
+    const self = relPath.replace(/^content\/answers\//, '').replace(/\.mdx$/, '');
+    const related = Array.isArray(data.related) ? (data.related as unknown[]) : null;
+    if (!related) {
+      add('answer pages require `related`: the slugs of three other answer pages');
+    } else {
+      if (related.length !== 3) add(`\`related\` must list exactly 3 answer pages, found ${related.length}`);
+      if (new Set(related).size !== related.length) add('`related` lists the same page twice');
+      for (const slug of related) {
+        if (typeof slug !== 'string' || slug.trim() === '') {
+          add('`related` entries must be answer page slugs');
+        } else if (slug === self) {
+          add('`related` lists the page itself');
+        } else if (!fs.existsSync(path.join(CONTENT_ROOT, 'answers', `${slug}.mdx`))) {
+          add(`\`related\` names "${slug}", which is not an answer page`);
+        }
+      }
     }
   }
 

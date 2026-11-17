@@ -1,14 +1,18 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import { JsonLd } from '@/components/seo/json-ld';
 import { advisor, compliance, site } from '@/lib/site';
 import { breadcrumbJsonLd } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Privacy notice',
-  description: `How ${site.name} handles the information you send through this site.`,
-  alternates: { canonical: '/privacy' },
-  robots: { index: true, follow: true },
-};
+export const metadata: Metadata = withShareCard(
+  {
+    title: 'Privacy notice',
+    description: `How ${site.name} handles the information you send through this site.`,
+    alternates: { canonical: '/privacy' },
+    robots: { index: true, follow: true },
+  },
+  { path: '/privacy', kicker: 'Privacy' },
+);
 
 /**
  * Plain-language privacy notice. Linked from the disclaimer footer, which is
@@ -68,9 +72,10 @@ export default function PrivacyPage() {
               cookies. Google&rsquo;s own privacy policy covers what it does with them.
             </li>
             <li>
-              <strong>Two optional questions on the forms.</strong> Whether you have
-              Medicare Part A and Part B, and how you found this site. Both are optional
-              and stored with your message. The forms never ask for a Medicare number, a
+              <strong>Two short questions on the forms.</strong> Whether you have
+              Medicare Part A and Part B (Yes, No or Not sure), which every form asks,
+              and how you found this site, which is optional. Both answers are stored
+              with your message. The forms never ask for a Medicare number, a
               Social Security number, a date of birth or anything about your health.
             </li>
           </ul>

@@ -34,9 +34,27 @@ export type FoundVia = (typeof FOUND_VIA)[number];
  *
  * Enrollment status, not health information: it is the first thing needed to
  * know which plan types a person can join at all (a Medicare Advantage plan
- * requires both). It is asked on every lead form and is optional to answer.
+ * requires both). It is asked on every lead form and must be answered:
+ * Yes, No or Not sure (Erekle's rule, Nov 16 2026). "Not sure" is a real
+ * answer, so nobody is stopped by not knowing.
  */
-export const PARTS_AB = ['both', 'one', 'not-yet', 'not-sure'] as const;
+export const PARTS_AB = ['yes', 'no', 'not-sure'] as const;
+
+/** The message every form shows when the question is left unanswered. */
+export const PARTS_AB_REQUIRED = 'Please choose Yes, No or Not sure.';
+
+/**
+ * Answers from before Nov 16 2026, when the question was optional and had
+ * four choices. A page left open across the deploy can still post one, and a
+ * lead must not be lost over it, so the server maps them: having both parts
+ * is "yes", having one or neither is "no". Rows already stored keep the old
+ * words; see docs/sheet-writer.md.
+ */
+export const PARTS_AB_LEGACY: Readonly<Record<string, (typeof PARTS_AB)[number]>> = {
+  both: 'yes',
+  one: 'no',
+  'not-yet': 'no',
+};
 
 export type PartsAB = (typeof PARTS_AB)[number];
 

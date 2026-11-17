@@ -16,7 +16,8 @@ import { trackContactSubmit, trackFormStart, trackFormSubmit } from '@/lib/analy
 import { getAttribution } from '@/lib/attribution';
 import { cn } from '@/lib/utils';
 import { FORM_STRINGS, localizeError, type FormLocale } from '@/lib/form-strings';
-import { FOUND_VIA, PARTS_AB } from '@/lib/ai-sources';
+import { FOUND_VIA } from '@/lib/ai-sources';
+import { PartsABField } from './parts-ab-field';
 import {
   CONTACT_TOPICS,
   contactSchema,
@@ -75,8 +76,8 @@ export function ContactForm({
       preferredContact: 'phone',
       source,
       website: '',
-      // Both start unticked. A pre-checked consent box is not consent.
-      partsAB: '',
+      // Part A/B starts with nothing chosen; the person has to answer it.
+      // Both boxes start unticked. A pre-checked consent box is not consent.
       foundVia: '',
       consentSms: false,
       consentMarketing: false,
@@ -329,35 +330,19 @@ export function ContactForm({
 
         {/*
           ── Part A and Part B ─────────────────────────────────────────────
-          Asked on every lead form (Erekle's rule, Nov 2026). It is enrollment
-          status, not health information, and it is optional to answer. The
-          hint tells the person NOT to send a Medicare number: this form must
-          never collect one, and the free-text box below is where it would
-          otherwise turn up.
+          Asked on every lead form and required: Yes, No or Not sure
+          (Erekle's rule, Nov 16 2026). It is enrollment status, not health
+          information. The hint tells the person NOT to send a Medicare
+          number: this form must never collect one, and the free-text box
+          below is where it would otherwise turn up.
         */}
-        <fieldset>
-          <legend className="text-base font-semibold text-ink">
-            {t.partsAB}
-            <span className="ml-2 text-sm font-normal text-ink-faint">{t.optional}</span>
-          </legend>
-          <p className="mt-1 text-sm text-ink-faint">{t.partsABHint}</p>
-          <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
-            {PARTS_AB.map((value) => (
-              <label
-                key={value}
-                className={cn(
-                  'flex min-h-touch cursor-pointer items-center justify-center rounded-xl border-2 px-4 text-base font-semibold transition-colors',
-                  partsAB === value
-                    ? 'border-navy bg-navy-soft text-navy-deep'
-                    : 'border-line bg-paper text-ink-soft hover:border-navy/40',
-                )}
-              >
-                <input type="radio" value={value} className="sr-only" {...register('partsAB')} />
-                {t.partsABOptions[value]}
-              </label>
-            ))}
-          </div>
-        </fieldset>
+        <PartsABField
+          registration={register('partsAB')}
+          selected={partsAB}
+          error={errors.partsAB?.message as string | undefined}
+          idPrefix={source}
+          locale={locale}
+        />
 
         <Field
           id={`${source}-message`}

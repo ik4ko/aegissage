@@ -179,7 +179,6 @@ export function BookingForm() {
       email: '',
       phone: '',
       website: '',
-      partsAB: '',
       // Unticked. A pre-checked consent box is not consent.
       consent: false as unknown as true,
     },
@@ -225,7 +224,7 @@ export function BookingForm() {
           consent: true,
           // Explicit. This form never collects SMS consent.
           consentSms: false,
-          partsAB: values.partsAB || '',
+          partsAB: values.partsAB,
           source: SOURCE,
           bookingStatus: 'intent',
           website: values.website,
@@ -325,7 +324,13 @@ export function BookingForm() {
           </Field>
         </div>
 
-        <PartsABField registration={register('partsAB')} selected={watch('partsAB')} />
+        <PartsABField
+          registration={register('partsAB')}
+          selected={watch('partsAB')}
+          error={errors.partsAB?.message}
+          idPrefix={SOURCE}
+          className="mt-6"
+        />
 
         {/*
           Consent sits above the button and is visible before anything is sent —

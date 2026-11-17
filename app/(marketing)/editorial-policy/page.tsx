@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import Link from 'next/link';
 import { JsonLd } from '@/components/seo/json-ld';
 import { breadcrumbJsonLd } from '@/lib/seo';
@@ -9,12 +10,15 @@ const DESCRIPTION = 'How the Medicare guides on aegissage.com are written, sourc
 /** Date this page was last reviewed by Erekle. Update it when the text changes. */
 const REVIEWED = 'November 16, 2026';
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/editorial-policy' },
-  openGraph: { type: 'website', url: `${site.url}/editorial-policy`, title: TITLE, description: DESCRIPTION },
-};
+export const metadata: Metadata = withShareCard(
+  {
+    title: TITLE,
+    description: DESCRIPTION,
+    alternates: { canonical: '/editorial-policy' },
+    openGraph: { type: 'website', url: `${site.url}/editorial-policy`, title: TITLE, description: DESCRIPTION },
+  },
+  { path: '/editorial-policy', kicker: 'Editorial policy' },
+);
 
 export default function Page() {
   return (

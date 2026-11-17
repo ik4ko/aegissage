@@ -111,9 +111,8 @@ const en: FormStrings = {
   partsAB: 'Do you have Medicare Part A and Part B?',
   partsABHint: 'It is on your red, white and blue Medicare card. Do not send me your Medicare number.',
   partsABOptions: {
-    both: 'Yes, both',
-    one: 'Only one of them',
-    'not-yet': 'Not yet',
+    yes: 'Yes',
+    no: 'No',
     'not-sure': 'Not sure',
   },
   foundVia: 'How did you find us?',
@@ -200,9 +199,8 @@ const ka: FormStrings = {
   partsAB: 'გაქვთ თუ არა Medicare-ის Part A და Part B?',
   partsABHint: 'ეს მითითებულია თქვენს წითელ-თეთრ-ლურჯ Medicare-ის ბარათზე. Medicare-ის ნომერს ნუ გამომიგზავნით.',
   partsABOptions: {
-    both: 'დიახ, ორივე',
-    one: 'მხოლოდ ერთ-ერთი',
-    'not-yet': 'ჯერ არა',
+    yes: 'დიახ',
+    no: 'არა',
     'not-sure': 'არ ვარ დარწმუნებული',
   },
   foundVia: 'როგორ გვიპოვეთ?',
@@ -260,6 +258,7 @@ const ka: FormStrings = {
     'თუ საქმე სასწრაფოა, ნუ დაელოდებით ფორმას. ყველაზე სწრაფი გზაა დარეკვა ან ტექსტური შეტყობინება.',
   errors: {
     'Please enter your name.': 'გთხოვთ, მიუთითოთ თქვენი სახელი.',
+    'Please choose Yes, No or Not sure.': 'გთხოვთ, აირჩიოთ: დიახ, არა ან არ ვარ დარწმუნებული.',
     'That name is too long.': 'სახელი ძალიან გრძელია.',
     'That email address is too long.': 'ელფოსტის მისამართი ძალიან გრძელია.',
     'Please enter a valid email address.': 'გთხოვთ, მიუთითოთ სწორი ელფოსტის მისამართი.',
@@ -310,9 +309,8 @@ const ru: FormStrings = {
   partsAB: 'Есть ли у вас Medicare Part A и Part B?',
   partsABHint: 'Это указано на вашей красно-бело-синей карте Medicare. Не присылайте мне номер Medicare.',
   partsABOptions: {
-    both: 'Да, обе',
-    one: 'Только одна из них',
-    'not-yet': 'Пока нет',
+    yes: 'Да',
+    no: 'Нет',
     'not-sure': 'Не уверен(а)',
   },
   foundVia: 'Как вы нас нашли?',
@@ -370,6 +368,7 @@ const ru: FormStrings = {
     'Если вопрос срочный, не ждите ответа на форму. Быстрее всего — позвонить или написать сообщение.',
   errors: {
     'Please enter your name.': 'Пожалуйста, укажите ваше имя.',
+    'Please choose Yes, No or Not sure.': 'Пожалуйста, выберите: «Да», «Нет» или «Не уверен(а)».',
     'That name is too long.': 'Имя слишком длинное.',
     'That email address is too long.': 'Адрес электронной почты слишком длинный.',
     'Please enter a valid email address.': 'Пожалуйста, укажите действительный адрес электронной почты.',

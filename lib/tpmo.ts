@@ -135,16 +135,26 @@ const GENERATED_ZIP_ROUTES = [
   '/plans/virginia',
   '/plans/west-virginia',
   // Answer pages — mirrors content/answers/*.mdx
+  '/answers/cobra-and-medicare',
   '/answers/extra-help-medicare-savings-programs-new-jersey',
+  '/answers/how-to-check-if-a-doctor-is-in-a-medicare-plan',
   '/answers/how-to-choose-medicare-agent-bergen-hudson-county',
+  '/answers/how-to-switch-medicare-plans',
   '/answers/leaving-employer-coverage-after-65',
   '/answers/medicare-advantage-plan-ending-non-renewal-letter',
+  '/answers/medicare-and-medicaid-together',
   '/answers/medicare-enrollment-periods-explained',
   '/answers/medicare-help-new-york-city',
   '/answers/medicare-help-philadelphia',
+  '/answers/medicare-while-still-working',
   '/answers/medigap-new-jersey',
+  '/answers/medigap-underwriting-new-jersey-new-york',
   '/answers/moved-medicare-new-jersey-new-york',
+  '/answers/moving-between-new-jersey-new-york-pennsylvania',
+  '/answers/retiree-coverage-and-medicare',
   '/answers/turning-65-new-jersey',
+  '/answers/va-health-care-and-medicare',
+  '/answers/what-to-bring-to-a-medicare-appointment',
 ] as const;
 
 export const ZIP_ROUTES: ReadonlySet<string> = new Set<string>([

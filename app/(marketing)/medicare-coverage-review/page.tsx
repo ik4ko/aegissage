@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import Link from 'next/link';
 import { CalendarClock, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -30,17 +31,20 @@ const TITLE = 'Medicare coverage review';
 const DESCRIPTION =
   'An honest look at whether your current Medicare coverage still fits: what changes each year, what to check, and when changing plans is actually possible.';
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/medicare-coverage-review' },
-  openGraph: {
-    type: 'article',
-    title: `${TITLE} — ${site.name}`,
+export const metadata: Metadata = withShareCard(
+  {
+    title: TITLE,
     description: DESCRIPTION,
-    url: `${site.url}/medicare-coverage-review`,
+    alternates: { canonical: '/medicare-coverage-review' },
+    openGraph: {
+      type: 'article',
+      title: `${TITLE} — ${site.name}`,
+      description: DESCRIPTION,
+      url: `${site.url}/medicare-coverage-review`,
+    },
   },
-};
+  { path: '/medicare-coverage-review', kicker: 'Coverage review', type: 'article' },
+);
 
 export default function MedicareCoverageReviewPage() {
   return (

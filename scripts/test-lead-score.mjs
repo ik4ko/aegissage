@@ -68,7 +68,7 @@ for (const foundVia of ['chatgpt', 'claude', 'perplexity', 'gemini', 'google', '
   check(`foundVia=${foundVia} leaves C alone`, scoreLead({ foundVia, now: NOW }), 'C');
   check(`foundVia=${foundVia} leaves A alone`, scoreLead({ foundVia, bookingStatus: 'intent', now: NOW }), 'A');
 }
-for (const partsAB of ['both', 'one', 'not-yet', 'not-sure']) {
+for (const partsAB of ['yes', 'no', 'not-sure']) {
   check(`partsAB=${partsAB} leaves C alone`, scoreLead({ partsAB, now: NOW }), 'C');
 }
 
