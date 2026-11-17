@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { JsonLd } from '@/components/seo/json-ld';
 import { Button } from '@/components/ui/button';
+import { PartnerRequestForm } from '@/components/forms/partner-request-form';
 import { breadcrumbJsonLd } from '@/lib/seo';
 import { withShareCard } from '@/lib/page-metadata';
 import { advisor, contactHrefs, site } from '@/lib/site';
@@ -16,7 +17,6 @@ import { advisor, contactHrefs, site } from '@/lib/site';
  *  - Partners never send names, lists or records. The person contacts
  *    Erekle themselves, by phone or the form.
  *  - No form on this page collects anything about a third party.
- *  - Pending Pinnacle review before the partner kit is used.
  */
 
 const TITLE = 'For organizations: a Medicare resource for the people you serve';
@@ -59,7 +59,7 @@ const HOW = [
   'You tell the person that a licensed broker is available for Medicare questions and give them my phone number or this website. A printed card or a line in your newsletter is enough.',
   'The person decides whether to contact me. They call, or they use the contact form themselves.',
   'You never send me a name, a list, a chart or a phone number. I do not ask for one and I will not accept one.',
-  'Before any conversation about specific plans, the person agrees in writing to what we will discuss. That is a Medicare rule, and it protects them.',
+  'Before any conversation about specific plans, the person agrees to what we will discuss and I record it. This is called a Scope of Appointment, and it is a Medicare rule that protects them. It can be done the same day; there is no waiting period.',
   'I tell them what I find, including when staying where they are is the right answer.',
 ] as const;
 
@@ -97,6 +97,11 @@ export default function PartnersPage() {
       <section className="container max-w-3xl py-12 sm:py-16">
         <div className="article-body">
           <h2>Who this is for</h2>
+          <p>
+            Organizations whose patients, residents, members or employees ask them Medicare
+            questions. I help people with Medicare, including people who have both Medicare and
+            Medicaid.
+          </p>
         </div>
         <ul className="mt-6 space-y-5">
           {WHO.map((item) => (
@@ -131,19 +136,42 @@ export default function PartnersPage() {
             approve it.
           </p>
 
+          <h2>How the Medicare rules work for talks and help days</h2>
+          <ul>
+            <li>
+              An educational talk needs no Scope of Appointment. It stays educational: no plan
+              presentations and no applications.
+            </li>
+            <li>
+              One-on-one help about specific plans needs a Scope of Appointment, agreed and
+              recorded before we talk. It can be the same day. There is no 48-hour wait.
+            </li>
+            <li>
+              A talk and one-on-one help can happen on the same day in the same place. Medicare no
+              longer requires a gap between them.
+            </li>
+            <li>
+              In senior living, I visit a resident&rsquo;s room only when the resident invites me.
+            </li>
+          </ul>
+          <p>
+            These follow the Medicare marketing rules at 42 CFR 422.2264, as updated for 2027.
+          </p>
+
           <h2>Talk to me about your organization</h2>
           <p>
-            Call or write and tell me who you serve. I will send a one-page summary of what I do
-            and do not handle, and my license details.
+            Use the form below, or call and tell me who you serve. I will send a one-page summary
+            of what I do and do not handle, and my license details.
           </p>
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button asChild size="lg">
-            <a href={contactHrefs.tel}>Call {advisor.phone}</a>
-          </Button>
+        <div className="mt-8">
+          <PartnerRequestForm sourcePage="/partners" />
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-3">
           <Button asChild variant="outline" size="lg">
-            <Link href="/contact">Send a message</Link>
+            <a href={contactHrefs.tel}>Call {advisor.phone}</a>
           </Button>
         </div>
       </section>

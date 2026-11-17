@@ -19,15 +19,16 @@ Working rules for every talk at a library, senior center, community or employer:
 - Advertise it as educational and keep it that way. If the conversation turns to specific plans, say you can cover that separately and move on.
 - No plan names, carrier names, premiums or benefit details in slides, handouts or answers.
 - No enrollment forms in the room.
-- **Ask Pinnacle:** the current rule on collecting contact details at an educational event (Scope of Appointment forms, business reply cards), and whether a marketing appointment may be set up at one. These rules changed in recent years and I have not verified the 2027 text.
-- **Ask Pinnacle:** whether a sales event may follow an educational event in the same place, and the required gap.
+- An educational event needs no Scope of Appointment. At one, you may hand out materials, answer questions people ask, give out business cards, and make Scope of Appointment forms and reply cards available for people who want them (42 CFR 422.2264(c)(2)(ii)). You may not give a sales or marketing presentation or take applications there.
+- A marketing event or one-on-one appointments may follow an educational event at the same place, the same day. The CY2027 final rule removed the 12-hour gap.
+- Source: 42 CFR 422.2264(c), as amended by the CY2027 final rule (Federal Register 2026-06600, April 6 2026, in effect June 1 2026). Checked on eCFR Nov 17 2026.
 - Meals are not allowed at sales events; light snacks are treated differently. Bring nothing and let the host decide.
 
-## 2. Scope of Appointment and the 48-hour rule
+## 2. Scope of Appointment (same day is fine)
 
-- Before any one-to-one conversation about specific plans, the person signs a Scope of Appointment listing what will be discussed.
-- The SOA generally has to be completed at least 48 hours before the appointment. Exceptions exist for walk-ins and for the last days of an election period.
-- **Ask Pinnacle** to confirm the current exceptions and how an inbound call from someone a partner mentioned you to should be handled.
+- Before any one-to-one conversation about specific plans, the person agrees to the Scope of Appointment, the kinds of coverage you will discuss, and you record it. For an in-person appointment it must be in writing (42 CFR 422.2264(c)(3)(i)).
+- There is no 48-hour wait. The CY2027 final rule removed it, so the SOA can be agreed and recorded and the appointment held the same day, including at a help day after a talk and when someone a partner mentioned you to calls in.
+- Talk about only the kinds of coverage the person agreed to. A new topic needs a new SOA.
 - All plan discussion and enrollment goes through the SOA and the recorded line. The recorded-line number is never printed on partner material.
 
 ## 3. Healthcare settings
@@ -66,9 +67,8 @@ Working rules for every talk at a library, senior center, community or employer:
 
 ## Questions for Pinnacle (paste into an email)
 
-> 1. For educational events in 2027: may I make Scope of Appointment forms or reply cards available, and may I set a marketing appointment at the event?
-> 2. What gap is required between an educational event and a sales event at the same location?
-> 3. When someone calls me because their doctor's office or attorney mentioned me, what SOA timing applies?
-> 4. Do my partner one-pagers and the /partners page on aegissage.com need review or filing? They name no plan or carrier.
-> 5. Is there any arrangement with a medical practice, beyond leaving plan-neutral cards in a common area, that you would allow?
-> 6. Do you have a standard educational slide deck I should use instead of my own?
+Questions 1 to 3 from the first draft (event contact cards, the gap between events, SOA timing) are answered by the CY2027 rule above and were removed.
+
+> 1. Do my partner one-pagers and the /partners page on aegissage.com need review or filing? They name no plan or carrier.
+> 2. Is there any arrangement with a medical practice, beyond leaving plan-neutral cards in a common area, that you would allow?
+> 3. Do you have a standard educational slide deck I should use instead of my own?
