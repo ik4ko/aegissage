@@ -203,7 +203,11 @@ ok('all 20 answer pages name three related answers that exist', () => {
   assert.equal(files.length, 20);
   const slugs = new Set(files.map((name) => name.replace(/\.mdx$/, '')));
   for (const file of files) {
-    const frontmatter = fs.readFileSync(new URL(file, dir), 'utf8').split('\n---\n')[0];
+    // Normalise CRLF: Git for Windows (core.autocrlf) checks the LF files out with CRLF.
+    const frontmatter = fs
+      .readFileSync(new URL(file, dir), 'utf8')
+      .replace(/\r\n/g, '\n')
+      .split('\n---\n')[0];
     const block = frontmatter.split('\nrelated:\n')[1] ?? '';
     const related = [...block.matchAll(/^\s+-\s+"([^"]+)"\s*$/gm)].map((match) => match[1]);
     assert.equal(related.length, 3, `${file} lists ${related.length}`);

@@ -379,6 +379,7 @@ export type TpmoAreaCount = {
 
 export const TPMO_AREAS = {
   'bergen-nj': 'Bergen County, New Jersey',
+  'hudson-nj': 'Hudson County, New Jersey',
   'kings-ny': 'Kings County (Brooklyn), New York',
   'queens-ny': 'Queens County, New York',
   'new-york-ny': 'New York County (Manhattan), New York',
@@ -411,6 +412,7 @@ export const tpmoCountsByArea: Record<TpmoAreaKey, TpmoAreaCount | null> = {
   // Not recounted yet. Leave null: pages about these places then state the
   // Bergen figures scoped "in Bergen County, NJ" (see lib/tpmo.ts). To finish,
   // follow docs/HANDOFF.md and replace null with a full TpmoAreaCount.
+  'hudson-nj': null,
   'kings-ny': null,
   'queens-ny': null,
   'new-york-ny': null,

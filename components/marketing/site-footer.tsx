@@ -32,14 +32,17 @@ import {
  * no change to this file.
  */
 function groupLocations() {
-  const isTown = (slug?: string) =>
-    slug ? getLocationLanding(slug)?.kind === 'county' : false;
+  // A town is a city-level landing with a parent: Bergen towns sit under
+  // Bergen County, Hudson towns under New Jersey, Brooklyn and Queens under
+  // New York City (Nov 17 2026, when the town pages were added).
+  const isTown = (location: (typeof locationLandings)[number]) =>
+    location.kind === 'city' && Boolean(location.parentSlug && getLocationLanding(location.parentSlug));
 
-  const topLevel = locationLandings.filter((location) => !isTown(location.parentSlug));
+  const topLevel = locationLandings.filter((location) => !isTown(location));
 
   return topLevel.map((location) => ({
     location,
-    towns: locationLandings.filter((town) => town.parentSlug === location.slug && isTown(town.parentSlug)),
+    towns: locationLandings.filter((town) => town.parentSlug === location.slug && isTown(town)),
   }));
 }
 
