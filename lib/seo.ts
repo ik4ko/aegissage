@@ -49,6 +49,19 @@ const bergenCountyTowns = [
   'Hackensack',
   'Teaneck',
   'Englewood',
+  // Town pages, Nov 17 2026 (Erekle approved adding them to this list).
+  'Paramus',
+  'Fair Lawn',
+];
+
+/** Hudson County towns with their own page (Nov 17 2026). Erekle meets people in person in Bergen and Hudson. */
+const hudsonCountyTowns = [
+  'Jersey City',
+  'Hoboken',
+  'Union City',
+  'West New York',
+  'North Bergen',
+  'Weehawken',
 ];
 
 const serviceAreas = [
@@ -68,6 +81,11 @@ const serviceAreas = [
     name: 'Hudson County',
     containedInPlace: { '@type': 'State', name: 'New Jersey' },
   },
+  ...hudsonCountyTowns.map((name) => ({
+    '@type': 'City',
+    name,
+    containedInPlace: { '@type': 'AdministrativeArea', name: 'Hudson County' },
+  })),
   { '@type': 'City', name: 'New York City', containedInPlace: { '@type': 'State', name: 'New York' } },
   ...['Brooklyn', 'Queens'].map((name) => ({
     '@type': 'Place',
@@ -342,6 +360,27 @@ export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
       name: item.name,
       item: item.url,
     })),
+  };
+}
+
+/**
+ * Speakable: tells voice assistants which parts of a page are the short,
+ * read-aloud answer. Our pattern is "a spoken question as the H2, answered
+ * first in 40 to 50 plain words", so the selector is the first paragraph
+ * after each H2 (plus the page's own opening answer).
+ * https://schema.org/SpeakableSpecification
+ */
+export function speakableJsonLd(options: { url: string; name: string; cssSelector: string[] }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${options.url}#speakable`,
+    url: options.url,
+    name: options.name,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: options.cssSelector,
+    },
   };
 }
 

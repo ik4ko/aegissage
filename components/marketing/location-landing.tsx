@@ -7,8 +7,10 @@ import { TrustBar } from './trust-bar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/json-ld';
-import { breadcrumbJsonLd, localBusinessJsonLd } from '@/lib/seo';
+import { breadcrumbJsonLd, localBusinessJsonLd, speakableJsonLd } from '@/lib/seo';
 import { advisor, site } from '@/lib/site';
+import { getArticle } from '@/lib/content';
+import { formatCountDate } from '@/lib/tpmo';
 import {
   getLocationLanding,
   getChildLocations,
@@ -50,6 +52,7 @@ import { Reveal } from '@/components/motion/reveal';
  */
 function fullAreaServed(location: LocationLanding): string {
   const parts: string[] = [location.name];
+  if (location.county) parts.push(location.county);
   let parentSlug = location.parentSlug;
   let depth = 0;
 
@@ -68,9 +71,26 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
   const url = `${site.url}/medicare-${location.slug}`;
   const parent = location.parentSlug ? getLocationLanding(location.parentSlug) : undefined;
   const children = getChildLocations(location.slug);
-  const peers = getPeerLocations(location.slug).filter(
-    (peer) => peer.slug !== parent?.slug && !children.some((c) => c.slug === peer.slug),
+  /*
+    A town page links its own county's towns, not all twenty landings: with
+    the town pages added, "every other location" became a wall of links.
+    Top-level and county pages keep the old rule.
+  */
+  const isTownPage = Boolean(location.localHelp);
+  const peers = getPeerLocations(location.slug).filter((peer) =>
+    isTownPage
+      ? peer.parentSlug === location.parentSlug && peer.county === location.county
+      : peer.slug !== parent?.slug &&
+        !children.some((c) => c.slug === peer.slug) &&
+        !peer.localHelp,
   );
+  const related = (location.relatedAnswers ?? []).map((slug) => {
+    const article = getArticle('answers', slug);
+    if (!article) {
+      throw new Error(`lib/locations.ts: ${location.slug} names a missing answer page "${slug}".`);
+    }
+    return article;
+  });
 
   const crumbs = [
     { name: 'Home', url: `${site.url}/` },
@@ -83,6 +103,13 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
   return (
     <>
       <JsonLd data={breadcrumbJsonLd(crumbs)} />
+      <JsonLd
+        data={speakableJsonLd({
+          url,
+          name: `Medicare in ${location.name}`,
+          cssSelector: ['h1 + p', '.article-body h2 + p'],
+        })}
+      />
       {/*
         Per-page LocalBusiness/InsuranceAgency node, scoped to this one place.
         `context.Location` is the page's own full place name, already used for
@@ -153,6 +180,59 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
                 <li key={question}>{question}</li>
               ))}
             </ul>
+
+            {location.localHelp && location.localHelp.length > 0 ? (
+              <>
+                <h2>Free local help near {location.shortName}</h2>
+                <p>
+                  These are public services. None of them sells insurance, and none is connected
+                  to me. Each one was checked on its official page on the date shown.
+                </p>
+                <ul className="not-prose mt-4 space-y-5">
+                  {location.localHelp.map((item) => (
+                    <li key={item.name} className="text-lg leading-relaxed text-ink-soft">
+                      <a
+                        href={item.url}
+                        rel="noopener"
+                        className="inline-flex min-h-touch items-center font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep"
+                      >
+                        {item.name}
+                      </a>
+                      <span className="block">{item.what}</span>
+                      {item.phone ? (
+                        <a
+                          href={`tel:+1${item.phone.replace(/\D/g, '').slice(0, 10)}`}
+                          className="inline-flex min-h-touch items-center font-semibold text-ink underline underline-offset-4"
+                        >
+                          {item.phone}
+                        </a>
+                      ) : null}
+                      <span className="block text-base text-ink-soft">
+                        Checked {formatCountDate(item.checked)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
+
+            {related.length > 0 ? (
+              <>
+                <h2>Answers worth reading</h2>
+                <ul className="not-prose mt-4 space-y-2">
+                  {related.map((article) => (
+                    <li key={article.href}>
+                      <Link
+                        href={article.href}
+                        className="inline-flex min-h-touch items-center text-lg font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep"
+                      >
+                        {article.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
 
             <MedigapLine state={location.inState} />
 

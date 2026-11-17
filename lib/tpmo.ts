@@ -108,6 +108,21 @@ const GENERATED_ZIP_ROUTES = [
   '/medicare-new-jersey',
   '/medicare-new-york-city',
   '/medicare-philadelphia',
+  // Town pages (Nov 17 2026)
+  '/medicare-brooklyn',
+  '/medicare-englewood',
+  '/medicare-fair-lawn',
+  '/medicare-hackensack',
+  '/medicare-hoboken',
+  '/medicare-jersey-city',
+  '/medicare-north-bergen',
+  '/medicare-palisades-park',
+  '/medicare-paramus',
+  '/medicare-queens',
+  '/medicare-teaneck',
+  '/medicare-union-city',
+  '/medicare-weehawken',
+  '/medicare-west-new-york',
   // State plan pages — mirrors planStates in lib/states.ts
   '/plans/alabama',
   '/plans/arkansas',
@@ -215,6 +230,22 @@ export const ROUTE_TPMO_AREAS: Readonly<Record<string, TpmoAreaKey[]>> = {
   '/plans/pennsylvania': ['philadelphia-pa'],
   '/answers/medicare-help-new-york-city': NYC_AREAS,
   '/answers/medicare-help-philadelphia': ['philadelphia-pa'],
+  /*
+    Town pages outside Bergen County. Hudson County was recounted on
+    2026-11-17, so its six town pages state the Hudson figures "in your
+    area". Brooklyn and Queens have no recount yet and state the Bergen
+    figures "in Bergen County, NJ".
+    The Bergen towns (Hackensack, Englewood, Teaneck, Paramus, Fair Lawn,
+    Palisades Park) are not listed: Bergen is their own county.
+  */
+  '/medicare-hoboken': ['hudson-nj'],
+  '/medicare-jersey-city': ['hudson-nj'],
+  '/medicare-north-bergen': ['hudson-nj'],
+  '/medicare-union-city': ['hudson-nj'],
+  '/medicare-weehawken': ['hudson-nj'],
+  '/medicare-west-new-york': ['hudson-nj'],
+  '/medicare-brooklyn': ['kings-ny'],
+  '/medicare-queens': ['queens-ny'],
 };
 
 export type ResolvedTpmoArea = TpmoAreaCount & {
@@ -244,7 +275,9 @@ export function isOutOfAreaRoute(path: string): boolean {
  * Bergen figures always say "in Bergen County, NJ" there (Erekle, Nov 16 2026).
  */
 export function usesFallbackScope(path: string): boolean {
-  return isOutOfAreaRoute(path) || path.startsWith('/answers/');
+  // /medicare-questions is a hub of short answers read by people anywhere,
+  // like the answer pages, so it follows the same rule (Nov 17 2026).
+  return isOutOfAreaRoute(path) || path.startsWith('/answers/') || path === '/medicare-questions';
 }
 
 function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {

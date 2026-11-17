@@ -9,6 +9,10 @@ export type ArticleFrontmatter = {
   title: string;
   /** The hook. Used as the meta description and the OG image subtitle. */
   description: string;
+  /** Search-result title when `title` would be cut off (about 47 characters before " · Aegis Sage"). The H1 stays `title`. */
+  seo_title?: string;
+  /** Search-result description when `description` runs past 160 characters. The page and share card keep `description`. */
+  seo_description?: string;
   /** Who wrote it. Required — see lib/content-guard.ts. */
   author: string;
   /**

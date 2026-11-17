@@ -11,9 +11,9 @@ import { Button } from '@/components/ui/button';
 import { breadcrumbJsonLd } from '@/lib/seo';
 import { site } from '@/lib/site';
 
-const TITLE = 'Original Medicare vs. Medicare Advantage, side by side';
+const TITLE = 'Original Medicare vs. Medicare Advantage';
 const DESCRIPTION =
-  'The structural differences between the two routes through Medicare, laid out plainly. No plan names, no rankings — just how each one is built and what that means for you.';
+  'How the two routes through Medicare are built and what that means for you, laid out plainly. No plan names, no rankings.';
 
 export const metadata: Metadata = withShareCard(
   {

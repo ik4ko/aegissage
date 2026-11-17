@@ -185,6 +185,21 @@ export const site = {
   serviceArea: 'Bergen and Hudson counties in New Jersey, New York City, and Philadelphia',
 } as const;
 
+/**
+ * Site switches. Flip a value here; nothing else needs to change.
+ *
+ * `textButton` (Erekle, Nov 17 2026, default ON): shows the Text button next to
+ * Call, including in the phone sticky bar, with the note "Texting is fine. I'll
+ * reply during business hours." It is a plain sms: link to `advisor.phone`.
+ * Nothing is sent automatically and there are no auto-replies.
+ */
+export const features = {
+  textButton: true,
+} as const;
+
+/** Shown next to the Text button while `features.textButton` is on. */
+export const TEXT_NOTE = "Texting is fine. I'll reply during business hours.";
+
 export const contactHrefs = {
   tel: `tel:${advisor.phoneE164}`,
   sms: `sms:${advisor.phoneE164}`,
@@ -379,6 +394,7 @@ export type TpmoAreaCount = {
 
 export const TPMO_AREAS = {
   'bergen-nj': 'Bergen County, New Jersey',
+  'hudson-nj': 'Hudson County, New Jersey',
   'kings-ny': 'Kings County (Brooklyn), New York',
   'queens-ny': 'Queens County, New York',
   'new-york-ny': 'New York County (Manhattan), New York',
@@ -407,6 +423,23 @@ export const tpmoCountsByArea: Record<TpmoAreaKey, TpmoAreaCount | null> = {
     countDate: '2026-11-16',
     source:
       'Sunfire, Appointed Only, plan year 2027, ZIP 07020 (Bergen County NJ): 25 MA/MAPD + 5 SNP + 1 PDP',
+  },
+  /*
+    Recounted by Erekle in Sunfire on 2026-11-17, plan year 2027, "Appointed
+    Only" on, ZIP 07302 (Jersey City). Organizations: 6 carriers from his
+    2027 NJ ready-to-sell list (Aetna, Anthem/Wellpoint, Clover, Humana,
+    UnitedHealthcare, Devoted); the exact six are to be confirmed from the
+    Sunfire Brand filter. The count is 6 either way.
+
+    39 = 24 MAPD + 6 MA-only + 8 SNP (D-SNP/C-SNP) + 1 PDP. Erekle, Nov 17 2026.
+    The six Hudson town pages now state these numbers "in your area".
+  */
+  'hudson-nj': {
+    organizationCount: 6,
+    productCount: 39,
+    countDate: '2026-11-17',
+    source:
+      'Sunfire, Appointed Only, plan year 2027, ZIP 07302 (Hudson County NJ): 24 MAPD + 6 MA-only + 8 SNP + 1 PDP',
   },
   // Not recounted yet. Leave null: pages about these places then state the
   // Bergen figures scoped "in Bergen County, NJ" (see lib/tpmo.ts). To finish,
