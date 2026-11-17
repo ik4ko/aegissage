@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { compliance } from '@/lib/site';
-import { collectsZip } from '@/lib/tpmo';
+import { formatCountDate, tpmoAreasFor } from '@/lib/tpmo';
 import { TpmoDisclaimer, tpmoVariantFor } from './tpmo-disclaimer';
 
 /**
@@ -35,9 +35,10 @@ import { TpmoDisclaimer, tpmoVariantFor } from './tpmo-disclaimer';
  *   3. The 1-800-MEDICARE + medicare.gov + SHIP referrals are present.
  *   4. The non-government-entity statement is present.
  *   5. Nothing here promises, guarantees or ranks benefits.
- *   6. Every ZIP-collecting route is listed in `ZIP_ROUTES` in
- *      lib/tpmo.ts, which lib/tpmo-guard.ts checks at build time. A ZIP
- *      field without the counted variant is a defect.
+ *   6. The counted variant is the default on every route (Nov 15 2026).
+ *      Counts come only from a dated Sunfire recount in `tpmoCountsByArea`
+ *      (lib/site.ts): Medicare Advantage and Part D products only, rechecked
+ *      each October 1 and on any contracting change.
  *
  *  Contrast, measured as composited values over navy-deep (#0B2942):
  *    white/85 → 11.10:1 (AAA)   body text and the section heading
@@ -63,12 +64,11 @@ export function DisclaimerFooter() {
   const pathname = usePathname();
 
   /*
-    Which variant this route needs.
+    Which counts this route states.
 
-    `collectsZip()` in lib/tpmo.ts owns the route list; `tpmoVariantFor()`
-    downgrades to "generic" while the counts are still null, so a
-    ZIP-collecting page renders a compliant disclosure today rather than
-    failing the build before Erekle has supplied the numbers.
+    `tpmoAreasFor()` in lib/tpmo.ts maps the route to the area it is about
+    and falls back to Bergen County; an empty result means no verified count
+    exists anywhere, and the disclaimer renders its count-free wording.
 
     usePathname() resolves during static prerender — verified against the
     header's aria-current, which is baked correctly into every static page —
@@ -76,7 +76,9 @@ export function DisclaimerFooter() {
     That matters: it is legally required text and a crawler or a
     JS-disabled reader must see it.
   */
-  const variant = tpmoVariantFor(pathname, collectsZip(pathname));
+  const areas = tpmoAreasFor(pathname);
+  const variant = tpmoVariantFor(areas);
+  const countDates = [...new Set(areas.map((area) => formatCountDate(area.countDate)))];
 
   return (
     <section
@@ -104,10 +106,12 @@ export function DisclaimerFooter() {
             comparable FMO disclosures. The FMO examples are not the
             compliance source; 42 CFR 422.2267(e)(41) is. Do not trim it.
           */}
-          <TpmoDisclaimer variant={variant} />
+          <TpmoDisclaimer areas={areas} />
 
           <p className="text-white/75">
-            Information current as of {compliance.currentAsOf}.{' '}
+            {countDates.length > 0
+              ? `Organization and product counts verified ${countDates.join(' and ')}.`
+              : `Information current as of ${compliance.currentAsOf}.`}{' '}
             <Link
               href="/privacy"
               className="underline decoration-white/50 underline-offset-4 hover:text-white"

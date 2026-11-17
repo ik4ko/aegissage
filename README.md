@@ -19,7 +19,7 @@ One launch detail remains open. It does not require a code change.
 
 **1. Review the broker details in `lib/site.ts`.** The public name is Erekle
 Niniashvili, the phone is `(551) 202-9079`, the email is
-`en@aegissage.com`, and the 25 licensed states are listed there.
+`contact@aegissage.com`, and the 25 licensed states are listed there.
 Every configured value can be set by an environment variable; see `.env.example`.
 
 **2. Have a human review `components/marketing/disclaimer-footer.tsx`.** It

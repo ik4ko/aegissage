@@ -28,7 +28,7 @@
 /** Digits only — used to build tel: hrefs and the SMS link. */
 const RAW_PHONE = process.env.NEXT_PUBLIC_ADVISOR_PHONE?.trim() || '15512029079';
 const CONFIGURED_EMAIL =
-  process.env.NEXT_PUBLIC_ADVISOR_EMAIL?.trim() || 'en@aegissage.com';
+  process.env.NEXT_PUBLIC_ADVISOR_EMAIL?.trim() || 'contact@aegissage.com';
 
 function formatPhone(raw: string): string {
   const digits = raw.replace(/\D/g, '').replace(/^1/, '');
@@ -44,7 +44,14 @@ export const advisor = {
    */
   name: process.env.NEXT_PUBLIC_ADVISOR_NAME?.trim() || 'Erekle Niniashvili',
   firstName: 'Erekle',
-  credential: 'Independent Medicare Broker',
+  /**
+   * "Licensed insurance broker", not "licensed Medicare broker". The license
+   * is a state insurance producer license; no license is issued by or named
+   * for Medicare, and the second phrasing can read as "licensed by Medicare".
+   * Body copy may still say "independent Medicare broker" as a description of
+   * the work. Decided by Erekle, Nov 15 2026.
+   */
+  credential: 'Licensed Independent Insurance Broker',
   email: CONFIGURED_EMAIL,
   emailConfigured: true,
   phoneRaw: RAW_PHONE,
@@ -54,26 +61,40 @@ export const advisor = {
   /**
    * National Producer Number.
    *
-   * Deliberately blank. Erekle supplies this; it is a verifiable regulatory
-   * identifier and guessing one would be worse than publishing none. Every
-   * consumer must treat `''` as "not published" and render nothing —
-   * never a placeholder, a dash, or "pending".
+   * Published as of Nov 15 2026, at Erekle's direction (this reverses the
+   * earlier "NPN stays blank" rule). It is a verifiable regulatory identifier
+   * he supplied himself; it is what lets a reader, a directory or an AI
+   * assistant confirm that the person on this site is the licensed producer
+   * of the same name. Never change it from anything but his own statement.
+   * Consumers must still treat `''` as "not published" and render nothing.
    */
-  npn: '',
+  npn: '21599052',
   /**
-   * Where the advisor is based, at county granularity.
+   * Where the advisor is based, at town granularity.
    *
-   * This is deliberately a county, not a street address. No verified public
-   * address, office hours or Google Business Profile exists for this advisor,
-   * so nothing on this site may render a postal address, geo coordinates or
-   * opening hours. Stating the county of origin is a factual origin statement;
-   * it must never be presented as a walk-in office.
+   * Town and county only. There is no public street address, no office hours
+   * and no walk-in location: the Google Business Profile is a service-area
+   * profile, so nothing on this site may render a street address, postal
+   * code, geo coordinates or opening hours. Stating the town is a factual
+   * origin statement and matches the profile; it must never be presented as
+   * an office you can visit.
    *
-   * NOTE (Aug 2026): a Google Business Profile now exists for the practice.
-   * Re-evaluate this constraint once that profile carries a verified address
-   * — do not add one here until it does.
+   * Changed from "Bergen County, New Jersey" on Nov 15 2026 so the site, the
+   * schema and every off-site profile name the same place.
    */
-  basedIn: 'Bergen County, New Jersey',
+  basedIn: 'Edgewater, New Jersey',
+  basedInTown: 'Edgewater',
+  basedInCounty: 'Bergen County',
+  basedInRegion: 'NJ',
+  /**
+   * Languages Erekle works in, in order of strength as he states it.
+   * `code` is the BCP 47 tag used for schema and hreflang.
+   */
+  languages: [
+    { code: 'en', name: 'English' },
+    { code: 'ka', name: 'Georgian' },
+    { code: 'ru', name: 'Russian' },
+  ],
   /**
    * NOTE (Aug 13 2026): Louisiana removed — appointment lost, confirmed by
    * Erekle. If it needs to come back, add it here AND nowhere else; every
@@ -87,7 +108,16 @@ export const advisor = {
 } as const;
 
 export const site = {
-  name: 'AegisSage',
+  /**
+   * "Aegis Sage", two words. The domain is one word; the brand is two. This
+   * must match the Google Business Profile and every other public profile
+   * character for character, because a mismatch between the site, its schema
+   * and its profiles is what stops search engines and AI assistants from
+   * resolving them to one business. `legacyName` exists only as schema
+   * `alternateName` so the old one-word spelling still resolves.
+   */
+  name: 'Aegis Sage',
+  legacyName: 'AegisSage',
   /**
    * ── Canonical host ──────────────────────────────────────────────────────
    * `www.aegissage.com` is the host Vercel serves with a 200. The apex
@@ -119,7 +149,7 @@ export const site = {
    * 2026 and this line was the one place that hadn't caught up).
    */
   description:
-    `Independent Medicare help from Erekle Niniashvili. Plain-English guides, a free eligibility check, and someone you can call or text with a question. Based in Bergen County, New Jersey and licensed in ${advisor.licensedStates.length} states.`,
+    `Independent Medicare help from Erekle Niniashvili. Plain-English guides, a free eligibility check, and someone you can call or text with a question. Based in Edgewater, New Jersey and licensed in ${advisor.licensedStates.length} states.`,
   /**
    * Search-result description, ~150 chars. `description` above is longer and
    * still used for Open Graph and Twitter, where there is room for it. Google
@@ -128,8 +158,8 @@ export const site = {
   metaDescription:
     'Independent Medicare help from Erekle Niniashvili. Plain-English guides, a free eligibility check, and a real person you can call or text.',
   /** Search-result title. The full tagline runs 91 chars in <title>. */
-  shortTitle: 'AegisSage — Independent Medicare help in plain English',
-  serviceArea: 'Bergen County, New Jersey, New York City, and Philadelphia',
+  shortTitle: 'Aegis Sage — Independent Medicare help in plain English',
+  serviceArea: 'Bergen and Hudson counties in New Jersey, New York City, and Philadelphia',
 } as const;
 
 export const contactHrefs = {
@@ -192,6 +222,62 @@ export const social = {
 } as const;
 
 /**
+ * Every public profile that is the same person or business as this site.
+ * Drives schema `sameAs` (lib/seo.ts) and nothing else.
+ *
+ * ── Blank means "URL not supplied yet", never "guess it" ──────────────────
+ * A wrong `sameAs` URL tells a search engine that someone else's profile is
+ * this business. Each blank below is a profile Erekle has confirmed exists
+ * but whose exact URL he has not pasted in. Fill them from the address bar
+ * of the live profile; do not construct one from a handle.
+ *
+ * `publicProfiles` below drops the blanks, so an unfilled entry renders
+ * nothing.
+ */
+export const profiles = {
+  myMedicareBroker: 'https://mymedicarebroker.com/agent/erekle-niniashvili',
+  youtube: social.youtube,
+  instagram: social.instagram,
+  /*
+    Erekle's share link (https://share.google/42JWvNkUyjneKGW9n, Nov 16 2026)
+    redirects to this Knowledge Graph ID. It is the stable identifier the
+    redirect exposed; it did not expose a Maps cid. If you want the
+    https://maps.google.com/?cid=… form instead, copy it from "Share" on the
+    Maps listing and replace this line.
+  */
+  googleBusinessProfile: 'https://www.google.com/search?kgmid=/g/11ntt3m2k1',
+  x: 'https://x.com/AegisSage',
+  nextdoor: 'https://nextdoor.com/page/aegis-sage-medicare-edgewater-nj',
+  bingPlaces: '',
+  appleBusinessConnect: '',
+  yelp: '',
+  bbb: '',
+  patch: '',
+  medicareAgentsHub: '',
+} as const;
+
+/**
+ * Profiles that belong to Erekle personally. They go on the schema Person
+ * node only, never on the Organization or the agency node: the Facebook
+ * profile is a personal one, not a business page.
+ */
+export const personProfiles = {
+  linkedin: 'https://www.linkedin.com/in/erekle-niniashvili-93b37489/',
+  facebook: 'https://www.facebook.com/ika.ika.45695/',
+} as const;
+
+const nonBlank = (urls: readonly string[]) => urls.filter((url) => url.trim().length > 0);
+
+/** Agency profiles: Organization and InsuranceAgency `sameAs`. */
+export const publicProfiles: string[] = nonBlank(Object.values(profiles));
+
+/** Person `sameAs`: his own profiles plus his MyMedicareBroker agent page. */
+export const personPublicProfiles: string[] = nonBlank([
+  ...Object.values(personProfiles),
+  profiles.myMedicareBroker,
+]);
+
+/**
  * CMS Medicare Communications and Marketing Guidelines (MCMG) require a
  * Third Party Marketing Organization to state the scope of what it offers on
  * every marketing touchpoint. This string is rendered by <DisclaimerFooter />
@@ -223,62 +309,93 @@ export const compliance = {
 } as const;
 
 /**
- * ── TPMO plan and organization counts ─────────────────────────────────────
+ * ── TPMO organization and product counts, by area ─────────────────────────
  *
- * CMS defines two forms of the TPMO disclaimer. The "counted" form is
- * required on any marketing touchpoint that collects a ZIP code, and reads:
+ * The standardized TPMO disclaimer (42 CFR 422.2267(e)(41)) states how many
+ * organizations this agent represents and how many products they offer "in
+ * your area". Both numbers are contract facts that differ by county and by
+ * contract year, so they are stored per area, each with the date it was
+ * counted.
  *
- *   "Currently we represent N organizations which offer M products in your
- *    area."
+ * ── The rule (set by Erekle, Nov 15 2026) ─────────────────────────────────
+ *  0. Sunfire, with "Appointed Only" switched ON, for the plan year being
+ *     sold. Count organizations and products shown for the area's ZIP.
+ *  1. Every count comes from a dated Sunfire recount. Never guessed, rounded,
+ *     incremented by hand, carried over from a previous year, or inferred
+ *     from a carrier list.
+ *  2. MEDICARE ADVANTAGE AND PART D PRODUCTS ONLY, from organizations Erekle
+ *     is appointed and certified with for the plan year being sold. Medigap
+ *     products are not part of this disclosure.
+ *  3. Recount every October 1 and whenever contracting changes (a carrier
+ *     added or lost), and update `countDate` in the same commit.
+ *  4. An area with no recount is `null`. It then falls back to
+ *     `TPMO_FALLBACK_AREA`; it never gets a placeholder number.
  *
- * BOTH VALUES ARE NULL ON PURPOSE. They are contract facts specific to this
- * advisor and this county, they change every contract year, and the only
- * authoritative source is Erekle's quoting platform. They must never be
- * guessed, rounded, estimated, carried over from a previous year, or
- * inferred from a carrier list.
+ * `countDate` is ISO: 'YYYY-MM-DD', or 'YYYY-MM' when only the month is
+ * known. lib/tpmo-guard.ts prints a build warning when a count is more than
+ * 12 months old or predates the most recent October 1.
  *
- * A wrong count is not a smaller problem than a missing count — it is a
- * false factual disclosure on a federally mandated notice. So
- * <TpmoDisclaimer variant="counted" /> throws rather than rendering a gap,
- * a zero, or a placeholder.
- *
- * TO POPULATE: pull the Bergen County figures from the quoting platform,
- * set both numbers here, and re-verify them alongside
- * `compliance.currentAsOf` at the start of every contract year.
+ * ── Open question, with Pinnacle compliance (Nov 2026) ────────────────────
+ * Whether pages about one area must carry that area's own counts, and how a
+ * page covering several counties (New York City) should state them. Until
+ * that is answered: a page mapped to an area in lib/tpmo.ts uses that area's
+ * counts when they exist. A page about a place outside Bergen County that
+ * has no count of its own states the Bergen figures and says so: "in Bergen
+ * County, NJ" replaces "in your area" (`TPMO_FALLBACK_SCOPE`). That is a
+ * deliberate departure from the standardized sentence so the page does not
+ * imply Bergen numbers apply elsewhere; it is pending Pinnacle's answer.
  */
-export const tpmoCounts: {
-  organizationCount: number | null;
-  productCount: number | null;
-} = {
+export type TpmoAreaCount = {
+  organizationCount: number;
+  productCount: number;
+  /** ISO date of the Sunfire recount: 'YYYY-MM-DD' or 'YYYY-MM'. */
+  countDate: string;
+  /** Where the numbers came from, for the next person to re-pull them. */
+  source: string;
+};
+
+export const TPMO_AREAS = {
+  'bergen-nj': 'Bergen County, New Jersey',
+  'kings-ny': 'Kings County (Brooklyn), New York',
+  'queens-ny': 'Queens County, New York',
+  'new-york-ny': 'New York County (Manhattan), New York',
+  'bronx-ny': 'Bronx County, New York',
+  'richmond-ny': 'Richmond County (Staten Island), New York',
+  'philadelphia-pa': 'Philadelphia County, Pennsylvania',
+} as const;
+
+export type TpmoAreaKey = keyof typeof TPMO_AREAS;
+
+export const TPMO_FALLBACK_AREA: TpmoAreaKey = 'bergen-nj';
+/** How the fallback area is named when its counts appear on another place's page. */
+export const TPMO_FALLBACK_SCOPE = 'Bergen County, NJ';
+
+export const tpmoCountsByArea: Record<TpmoAreaKey, TpmoAreaCount | null> = {
   /*
-    ── Counted from Sunfire, August 2026 ──────────────────────────────────
-    Scope: Bergen County, New Jersey. APPOINTED CARRIERS ONLY — carriers
-    Erekle actually holds an appointment with, not everything Sunfire can
-    quote. That distinction is the whole point of the disclosure: it states
-    what THIS agent can offer, not what exists in the market.
+    Recounted by Erekle in Sunfire on 2026-11-16, plan year 2027, "Appointed
+    Only" on, ZIP 07020. Organizations: Aetna, Clover, Humana,
+    UnitedHealthcare, Wellpoint.
 
-    organizationCount = 6
-      Humana, Aetna, UnitedHealthcare, Wellpoint, Clover, Horizon/Braven
-
-    productCount = 65
-      26 Medicare Advantage + 39 Medigap
-
-    ── Recount due October 2026 ───────────────────────────────────────────
-    Devoted comes online then, which changes BOTH numbers: 6 -> 7
-    organizations, plus however many products they bring. Re-pull from
-    Sunfire for Bergen County rather than incrementing by hand, and update
-    `compliance.currentAsOf` in the same commit.
-
-    Plan-year turnover also moves these. Treat any count older than the
-    current contract year as wrong, not merely stale — the counted TPMO
-    disclaimer is a factual regulatory statement under 42 CFR
-    422.2267(e)(41), and a number that was true last year is a false one
-    now. If a recount cannot be done, set both back to null: the component
-    falls back to the generic variant, which asserts no count and is
-    itself fully compliant.
+    ── CONFIRM BEFORE MERGE: productCount 31 or 26 ───────────────────────
+    His note read "25 MA/MAPD + 5 SNP if separate + 1 PDP". 31 assumes the
+    5 SNPs are NOT already inside the 25. If they are, this is 26.
   */
-  organizationCount: 6,
-  productCount: 65,
+  'bergen-nj': {
+    organizationCount: 5,
+    productCount: 31,
+    countDate: '2026-11-16',
+    source:
+      'Sunfire, Appointed Only, plan year 2027, ZIP 07020 (Bergen County NJ): 25 MA/MAPD + 5 SNP + 1 PDP',
+  },
+  // Not recounted yet. Leave null: pages about these places then state the
+  // Bergen figures scoped "in Bergen County, NJ" (see lib/tpmo.ts). To finish,
+  // follow docs/HANDOFF.md and replace null with a full TpmoAreaCount.
+  'kings-ny': null,
+  'queens-ny': null,
+  'new-york-ny': null,
+  'bronx-ny': null,
+  'richmond-ny': null,
+  'philadelphia-pa': null,
 };
 
 export const nav = [

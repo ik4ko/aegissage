@@ -4,6 +4,12 @@ import type { GuardSection } from './build-guard';
 
 import { locationLandings } from './locations';
 import { planStates } from './states';
+import {
+  TPMO_AREAS,
+  TPMO_FALLBACK_AREA,
+  tpmoCountsByArea,
+  type TpmoAreaKey,
+} from './site';
 import { GENERATED_ZIP_ROUTE_SET } from './tpmo';
 
 /**
@@ -78,3 +84,68 @@ export function collectTpmoFailures(): GuardSection | null {
   };
 }
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+ *  Count freshness — a WARNING, not a failure
+ * ══════════════════════════════════════════════════════════════════════════
+ *
+ * The counts in `tpmoCountsByArea` are only as good as the day they were
+ * pulled. This prints to the build log when a count:
+ *
+ *   - is more than 12 months old, or
+ *   - predates the most recent October 1 (the standing recount date), or
+ *   - has a `countDate` that does not parse.
+ *
+ * It also lists the areas still falling back to another area's numbers, so
+ * the gap is visible on every build instead of living in a comment.
+ *
+ * Deliberately not a build failure: a stale count is fixed by Erekle doing a
+ * Sunfire recount, and blocking every deploy until he does would also block
+ * the unrelated fix that might be urgent. Erekle asked for a warning.
+ */
+
+function parseCountDate(iso: string): Date | null {
+  const match = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(iso);
+  if (!match) return null;
+  const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3] ?? '1')));
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+export function collectTpmoCountWarnings(now: Date = new Date()): string[] {
+  const warnings: string[] = [];
+  const twelveMonthsAgo = new Date(now);
+  twelveMonthsAgo.setUTCFullYear(now.getUTCFullYear() - 1);
+  const octoberYear = now.getUTCMonth() >= 9 ? now.getUTCFullYear() : now.getUTCFullYear() - 1;
+  const lastOctoberFirst = new Date(Date.UTC(octoberYear, 9, 1));
+
+  const missing: string[] = [];
+
+  for (const key of Object.keys(tpmoCountsByArea) as TpmoAreaKey[]) {
+    const count = tpmoCountsByArea[key];
+    const label = TPMO_AREAS[key];
+    if (!count) {
+      if (key !== TPMO_FALLBACK_AREA) missing.push(label);
+      else warnings.push(`${label}: no count at all. Every page renders the count-free wording.`);
+      continue;
+    }
+    const counted = parseCountDate(count.countDate);
+    if (!counted) {
+      warnings.push(`${label}: countDate "${count.countDate}" is not YYYY-MM or YYYY-MM-DD.`);
+      continue;
+    }
+    if (counted < twelveMonthsAgo) {
+      warnings.push(`${label}: counted ${count.countDate}, more than 12 months ago. Recount in Sunfire.`);
+    } else if (counted < lastOctoberFirst) {
+      warnings.push(
+        `${label}: counted ${count.countDate}, before the October 1 ${octoberYear} recount date. Recount in Sunfire.`,
+      );
+    }
+  }
+
+  if (missing.length > 0) {
+    warnings.push(
+      `No count for: ${missing.join('; ')}. Pages about these areas state the ${TPMO_AREAS[TPMO_FALLBACK_AREA]} counts.`,
+    );
+  }
+  return warnings;
+}

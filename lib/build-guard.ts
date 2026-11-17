@@ -1,7 +1,7 @@
 import 'server-only';
 
 import { collectContentFailures } from './content-guard';
-import { collectTpmoFailures } from './tpmo-guard';
+import { collectTpmoCountWarnings, collectTpmoFailures } from './tpmo-guard';
 
 /**
  * ══════════════════════════════════════════════════════════════════════════
@@ -97,4 +97,16 @@ function runBuildGuards(): void {
   throw new Error(lines.join('\n'));
 }
 
+/**
+ * Non-blocking warnings. Printed once per build, never thrown.
+ */
+function printBuildWarnings(): void {
+  const warnings = collectTpmoCountWarnings();
+  if (warnings.length === 0) return;
+  console.warn(
+    ['', 'Build warning: TPMO disclaimer counts need attention.', ...warnings.map((w) => `  ! ${w}`), ''].join('\n'),
+  );
+}
+
 runBuildGuards();
+printBuildWarnings();

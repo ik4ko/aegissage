@@ -20,7 +20,7 @@ const videos = getVideos();
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent('Medicare videos from Erekle')}` +
   `&kicker=${encodeURIComponent('Watch and learn')}` +
-  `&subtitle=${encodeURIComponent('Plain-English guidance from AegisSage')}`;
+  `&subtitle=${encodeURIComponent('Plain-English guidance from Aegis Sage')}`;
 
 const DESCRIPTION =
   'Plain-English Medicare explanations, enrollment guidance, and practical questions to ask before you choose a route.';
@@ -28,11 +28,11 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: 'Videos',
   description:
-    'Plain-English Medicare videos from Erekle at AegisSage. New videos will be added here as they are published.',
+    'Plain-English Medicare videos from Erekle at Aegis Sage. New videos will be added here as they are published.',
   alternates: { canonical: '/videos' },
   openGraph: {
     type: 'website',
-    title: 'Medicare videos from Erekle — AegisSage',
+    title: 'Medicare videos from Erekle — Aegis Sage',
     description: DESCRIPTION,
     url: `${site.url}/videos`,
     images: [
@@ -40,13 +40,13 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: 'Medicare videos from Erekle at AegisSage',
+        alt: 'Medicare videos from Erekle at Aegis Sage',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Medicare videos from Erekle — AegisSage',
+    title: 'Medicare videos from Erekle — Aegis Sage',
     description: DESCRIPTION,
     images: [OG_IMAGE],
   },

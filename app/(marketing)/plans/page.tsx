@@ -22,7 +22,7 @@ function groupByLetter(states: StateInfo[]): [string, StateInfo[]][] {
 
 const TITLE = 'Medicare plan pages by state';
 const DESCRIPTION =
-  'State-by-state Medicare enrollment and plan-availability guidance for the states AegisSage serves.';
+  'State-by-state Medicare enrollment and plan-availability guidance for the states Aegis Sage serves.';
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent('Medicare guidance by state')}` +
   `&kicker=${encodeURIComponent('State by state')}` +

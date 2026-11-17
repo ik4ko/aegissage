@@ -29,8 +29,13 @@ const CANONICAL_HOST = process.env.CANONICAL_HOST || 'https://www.aegissage.com'
  */
 const FORBIDDEN = [
   [0, /Verification needed|Before launch|Pending verification|\bTODO\b/, 'internal TODO text'],
-  [0, /\bNPN\b|National Producer Number/i, 'an NPN reference'],
-  [0, /represent\s+\d+\s+organizations|\d+\s+products in your area/i, 'an unverified plan/organization count'],
+  // The NPN is published as of Nov 15 2026. Exactly one value is legitimate;
+  // any other number next to "NPN" is a typo or an invention.
+  [0, /\bNPN\b(?:\)|:|\s|&nbsp;)*(?!21599052)\d{5,}/i, 'an NPN other than the published 21599052'],
+  // Counts are part of the standardized TPMO text (lib/site.ts, tpmoCountsByArea).
+  // What must never render is a blank or zero count.
+  [0, /represent\s+(?:0|null|undefined|NaN)?\s*organizations|offer\s+(?:0|null|undefined|NaN)?\s*products in your area/i, 'a blank or zero plan/organization count'],
+  [0, /en@aegissage\.com/i, 'the retired en@ address (public email is contact@aegissage.com)'],
   [0, /Hackensack Meridian|Valley Health|NYU Langone|Mount Sinai/i, 'a health-system reference'],
   [
     0,

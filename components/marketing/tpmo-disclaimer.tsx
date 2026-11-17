@@ -1,4 +1,6 @@
-import { compliance, site, tpmoCounts } from '@/lib/site';
+import { Fragment } from 'react';
+import { compliance, site } from '@/lib/site';
+import type { ResolvedTpmoArea } from '@/lib/tpmo';
 
 /**
  * ══════════════════════════════════════════════════════════════════════════
@@ -13,80 +15,67 @@ import { compliance, site, tpmoCounts } from '@/lib/site';
  *  tab, an accordion, or a "read more". Do not reduce its contrast or type
  *  size. It must be legible and present on page load.
  *
- *  ── Two variants, and which one a page needs ──────────────────────────
+ *  ── Two variants (revised Nov 15 2026) ────────────────────────────────
  *
- *  generic  — pages that do NOT collect a ZIP code. Carries the scope
- *             limitation sentence: "Any information we provide is limited
- *             to those plans we do offer in your area."
+ *  counted  — THE DEFAULT, on every route. The standardized text for an
+ *             agent who does not sell every plan in the area: "We do not
+ *             offer every plan available in your area. Currently we
+ *             represent N organizations which offer M products in your
+ *             area. Please contact Medicare.gov, 1-800-MEDICARE, or your
+ *             local State Health Insurance Program to get information on
+ *             all of your options."
  *
- *  counted  — pages that DO collect a ZIP code. CMS substitutes the
- *             organization/product count for that scope sentence.
+ *  generic  — FALLBACK ONLY, when no verified count exists for the route's
+ *             area or for the fallback area. It carries the pre-2024 scope
+ *             sentence in place of the count. It exists so that a missing
+ *             recount degrades to "asserts no number" rather than to a
+ *             wrong number. It is not the target state.
  *
- *  Route selection is NOT decided here. `collectsZip()` in lib/site.ts owns
- *  it, derived from which routes render <ContactForm />, which is the only
- *  ZIP input on the site.
+ *  An earlier version of this file rendered "counted" only on routes that
+ *  collect a ZIP code. That split is gone: the counts are part of the
+ *  standardized text, not an add-on for ZIP pages.
  *
- *  ── Why "counted" throws instead of degrading ─────────────────────────
+ *  ── Where the numbers come from ───────────────────────────────────────
+ *  `tpmoCountsByArea` in lib/site.ts, resolved per route by
+ *  `tpmoAreasFor()` in lib/tpmo.ts. This component never sees a null or a
+ *  placeholder: an area without a dated recount is filtered out before it
+ *  gets here, so there is no code path that prints a blank, a zero or a
+ *  guess.
  *
- *  The counts are contract facts from Erekle's quoting platform and are
- *  null until he supplies them. A missing count could be papered over with
- *  a zero, an em-dash or "several" — every one of those would publish a
- *  false statement on a federally mandated notice, which is strictly worse
- *  than the generic variant, and the generic variant is itself fully
- *  compliant on a page that does not collect a ZIP.
+ *  ── A page about a place with no count of its own ─────────────────────
+ *  New York City, Philadelphia and the other state pages have no recount
+ *  yet. They state the Bergen County figures and end the sentence "in
+ *  Bergen County, NJ" instead of "in your area", so the page does not
+ *  imply those numbers apply there. This is the second place this file
+ *  departs from the standardized sentence, also pending Pinnacle.
  *
- *  So this fails loudly and at build time. See `tpmoVariantFor()` below for
- *  the safe path that live pages actually take.
+ *  ── Several areas on one page ─────────────────────────────────────────
+ *  A page about New York City covers five counties whose counts can differ.
+ *  When the resolved areas do not all share the same two numbers, each is
+ *  stated on its own, prefixed with the county name. That prefix is the one
+ *  place this file adds words to the standardized sentence, and it is
+ *  pending confirmation from Pinnacle compliance (see lib/site.ts).
  * ══════════════════════════════════════════════════════════════════════════
  */
 
 export type TpmoVariant = 'generic' | 'counted';
 
-/**
- * The variant a route should actually render.
- *
- * A ZIP-collecting route wants "counted", but can only have it once real
- * counts exist. Until then it falls back to "generic" — which is compliant,
- * carries the same scope limitation and the same referral routes, and simply
- * declines to assert a number nobody has verified.
- *
- * This is the ONLY thing that should choose a variant for a live page.
- * Passing variant="counted" by hand while the counts are null is a build
- * error, by design.
- */
-export function tpmoVariantFor(pathname: string | null, zipRoute: boolean): TpmoVariant {
-  void pathname;
-  const haveCounts =
-    typeof tpmoCounts.organizationCount === 'number' &&
-    typeof tpmoCounts.productCount === 'number';
-  return zipRoute && haveCounts ? 'counted' : 'generic';
+/** The variant a route renders: counted whenever a verified count exists. */
+export function tpmoVariantFor(areas: ResolvedTpmoArea[]): TpmoVariant {
+  return areas.length > 0 ? 'counted' : 'generic';
 }
 
-export function TpmoDisclaimer({ variant }: { variant: TpmoVariant }) {
-  const { organizationCount, productCount } = tpmoCounts;
+function sameCounts(areas: ResolvedTpmoArea[]): boolean {
+  return areas.every(
+    (area) =>
+      area.organizationCount === areas[0].organizationCount &&
+      area.productCount === areas[0].productCount,
+  );
+}
 
-  if (variant === 'counted') {
-    const missing = [
-      organizationCount === null ? 'organizationCount' : null,
-      productCount === null ? 'productCount' : null,
-    ].filter(Boolean);
-
-    if (missing.length > 0) {
-      throw new Error(
-        '[TPMO] <TpmoDisclaimer variant="counted" /> was rendered while ' +
-          `${missing.join(' and ')} ${missing.length > 1 ? 'are' : 'is'} null in ` +
-          'lib/site.ts (tpmoCounts).\n\n' +
-          'The counted disclaimer states "Currently we represent N organizations ' +
-          'which offer M products in your area." That is a factual regulatory ' +
-          'disclosure under 42 CFR 422.2267(e)(41). It cannot be rendered with a ' +
-          'blank, a zero, or a guess.\n\n' +
-          'Fix by ONE of:\n' +
-          '  1. Set both counts in lib/site.ts from the quoting platform, or\n' +
-          '  2. Render variant="generic", which is compliant and asserts no count.\n\n' +
-          'Do not invent the numbers.',
-      );
-    }
-  }
+export function TpmoDisclaimer({ areas }: { areas: ResolvedTpmoArea[] }) {
+  const variant = tpmoVariantFor(areas);
+  const single = areas.length > 0 && sameCounts(areas) ? areas[0] : null;
 
   return (
     <p>
@@ -97,13 +86,21 @@ export function TpmoDisclaimer({ variant }: { variant: TpmoVariant }) {
       */}
       {site.name} is not connected with or endorsed by the United States government or the
       federal Medicare program. We do not offer every plan available in your area.{' '}
-      {variant === 'counted' ? (
+      {variant === 'generic' ? (
+        <>Any information we provide is limited to those plans we do offer in your area.</>
+      ) : single ? (
         <>
-          Currently we represent {organizationCount} organizations which offer{' '}
-          {productCount} products in your area.
+          Currently we represent {single.organizationCount} organizations which offer{' '}
+          {single.productCount} products in {single.scope ?? 'your area'}.
         </>
       ) : (
-        <>Any information we provide is limited to those plans we do offer in your area.</>
+        areas.map((area, index) => (
+          <Fragment key={area.key}>
+            {index > 0 ? ' ' : ''}
+            {area.label}: Currently we represent {area.organizationCount} organizations
+            which offer {area.productCount} products in your area.
+          </Fragment>
+        ))
       )}{' '}
       {/*
         All THREE referral routes named by the regulation: medicare.gov,

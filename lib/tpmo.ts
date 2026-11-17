@@ -1,3 +1,12 @@
+import {
+  TPMO_AREAS,
+  TPMO_FALLBACK_AREA,
+  TPMO_FALLBACK_SCOPE,
+  tpmoCountsByArea,
+  type TpmoAreaCount,
+  type TpmoAreaKey,
+} from './site';
+
 /**
  * Which routes require the COUNTED TPMO disclaimer.
  *
@@ -139,4 +148,101 @@ export function collectsZip(pathname: string | null): boolean {
   // Normalise a trailing slash, but never turn "/" into "".
   const path = pathname.length > 1 ? pathname.replace(/\/$/, '') : pathname;
   return ZIP_ROUTES.has(path);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+ *  Which area's counts a route states
+ * ══════════════════════════════════════════════════════════════════════════
+ *
+ * As of Nov 15 2026 the counted disclaimer is the default on EVERY route, not
+ * only the ZIP-collecting ones. 42 CFR 422.2267(e)(41) as amended for
+ * contract year 2024 puts the organization and product counts in the
+ * standardized text itself; the count-free wording is the pre-2024 version
+ * and is now used only when no verified count exists at all.
+ *
+ * `ZIP_ROUTES` above is unchanged and still guarded at build time. It no
+ * longer selects the variant; it remains the authoritative list of routes
+ * that render <ContactForm />.
+ *
+ * ── Area mapping ──────────────────────────────────────────────────────────
+ * A route listed here is ABOUT that place, so "in your area" should mean that
+ * place. Everything not listed falls back to `TPMO_FALLBACK_AREA`.
+ *
+ * New York City is five counties. Until Pinnacle answers how a multi-county
+ * page should state its counts, such a page lists each county that has a
+ * verified count on its own line (see <TpmoDisclaimer />). That presentation
+ * is a judgment call pending their answer, not established practice.
+ *
+ * IF YOU ADD A PAGE ABOUT A SPECIFIC PLACE OUTSIDE BERGEN COUNTY, ADD IT HERE.
+ */
+const NYC_AREAS: TpmoAreaKey[] = [
+  'kings-ny',
+  'queens-ny',
+  'new-york-ny',
+  'bronx-ny',
+  'richmond-ny',
+];
+
+export const ROUTE_TPMO_AREAS: Readonly<Record<string, TpmoAreaKey[]>> = {
+  '/medicare-new-york-city': NYC_AREAS,
+  '/plans/new-york': NYC_AREAS,
+  '/medicare-philadelphia': ['philadelphia-pa'],
+  '/plans/pennsylvania': ['philadelphia-pa'],
+};
+
+export type ResolvedTpmoArea = TpmoAreaCount & {
+  key: TpmoAreaKey;
+  label: string;
+  /**
+   * Set when these counts are the fallback area's and the page is about a
+   * different place. The disclaimer then says "in {scope}" instead of "in
+   * your area", so it never implies the numbers apply where the page is about.
+   */
+  scope?: string;
+};
+
+/**
+ * True for a route about a place outside the fallback area: anything mapped
+ * in ROUTE_TPMO_AREAS, and every state plan page except New Jersey's.
+ */
+export function isOutOfAreaRoute(path: string): boolean {
+  if (path in ROUTE_TPMO_AREAS) return true;
+  return path.startsWith('/plans/') && path !== '/plans/new-jersey';
+}
+
+function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {
+  const count = tpmoCountsByArea[key];
+  return count ? { ...count, key, label: TPMO_AREAS[key] } : null;
+}
+
+/**
+ * The verified counts a route should state, most specific first.
+ *
+ *  - areas mapped to the route that have a count → those
+ *  - otherwise the fallback area, if it has a count; on a route about
+ *    another place it carries `scope`, so the sentence names Bergen County
+ *  - otherwise [] → the caller renders the count-free wording
+ */
+export function tpmoAreasFor(pathname: string | null): ResolvedTpmoArea[] {
+  const path =
+    pathname && pathname.length > 1 ? pathname.replace(/\/$/, '') : (pathname ?? '/');
+  const mapped = (ROUTE_TPMO_AREAS[path] ?? [])
+    .map(resolve)
+    .filter((area): area is ResolvedTpmoArea => area !== null);
+  if (mapped.length > 0) return mapped;
+
+  const fallback = resolve(TPMO_FALLBACK_AREA);
+  if (!fallback) return [];
+  return [isOutOfAreaRoute(path) ? { ...fallback, scope: TPMO_FALLBACK_SCOPE } : fallback];
+}
+
+/** 'YYYY-MM' or 'YYYY-MM-DD' → "November 2026" / "November 15, 2026". */
+export function formatCountDate(iso: string): string {
+  const [year, month, day] = iso.split('-').map(Number);
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June', 'July',
+    'August', 'September', 'October', 'November', 'December',
+  ];
+  const name = months[(month ?? 1) - 1] ?? '';
+  return day ? `${name} ${day}, ${year}` : `${name} ${year}`;
 }

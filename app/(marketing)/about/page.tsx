@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BadgeCheck, MapPin, Phone } from 'lucide-react';
+import { BadgeCheck, Languages, MapPin, Phone } from 'lucide-react';
 import { AdvisorAvatar } from '@/components/marketing/trust-bar';
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { CtaBand } from '@/components/marketing/cta-band';
@@ -16,11 +16,13 @@ import { locationLandings } from '@/lib/locations';
 import { breadcrumbJsonLd } from '@/lib/seo';
 
 // ~150 chars: Google truncates a search-result description around there.
-const DESCRIPTION = `${advisor.name}, independent Medicare broker in ${advisor.basedIn}. Medicare and Medicaid only, for people 65+ and anyone with Parts A and B.`;
+const LANGUAGES = advisor.languages.map((language) => language.name);
+const LANGUAGE_LIST = `${LANGUAGES.slice(0, -1).join(', ')} and ${LANGUAGES[LANGUAGES.length - 1]}`;
+const DESCRIPTION = `${advisor.name}, licensed independent insurance broker in ${advisor.basedIn}. Medicare and Medicaid only, in ${LANGUAGE_LIST}, for people 65+ and anyone with Parts A and B.`;
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent(`Meet ${advisor.name}`)}` +
   `&kicker=${encodeURIComponent('The person behind the phone number')}` +
-  `&subtitle=${encodeURIComponent(`Licensed independent Medicare broker · ${advisor.basedIn}`)}`;
+  `&subtitle=${encodeURIComponent(`${advisor.credential} · ${advisor.basedIn}`)}`;
 
 export const metadata: Metadata = {
   title: `About ${advisor.name}`,
@@ -50,6 +52,23 @@ export default function AboutPage() {
           { name: 'About', url: `${site.url}/about` },
         ])}
       />
+      {/*
+        ProfilePage ties this URL to the Person node declared sitewide in
+        lib/seo.ts (same @id), so "the About page" and "the licensed producer"
+        resolve to one entity instead of two.
+      */}
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'ProfilePage',
+          '@id': `${site.url}/about#profile`,
+          url: `${site.url}/about`,
+          name: `About ${advisor.name}`,
+          inLanguage: 'en-US',
+          mainEntity: { '@id': `${site.url}#advisor` },
+          about: { '@id': `${site.url}#advisor` },
+        }}
+      />
 
       {/* ── Intro ─────────────────────────────────────────────────────── */}
       <section className="border-b border-line bg-paper">
@@ -63,8 +82,9 @@ export default function AboutPage() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-xl leading-relaxed text-ink-soft">
-              I am an independent Medicare broker based in {advisor.basedIn}, working
-              mostly with people in {site.serviceArea} and licensed in{' '}
+              I am a licensed independent insurance broker based in {advisor.basedIn}{' '}
+              ({advisor.basedInCounty}). I work mostly with people in{' '}
+              {site.serviceArea}, in {LANGUAGE_LIST}, and I am licensed in{' '}
               {licensedStates.length} states. If you landed here from a video, this is the
               page where you decide whether I am worth your time. Fair enough — here is the
               honest version.
@@ -83,6 +103,16 @@ export default function AboutPage() {
                 <MapPin className="h-5 w-5 text-sage" aria-hidden="true" />
                 {advisor.basedIn}
               </span>
+              <span className="flex items-center gap-2">
+                <Languages className="h-5 w-5 text-sage" aria-hidden="true" />
+                {LANGUAGE_LIST}
+              </span>
+              {advisor.npn ? (
+                <span className="flex items-center gap-2">
+                  <BadgeCheck className="h-5 w-5 text-sage" aria-hidden="true" />
+                  National Producer Number (NPN) {advisor.npn}
+                </span>
+              ) : null}
             </div>
 
             <ContactActions where="about-hero" className="mt-9" size="xl" />
@@ -95,6 +125,9 @@ export default function AboutPage() {
               </div>
               <p className="mt-5 font-display text-2xl font-bold text-ink">{advisor.name}</p>
               <p className="mt-1 text-base text-ink-faint">{advisor.credential}</p>
+              {advisor.npn ? (
+                <p className="mt-1 text-base text-ink-faint">NPN {advisor.npn}</p>
+              ) : null}
               <a
                 href={`tel:+${advisor.phoneRaw.replace(/\D/g, '')}`}
                 className="mt-5 flex min-h-touch items-center justify-center gap-2 rounded-xl bg-navy px-5 font-semibold text-white hover:bg-navy-deep"
@@ -231,7 +264,15 @@ export default function AboutPage() {
           </h2>
           <p className="mt-3 max-w-2xl text-lg text-ink-soft">
             I serve people in {site.serviceArea}, and hold active health licenses in{' '}
-            {licensedStates.length} states. Local pages:{' '}
+            {licensedStates.length} states.
+            {advisor.npn ? (
+              <>
+                {' '}
+                My National Producer Number is {advisor.npn}; you can look it up with your
+                state insurance department to confirm my license.
+              </>
+            ) : null}{' '}
+            Local pages:{' '}
             {locationLandings.map((location, index) => (
               <span key={location.slug}>
                 {index > 0 ? ', ' : ''}

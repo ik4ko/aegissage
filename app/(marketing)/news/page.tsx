@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: { canonical: '/news' },
   openGraph: {
-    title: `${TITLE} — ${'AegisSage'}`,
+    title: `${TITLE} — ${'Aegis Sage'}`,
     description: DESCRIPTION,
     images: [
       {
