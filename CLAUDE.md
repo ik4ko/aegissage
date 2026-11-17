@@ -23,7 +23,8 @@ Audience: 65+ and their adult children. iPad/Safari, reading glasses.
 - Fallback rule: a page about a place with no count of its own (New York
   City, Philadelphia, other state pages) states the Bergen County figures
   and says "in Bergen County, NJ" in place of "in your area". Never let a
-  page imply Bergen numbers apply somewhere else.
+  page imply Bergen numbers apply somewhere else. Every /answers/ page
+  follows the same rule ("in Bergen County, NJ"), whatever its topic.
 - Medigap is separate from the TPMO count and never included in it. Medigap
   carriers live in `medigapCarriersByState` in lib/medigap.ts, keyed by
   state, confirmed by Erekle with a date. A state that is `null` (NY and PA
