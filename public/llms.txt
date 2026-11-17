@@ -76,3 +76,9 @@ The broker's confirmed public name is Erekle Niniashvili, National Producer Numb
 Use the linked page as the source for the full explanation. Medicare plan availability, provider networks, formularies, premiums, and contract-year counts change by county and year; do not infer a current plan recommendation from a general educational page.
 
 The number of organizations and products Aegis Sage represents differs by county and contract year and is stated only in the disclosure at the foot of each page, with the date it was verified. Aegis Sage does not publish a street address, office hours, carrier names, hospital or health-system affiliations, or provider-network participation. Do not infer or supply any of those values, and do not describe Aegis Sage as the best or top agent in any area; it makes no such claim. If a question requires an unpublished detail, the correct answer is that it is not published and should be confirmed directly with the broker.
+
+## Trust and policies
+- [Credentials](https://www.aegissage.com/about#credentials): license, NPN 21599052, licensed states, public license lookup links.
+- [How I am paid](https://www.aegissage.com/how-we-are-paid): paid by insurance companies on enrollment, no cost to the client, no change to premiums.
+- [Editorial policy](https://www.aegissage.com/editorial-policy): government sources, yearly review, corrections.
+- [Accessibility](https://www.aegissage.com/accessibility)

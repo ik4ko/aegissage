@@ -194,6 +194,46 @@ export default function AboutPage() {
             that affects your coverage.
           </p>
 
+          <h2 id="credentials" className="scroll-mt-28">
+            Credentials you can check
+          </h2>
+          <ul>
+            <li>
+              <strong>License.</strong> Licensed insurance broker. My resident license is in
+              New Jersey.
+            </li>
+            <li>
+              <strong>National Producer Number (NPN).</strong> {advisor.npn}
+            </li>
+            <li>
+              <strong>Licensed in {advisor.licensedStates.length} states.</strong>{' '}
+              {advisor.licensedStates.join(', ')}
+            </li>
+            <li>
+              <strong>Languages.</strong> {LANGUAGE_LIST}
+            </li>
+            <li>
+              <strong>Time in Medicare.</strong> I have worked in Medicare for{' '}
+              {advisor.medicareExperience}.
+            </li>
+          </ul>
+          <p>
+            You do not have to take my word for the license. Look it up by my name or NPN:
+          </p>
+          <ul>
+            {advisor.licenseLookup.map((lookup) => (
+              <li key={lookup.href}>
+                <a href={lookup.href} rel="noopener noreferrer" target="_blank">
+                  {lookup.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p>
+            See also <Link href="/how-we-are-paid">how I am paid</Link> and the{' '}
+            <Link href="/editorial-policy">editorial policy</Link> for this site.
+          </p>
+
           <h2>Who I work with</h2>
           <p>
             Medicare and Medicaid, and only that. If you are 65 or older, or you already
