@@ -3,7 +3,7 @@
 import { CalendarClock, Mail, MessageSquareText, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { advisor, contactHrefs } from '@/lib/site';
+import { advisor, contactHrefs, features, TEXT_NOTE } from '@/lib/site';
 import { trackContactIntent } from '@/lib/analytics';
 
 /**
@@ -40,15 +40,15 @@ export function ContactActions({
   labels,
 }: Props) {
   const darkFocus = onDark
-    ? 'focus-visible:ring-white/60 focus-visible:ring-offset-navy-deep'
+    ? 'focus-visible:ring-white focus-visible:ring-offset-navy-deep'
     : undefined;
 
   return (
+    <div className={className}>
     <div
       className={cn(
         'flex gap-3',
         layout === 'row' ? 'flex-col sm:flex-row sm:flex-wrap sm:items-center' : 'flex-col',
-        className,
       )}
     >
       <Button asChild size={size} variant="primary" className={cn(darkFocus)}>
@@ -68,6 +68,7 @@ export function ContactActions({
         </a>
       </Button>
 
+      {features.textButton ? (
       <Button
         asChild
         size={size}
@@ -84,6 +85,7 @@ export function ContactActions({
           {labels?.text ?? `Text ${advisor.firstName}`}
         </a>
       </Button>
+      ) : null}
 
       {includeEmail ? (
         <Button
@@ -98,6 +100,13 @@ export function ContactActions({
           </a>
         </Button>
       ) : null}
+    </div>
+    {features.textButton && !labels ? (
+      // English pages only: translated pages pass `labels` and keep their own wording.
+      <p className={cn('mt-3 text-base', onDark ? 'text-white/90' : 'text-ink-soft')}>
+        {TEXT_NOTE}
+      </p>
+    ) : null}
     </div>
   );
 }

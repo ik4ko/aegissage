@@ -271,7 +271,7 @@ export function MedicareIqGame() {
                 aria-pressed={isPicked}
                 className={cn(
                   'flex min-h-[3.75rem] w-full items-center gap-4 rounded-2xl border-2 p-4 text-left text-lg font-semibold transition-colors duration-150',
-                  'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30',
+                  'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy',
                   'disabled:cursor-default',
                   !answered && 'border-line bg-paper text-ink hover:border-navy/50 hover:bg-navy-soft/40',
                   // After answering, always mark the correct option — being

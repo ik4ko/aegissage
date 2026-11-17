@@ -15,7 +15,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         'flex h-14 w-full rounded-xl border-2 bg-paper px-4 text-base text-ink',
         'placeholder:text-ink-faint/70',
         'transition-colors duration-150',
-        'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/25',
+        'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy',
         'disabled:cursor-not-allowed disabled:opacity-60',
         invalid ? 'border-ember focus-visible:border-ember' : 'border-line focus-visible:border-navy',
         className,
@@ -38,7 +38,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       className={cn(
         'flex min-h-[7.5rem] w-full rounded-xl border-2 bg-paper p-4 text-base text-ink',
         'placeholder:text-ink-faint/70',
-        'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/25',
+        'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy',
         invalid ? 'border-ember focus-visible:border-ember' : 'border-line focus-visible:border-navy',
         className,
       )}

@@ -52,7 +52,7 @@ export function SiteHeader() {
       <div className="container flex h-[4.5rem] items-center justify-between gap-4">
         <Link
           href="/"
-          className="flex items-center gap-2.5 rounded-lg py-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+          className="flex items-center gap-2.5 rounded-lg py-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
         >
           <ShieldMark />
           <span className="font-display text-xl font-bold tracking-[-0.02em] text-ink">
@@ -71,7 +71,7 @@ export function SiteHeader() {
                     aria-current={active ? 'page' : undefined}
                     className={cn(
                       'flex h-11 items-center rounded-lg px-3.5 text-base font-medium transition-colors',
-                      'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30',
+                      'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy',
                       active ? 'text-navy underline decoration-ember decoration-2 underline-offset-8' : 'text-ink-soft hover:text-navy',
                     )}
                   >
@@ -87,7 +87,7 @@ export function SiteHeader() {
           <a
             href={contactHrefs.booking}
             onClick={() => trackContactIntent('book', 'header')}
-            className="hidden h-touch items-center gap-2 rounded-xl border-2 border-navy/25 px-4 font-semibold text-navy transition-colors hover:border-navy/60 hover:bg-navy-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30 md:flex"
+            className="hidden h-touch items-center gap-2 rounded-xl border-2 border-navy/25 px-4 font-semibold text-navy transition-colors hover:border-navy/60 hover:bg-navy-soft focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy md:flex"
           >
             <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" />
             <span className="whitespace-nowrap">Book a time</span>
@@ -95,7 +95,7 @@ export function SiteHeader() {
           <a
             href={contactHrefs.tel}
             onClick={() => trackContactIntent('call', 'header')}
-            className="hidden h-touch items-center gap-2 rounded-xl bg-ember px-5 font-semibold text-white shadow-card transition-colors hover:bg-ember-deep focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30 sm:flex"
+            className="hidden h-touch items-center gap-2 rounded-xl bg-ember px-5 font-semibold text-white shadow-card transition-colors hover:bg-ember-deep focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy sm:flex"
           >
             <Phone className="h-5 w-5 shrink-0" aria-hidden="true" />
             <span className="whitespace-nowrap">{advisor.phone}</span>
@@ -107,7 +107,7 @@ export function SiteHeader() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-nav"
-            className="grid h-touch w-touch place-items-center rounded-xl border-2 border-line text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30 lg:hidden"
+            className="grid h-touch w-touch place-items-center rounded-xl border-2 border-line text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy lg:hidden"
           >
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
@@ -155,7 +155,7 @@ export function SiteHeader() {
                 trackContactIntent('book', 'header-mobile');
                 setOpen(false);
               }}
-              className="flex min-h-touch items-center justify-center gap-2 rounded-xl border-2 border-navy/25 px-4 font-semibold text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+              className="flex min-h-touch items-center justify-center gap-2 rounded-xl border-2 border-navy/25 px-4 font-semibold text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
             >
               <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" />
               <span>Book a time</span>
@@ -166,7 +166,7 @@ export function SiteHeader() {
                 trackContactIntent('call', 'header-mobile');
                 setOpen(false);
               }}
-              className="flex min-h-touch items-center justify-center gap-2 rounded-xl bg-ember px-5 font-semibold text-white shadow-card focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+              className="flex min-h-touch items-center justify-center gap-2 rounded-xl bg-ember px-5 font-semibold text-white shadow-card focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
             >
               <Phone className="h-5 w-5 shrink-0" aria-hidden="true" />
               <span>{advisor.phone}</span>

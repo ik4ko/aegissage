@@ -9,7 +9,7 @@ import { ContactActions } from '@/components/marketing/contact-actions';
 import { ContactForm } from '@/components/forms/contact-form';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getArticle, getArticles, getRelatedAnswers } from '@/lib/content';
-import { faqJsonLd } from '@/lib/seo';
+import { faqJsonLd, speakableJsonLd } from '@/lib/seo';
 import { advisor, compliance, site } from '@/lib/site';
 import { formatDate } from '@/lib/utils';
 
@@ -53,8 +53,8 @@ export async function generateMetadata({
     `&subtitle=${encodeURIComponent(article.description)}`;
 
   return {
-    title: article.title,
-    description: article.description,
+    title: article.seo_title ?? article.title,
+    description: article.seo_description ?? article.description,
     alternates: { canonical: article.href },
     openGraph: {
       type: 'article',
@@ -86,6 +86,13 @@ export default async function AnswerPage({ params }: { params: Promise<Params> }
     <>
       <JsonLd data={articleJsonLd(article, `${site.url}${article.href}`)} />
       {faq.length > 0 ? <JsonLd data={faqJsonLd(faq)} /> : null}
+      <JsonLd
+        data={speakableJsonLd({
+          url: `${site.url}${article.href}`,
+          name: article.title,
+          cssSelector: ['.article-body > p:first-of-type', '.article-body h2 + p'],
+        })}
+      />
       <ArticleLayout
         article={article}
         related={getRelatedAnswers(article)}
@@ -110,7 +117,7 @@ export default async function AnswerPage({ params }: { params: Promise<Params> }
             <ul>
               {sources.map((source) => (
                 <li key={source.url}>
-                  <a href={source.url} target="_blank" rel="noopener noreferrer">
+                  <a href={source.url} target="_blank" rel="noopener noreferrer" className="link-row">
                     {source.title}
                   </a>
                 </li>

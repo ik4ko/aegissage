@@ -350,6 +350,8 @@ export function BookingForm() {
                     checked={field.value === true}
                     onBlur={field.onBlur}
                     onCheckedChange={(checked) => field.onChange(checked === true)}
+                    aria-invalid={errors.consent ? true : undefined}
+                    aria-describedby={errors.consent ? `${SOURCE}-consent-error` : undefined}
                   />
                 )}
               />
@@ -359,7 +361,7 @@ export function BookingForm() {
             </span>
           </label>
           {errors.consent?.message ? (
-            <p role="alert" className="mt-3 text-sm font-semibold text-ember-deep">
+            <p id={`${SOURCE}-consent-error`} role="alert" className="mt-3 text-sm font-semibold text-ember-deep">
               {errors.consent.message}
             </p>
           ) : null}
@@ -417,7 +419,7 @@ export function BookingForm() {
           <button
             type="button"
             onClick={() => setCalendar('closed')}
-            className="-mr-2 inline-flex h-11 w-11 items-center justify-center rounded-xl text-ink-soft transition-colors hover:bg-cream hover:text-ink focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+            className="-mr-2 inline-flex h-11 w-11 items-center justify-center rounded-xl text-ink-soft transition-colors hover:bg-cream hover:text-ink focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
           >
             <X className="h-5 w-5" aria-hidden="true" />
             <span className="sr-only">Close the calendar</span>

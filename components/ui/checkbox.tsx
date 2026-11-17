@@ -16,8 +16,10 @@ const Checkbox = React.forwardRef<
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
+      // The box is 28px; the ::before extends the tap area to 48px around it.
       'relative grid h-7 w-7 shrink-0 place-items-center rounded-md border-2 border-ink/35 bg-paper',
-      'transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30',
+      "before:absolute before:-inset-[10px] before:content-['']",
+      'transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy',
       'data-[state=checked]:border-navy data-[state=checked]:bg-navy data-[state=checked]:text-white',
       'after:absolute after:-inset-2.5 after:content-[""]',
       className,

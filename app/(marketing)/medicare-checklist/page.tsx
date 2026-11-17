@@ -38,7 +38,7 @@ import { advisor, site } from '@/lib/site';
 
 const TITLE = 'The free Medicare appointment checklist';
 const DESCRIPTION =
-  'A printable worksheet for getting ready to talk about Medicare: your doctors, your prescriptions, your ZIP code, your enrollment window, and the questions worth asking. No email required.';
+  'A printable worksheet to get ready for a Medicare conversation: your doctors, prescriptions, ZIP code, enrollment window and the questions to ask. No email.';
 
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent('The free Medicare appointment checklist')}` +
@@ -247,6 +247,28 @@ export default function MedicareChecklistPage() {
           {resources.map((resource) => (
             <ResourceCard key={resource.url} resource={resource} where="medicare-checklist" />
           ))}
+        </div>
+      </section>
+
+      {/*
+        ── Common questions ───────────────────────────────────────────────
+        Renders the same FAQ array the FAQPage schema is built from, so the
+        visible questions and the schema cannot drift apart. Before Nov 17
+        2026 these four existed only in the schema (SEO audit H1).
+      */}
+      <section className="border-t border-line bg-paper print:hidden">
+        <div className="container py-14 sm:py-16">
+          <h2 className="font-display text-3xl font-bold tracking-[-0.03em] text-ink">
+            Common questions
+          </h2>
+          <dl className="mt-8 max-w-3xl space-y-8">
+            {FAQ.map((item) => (
+              <div key={item.question}>
+                <dt className="font-display text-xl font-bold text-ink">{item.question}</dt>
+                <dd className="mt-2 text-lg leading-relaxed text-ink-soft">{item.answer}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 

@@ -114,7 +114,7 @@ const languageNames: Record<PageLocale, string> = {
 };
 
 const en: LanguagePage = {
-  metaTitle: 'Medicare help in Georgian and Russian — Edgewater, NJ',
+  metaTitle: 'Medicare help in Georgian and Russian, Edgewater',
   metaDescription:
     'Erekle Niniashvili, a licensed insurance broker in Edgewater, NJ, explains Medicare in Georgian, Russian and English. Bergen, Hudson, NYC, Philadelphia.',
   badge: 'Georgian · Russian · English',
@@ -215,9 +215,9 @@ const en: LanguagePage = {
     'This is the English reference version. Georgian and Russian translations are provided for convenience; if a translation and the English differ, the English applies.',
   disclaimerHeading: 'Important disclosure',
   disclaimerCounted:
-    'Aegis Sage is not connected with or endorsed by the United States government or the federal Medicare program. We do not offer every plan available in your area. Currently we represent {org} organizations which offer {products} products in your area. Please contact Medicare.gov, 1-800-MEDICARE (TTY 1-877-486-2048), or your local State Health Insurance Program (SHIP) to get information on all of your options.',
+    'Aegis Sage is not connected with or endorsed by the United States government or the federal Medicare program. We do not offer every plan available in your area. Currently we represent {org} organizations which offer {products} products in your area. Please contact Medicare.gov or 1-800-MEDICARE to get information on all of your options. TTY users can call 1-877-486-2048.',
   disclaimerGeneric:
-    'Aegis Sage is not connected with or endorsed by the United States government or the federal Medicare program. We do not offer every plan available in your area. Any information we provide is limited to those plans we do offer in your area. Please contact Medicare.gov, 1-800-MEDICARE (TTY 1-877-486-2048), or your local State Health Insurance Program (SHIP) to get information on all of your options.',
+    'Aegis Sage is not connected with or endorsed by the United States government or the federal Medicare program. We do not offer every plan available in your area. Any information we provide is limited to those plans we do offer in your area. Please contact Medicare.gov or 1-800-MEDICARE to get information on all of your options. TTY users can call 1-877-486-2048.',
   disclaimerEnglishNote: '',
   otherLanguages: 'This page in other languages',
   languageNames,
@@ -325,9 +325,9 @@ const ka: LanguagePage = {
     'ეს გვერდი არის თარგმანი თქვენი მოხერხებულობისთვის. თუ თარგმანსა და ინგლისურ ვერსიას შორის განსხვავებაა, მოქმედებს ინგლისური ვერსია.',
   disclaimerHeading: 'მნიშვნელოვანი ინფორმაცია',
   disclaimerCounted:
-    'Aegis Sage არ არის დაკავშირებული აშშ-ის მთავრობასთან ან ფედერალურ Medicare-ის პროგრამასთან და არ არის მათ მიერ მოწონებული. ჩვენ არ გთავაზობთ თქვენს რეგიონში არსებულ ყველა გეგმას. ამჟამად წარმოვადგენთ {org} ორგანიზაციას, რომლებიც თქვენს რეგიონში {products} პროდუქტს გთავაზობენ. ყველა თქვენი ვარიანტის შესახებ ინფორმაციის მისაღებად მიმართეთ Medicare.gov-ს, დარეკეთ 1-800-MEDICARE (TTY 1-877-486-2048) ან დაუკავშირდით თქვენს ადგილობრივ შტატის ჯანმრთელობის დაზღვევის პროგრამას (SHIP).',
+    'Aegis Sage არ არის დაკავშირებული აშშ-ის მთავრობასთან ან ფედერალურ Medicare-ის პროგრამასთან და არ არის მათ მიერ მოწონებული. ჩვენ არ გთავაზობთ თქვენს რეგიონში არსებულ ყველა გეგმას. ამჟამად წარმოვადგენთ {org} ორგანიზაციას, რომლებიც თქვენს რეგიონში {products} პროდუქტს გთავაზობენ. ყველა თქვენი ვარიანტის შესახებ ინფორმაციის მისაღებად მიმართეთ Medicare.gov-ს ან დარეკეთ 1-800-MEDICARE (TTY 1-877-486-2048).',
   disclaimerGeneric:
-    'Aegis Sage არ არის დაკავშირებული აშშ-ის მთავრობასთან ან ფედერალურ Medicare-ის პროგრამასთან და არ არის მათ მიერ მოწონებული. ჩვენ არ გთავაზობთ თქვენს რეგიონში არსებულ ყველა გეგმას. ნებისმიერი ინფორმაცია, რომელსაც გაწვდით, შემოიფარგლება იმ გეგმებით, რომლებსაც თქვენს რეგიონში გთავაზობთ. ყველა თქვენი ვარიანტის შესახებ ინფორმაციის მისაღებად მიმართეთ Medicare.gov-ს, დარეკეთ 1-800-MEDICARE (TTY 1-877-486-2048) ან დაუკავშირდით თქვენს ადგილობრივ შტატის ჯანმრთელობის დაზღვევის პროგრამას (SHIP).',
+    'Aegis Sage არ არის დაკავშირებული აშშ-ის მთავრობასთან ან ფედერალურ Medicare-ის პროგრამასთან და არ არის მათ მიერ მოწონებული. ჩვენ არ გთავაზობთ თქვენს რეგიონში არსებულ ყველა გეგმას. ნებისმიერი ინფორმაცია, რომელსაც გაწვდით, შემოიფარგლება იმ გეგმებით, რომლებსაც თქვენს რეგიონში გთავაზობთ. ყველა თქვენი ვარიანტის შესახებ ინფორმაციის მისაღებად მიმართეთ Medicare.gov-ს ან დარეკეთ 1-800-MEDICARE (TTY 1-877-486-2048).',
   disclaimerEnglishNote:
     'ეს არის ქვემოთ, გვერდის ბოლოში მოცემული ინგლისურენოვანი შეტყობინების თარგმანი. ოფიციალურია ინგლისური ტექსტი.',
   otherLanguages: 'ეს გვერდი სხვა ენებზე',
@@ -436,9 +436,9 @@ const ru: LanguagePage = {
     'Эта страница — перевод для вашего удобства. Если перевод и английская версия расходятся, действует английская версия.',
   disclaimerHeading: 'Важная информация',
   disclaimerCounted:
-    'Aegis Sage не связана с правительством США или федеральной программой Medicare и не одобрена ими. Мы предлагаем не все планы, доступные в вашем регионе. Число организаций, которые мы представляем в настоящее время: {org}. Число продуктов, которые они предлагают в вашем регионе: {products}. Чтобы получить информацию обо всех ваших вариантах, обратитесь на сайт Medicare.gov, позвоните по номеру 1-800-MEDICARE (TTY 1-877-486-2048) или в местную Государственную программу помощи по медицинскому страхованию (SHIP).',
+    'Aegis Sage не связана с правительством США или федеральной программой Medicare и не одобрена ими. Мы предлагаем не все планы, доступные в вашем регионе. Число организаций, которые мы представляем в настоящее время: {org}. Число продуктов, которые они предлагают в вашем регионе: {products}. Чтобы получить информацию обо всех ваших вариантах, обратитесь на сайт Medicare.gov или позвоните по номеру 1-800-MEDICARE (TTY 1-877-486-2048).',
   disclaimerGeneric:
-    'Aegis Sage не связана с правительством США или федеральной программой Medicare и не одобрена ими. Мы предлагаем не все планы, доступные в вашем регионе. Любая информация, которую мы предоставляем, ограничена теми планами, которые мы предлагаем в вашем регионе. Чтобы получить информацию обо всех ваших вариантах, обратитесь на сайт Medicare.gov, позвоните по номеру 1-800-MEDICARE (TTY 1-877-486-2048) или в местную Государственную программу помощи по медицинскому страхованию (SHIP).',
+    'Aegis Sage не связана с правительством США или федеральной программой Medicare и не одобрена ими. Мы предлагаем не все планы, доступные в вашем регионе. Любая информация, которую мы предоставляем, ограничена теми планами, которые мы предлагаем в вашем регионе. Чтобы получить информацию обо всех ваших вариантах, обратитесь на сайт Medicare.gov или позвоните по номеру 1-800-MEDICARE (TTY 1-877-486-2048).',
   disclaimerEnglishNote:
     'Это перевод уведомления на английском языке, которое приведено ниже, в конце страницы. Официальным является английский текст.',
   otherLanguages: 'Эта страница на других языках',

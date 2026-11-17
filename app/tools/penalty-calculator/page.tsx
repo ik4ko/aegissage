@@ -7,7 +7,7 @@ import { breadcrumbJsonLd } from '@/lib/seo';
 import { COSTS_YEAR } from '@/lib/medicare-costs';
 import { site } from '@/lib/site';
 
-const TITLE = 'What would a Medicare late enrollment penalty cost you?';
+const TITLE = 'Medicare late enrollment penalty calculator';
 // ~150 chars: Google truncates a search-result description around there.
 const DESCRIPTION =
   'Estimate the Part B and Part D late enrollment penalties in plain dollars, using the current CMS figures. No signup, no email, nothing sent anywhere.';

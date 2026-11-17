@@ -103,11 +103,12 @@ export function TpmoDisclaimer({ areas }: { areas: ResolvedTpmoArea[] }) {
         ))
       )}{' '}
       {/*
-        All THREE referral routes named by the regulation: medicare.gov,
-        1-800-MEDICARE with its TTY line, and the caller's local State Health
-        Insurance Program. See the note in disclaimer-footer.tsx — an earlier
-        pass dropped SHIP and TTY to match a shorter FMO example, and the FMO
-        examples are not the compliance source.
+        CY2027 wording, word for word from 42 CFR 422.2267(e)(41), as amended by the CY2027 final rule (Federal Register 2026-06600, April 6 2026; in effect June 1 2026):
+        "Please contact Medicare.gov or 1-800-MEDICARE to get information on
+        all of your options." The CY2027 rule removed the SHIP referral; do not
+        add it back. The TTY number follows as its own sentence so the
+        standardized sentence stays exact and the TTY line is not lost.
+        Verified against eCFR on Nov 17 2026.
       */}
       Please contact{' '}
       <a
@@ -116,17 +117,16 @@ export function TpmoDisclaimer({ areas }: { areas: ResolvedTpmoArea[] }) {
         target="_blank"
         className="font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
       >
-        medicare.gov
-      </a>
-      ,{' '}
+        Medicare.gov
+      </a>{' '}
+      or{' '}
       <a
         href="tel:+18006334227"
         className="font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
       >
         {compliance.medicarePhone}
       </a>{' '}
-      (TTY {compliance.medicareTty}), or your local State Health Insurance Program (SHIP),
-      to get information on all of your options.
+      to get information on all of your options. TTY users can call {compliance.medicareTty}.
     </p>
   );
 }

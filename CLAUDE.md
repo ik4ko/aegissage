@@ -11,6 +11,20 @@ Audience: 65+ and their adult children. iPad/Safari, reading glasses.
 ## Compliance — never violate
 - TPMO disclaimer renders always-visible in footer, exact CMS wording
   (42 CFR 422.2267(e)(41)). The counted version is the default on every route.
+  Current wording (CY2027 final rule, Federal Register 2026-06600, published
+  April 6 2026, in effect June 1 2026; checked on eCFR Nov 17 2026): "We do not
+  offer every plan available in your area. Currently we represent [number]
+  organizations which offer [number] products in your area. Please contact
+  Medicare.gov or 1-800-MEDICARE to get information on all of your options."
+  The SHIP referral was removed by that rule; do not add it back. The TTY line
+  follows as a separate sentence.
+- Scope of Appointment and events (42 CFR 422.2264(c), same CY2027 rule): an
+  SOA is still required and must be agreed and recorded before a personal
+  marketing appointment (in writing if in person), but there is no 48-hour
+  wait, so a same-day appointment is fine. The 12-hour gap between an
+  educational and a marketing event at the same place is gone. Educational
+  events need no SOA and stay educational: no sales presentation, no
+  applications taken.
 - TPMO counts: organization and product counts come ONLY from a dated Sunfire
   recount by Erekle with "Appointed Only" switched on, for the plan year
   being sold. Medicare Advantage and Part D products only (MA/MAPD, SNP,

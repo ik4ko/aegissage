@@ -6,6 +6,7 @@ import { site } from '@/lib/site';
 import { LANGUAGE_PAGE_PATHS, publishedLocales } from '@/lib/language-pages';
 import { GLOSSARY_REVIEWED } from '@/lib/medicare-glossary';
 import { CALENDAR_REVIEWED } from '@/lib/enrollment-calendar';
+import { QUESTIONS_REVIEWED } from '@/lib/medicare-questions';
 /*
   Imported for its side effect: runs every build-time guard and throws one
   combined report if any of them find a problem.
@@ -22,59 +23,72 @@ import { CALENDAR_REVIEWED } from '@/lib/enrollment-calendar';
 import '@/lib/build-guard';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  /*
+    No build-time `lastModified`. Every URL used to carry the deploy time, so the
+    date changed on every push and search engines learn to ignore it (SEO audit
+    M6). A page gets a date only when a real content date exists: an article's
+    `updated`, the glossary and calendar review dates, and the newest article in
+    a listing. Everything else leaves lastmod out, which the protocol allows.
+  */
+  const newest = (collection: string) => {
+    const dates = getAllArticles()
+      .filter((article) => article.collection === collection)
+      .map((article) => article.updated)
+      .sort();
+    const last = dates[dates.length - 1];
+    return last ? new Date(`${last}T12:00:00Z`) : undefined;
+  };
 
   const staticPages: MetadataRoute.Sitemap = [
-    { url: `${site.url}/`, lastModified: now, changeFrequency: 'weekly', priority: 1 },
-    { url: `${site.url}/about`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${site.url}/how-we-are-paid`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${site.url}/editorial-policy`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${site.url}/accessibility`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${site.url}/partners`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${site.url}/`, changeFrequency: 'weekly', priority: 1 },
+    { url: `${site.url}/about`, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${site.url}/how-we-are-paid`, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${site.url}/editorial-policy`, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${site.url}/accessibility`, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${site.url}/partners`, changeFrequency: 'monthly', priority: 0.9 },
     {
       url: `${site.url}/tools/eligibility-check`,
-      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: `${site.url}/tools/penalty-calculator`,
-      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: `${site.url}/tools/irmaa-calculator`,
-      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: `${site.url}/tools/medicare-iq`,
-      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${site.url}/tools/plan-comparison`,
-      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${site.url}/news`,
-      lastModified: now,
       changeFrequency: 'daily',
       priority: 0.8,
     },
     {
       url: `${site.url}/medicare-basics`,
-      lastModified: now,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
-    { url: `${site.url}/plans`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${site.url}/answers`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${site.url}/plans`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${site.url}/answers`, lastModified: newest('answers'), changeFrequency: 'weekly', priority: 0.9 },
+    {
+      url: `${site.url}/medicare-questions`,
+      lastModified: new Date(`${QUESTIONS_REVIEWED}T12:00:00Z`),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     {
       url: `${site.url}/medicare-glossary`,
       lastModified: new Date(`${GLOSSARY_REVIEWED}T12:00:00Z`),
@@ -87,16 +101,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
-    { url: `${site.url}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${site.url}/videos`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${site.url}/contact`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${site.url}/blog`, lastModified: newest('blog'), changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${site.url}/videos`, changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${site.url}/contact`, changeFrequency: 'monthly', priority: 0.8 },
     {
       url: `${site.url}/medicare-checklist`,
-      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
-    { url: `${site.url}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${site.url}/privacy`, changeFrequency: 'yearly', priority: 0.2 },
     /*
       Language pages. Only versions that have passed native review are
       listed; an unreviewed translation is noindex and must not be advertised
@@ -104,7 +117,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     */
     ...publishedLocales().map((locale) => ({
       url: `${site.url}${LANGUAGE_PAGE_PATHS[locale]}`,
-      lastModified: now,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     })),
@@ -114,7 +126,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // hand, so a new location page cannot be added and then forgotten here.
   const locations: MetadataRoute.Sitemap = locationLandings.map((location) => ({
     url: `${site.url}/medicare-${location.slug}`,
-    lastModified: now,
     changeFrequency: 'monthly',
     priority: 0.9,
   }));
@@ -128,7 +139,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const states: MetadataRoute.Sitemap = planStates.map((state) => ({
     url: `${site.url}/plans/${state.slug}`,
-    lastModified: now,
     changeFrequency: 'monthly',
     priority: 0.6,
   }));

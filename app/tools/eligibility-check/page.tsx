@@ -8,7 +8,7 @@ import { site } from '@/lib/site';
 
 const TITLE = 'Which Medicare enrollment window is yours?';
 const DESCRIPTION =
-  'Five questions, one per screen. A plain-English read of which Medicare enrollment window applies to your situation and what happens if you miss it. No signup, no email required.';
+  'Five questions, one per screen: a plain-English read of which Medicare enrollment window applies to you and what happens if you miss it. No signup.';
 
 export const metadata: Metadata = withShareCard(
   {

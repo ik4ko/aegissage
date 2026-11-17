@@ -363,6 +363,27 @@ export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
   };
 }
 
+/**
+ * Speakable: tells voice assistants which parts of a page are the short,
+ * read-aloud answer. Our pattern is "a spoken question as the H2, answered
+ * first in 40 to 50 plain words", so the selector is the first paragraph
+ * after each H2 (plus the page's own opening answer).
+ * https://schema.org/SpeakableSpecification
+ */
+export function speakableJsonLd(options: { url: string; name: string; cssSelector: string[] }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${options.url}#speakable`,
+    url: options.url,
+    name: options.name,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: options.cssSelector,
+    },
+  };
+}
+
 export function faqJsonLd(items: { question: string; answer: string }[]) {
   return {
     '@context': 'https://schema.org',

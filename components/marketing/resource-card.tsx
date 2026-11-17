@@ -51,7 +51,7 @@ export function ResourceCard({ resource, where }: { resource: Resource; where: s
         href={resource.url}
         where={where}
         kind={resource.affiliate ? 'other' : 'official'}
-        className="mt-5 inline-flex min-h-touch items-center gap-2 font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+        className="mt-5 inline-flex min-h-touch items-center gap-2 font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
       >
         Open {resource.title}
         <ExternalLink className="h-4 w-4" aria-hidden="true" />

@@ -281,6 +281,8 @@ export function DeadlineCapture() {
                     checked={field.value === true}
                     onBlur={field.onBlur}
                     onCheckedChange={(checked) => field.onChange(checked === true)}
+                    aria-invalid={errors.consent ? true : undefined}
+                    aria-describedby={errors.consent ? `${SOURCE}-consent-error` : undefined}
                   />
                 )}
               />
@@ -291,7 +293,7 @@ export function DeadlineCapture() {
             </span>
           </label>
           {errors.consent?.message ? (
-            <p role="alert" className="mt-3 text-sm font-semibold text-ember-deep">
+            <p id={`${SOURCE}-consent-error`} role="alert" className="mt-3 text-sm font-semibold text-ember-deep">
               {errors.consent.message}
             </p>
           ) : null}

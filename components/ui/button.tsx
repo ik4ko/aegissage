@@ -4,15 +4,15 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 /**
- * Every size here clears the 48x48 minimum tap target. `sm` exists for dense
- * desktop chrome only and still runs 44px tall with generous horizontal
- * padding — do not add anything smaller.
+ * Every size here clears the 48x48 minimum tap target, `sm` included. Heights
+ * are minimums so a long label can wrap onto two lines on a phone instead of
+ * running off the screen; on wider screens labels stay on one line.
  */
 const buttonVariants = cva(
   [
-    'inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-xl',
+    'inline-flex items-center justify-center gap-2.5 whitespace-normal py-2 text-center sm:whitespace-nowrap rounded-xl',
     'font-semibold tracking-[-0.01em] transition-all duration-200',
-    'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream',
+    'focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-navy',
     'disabled:pointer-events-none disabled:opacity-55',
     'active:translate-y-px',
   ].join(' '),
@@ -26,11 +26,11 @@ const buttonVariants = cva(
         quiet: 'border-2 border-line bg-paper text-ink hover:border-ink/30',
       },
       size: {
-        sm: 'h-11 px-5 text-sm',
-        md: 'h-touch px-6 text-base',
-        lg: 'h-14 px-8 text-lg',
-        xl: 'h-16 px-9 text-lg sm:text-xl',
-        block: 'h-14 w-full px-6 text-lg',
+        sm: 'min-h-touch px-5 text-sm',
+        md: 'min-h-touch px-6 text-base',
+        lg: 'min-h-14 px-8 text-lg',
+        xl: 'min-h-16 px-9 text-lg sm:text-xl',
+        block: 'min-h-14 w-full px-6 text-lg',
       },
     },
     defaultVariants: { variant: 'primary', size: 'md' },

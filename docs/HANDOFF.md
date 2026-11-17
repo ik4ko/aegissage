@@ -284,3 +284,56 @@ Blocks 1, 3, 4 and 6 and the zod follow-up are built. Blocks 2 and 5 are not sta
 - **Follow-up to Block 6, zod. Done Nov 16 (PR #16, stacked on #15).** zod 3.25 to 4.6.7 and `@hookform/resolvers` 3.10 to 5.9.2. Required fields, visitor-facing messages, the optional Part A/B question, consent rules and `scoreLead()` inputs are unchanged, checked against a 716-input baseline recorded under zod 3. `scripts/test-lead-forms.mjs` (29 checks) is in `npm test` and CI. Also fixed: the CRM prohibited-field guard never matched the camelCase keys `medicareNumber` and `dateOfBirth`. `npm audit --omit=dev` is at 0. The booking and capture schemas now live in `lib/validations/`. Not checked: the forms in a real browser against Supabase; submit each once on the preview.
 
 **Left after #17:** Block 2 (design and accessibility audit, Lighthouse, plain-language pass) and Block 5 (partner research CSV), each as its own PR stacked on `fable/partsab-reference-hub-polish`. The Gemini runner scaffold from section 8 is also still not built.
+
+### Session of Nov 17, 2026: status
+
+The stack (#6 to #17) is merged and live. #13 (partners) is still a draft and was not merged.
+
+**Done**
+- **#18, merged.** The "Written and reviewed by" byline, schema `reviewedBy` and the credential after the reviewer's name show only when `reviewed_by` names Erekle. `docs/sheet-writer.md` test step now uses `chatgpt` / `not-sure`.
+- **#19, open: Block 2, design and accessibility.** 18px text floor, no sideways scroll at 375px, solid focus rings, 48px tap targets, consent errors linked to their boxes, WCAG 2.5.3 fix on the sticky call button, keyboard-scrollable IRMAA table, plain-language pass (mean grade 7.8 to 7.4, no fact changed). Before/after Lighthouse and 375px numbers are in the PR.
+
+**Not started, in this order. One PR each, off `main`:**
+
+1. **Town pages.** Hackensack, Englewood, Teaneck, Paramus, Fair Lawn, Palisades Park, Jersey City, Hoboken, Union City, West New York, North Bergen, Weehawken, Brooklyn (Brighton Beach / Sheepshead Bay, Russian-language help) and Queens (Forest Hills / Rego Park). Each page needs real local substance, every item from a public source with a URL and the date checked: NJ SHIP or HIICAP contact, county office on aging, nearest Social Security office, the town's public library or senior center, how Erekle serves the town (phone, video, in person only where true; ask him), languages, the form and tap-to-call, LocalBusiness `areaServed`, and links to 3 answer pages. TPMO: Hudson County and NYC pages are outside Bergen, so they must state the Bergen counts "in Bergen County, NJ". Add each route to `ROUTE_TPMO_AREAS` (or make `usesFallbackScope` cover it) and to the ZIP route list the build guard checks. Add to the sitemap. No two pages may share more than about 30% identical body text; add a check for that to `npm test`. Do not invent an address, phone number or hours: if a source cannot be found, leave the item out and say so in the PR.
+2. **Block 5, partner research (docs PR).** Re-verify the 48 unverified rows in `docs/ai-visibility/referral-targets.csv` (organization exists, website, contact page; drop dead ones). New CSV with 100+ rows: senior-focused primary care centers and medical groups in Bergen, Hudson and NYC (community or growth team contact pages), senior living communities in Bergen and Hudson, and every Bergen County municipal senior program. Columns: name, type, town, website, contact page, why they fit, first-message draft (education-first, no fees, no patient lists), priority 1 to 5, verified Y/N. Public information only.
+3. **#13 (partners).** Merge `main` into `fable/partners` so it is merge-ready, and re-add the share card #17 gave every page (`pageMetadata()` / `withShareCard()`). Keep it a draft. Do not merge.
+4. **Content calendar (docs PR, can share a PR with item 2).** 4 weeks of drafts: Google Business Profile, Nextdoor business page, LinkedIn and Facebook, 2 posts a week each. Each post links to one specific page (answer pages, glossary, calendar, town pages). Short, calm, for readers 64+, no hype, no plan or carrier names, no "best", and the TPMO sentence wherever CMS requires it (ask Pinnacle whether profile posts count; question 6a in section 4). Include 4 posts about Georgian and Russian help.
+
+Tools that helped with Block 2: a 375px sweep with axe-core over every sitemap URL, and mobile Lighthouse, both run against `next build` + `next start` on port 3200. Rerun them after the town pages.
+
+### Later on Nov 17 (after a computer crash): items 1 to 4 above are built
+
+The PC crashed mid-session. Nothing was lost: the tree was clean and #18 and #19 were already pushed. Then:
+
+- **Town pages:** branch `town-pages`, pushed, **PR not opened yet** (`gh` was logged out after the crash). Covers all 14 towns, each with its own copy, local help read on official pages (with the URL and date on the page), and 3 related answers.
+  - **TPMO:** Hudson towns map to a new `hudson-nj` area with a `null` count. They, Brooklyn and Queens state the Bergen counts "in Bergen County, NJ".
+  - **New test:** `npm run test:locations`. It caps overlap between any two location pages at 30%; the highest now is 22.1%.
+  - **Not verified, so left out:** the Weehawken library, the Queens library branches, and Social Security office addresses (each page links ssa.gov/locator instead).
+  - **Questions for Erekle are in the PR:** where he meets in person, the site-wide `areaServed` list, and a Hudson recount.
+  - **`next build` could not run locally** (out of memory after the crash). Check CI on the PR.
+- **Block 5:** branch `block5/partner-research`, pushed, PR not opened. `docs/ai-visibility/partner-research-2026-11.csv` has 111 rows, all from official lists: 61 Bergen senior programs and 29 Bergen assisted living homes (Bergen County Key Services Guide 2024), plus 21 NYC Aging centers in Brighton Beach, Sheepshead Bay, Rego Park and Forest Hills (NYC Open Data).
+  - **The 48 rows:** 8 are now verified, with two phone numbers corrected. 40 still have only directory listings and say how to confirm them. None was dropped.
+  - **Not done:** senior-focused primary care practices, and Hudson senior living and municipal programs (no official list found).
+- **#13 partners:** main merged into `fable/partners` and `/partners` given a share card. Still a draft, not merged.
+- **Content calendar:** branch `docs/content-calendar`, pushed, PR not opened. `docs/ai-visibility/content-calendar-4-weeks.md` has 32 posts, 4 of them about Georgian and Russian help. It includes the TPMO sentence pending Pinnacle question 6a.
+
+**Windows note:** Git for Windows checks files out with CRLF. `scripts/test-glossary.mjs` failed on Windows only; the fix is in the town-pages branch.
+
+### Nov 17 evening: SEO, AI and voice session (done, waiting for review)
+
+Every PR below passes CI and has a Vercel preview. Nothing is merged without Erekle's "go".
+
+- **#23** Hudson TPMO count (6 organizations, 39 products in your area on the 6 Hudson town pages).
+- **#24** audit, `docs/seo-audit-2026-11.md`. The site never appeared in 20 test searches, including its own name. Technical health is good.
+- **#25** fixes: checklist FAQ now visible, `seo_title`/`seo_description` on 28 pages, `/plans` title, `/contact` content, honest sitemap dates.
+- **#26** voice: 146 H2s rewritten as spoken questions with 40–50 word answers (17 towns, 20 answer pages), Speakable schema, the `/medicare-questions` hub (30 Q&As), and the Text button behind `features.textButton`.
+- **#27** off-site kit: what each listing feeds, Nextdoor steps, hours set to "by appointment" pending Erekle's decision.
+- **#28** `llms.txt` and About refresh. Merge after #26: `llms.txt` links `/medicare-questions`. After #26, add the hub link to the About page.
+
+**Erekle's by-hand list:**
+- Verify Google Search Console and Bing Webmaster Tools (section 7), submit the sitemap, and request indexing.
+- Claim the listings in #27, medicareagentshub first.
+- Native review of `/ka` (Erekle) and `/ru` (a fluent reviewer).
+- Get a free PageSpeed/CrUX API key for real-user Core Web Vitals.
+- Recheck Bergen for MA-only plans (currently 31).

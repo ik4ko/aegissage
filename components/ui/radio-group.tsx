@@ -20,7 +20,7 @@ const RadioGroupItem = React.forwardRef<
     ref={ref}
     className={cn(
       'grid h-7 w-7 shrink-0 place-items-center rounded-full border-2 border-ink/35 bg-paper',
-      'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30',
+      'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy',
       'data-[state=checked]:border-navy',
       className,
     )}

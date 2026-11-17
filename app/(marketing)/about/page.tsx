@@ -18,7 +18,7 @@ import { breadcrumbJsonLd } from '@/lib/seo';
 // ~150 chars: Google truncates a search-result description around there.
 const LANGUAGES = advisor.languages.map((language) => language.name);
 const LANGUAGE_LIST = `${LANGUAGES.slice(0, -1).join(', ')} and ${LANGUAGES[LANGUAGES.length - 1]}`;
-const DESCRIPTION = `${advisor.name} of ${site.searchName}, licensed independent insurance broker in ${advisor.basedIn}. Medicare and Medicaid only, in ${LANGUAGE_LIST}, for people 65+ and anyone with Parts A and B.`;
+const DESCRIPTION = `${advisor.name} of ${site.searchName}: licensed independent insurance broker in ${advisor.basedIn}. Medicare help in ${LANGUAGE_LIST}.`;
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent(`Meet ${advisor.name}`)}` +
   `&kicker=${encodeURIComponent('The person behind the phone number')}` +
@@ -110,7 +110,7 @@ export default function AboutPage() {
                 <Languages className="h-5 w-5 text-sage" aria-hidden="true" />
                 <Link
                   href="/medicare-help-georgian-russian"
-                  className="underline decoration-line underline-offset-4 hover:decoration-navy"
+                  className="inline-flex min-h-touch items-center underline decoration-line underline-offset-4 hover:decoration-navy"
                 >
                   {LANGUAGE_LIST}
                 </Link>
@@ -223,7 +223,12 @@ export default function AboutPage() {
           <ul>
             {advisor.licenseLookup.map((lookup) => (
               <li key={lookup.href}>
-                <a href={lookup.href} rel="noopener noreferrer" target="_blank">
+                <a
+                  href={lookup.href}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className="link-row"
+                >
                   {lookup.label}
                 </a>
               </li>
@@ -264,12 +269,26 @@ export default function AboutPage() {
             when the right move is to look at something I do not carry.
           </p>
 
+          <h2>Where to read before you call</h2>
+          <p>
+            Most questions have a plain answer already written down. The{' '}
+            <Link href="/answers">Medicare answers</Link> take one question per page, the{' '}
+            <Link href="/medicare-glossary">glossary</Link> explains 40 terms in two or three
+            sentences each, and the{' '}
+            <Link href="/medicare-enrollment-calendar">enrollment calendar</Link> lists every
+            window and when it opens. For the short version, the{' '}
+            <Link href="/medicare-questions">30 Medicare questions</Link> page answers each
+            one in a few sentences. Each one names the official source it was checked
+            against.
+          </p>
+
           <h2>How I actually work</h2>
           <ul>
             <li>
-              <strong>Over the phone, or I come to you.</strong> Whichever you prefer. If
-              you would rather do this at your own kitchen table than on the phone, say so
-              and I will come out.
+              <strong>By phone, by video, or in person.</strong> In Bergen and Hudson
+              counties I can come to you, and if you would rather do this at your own
+              kitchen table than on the phone, say so. For New York City and Philadelphia we
+              talk by phone or video call.
             </li>
             <li>
               <strong>Your doctors and your prescriptions come first.</strong> Before
@@ -341,7 +360,7 @@ export default function AboutPage() {
               <li key={state.code}>
                 <Link
                   href={`/plans/${state.slug}`}
-                  className="flex min-h-touch items-center rounded-xl border-2 border-line bg-cream px-4 text-base font-semibold text-ink-soft transition-colors hover:border-navy/50 hover:text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+                  className="flex min-h-touch items-center rounded-xl border-2 border-line bg-cream px-4 text-base font-semibold text-ink-soft transition-colors hover:border-navy/50 hover:text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
                 >
                   {state.name}
                 </Link>
