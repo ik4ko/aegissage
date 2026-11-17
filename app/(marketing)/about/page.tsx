@@ -271,7 +271,9 @@ export default function AboutPage() {
             <Link href="/medicare-glossary">glossary</Link> explains 40 terms in two or three
             sentences each, and the{' '}
             <Link href="/medicare-enrollment-calendar">enrollment calendar</Link> lists every
-            window and when it opens. Each one names the official source it was checked
+            window and when it opens. For the short version, the{' '}
+            <Link href="/medicare-questions">30 Medicare questions</Link> page answers each
+            one in a few sentences. Each one names the official source it was checked
             against.
           </p>
 
