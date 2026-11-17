@@ -264,12 +264,24 @@ export default function AboutPage() {
             when the right move is to look at something I do not carry.
           </p>
 
+          <h2>Where to read before you call</h2>
+          <p>
+            Most questions have a plain answer already written down. The{' '}
+            <Link href="/answers">Medicare answers</Link> take one question per page, the{' '}
+            <Link href="/medicare-glossary">glossary</Link> explains 40 terms in two or three
+            sentences each, and the{' '}
+            <Link href="/medicare-enrollment-calendar">enrollment calendar</Link> lists every
+            window and when it opens. Each one names the official source it was checked
+            against.
+          </p>
+
           <h2>How I actually work</h2>
           <ul>
             <li>
-              <strong>Over the phone, or I come to you.</strong> Whichever you prefer. If
-              you would rather do this at your own kitchen table than on the phone, say so
-              and I will come out.
+              <strong>By phone, by video, or in person.</strong> In Bergen and Hudson
+              counties I can come to you, and if you would rather do this at your own
+              kitchen table than on the phone, say so. For New York City and Philadelphia we
+              talk by phone or video call.
             </li>
             <li>
               <strong>Your doctors and your prescriptions come first.</strong> Before
