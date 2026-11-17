@@ -119,6 +119,13 @@ export const site = {
   name: 'Aegis Sage',
   legacyName: 'AegisSage',
   /**
+   * The name to search for. "Aegis Sage" alone returns an unrelated company
+   * (Aegis Ventures), so titles, the homepage and About H1, meta descriptions
+   * and schema `alternateName` pair this with "Erekle Niniashvili". The legal
+   * brand name stays `name` above; this is not a second brand.
+   */
+  searchName: 'Aegis Sage Medicare',
+  /**
    * ── Canonical host ──────────────────────────────────────────────────────
    * `www.aegissage.com` is the host Vercel serves with a 200. The apex
    * `aegissage.com` issues a 308 to it on every path, verified live.
@@ -149,16 +156,16 @@ export const site = {
    * 2026 and this line was the one place that hadn't caught up).
    */
   description:
-    `Independent Medicare help from Erekle Niniashvili. Plain-English guides, a free eligibility check, and someone you can call or text with a question. Based in Edgewater, New Jersey and licensed in ${advisor.licensedStates.length} states.`,
+    `Aegis Sage Medicare: independent Medicare help from Erekle Niniashvili. Plain-English guides, a free eligibility check, and someone you can call or text with a question. Based in Edgewater, New Jersey and licensed in ${advisor.licensedStates.length} states.`,
   /**
    * Search-result description, ~150 chars. `description` above is longer and
    * still used for Open Graph and Twitter, where there is room for it. Google
    * truncates around 155, so the homepage was being cut mid-sentence.
    */
   metaDescription:
-    'Independent Medicare help from Erekle Niniashvili. Plain-English guides, a free eligibility check, and a real person you can call or text.',
+    'Aegis Sage Medicare: independent Medicare help from Erekle Niniashvili, licensed insurance broker in Edgewater, NJ. A real person you can call or text.',
   /** Search-result title. The full tagline runs 91 chars in <title>. */
-  shortTitle: 'Aegis Sage — Independent Medicare help in plain English',
+  shortTitle: 'Aegis Sage Medicare | Erekle Niniashvili, licensed insurance broker',
   serviceArea: 'Bergen and Hudson counties in New Jersey, New York City, and Philadelphia',
 } as const;
 
@@ -376,9 +383,7 @@ export const tpmoCountsByArea: Record<TpmoAreaKey, TpmoAreaCount | null> = {
     Only" on, ZIP 07020. Organizations: Aetna, Clover, Humana,
     UnitedHealthcare, Wellpoint.
 
-    ── CONFIRM BEFORE MERGE: productCount 31 or 26 ───────────────────────
-    His note read "25 MA/MAPD + 5 SNP if separate + 1 PDP". 31 assumes the
-    5 SNPs are NOT already inside the 25. If they are, this is 26.
+    31 = 25 MA/MAPD + 5 SNP + 1 PDP. Erekle confirmed 31 on Nov 16 2026.
   */
   'bergen-nj': {
     organizationCount: 5,
