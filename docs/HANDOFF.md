@@ -1,11 +1,13 @@
 # Handoff: AI-visibility work, Nov 15–16 2026
 
+Last updated Monday Nov 16, late evening. Section 8 lists what is done and not done.
+
 Nothing is merged. Every change is in an open pull request for you to review
 on its Vercel preview.
 
 ## 1. Pull requests and merge order
 
-Merge in this order. #6 to #9 and #11 are stacked: each one's base is the
+Merge in this order. #6 to #9 and #11 to #13 are stacked: each one's base is the
 branch before it, so after you merge one, GitHub retargets the next to `main`.
 #10 is independent.
 
@@ -16,6 +18,8 @@ branch before it, so after you merge one, GitHub retargets the next to `main`.
 | 3 | #8 | `fable/ai-visibility-answers` | 10 answer pages under `/answers`, with sources, review dates and FAQ schema |
 | 4 | #9 | `fable/ai-visibility-attribution` | "How did you find us?", Part A/B question on the contact form, AI referrer capture, GA4 setup notes |
 | 5 | #11 | `fable/ai-visibility-forms-medigap` | Part A/B on homepage capture and booking step, Medigap line (NJ only), Sheet writer notes |
+| 6 | #12 | `fable/ai-visibility-discoverability` | robots.txt crawler allow-list, "Aegis Sage Medicare" + "Erekle Niniashvili" in titles, H1s, descriptions and schema, IndexNow |
+| 7 | #13 (draft) | `fable/partners` | `/partners` page, four partner one-pagers, compliance guardrails. Hold for Pinnacle. |
 | any | #10 | `fable/ai-visibility-offsite-kit` | Docs only: off-site kit, AI panel, referral list, this file |
 
 ### What to check on each preview
@@ -41,6 +45,15 @@ branch before it, so after you merge one, GitHub retargets the next to `main`.
 - `/` and `/book`: Part A/B buttons above the consent box; the form submits with none chosen; the calendar still opens after the booking step.
 - `/plans/new-jersey`, `/medicare-edgewater`: Medigap sentence present. `/plans/new-york`, `/medicare-philadelphia`: absent.
 
+**#12**
+- `/` and `/about`: the small line above the main heading reads "Aegis Sage Medicare · Erekle Niniashvili". The browser tab title on `/` starts "Aegis Sage Medicare | Erekle Niniashvili".
+- `/robots.txt` lists Googlebot, Bingbot, Claude-SearchBot, Claude-User, ClaudeBot, OAI-SearchBot, ChatGPT-User, GPTBot, PerplexityBot, Perplexity-User.
+- After it is merged and deployed: GitHub → Actions → "IndexNow ping" shows a green run.
+
+**#13**
+- `/partners`: read it as a practice manager would. No carrier names, no fees, no lists.
+- `docs/partners/compliance-guardrails.md`: send the questions at the bottom to Pinnacle before using any one-pager.
+
 **#10**
 - `docs/ai-visibility/off-site-kit.md`: profile copy now carries the TPMO sentence with 5 and 31.
 - `docs/ai-visibility/referral-targets.csv`: see section 6.
@@ -49,7 +62,12 @@ branch before it, so after you merge one, GitHub retargets the next to `main`.
 
 | Item | Owner | Detail |
 |---|---|---|
-| Product count: 31 or 26 | You | `productCount` in `tpmoCountsByArea['bergen-nj']`, `lib/site.ts`. 31 assumes the 5 SNPs are separate from the 25. Also change the number in `docs/ai-visibility/off-site-kit.md` and any profile you pasted it into. |
+| Product count | Closed | 31, confirmed by you Nov 16. The "confirm" note at the top of PR #6 is out of date. |
+| "in Bergen County, NJ" fallback | Pinnacle | Approved by you pending their answer (question 2 in section 4). |
+| Next.js security notice | Claude Code | `next build` on 16.4.2 sometimes stops with a known-vulnerability notice and passes on retry. Upgrade Next.js in its own PR and re-run all checks. |
+| Partner research CSV | Claude Code | Not built: senior-focused primary care centers (Bergen, Hudson, NYC), senior living communities (Bergen, Hudson), Bergen municipal senior programs, with a `verified` column. |
+| Partner kit review | Pinnacle | Questions at the end of `docs/partners/compliance-guardrails.md` (PR #13). |
+| Bing Webmaster Tools and Search Console | You | Section 7. |
 | NYC and Philadelphia counts | You | Section 3. |
 | Medigap carriers for NY and PA | You | Replace `null` in `lib/medigap.ts`. |
 | Georgian review of `/ka` | You | Then set `reviewed: true`. |
@@ -137,3 +155,97 @@ Never enter 0, a guess or last year's number. Leave `null` until the recount is 
 - **48 rows were not re-verified.** They have no website on record, only a directory listing. Confirm each on the organization's own site or by phone before writing.
 
 Start with priority 5 and 4 rows that are verified. Drafts are education-first and state no referral fees.
+
+## 7. Discoverability checklist
+
+Claude searches with Brave, ChatGPT with Bing, Gemini with Google. Each has
+to find and read the site on its own.
+
+### One-time setup (after #12 is merged and deployed)
+
+**Google Search Console**
+1. Go to search.google.com/search-console, signed in as contact@aegissage.com.
+2. Add property → Domain → `aegissage.com`. Add the TXT record it shows at your domain's DNS provider, then Verify. (If DNS is a problem, use URL prefix `https://www.aegissage.com` and the HTML tag method, and ask Claude Code to add the tag.)
+3. Sitemaps → enter `sitemap.xml` → Submit.
+4. URL inspection → paste the homepage, `/about` and two answer pages → Request indexing for each.
+
+**Bing Webmaster Tools** (feeds ChatGPT search and Copilot)
+1. Go to bing.com/webmasters, sign in.
+2. Choose "Import from Google Search Console". It copies the verified site and sitemap in one step.
+3. Sitemaps → confirm `https://www.aegissage.com/sitemap.xml` is listed.
+4. IndexNow → the page should show submissions after the next deploy. If not, run the "IndexNow ping" workflow by hand from the GitHub Actions tab.
+
+**Brave** has no webmaster console. It finds the site through links and its own crawl. What helps: the profiles in section 2, the medicareagentshub listing, and any local press link.
+
+**medicareagentshub.com listing.** That directory came up in nearly every local agent search I ran on Nov 15. Open the site, find its add or claim listing page, and enter exactly: Aegis Sage, Erekle Niniashvili, licensed insurance broker, Edgewater NJ, (551) 202-9079, contact@aegissage.com, aegissage.com, NPN 21599052. Use the short profile description from `docs/ai-visibility/off-site-kit.md`. If it asks for payment, stop and decide whether it is worth it; I did not check its terms. Then paste the listing URL into `profiles.medicareAgentsHub` in `lib/site.ts`.
+
+### Weekly, 15 minutes, same day each week
+
+Use a private window, signed out. Record rank or "not found" in the panel sheet (`docs/ai-visibility/ai-panel-template.csv`).
+
+| # | Query | Brave (search.brave.com) | Bing | Google |
+|---|---|---|---|---|
+| 1 | Aegis Sage Medicare | | | |
+| 2 | Erekle Niniashvili | | | |
+| 3 | Erekle Niniashvili Medicare broker | | | |
+| 4 | Medicare broker Edgewater NJ | | | |
+| 5 | Medicare agent Fort Lee NJ | | | |
+| 6 | Medicare broker Bergen County NJ | | | |
+| 7 | Georgian speaking Medicare agent New Jersey | | | |
+| 8 | Russian speaking Medicare broker Bergen County | | | |
+| 9 | turning 65 Medicare New Jersey what to do | | | |
+| 10 | Medicare Advantage plan ending non-renewal letter what to do | | | |
+
+Then the same three checks in the assistants, from the manual panel routine: ask Claude, ChatGPT and Gemini query 4 and query 7 and note whether Aegis Sage is named and what source is cited.
+
+What to expect: queries 1 to 3 should show the site within one to three weeks of indexing. Queries 4 to 8 depend on profiles, reviews and links, and take longer. If query 1 still shows the unrelated company first after a month, the profiles are the lever, not the site.
+
+### Google review request (no incentives)
+
+Send only to people you have already helped, one at a time, never in bulk, and never with anything offered in return. Do not ask for a positive review, do not suggest wording, and do not ask anyone to mention a plan or company.
+
+Text message:
+> Hi [first name], this is Erekle from Aegis Sage. If you have a minute, an honest review on Google helps other people find me. Here is the link: [Google review link]. No obligation at all, and thank you either way.
+
+Email:
+> Subject: A small favor, if you have a minute
+>
+> Hi [first name],
+>
+> I am glad I could help with your Medicare questions. If you are willing, an honest review on Google helps other people in the area find me: [Google review link]
+>
+> Please write whatever you think, and leave out any personal health or plan details. There is no obligation, and nothing changes either way.
+>
+> Thank you,
+> Erekle Niniashvili, Aegis Sage, (551) 202-9079
+
+Get the link from your Google Business Profile: "Ask for reviews" → copy link. Ask Pinnacle whether they have any restriction on review requests to enrolled clients before you start.
+
+## 8. Done and not done, as of Nov 16 night
+
+**Done, in open PRs**
+- TPMO: Bergen recount (5 organizations, 31 products), per-area slots, "in Bergen County, NJ" fallback, CLAUDE.md recount rule (#6)
+- sameAs for agency and person (#6)
+- Georgian and Russian pages, unreviewed and noindex (#7)
+- 10 answer pages (#8)
+- Attribution and Part A/B on all three forms (#9, #11)
+- Medigap line, New Jersey only (#11)
+- Sheet writer snippet, `docs/sheet-writer.md` (#11)
+- robots.txt, search name, IndexNow, no-JavaScript and sitemap checks (#12)
+- /partners page, one-pagers, guardrails (#13, draft)
+- Off-site kit, AI panel, 97-row referral list, this handoff (#10)
+
+**Not done**
+- Partner research CSV (Priority 2d)
+- Gemini runner scaffold
+- Next.js security upgrade
+- Re-verifying the 48 referral rows that have no website on record
+- NYC and Philadelphia counts, NY and PA Medigap carriers (waiting on you)
+- Translation reviews (waiting on you)
+- Pasting the Sheet snippet (you)
+- Everything in section 7's one-time setup (you)
+
+**Prompts to finish the rest in Claude Code**
+- "Read docs/HANDOFF.md. Build the partner research CSV described in the open items: public information only, a `verified` column, no invented rows. Open a PR against main."
+- "Upgrade Next.js to the patched release, run typecheck, lint, test, build and validate, and open a PR. Do not change anything else."
+- "Read docs/HANDOFF.md section 2. Scaffold the Gemini runner, disabled by default, with a README on enabling it at no cost. Open a PR."
