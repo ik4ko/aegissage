@@ -53,8 +53,8 @@ export async function generateMetadata({
     `&subtitle=${encodeURIComponent(article.description)}`;
 
   return {
-    title: article.title,
-    description: article.description,
+    title: article.seo_title ?? article.title,
+    description: article.seo_description ?? article.description,
     alternates: { canonical: article.href },
     openGraph: {
       type: 'article',

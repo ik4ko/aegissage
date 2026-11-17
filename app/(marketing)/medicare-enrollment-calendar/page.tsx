@@ -26,10 +26,10 @@ import { formatDate } from '@/lib/utils';
  * Server-rendered in full: nothing here needs JavaScript to be read.
  */
 
-const TITLE = 'Medicare enrollment calendar: every window and when it opens';
+const TITLE = 'Medicare enrollment calendar: every window';
 const H1 = 'Medicare enrollment calendar';
 const DESCRIPTION =
-  'Every Medicare enrollment window in one place: when it opens, who it is for, what you can change and when coverage starts. Written as rules that hold every year, each with its official source.';
+  'Every Medicare enrollment window in one place: when it opens, who it is for, what you can change and when coverage starts, each with its official source.';
 
 export const metadata: Metadata = pageMetadata({
   title: TITLE,
