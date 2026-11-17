@@ -7,7 +7,7 @@ on its Vercel preview.
 
 ## 1. Pull requests and merge order
 
-Merge in this order. #6 to #9 and #11 to #15 are stacked: each one's base is the
+Merge in this order. #6 to #9 and #11 to #16 are stacked: each one's base is the
 branch before it, so after you merge one, GitHub retargets the next to `main`.
 #10 is independent.
 
@@ -22,6 +22,7 @@ branch before it, so after you merge one, GitHub retargets the next to `main`.
 | 7 | #13 (draft) | `fable/partners` | `/partners` page, four partner one-pagers, compliance guardrails. Hold for Pinnacle. |
 | 8 | #14 | `fable/trust-credentials` | Bylines, `/about#credentials`, `/how-we-are-paid`, `/editorial-policy`, `/accessibility`, privacy additions, credential schema |
 | 9 | #15 | `fable/nextjs-security-upgrade` | Next.js 16.4.2 to 16.4.6, the security patch. Dependency files only. |
+| 10 | #16 | `fable/zod4-upgrade` | zod 3 to 4 (security advisory), form resolver upgrade, 29 lead form validation tests, CLAUDE.md stack line |
 | any | #10 | `fable/ai-visibility-offsite-kit` | Docs only: off-site kit, AI panel, referral list, this file |
 
 ### What to check on each preview
@@ -67,7 +68,7 @@ branch before it, so after you merge one, GitHub retargets the next to `main`.
 | Product count | Closed | 31, confirmed by you Nov 16. The "confirm" note at the top of PR #6 is out of date. |
 | "in Bergen County, NJ" fallback | Pinnacle | Approved by you pending their answer (question 2 in section 4). |
 | Next.js security notice | Done, PR #15 | Upgraded to 16.4.6. Three clean builds in a row, no notice. |
-| zod security advisory | You decide, then Claude Code | `npm audit --omit=dev` reports one high-severity advisory in zod (GHSA-mrhx-c7xc-m3w5). The only fix is the zod 4 major version, which touches lead form validation. CI runs that audit as a blocking step, so CI fails there on any PR against `main` until it is handled. Prompt in section 9. |
+| zod security advisory | Done, PR #16 | zod 4.6.7. `npm audit --omit=dev` reports 0 vulnerabilities. Submit each of the three forms once on the #16 preview before merging. |
 | Partner research CSV | Claude Code | Not built: senior-focused primary care centers (Bergen, Hudson, NYC), senior living communities (Bergen, Hudson), Bergen municipal senior programs, with a `verified` column. |
 | Partner kit review | Pinnacle | Questions at the end of `docs/partners/compliance-guardrails.md` (PR #13). |
 | Bing Webmaster Tools and Search Console | You | Section 7. |
@@ -238,11 +239,11 @@ Get the link from your Google Business Profile: "Ask for reviews" → copy link.
 - /partners page, one-pagers, guardrails (#13, draft)
 - Off-site kit, AI panel, 97-row referral list, this handoff (#10)
 - Next.js security upgrade to 16.4.6 (#15)
+- zod 4 upgrade and lead form validation tests (#16)
 
 **Not done**
 - Partner research CSV (Priority 2d)
 - Gemini runner scaffold
-- zod 4 upgrade (new, see section 2)
 - Re-verifying the 48 referral rows that have no website on record
 - NYC and Philadelphia counts, NY and PA Medigap carriers (waiting on you)
 - Translation reviews (waiting on you)
@@ -256,7 +257,7 @@ Get the link from your Google Business Profile: "Ask for reviews" → copy link.
 
 ## 9. "Expert team" order of Nov 16, 10pm: status
 
-Blocks 1 and 6 are built. Blocks 2 to 5 are not started.
+Blocks 1 and 6 and the zod follow-up are built. Blocks 2 to 5 are not started.
 
 **Block 1, done (PR #14).** Read the "statements made in your name" list at the top of that PR before merging: the byline, the AI-drafting disclosure, the compensation sentences, the Tag Manager check.
 
@@ -266,5 +267,5 @@ Blocks 1 and 6 are built. Blocks 2 to 5 are not started.
 - **Block 3, reference hub.** "Read CLAUDE.md. Build /medicare-glossary with 40 core terms, each with an anchor, a 2 to 3 sentence definition, a medicare.gov or cms.gov source and DefinedTerm schema. Build /medicare-enrollment-calendar with every enrollment window as a rule, not a year-specific date, all sourced. Add 10 answer pages under content/answers on: Medicare while still working; COBRA and Medicare; retiree coverage; VA and Medicare; moving between NJ, NY and PA; Medigap underwriting basics in NJ and NY; what to bring to a Medicare appointment; how to check whether a doctor is in a plan; Medicare with Medicaid; how to switch plans. Follow the build rules the content guard enforces. Link glossary terms to their anchors and give every answer page 3 related answers. Verify every source URL loads. Stop and ask about any state rule you cannot source."
 - **Block 4, technical polish.** "Add a custom 404 with links to the main sections and tap-to-call. Confirm every page type has a canonical tag and Open Graph and Twitter cards with a share image. Crawl the built site for broken internal and external links and fix them. Check alt text and image compression."
 - **Block 5, partner research CSV.** Prompt is in section 8.
-- **Block 6, Next.js security upgrade. Done Nov 16 (PR #15, stacked on #14).** `next` and `eslint-config-next` 16.4.2 to 16.4.6; nothing else changed. Advisory GHSA-mfr8-8qww-v76h covers 16.3.0 to 16.4.4. Typecheck, lint, tests, build (three clean runs) and the site crawl (76 URLs, 81 internal links) pass. Stack the next block on `fable/nextjs-security-upgrade`.
-- **Follow-up found during Block 6, not started: zod.** "Read CLAUDE.md. `npm audit --omit=dev` reports GHSA-mrhx-c7xc-m3w5 in zod 3. Upgrade zod to the patched 4.x release and `@hookform/resolvers` to a version that supports it. Change no validation rule, consent wording or form field. Submit each lead form in a local build and confirm the consent boxes still start unchecked and are stored separately. Run typecheck, lint, test, build and validate, and open a PR." 
+- **Block 6, Next.js security upgrade. Done Nov 16 (PR #15, stacked on #14).** `next` and `eslint-config-next` 16.4.2 to 16.4.6; nothing else changed. Advisory GHSA-mfr8-8qww-v76h covers 16.3.0 to 16.4.4. Typecheck, lint, tests, build (three clean runs) and the site crawl (76 URLs, 81 internal links) pass.
+- **Follow-up to Block 6, zod. Done Nov 16 (PR #16, stacked on #15).** zod 3.25 to 4.6.7 and `@hookform/resolvers` 3.10 to 5.9.2. Required fields, visitor-facing messages, the optional Part A/B question, consent rules and `scoreLead()` inputs are unchanged, checked against a 716-input baseline recorded under zod 3. `scripts/test-lead-forms.mjs` (29 checks) is in `npm test` and CI. Also fixed: the CRM prohibited-field guard never matched the camelCase keys `medicareNumber` and `dateOfBirth`. `npm audit --omit=dev` is at 0. The booking and capture schemas now live in `lib/validations/`. Not checked: the forms in a real browser against Supabase; submit each once on the preview. Stack the next block on `fable/zod4-upgrade`.
