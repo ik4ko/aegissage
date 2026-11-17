@@ -96,6 +96,25 @@ Do not publish this list or derive a count from it; counts come from the recount
   fluent reviewer (Russian) signs off in the frontmatter.
 - No fake reviews, no review incentives, no undisclosed forum posting.
 
+## Reference hub (glossary, enrollment calendar, linking)
+- /medicare-glossary reads lib/medicare-glossary.ts: 40 terms, each 2 to 3
+  plain sentences with a medicare.gov or cms.gov source. No dollar amounts,
+  no years. Never change a term's `slug`; it is a public anchor.
+- /medicare-enrollment-calendar reads lib/enrollment-calendar.ts. Every
+  window is a rule ("October 15 to December 7 each year"), never a
+  year-specific date, and names its official source. A state rule cites that
+  state's own agency.
+- Answer pages link the first mention of each glossary term automatically
+  (lib/glossary-autolink.ts). Each answer page lists exactly three other
+  answer slugs under `related:`; the build fails otherwise.
+- A new answer page must also be added to the answer list in lib/tpmo.ts, or
+  the build fails. A page about one place outside Bergen County also goes in
+  ROUTE_TPMO_AREAS.
+- Every page gets its own share card: use `pageMetadata()` for a new page or
+  `withShareCard()` around existing metadata (lib/page-metadata.ts).
+- `npm run check:links` checks external links against the built site. Run it
+  by hand before a content release; it needs the open internet.
+
 ## Crawler and search policy
 - robots.txt (app/robots.ts) allows every public page to search engines, AI
   search crawlers and model-training crawlers alike: Googlebot, Bingbot,

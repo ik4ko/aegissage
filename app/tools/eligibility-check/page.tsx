@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import { EligibilityQuiz } from '@/components/tools/eligibility-quiz';
 import { JsonLd } from '@/components/seo/json-ld';
 import { Badge } from '@/components/ui/badge';
@@ -9,23 +10,26 @@ const TITLE = 'Which Medicare enrollment window is yours?';
 const DESCRIPTION =
   'Five questions, one per screen. A plain-English read of which Medicare enrollment window applies to your situation and what happens if you miss it. No signup, no email required.';
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/tools/eligibility-check' },
-  openGraph: {
+export const metadata: Metadata = withShareCard(
+  {
     title: TITLE,
     description: DESCRIPTION,
-    images: [
-      {
-        url: `/api/og?title=${encodeURIComponent(TITLE)}&kicker=${encodeURIComponent('Free · 2 minutes · No email')}&subtitle=${encodeURIComponent('Five questions. One per screen. Straight answer at the end.')}`,
-        width: 1200,
-        height: 630,
-        alt: TITLE,
-      },
-    ],
+    alternates: { canonical: '/tools/eligibility-check' },
+    openGraph: {
+      title: TITLE,
+      description: DESCRIPTION,
+      images: [
+        {
+          url: `/api/og?title=${encodeURIComponent(TITLE)}&kicker=${encodeURIComponent('Free · 2 minutes · No email')}&subtitle=${encodeURIComponent('Five questions. One per screen. Straight answer at the end.')}`,
+          width: 1200,
+          height: 630,
+          alt: TITLE,
+        },
+      ],
+    },
   },
-};
+  { path: '/tools/eligibility-check' },
+);
 
 export default function EligibilityCheckPage() {
   return (

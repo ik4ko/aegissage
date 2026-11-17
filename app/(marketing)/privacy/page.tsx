@@ -1,14 +1,18 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import { JsonLd } from '@/components/seo/json-ld';
 import { advisor, compliance, site } from '@/lib/site';
 import { breadcrumbJsonLd } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Privacy notice',
-  description: `How ${site.name} handles the information you send through this site.`,
-  alternates: { canonical: '/privacy' },
-  robots: { index: true, follow: true },
-};
+export const metadata: Metadata = withShareCard(
+  {
+    title: 'Privacy notice',
+    description: `How ${site.name} handles the information you send through this site.`,
+    alternates: { canonical: '/privacy' },
+    robots: { index: true, follow: true },
+  },
+  { path: '/privacy', kicker: 'Privacy' },
+);
 
 /**
  * Plain-language privacy notice. Linked from the disclaimer footer, which is

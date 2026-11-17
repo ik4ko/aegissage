@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import Link from 'next/link';
 import { JsonLd } from '@/components/seo/json-ld';
 import { breadcrumbJsonLd } from '@/lib/seo';
@@ -9,12 +10,15 @@ const DESCRIPTION = 'A plain-language account of how Erekle Niniashvili of Aegis
 /** Date this page was last reviewed by Erekle. Update it when the text changes. */
 const REVIEWED = 'November 16, 2026';
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/how-we-are-paid' },
-  openGraph: { type: 'website', url: `${site.url}/how-we-are-paid`, title: TITLE, description: DESCRIPTION },
-};
+export const metadata: Metadata = withShareCard(
+  {
+    title: TITLE,
+    description: DESCRIPTION,
+    alternates: { canonical: '/how-we-are-paid' },
+    openGraph: { type: 'website', url: `${site.url}/how-we-are-paid`, title: TITLE, description: DESCRIPTION },
+  },
+  { path: '/how-we-are-paid', kicker: 'How I am paid' },
+);
 
 export default function Page() {
   return (

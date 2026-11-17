@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import Link from 'next/link';
 import { CtaBand } from '@/components/marketing/cta-band';
 import { JsonLd } from '@/components/seo/json-ld';
@@ -10,12 +11,15 @@ const TITLE = 'Medicare answers';
 const DESCRIPTION =
   'Direct answers to the Medicare questions people in New Jersey, New York City and Philadelphia ask most, each checked against official sources.';
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/answers' },
-  openGraph: { title: TITLE, description: DESCRIPTION, url: `${site.url}/answers` },
-};
+export const metadata: Metadata = withShareCard(
+  {
+    title: TITLE,
+    description: DESCRIPTION,
+    alternates: { canonical: '/answers' },
+    openGraph: { title: TITLE, description: DESCRIPTION, url: `${site.url}/answers` },
+  },
+  { path: '/answers', kicker: 'Medicare answers' },
+);
 
 export default function AnswersIndexPage() {
   const answers = getArticles('answers');

@@ -60,3 +60,64 @@ export function pageMetadata(options: {
     },
   };
 }
+
+/**
+ * Completes a page's existing metadata instead of replacing it.
+ *
+ * Titles and descriptions on older pages were written by hand and are left
+ * exactly as they are. This fills in only what is missing, so the page gets
+ * a full share card:
+ *   - og:url, og:type, og:site_name
+ *   - an og:image drawn for the page, when it has none of its own
+ *   - a Twitter card with the same title, description and image as the
+ *     Open Graph card (without this, Next falls back to the sitewide card
+ *     and a shared link shows the homepage headline)
+ */
+export function withShareCard(
+  meta: Metadata,
+  options: {
+    path: string;
+    kicker?: string;
+    shareTitle?: string;
+    /** Headline drawn on the image only, e.g. English text for a page in another script. */
+    imageTitle?: string;
+    type?: 'website' | 'article';
+  },
+): Metadata {
+  const og = (meta.openGraph ?? {}) as Record<string, unknown>;
+  const pageTitle = typeof meta.title === 'string' ? meta.title : site.name;
+  const title = options.shareTitle ?? (typeof og.title === 'string' ? og.title : pageTitle);
+  const description =
+    typeof og.description === 'string' ? og.description : (meta.description ?? site.description);
+
+  const ownImages = og.images as { url: string }[] | undefined;
+  const generated = ogImageUrl({
+    title: options.imageTitle ?? options.shareTitle ?? pageTitle,
+    kicker: options.kicker,
+    subtitle: options.imageTitle ? undefined : description,
+  });
+  const images = ownImages?.length
+    ? ownImages
+    : [{ url: generated, width: 1200, height: 630, alt: title }];
+
+  return {
+    ...meta,
+    openGraph: {
+      type: options.type ?? 'website',
+      siteName: site.name,
+      locale: 'en_US',
+      url: `${site.url}${options.path}`,
+      ...og,
+      title,
+      description,
+      images,
+    } as Metadata['openGraph'],
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [String(images[0].url)],
+      ...meta.twitter,
+    },
+  };
+}

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { withShareCard } from '@/lib/page-metadata';
 import Link from 'next/link';
 import { ArticleCard } from '@/components/marketing/article-card';
 import { CtaBand } from '@/components/marketing/cta-band';
@@ -35,23 +36,26 @@ const FAQ_ITEMS = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: '/medicare-basics' },
-  openGraph: {
-    title: `${TITLE} — the guides I send people first`,
+export const metadata: Metadata = withShareCard(
+  {
+    title: TITLE,
     description: DESCRIPTION,
-    images: [
-      {
-        url: `/api/og?title=${encodeURIComponent('Medicare, explained without the jargon')}&kicker=${encodeURIComponent('Start here')}&subtitle=${encodeURIComponent('The guides I send people before our first call.')}`,
-        width: 1200,
-        height: 630,
-        alt: TITLE,
-      },
-    ],
+    alternates: { canonical: '/medicare-basics' },
+    openGraph: {
+      title: `${TITLE} — the guides I send people first`,
+      description: DESCRIPTION,
+      images: [
+        {
+          url: `/api/og?title=${encodeURIComponent('Medicare, explained without the jargon')}&kicker=${encodeURIComponent('Start here')}&subtitle=${encodeURIComponent('The guides I send people before our first call.')}`,
+          width: 1200,
+          height: 630,
+          alt: TITLE,
+        },
+      ],
+    },
   },
-};
+  { path: '/medicare-basics' },
+);
 
 export default function MedicareBasicsPage() {
   const articles = getArticles('medicare-basics');
