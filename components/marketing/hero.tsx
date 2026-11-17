@@ -46,6 +46,13 @@ export function Hero() {
             </p>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl lg:text-6xl">
+              {/*
+                The names people and assistants search for, inside the H1.
+                "Aegis Sage" alone collides with an unrelated company.
+              */}
+              <span className="mb-3 block font-sans text-lg font-semibold tracking-normal text-ink-soft sm:text-xl">
+                {site.searchName} · {advisor.name}
+              </span>
               Medicare is not complicated.
               <span className="block text-navy">It is just badly explained.</span>
             </h1>

@@ -18,26 +18,26 @@ import { breadcrumbJsonLd } from '@/lib/seo';
 // ~150 chars: Google truncates a search-result description around there.
 const LANGUAGES = advisor.languages.map((language) => language.name);
 const LANGUAGE_LIST = `${LANGUAGES.slice(0, -1).join(', ')} and ${LANGUAGES[LANGUAGES.length - 1]}`;
-const DESCRIPTION = `${advisor.name}, licensed independent insurance broker in ${advisor.basedIn}. Medicare and Medicaid only, in ${LANGUAGE_LIST}, for people 65+ and anyone with Parts A and B.`;
+const DESCRIPTION = `${advisor.name} of ${site.searchName}, licensed independent insurance broker in ${advisor.basedIn}. Medicare and Medicaid only, in ${LANGUAGE_LIST}, for people 65+ and anyone with Parts A and B.`;
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent(`Meet ${advisor.name}`)}` +
   `&kicker=${encodeURIComponent('The person behind the phone number')}` +
   `&subtitle=${encodeURIComponent(`${advisor.credential} · ${advisor.basedIn}`)}`;
 
 export const metadata: Metadata = {
-  title: `About ${advisor.name}`,
+  title: { absolute: `${advisor.name} | ${site.searchName}, ${advisor.basedInTown} NJ` },
   description: DESCRIPTION,
   alternates: { canonical: '/about' },
   openGraph: {
     type: 'profile',
-    title: `About ${advisor.name} — ${site.name}`,
+    title: `${advisor.name} | ${site.searchName}`,
     description: `Independent Medicare guidance from ${advisor.name} in ${site.serviceArea}.`,
     url: `${site.url}/about`,
     images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `About ${advisor.name}` }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: `About ${advisor.name} — ${site.name}`,
+    title: `${advisor.name} | ${site.searchName}`,
     description: DESCRIPTION,
     images: [OG_IMAGE],
   },
@@ -78,6 +78,9 @@ export default function AboutPage() {
             <Badge tone="ember">The person behind the phone number</Badge>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.035em] text-ink sm:text-5xl">
+              <span className="mb-3 block font-sans text-lg font-semibold tracking-normal text-ink-soft sm:text-xl">
+                {advisor.name} · {site.searchName}
+              </span>
               Hi — I am {advisor.firstName}.
             </h1>
 

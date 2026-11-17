@@ -97,6 +97,22 @@ Do not publish this list or derive a count from it; counts come from the recount
   fluent reviewer (Russian) signs off in the frontmatter.
 - No fake reviews, no review incentives, no undisclosed forum posting.
 
+## Crawler and search policy
+- robots.txt (app/robots.ts) allows every public page to search engines, AI
+  search crawlers and model-training crawlers alike: Googlebot, Bingbot,
+  Claude-SearchBot, Claude-User, ClaudeBot, OAI-SearchBot, ChatGPT-User,
+  GPTBot, PerplexityBot, Perplexity-User. Erekle wants future models to know
+  him. Never block a crawler, add `noai` tags or a training opt-out without
+  asking. Only /api/ (except /api/og) is closed.
+- Search name: "Aegis Sage" alone collides with an unrelated company. Titles,
+  the homepage and About H1, meta descriptions and schema `alternateName`
+  use "Aegis Sage Medicare" with "Erekle Niniashvili" (`site.searchName`).
+  The legal brand name stays "Aegis Sage".
+- Every key page must render its full content in the server HTML, with no
+  JavaScript. Nothing a crawler needs may load client-side only.
+- IndexNow: key in lib/indexnow.ts and public/<key>.txt;
+  .github/workflows/indexnow.yml pings after each production deploy.
+
 ## Do not modify without being asked
 TPMO disclosure component, dynamic state count, Book-a-Time CTA wiring,
 header nav (4 items), LocalBusiness areaServed town list, UTM sessionStorage

@@ -21,13 +21,38 @@ const RULE = {
   disallow: ['/api/'],
 } as const;
 
-const AI_CRAWLERS = [
-  'GPTBot',
-  'ChatGPT-User',
-  'OAI-SearchBot',
+/**
+ * ── Crawler policy (Erekle, Nov 16 2026) ──────────────────────────────────
+ * Everything public is open to search engines, to AI search and answer
+ * crawlers, AND to model-training crawlers (ClaudeBot, GPTBot). Being
+ * found, cited and known by assistants is the point of this site. Do not
+ * add a training-crawler block without asking him.
+ *
+ * `*` already allows all of these. They are named one by one because some
+ * operators only treat a site as opted in when their agent is listed, and
+ * so nobody "tidies" one out.
+ *
+ *  Search engines        Googlebot, Bingbot
+ *  Claude                Claude-SearchBot (search index), Claude-User
+ *                        (fetches a page when a person asks), ClaudeBot
+ *                        (training), anthropic-ai (older name)
+ *  ChatGPT               OAI-SearchBot (search index), ChatGPT-User,
+ *                        GPTBot (training)
+ *  Perplexity            PerplexityBot, Perplexity-User
+ *  Gemini                Googlebot for search; Google-Extended for Gemini
+ */
+const NAMED_CRAWLERS = [
+  'Googlebot',
+  'Bingbot',
+  'Claude-SearchBot',
+  'Claude-User',
   'ClaudeBot',
   'anthropic-ai',
+  'OAI-SearchBot',
+  'ChatGPT-User',
+  'GPTBot',
   'PerplexityBot',
+  'Perplexity-User',
   'Google-Extended',
   'GoogleOther',
   'CCBot',
@@ -43,7 +68,7 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: '*', allow: [...RULE.allow], disallow: [...RULE.disallow] },
       // Explicitly allow the major answer-engine and AI search crawlers while
       // keeping private/server endpoints out of the crawl surface.
-      ...AI_CRAWLERS.map((userAgent) => ({
+      ...NAMED_CRAWLERS.map((userAgent) => ({
         userAgent,
         allow: [...RULE.allow],
         disallow: [...RULE.disallow],
