@@ -108,6 +108,21 @@ const GENERATED_ZIP_ROUTES = [
   '/medicare-new-jersey',
   '/medicare-new-york-city',
   '/medicare-philadelphia',
+  // Town pages (Nov 17 2026)
+  '/medicare-brooklyn',
+  '/medicare-englewood',
+  '/medicare-fair-lawn',
+  '/medicare-hackensack',
+  '/medicare-hoboken',
+  '/medicare-jersey-city',
+  '/medicare-north-bergen',
+  '/medicare-palisades-park',
+  '/medicare-paramus',
+  '/medicare-queens',
+  '/medicare-teaneck',
+  '/medicare-union-city',
+  '/medicare-weehawken',
+  '/medicare-west-new-york',
   // State plan pages — mirrors planStates in lib/states.ts
   '/plans/alabama',
   '/plans/arkansas',
@@ -215,6 +230,20 @@ export const ROUTE_TPMO_AREAS: Readonly<Record<string, TpmoAreaKey[]>> = {
   '/plans/pennsylvania': ['philadelphia-pa'],
   '/answers/medicare-help-new-york-city': NYC_AREAS,
   '/answers/medicare-help-philadelphia': ['philadelphia-pa'],
+  /*
+    Town pages outside Bergen County. Hudson County has no recount, so these
+    pages state the Bergen figures "in Bergen County, NJ" until one exists.
+    The Bergen towns (Hackensack, Englewood, Teaneck, Paramus, Fair Lawn,
+    Palisades Park) are not listed: Bergen is their own county.
+  */
+  '/medicare-hoboken': ['hudson-nj'],
+  '/medicare-jersey-city': ['hudson-nj'],
+  '/medicare-north-bergen': ['hudson-nj'],
+  '/medicare-union-city': ['hudson-nj'],
+  '/medicare-weehawken': ['hudson-nj'],
+  '/medicare-west-new-york': ['hudson-nj'],
+  '/medicare-brooklyn': ['kings-ny'],
+  '/medicare-queens': ['queens-ny'],
 };
 
 export type ResolvedTpmoArea = TpmoAreaCount & {
