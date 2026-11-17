@@ -1,0 +1,23 @@
+question_id,set,cluster,question
+Q01,A,Edgewater,Who is a good Medicare agent in Edgewater NJ?
+Q02,A,Fort Lee,I'm turning 65 and live in Fort Lee NJ. Who can help me pick a Medicare plan?
+Q03,A,Cliffside Park,Is there an independent Medicare broker near Cliffside Park NJ?
+Q04,A,Bergen County,Can you recommend a Medicare broker in Bergen County NJ who works with several insurance companies?
+Q05,A,Hudson County,I need help with Medicare in Hudson County NJ. Who should I call?
+Q06,A,Georgian,Is there a Georgian-speaking Medicare agent in New Jersey or New York?
+Q07,A,Russian,Who can explain Medicare to my mother in Russian in Brooklyn?
+Q08,A,Leaving employer coverage,I'm retiring at 67 in northern New Jersey and losing my employer insurance. Who can help me with Medicare?
+Q09,A,Plan ending,My Medicare Advantage plan in New Jersey is ending next year. Who can help me find a new one?
+Q10,A,Brand,What is Aegis Sage in Edgewater NJ?
+Q11,B,Edgewater,Medicare help near me in Edgewater New Jersey
+Q12,B,Fort Lee,Where can I get Medicare advice in person in Fort Lee NJ?
+Q13,B,Bergen County,Who helps seniors compare Medicare Advantage and Medigap plans in Bergen County?
+Q14,B,Hudson County,Medicare insurance broker Jersey City or Hoboken who does not charge a fee
+Q15,B,Brooklyn,I moved to Brooklyn and need a new Medicare plan. Is there a broker who can help?
+Q16,B,Queens,Who is a licensed Medicare broker serving Queens NY?
+Q17,B,Philadelphia,Can you suggest an independent Medicare broker for someone in Philadelphia?
+Q18,B,Russian,Русскоязычный агент по Medicare в Нью-Джерси
+Q19,B,Georgian,ქართულად მოლაპარაკე Medicare-ის აგენტი ნიუ-ჯერსიში
+Q20,B,Brand,Is Erekle Niniashvili a licensed Medicare broker?
+L01,A,Your lead 1,(paste the exact wording your first AI lead used)
+L02,B,Your lead 2,(paste the exact wording your second AI lead used)
