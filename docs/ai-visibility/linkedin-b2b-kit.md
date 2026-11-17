@@ -28,7 +28,7 @@ Every January, some Medicare claims bounce because a patient's plan changed on J
 If your company bills for practices in Bergen or Hudson County, your clients' patients have Medicare questions your team can't answer. A one-page sheet your client practices can hand to those patients might help. Plan-neutral, no fees, no data shared.
 
 **4. Growth teams at senior-focused primary care: education calendars** · link: /for-organizations/medical-groups · *TPMO*
-Patient education talks work best when nobody is selling. I give plain Medicare talks in a community room or online: the parts of Medicare, the enrollment windows, how to read a plan letter. No insurance company is named and no applications are taken. Your team approves the outline first.
+Patient education talks land better when nobody is selling. I give plain Medicare talks in a community room or online: the parts of Medicare, the enrollment windows, how to read a plan letter. No insurance company is named and no applications are taken. Your team approves the outline first.
 
 **5. Growth teams: "keep your doctor"** · link: /for-organizations/medical-groups · *TPMO*
 The question your patients ask most at enrollment time is "Can I keep my doctor?" When a patient asks me, I check which plans available to them include their doctors, across the plans I can offer, and I tell them where to see every plan. I don't favor plans your group contracts with. That's what makes it useful.
