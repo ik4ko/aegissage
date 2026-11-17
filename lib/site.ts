@@ -409,10 +409,26 @@ export const tpmoCountsByArea: Record<TpmoAreaKey, TpmoAreaCount | null> = {
     source:
       'Sunfire, Appointed Only, plan year 2027, ZIP 07020 (Bergen County NJ): 25 MA/MAPD + 5 SNP + 1 PDP',
   },
+  /*
+    Recounted by Erekle in Sunfire on 2026-11-17, plan year 2027, "Appointed
+    Only" on, ZIP 07302 (Jersey City). Organizations: 6 carriers from his
+    2027 NJ ready-to-sell list (Aetna, Anthem/Wellpoint, Clover, Humana,
+    UnitedHealthcare, Devoted); the exact six are to be confirmed from the
+    Sunfire Brand filter. The count is 6 either way.
+
+    39 = 24 MAPD + 6 MA-only + 8 SNP (D-SNP/C-SNP) + 1 PDP. Erekle, Nov 17 2026.
+    The six Hudson town pages now state these numbers "in your area".
+  */
+  'hudson-nj': {
+    organizationCount: 6,
+    productCount: 39,
+    countDate: '2026-11-17',
+    source:
+      'Sunfire, Appointed Only, plan year 2027, ZIP 07302 (Hudson County NJ): 24 MAPD + 6 MA-only + 8 SNP + 1 PDP',
+  },
   // Not recounted yet. Leave null: pages about these places then state the
   // Bergen figures scoped "in Bergen County, NJ" (see lib/tpmo.ts). To finish,
   // follow docs/HANDOFF.md and replace null with a full TpmoAreaCount.
-  'hudson-nj': null,
   'kings-ny': null,
   'queens-ny': null,
   'new-york-ny': null,

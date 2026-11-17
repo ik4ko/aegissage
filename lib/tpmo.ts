@@ -231,8 +231,10 @@ export const ROUTE_TPMO_AREAS: Readonly<Record<string, TpmoAreaKey[]>> = {
   '/answers/medicare-help-new-york-city': NYC_AREAS,
   '/answers/medicare-help-philadelphia': ['philadelphia-pa'],
   /*
-    Town pages outside Bergen County. Hudson County has no recount, so these
-    pages state the Bergen figures "in Bergen County, NJ" until one exists.
+    Town pages outside Bergen County. Hudson County was recounted on
+    2026-11-17, so its six town pages state the Hudson figures "in your
+    area". Brooklyn and Queens have no recount yet and state the Bergen
+    figures "in Bergen County, NJ".
     The Bergen towns (Hackensack, Englewood, Teaneck, Paramus, Fair Lawn,
     Palisades Park) are not listed: Bergen is their own county.
   */
