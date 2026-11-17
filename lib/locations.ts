@@ -99,7 +99,7 @@ function library(
   return { name, what: where, phone, url, checked: CHECKED };
 }
 
-/** How Erekle works with people in a town. Phone only until he confirms in-person areas. */
+/** Erekle's public phone. In person: Bergen and Hudson only. NYC: phone or video (Nov 17 2026). */
 const PHONE = advisor.phone;
 
 export type LocationSection = {
@@ -535,9 +535,9 @@ export const locationLandings: LocationLanding[] = [
 
      Same rules as above, plus: every local service named on a page sits in
      `localHelp` with the official page it came from and the date it was
-     read. No hospital, clinic, plan or carrier is named. Nothing says
-     Erekle meets anyone in person in these towns until he confirms where
-     he does; the phone is the promise. Body text must stay under 30%
+     read. No hospital, clinic, plan or carrier is named. Erekle meets people in
+     person in Bergen and Hudson counties; New York City (and Philadelphia)
+     is by phone or video only (Erekle, Nov 17 2026). Body text must stay under 30%
      overlap with every other location page (scripts/test-location-pages.mjs).
      ════════════════════════════════════════════════════════════════════════ */
 
@@ -573,7 +573,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'How I help people in Hackensack',
         paragraphs: [
-          `Call or text ${PHONE}. I speak English, Georgian and Russian. Have your Medicare card nearby, a list of your doctors, and your pill bottles or a drug list. There is no fee to talk with me.`,
+          `Call or text ${PHONE}. I speak English, Georgian and Russian. Have your Medicare card nearby, a list of your doctors, and your pill bottles or a drug list. There is no fee to talk with me. If you prefer to meet in person in Hackensack, we can set that up.`,
         ],
       },
     ],
@@ -635,7 +635,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Talking with me from Englewood',
         paragraphs: [
-          `The easiest way is a phone call to ${PHONE}. Tell me your ZIP code, your doctors and your drugs. If you would rather write it down first, the form on this page works too, and I will call you back.`,
+          `The easiest way is a phone call to ${PHONE}. Tell me your ZIP code, your doctors and your drugs. If you would rather write it down first, the form on this page works too, and I will call you back. I also meet people in person in Englewood.`,
         ],
       },
     ],
@@ -697,7 +697,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Calling me from Teaneck',
         paragraphs: [
-          `My number is ${PHONE}. You can call or text. If English is not your first language, I also speak Georgian and Russian. A family member is always welcome on the call.`,
+          `My number is ${PHONE}. You can call or text. If English is not your first language, I also speak Georgian and Russian. A family member is always welcome on the call, or at the kitchen table if you would rather meet in person.`,
         ],
       },
     ],
@@ -759,7 +759,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Getting help from Paramus',
         paragraphs: [
-          `Call or text ${PHONE} and have the letter in front of you. Read me the top of it and we will work out which window applies. You can also fill in the form on this page.`,
+          `Call or text ${PHONE} and have the letter in front of you. Read me the top of it and we will work out which window applies. You can also fill in the form on this page. If the letter is long, we can go through it together in person.`,
         ],
       },
     ],
@@ -821,7 +821,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Working with me from Fair Lawn',
         paragraphs: [
-          `Call or text ${PHONE}. If you are planning a move, tell me both addresses. I will tell you what changes and what does not.`,
+          `Call or text ${PHONE}. If you are planning a move, tell me both addresses. I will tell you what changes and what does not. We can talk on the phone or meet in Fair Lawn, whichever is easier.`,
         ],
       },
     ],
@@ -883,7 +883,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Checking any agent, including me',
         paragraphs: [
-          `Ask for a license number and look it up with the state. Ask whether there is a fee. With me there is no fee, my license can be checked on the About page, and my number is ${PHONE}.`,
+          `Ask for a license number and look it up with the state. Ask whether there is a fee. With me there is no fee, my license can be checked on the About page, and my number is ${PHONE}. I can meet you and your parent in person in Palisades Park.`,
         ],
       },
     ],
@@ -946,7 +946,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Reaching me from Jersey City',
         paragraphs: [
-          `Call or text ${PHONE}. I work by phone with people across Hudson County, in English, Georgian or Russian.`,
+          `Call or text ${PHONE}. I work with people across Hudson County by phone or in person, in English, Georgian or Russian.`,
         ],
       },
     ],
@@ -1010,7 +1010,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Talking with me from Hoboken',
         paragraphs: [
-          `Call or text ${PHONE}. Tell me when your job coverage ends, and I will lay out the dates for you.`,
+          `Call or text ${PHONE}. Tell me when your job coverage ends, and I will lay out the dates for you. We can also meet in person in Hoboken.`,
         ],
       },
     ],
@@ -1073,7 +1073,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Calling me from Union City',
         paragraphs: [
-          `My number is ${PHONE}, for a call or a text. Have your Medicare card, your doctor list and your drug list nearby.`,
+          `My number is ${PHONE}, for a call or a text. Have your Medicare card, your doctor list and your drug list nearby. Meeting in person in Union City works too.`,
         ],
       },
     ],
@@ -1136,7 +1136,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Calling me from West New York',
         paragraphs: [
-          `Call or text ${PHONE}. Tell me your ZIP code first, and I will only show you plans that are actually sold where you live.`,
+          `Call or text ${PHONE}. Tell me your ZIP code first, and I will only show you plans that are actually sold where you live. In-person meetings in West New York are fine as well.`,
         ],
       },
     ],
@@ -1199,7 +1199,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Reaching me from North Bergen',
         paragraphs: [
-          `Call or text ${PHONE}. If you just moved, tell me your old and new addresses and the date you moved.`,
+          `Call or text ${PHONE}. If you just moved, tell me your old and new addresses and the date you moved. I can come to you in North Bergen if that is easier.`,
         ],
       },
     ],
@@ -1267,7 +1267,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Calling me from Weehawken',
         paragraphs: [
-          `Call or text ${PHONE}. Have your doctors’ names and addresses ready, including the ones in New York.`,
+          `Call or text ${PHONE}. Have your doctors’ names and addresses ready, including the ones in New York. If you would rather sit down together, I meet people in person in Weehawken.`,
         ],
       },
     ],
@@ -1320,7 +1320,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Medicare with Medicaid in Brooklyn',
         paragraphs: [
-          `Many people in Brooklyn have both Medicare and Medicaid. If that is you, there are special plans and extra chances to change plans. Call or text ${PHONE} and we will check what you have now before changing anything.`,
+          `Many people in Brooklyn have both Medicare and Medicaid. If that is you, there are special plans and extra chances to change plans. Call or text ${PHONE} and we will check what you have now before changing anything. For Brooklyn, I work by phone or video call.`,
         ],
       },
     ],
@@ -1393,7 +1393,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Calling me from Queens',
         paragraphs: [
-          `Call or text ${PHONE}. Say whether you want to talk in Russian or English. If a son or daughter helps you, they can join the call.`,
+          `Call or text ${PHONE}. Say whether you want to talk in Russian or English. If a son or daughter helps you, they can join the call. I help people in Queens by phone or video call.`,
         ],
       },
     ],

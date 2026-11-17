@@ -49,6 +49,19 @@ const bergenCountyTowns = [
   'Hackensack',
   'Teaneck',
   'Englewood',
+  // Town pages, Nov 17 2026 (Erekle approved adding them to this list).
+  'Paramus',
+  'Fair Lawn',
+];
+
+/** Hudson County towns with their own page (Nov 17 2026). Erekle meets people in person in Bergen and Hudson. */
+const hudsonCountyTowns = [
+  'Jersey City',
+  'Hoboken',
+  'Union City',
+  'West New York',
+  'North Bergen',
+  'Weehawken',
 ];
 
 const serviceAreas = [
@@ -68,6 +81,11 @@ const serviceAreas = [
     name: 'Hudson County',
     containedInPlace: { '@type': 'State', name: 'New Jersey' },
   },
+  ...hudsonCountyTowns.map((name) => ({
+    '@type': 'City',
+    name,
+    containedInPlace: { '@type': 'AdministrativeArea', name: 'Hudson County' },
+  })),
   { '@type': 'City', name: 'New York City', containedInPlace: { '@type': 'State', name: 'New York' } },
   ...['Brooklyn', 'Queens'].map((name) => ({
     '@type': 'Place',
