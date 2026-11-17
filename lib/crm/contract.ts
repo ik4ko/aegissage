@@ -75,7 +75,12 @@ export const leadPayloadSchema = z.object({
   contractVersion: z.string().max(20),
 
   /** Primary key of the row in the website's public.contacts. */
-  websiteSubmissionId: z.string().uuid(),
+  /*
+    z.guid(), not z.uuid(): zod 4's uuid() also checks the RFC version and
+    variant bits, which zod 3's did not. guid() is the same 8-4-4-4-12 hex
+    shape this contract has always accepted, so the wire format is unchanged.
+  */
+  websiteSubmissionId: z.guid(),
   /** Stable dedupe key. A repeat MUST NOT create a second lead. */
   sourceLeadId: z.string().max(120),
 
@@ -137,10 +142,17 @@ const PROHIBITED_KEYS = [
   'health',
 ];
 
+/*
+  Compared lowercased on both sides. The list above has camelCase entries
+  (dateOfBirth, medicareNumber); matching a lowercased key against the list
+  as written meant those two could never match.
+*/
+const PROHIBITED_KEYS_LOWER = new Set(PROHIBITED_KEYS.map((key) => key.toLowerCase()));
+
 export function assertNoProhibitedFields(payload: LeadPayload): void {
   const scan = (obj: Record<string, unknown>, path: string) => {
     for (const key of Object.keys(obj)) {
-      if (PROHIBITED_KEYS.includes(key.toLowerCase())) {
+      if (PROHIBITED_KEYS_LOWER.has(key.toLowerCase())) {
         throw new Error(
           `[crm-contract] refusing to transmit prohibited field "${path}${key}". ` +
             'Health and Medicare identifiers must never cross this boundary.',
