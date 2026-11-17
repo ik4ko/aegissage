@@ -14,6 +14,15 @@ import { breadcrumbJsonLd } from '@/lib/seo';
 import { advisor, site } from '@/lib/site';
 
 /**
+ * True only when the frontmatter names the advisor as `reviewed_by`. The
+ * byline and the schema's `reviewedBy` both state that he reviewed the page,
+ * so neither may render on the strength of the field merely being filled in.
+ */
+export function reviewedByAdvisor(article: Article): boolean {
+  return article.reviewed_by?.trim() === advisor.name;
+}
+
+/**
  * Shared long-form layout for both content collections.
  *
  * The measure is capped at 68 characters — the single biggest readability
@@ -99,13 +108,15 @@ export function ArticleLayout({
                   carries it only because its frontmatter names him as
                   `reviewed_by`. Do not show it for anyone else's name.
                 */}
-                <p className="mt-4 text-base text-ink-soft" data-byline>
-                  Written and reviewed by{' '}
-                  <Link href="/about#credentials" className="font-semibold text-navy underline">
-                    {advisor.name}
-                  </Link>
-                  , licensed insurance broker{advisor.npn ? `, NPN ${advisor.npn}` : ''}
-                </p>
+                {reviewedByAdvisor(article) ? (
+                  <p className="mt-4 text-base text-ink-soft" data-byline>
+                    Written and reviewed by{' '}
+                    <Link href="/about#credentials" className="font-semibold text-navy underline">
+                      {advisor.name}
+                    </Link>
+                    , licensed insurance broker{advisor.npn ? `, NPN ${advisor.npn}` : ''}
+                  </p>
+                ) : null}
 
                 <p className="mt-5 text-xl leading-relaxed text-ink-soft">
                   {article.description}
@@ -192,8 +203,12 @@ export function articleJsonLd(
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': url,
-      reviewedBy: { '@id': `${site.url}#advisor` },
-      lastReviewed: schemaDate(article.review_date ?? article.updated),
+      ...(reviewedByAdvisor(article)
+        ? {
+            reviewedBy: { '@id': `${site.url}#advisor` },
+            lastReviewed: schemaDate(article.review_date ?? article.updated),
+          }
+        : {}),
     },
   };
 }

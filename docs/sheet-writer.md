@@ -72,9 +72,9 @@ Deploy. Without a new version the live web app keeps running the old code.
 
 ## Check it
 
-1. Submit the contact form on the Vercel preview. Choose "ChatGPT" under
-   "How did you find us?" and "Both" for Part A and Part B.
-2. The new row should show `chatgpt` and `both`. `ai_source` stays blank
+1. Submit the contact form on aegissage.com/contact. Choose "ChatGPT" under
+   "How did you find us?" and "Not sure" for Part A and Part B.
+2. The new row should show `chatgpt` and `not-sure`. `ai_source` stays blank
    unless you arrived from an AI site or with `?utm_source=chatgpt.com`.
 3. If the three headers appear but the cells are blank, the script is reading
    a different object. Log `Object.keys(payload)` once and check for
