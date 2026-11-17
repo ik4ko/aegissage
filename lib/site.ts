@@ -415,6 +415,7 @@ export const nav = [
   { href: '/blog', label: 'Articles' },
   { href: '/videos', label: 'Videos' },
   { href: '/about', label: 'About' },
+  { href: '/partners', label: 'For organizations' },
 ] as const;
 
 /**
