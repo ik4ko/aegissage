@@ -319,3 +319,11 @@ The PC crashed mid-session. Nothing was lost: the tree was clean and #18 and #19
 - **Content calendar:** branch `docs/content-calendar`, pushed, PR not opened. `docs/ai-visibility/content-calendar-4-weeks.md` has 32 posts, 4 of them about Georgian and Russian help. It includes the TPMO sentence pending Pinnacle question 6a.
 
 **Windows note:** Git for Windows checks files out with CRLF. `scripts/test-glossary.mjs` failed on Windows only; the fix is in the town-pages branch.
+
+### Nov 17 evening: SEO, AI and voice session (in progress)
+
+- **Merged today:** #20 town pages. **Waiting for Erekle's "go":** #23 Hudson count (6 orgs / 39 products, CI green).
+- **Open, CI green:** #24 audit (`docs/seo-audit-2026-11.md`), #25 SEO fixes (checklist FAQ visible, `seo_title`/`seo_description`, `/plans` title, `/contact` content, sitemap dates).
+- **In progress on `seo/voice-search` (pushed, no PR yet):** done so far: the Text button behind `features.textButton` and Speakable schema. Still to do: rewrite the 52 town H2s and 94 answer H2s as spoken questions, each answered first in 40–50 words (measure with a script; keep facts, sources and dates), the `/medicare-questions` hub (30 Q&As, FAQPage schema, links to deep pages, including the IRMAA calculator and the Philadelphia and VA answers for audit M5), then open the PR.
+- **Not started:** Block 4 off-site kit docs (Apple Business Connect, Yelp, Bing Places, BBB, Nextdoor, medicareagentshub). Hours: CLAUDE.md says no office hours anywhere, so listings say "by appointment". Ask before publishing hours. Then Block 5: refresh llms.txt and About.
+- **Audit headline:** aegissage.com appeared in 0 of 20 test searches, including the brand name. Erekle's by-hand list: Search Console and Bing Webmaster (section 7), the medicareagentshub listing, native review of `/ka` and `/ru`, a PageSpeed/CrUX API key for field data.
