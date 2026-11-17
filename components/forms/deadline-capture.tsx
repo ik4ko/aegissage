@@ -92,7 +92,6 @@ export function DeadlineCapture() {
       zip: '',
       turns65: '',
       website: '',
-      partsAB: '',
       // Unticked. A pre-checked consent box is not consent.
       consent: false as unknown as true,
     },
@@ -124,7 +123,7 @@ export function DeadlineCapture() {
           // Explicit, not merely omitted. This form never collects SMS
           // consent and must never appear to.
           consentSms: false,
-          partsAB: values.partsAB || '',
+          partsAB: values.partsAB,
           source: SOURCE,
           website: values.website,
           context: {
@@ -255,7 +254,13 @@ export function DeadlineCapture() {
           </Field>
         </div>
 
-        <PartsABField registration={register('partsAB')} selected={watch('partsAB')} />
+        <PartsABField
+          registration={register('partsAB')}
+          selected={watch('partsAB')}
+          error={errors.partsAB?.message}
+          idPrefix={SOURCE}
+          className="mt-6"
+        />
 
         {/*
           Consent sits ABOVE the submit button and is visible before anything

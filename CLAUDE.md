@@ -30,9 +30,9 @@ Audience: 65+ and their adult children. iPad/Safari, reading glasses.
   today) shows no Medigap line. Fixed wording: "Medicare Supplement (Medigap)
   plans offered through [carriers], where available." No prices, rankings
   or logos.
-- Lead forms may ask whether the person has Medicare Part A and Part B
-  (four fixed choices, optional). Never a Medicare number, SSN or date of
-  birth.
+- Every lead form asks whether the person has Medicare Part A and Part B.
+  The answer is required and has three fixed choices: Yes, No, Not sure
+  (Erekle, Nov 16 2026). Never a Medicare number, SSN or date of birth.
 - Never imply Medicare affiliation, endorsement, or being sent by Medicare.
 - Never state or imply eligibility, approval, savings, $0 premium, or a
   specific benefit before a licensed review. No "you qualify" anywhere.

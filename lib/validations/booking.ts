@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PARTS_AB } from '../ai-sources';
+import { PARTS_AB, PARTS_AB_REQUIRED } from '../ai-sources';
 
 /**
  * Validation for the /book interstitial (components/forms/booking-form.tsx).
@@ -32,8 +32,8 @@ export const bookingSchema = z.object({
   consent: z.literal(true, {
     error: 'Please check the box so I know it is okay to contact you.',
   }),
-  /** Optional. Enrollment status only: never a Medicare number or a date of birth. */
-  partsAB: z.enum(PARTS_AB).or(z.literal('')).optional(),
+  /** Required: Yes, No or Not sure. Enrollment status only: never a Medicare number or a date of birth. */
+  partsAB: z.enum(PARTS_AB, { error: PARTS_AB_REQUIRED }),
   /** Honeypot. Real people leave it empty; the API returns a plain 200. */
   website: z.string().max(200).optional(),
 });

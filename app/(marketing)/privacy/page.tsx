@@ -68,9 +68,10 @@ export default function PrivacyPage() {
               cookies. Google&rsquo;s own privacy policy covers what it does with them.
             </li>
             <li>
-              <strong>Two optional questions on the forms.</strong> Whether you have
-              Medicare Part A and Part B, and how you found this site. Both are optional
-              and stored with your message. The forms never ask for a Medicare number, a
+              <strong>Two short questions on the forms.</strong> Whether you have
+              Medicare Part A and Part B (Yes, No or Not sure), which every form asks,
+              and how you found this site, which is optional. Both answers are stored
+              with your message. The forms never ask for a Medicare number, a
               Social Security number, a date of birth or anything about your health.
             </li>
           </ul>
