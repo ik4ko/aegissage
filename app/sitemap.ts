@@ -4,6 +4,8 @@ import { planStates } from '@/lib/states';
 import { locationLandings } from '@/lib/locations';
 import { site } from '@/lib/site';
 import { LANGUAGE_PAGE_PATHS, publishedLocales } from '@/lib/language-pages';
+import { GLOSSARY_REVIEWED } from '@/lib/medicare-glossary';
+import { CALENDAR_REVIEWED } from '@/lib/enrollment-calendar';
 /*
   Imported for its side effect: runs every build-time guard and throws one
   combined report if any of them find a problem.
@@ -72,6 +74,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     { url: `${site.url}/plans`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${site.url}/answers`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+    {
+      url: `${site.url}/medicare-glossary`,
+      lastModified: new Date(`${GLOSSARY_REVIEWED}T12:00:00Z`),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: `${site.url}/medicare-enrollment-calendar`,
+      lastModified: new Date(`${CALENDAR_REVIEWED}T12:00:00Z`),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
     { url: `${site.url}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${site.url}/videos`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${site.url}/contact`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },

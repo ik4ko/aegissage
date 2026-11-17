@@ -3,6 +3,7 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { glossary, isGlossaryKey } from '@/lib/glossary';
 import { trackGlossaryOpen } from '@/lib/analytics';
+import Link from 'next/link';
 
 /**
  * Inline jargon explainer. Click/tap driven rather than hover, because the
@@ -46,6 +47,16 @@ export function GlossaryTerm({
       <PopoverContent aria-label={`${entry.term}: definition`}>
         <p className="font-display text-lg font-semibold text-ink">{entry.term}</p>
         <p className="mt-2 text-base leading-relaxed text-ink-soft">{entry.definition}</p>
+        {/* Every key in lib/glossary.ts has an entry of the same slug in the
+            full glossary; scripts/test-glossary.mjs fails if one goes missing. */}
+        <p className="mt-3">
+          <Link
+            href={`/medicare-glossary#${k}`}
+            className="inline-flex min-h-touch items-center text-base font-semibold text-navy underline underline-offset-4"
+          >
+            Full entry and source
+          </Link>
+        </p>
       </PopoverContent>
     </Popover>
   );

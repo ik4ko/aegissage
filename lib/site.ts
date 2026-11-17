@@ -422,6 +422,8 @@ export const tpmoCountsByArea: Record<TpmoAreaKey, TpmoAreaCount | null> = {
 export const nav = [
   { href: '/medicare-basics', label: 'Basics' },
   { href: '/answers', label: 'Answers' },
+  { href: '/medicare-glossary', label: 'Glossary' },
+  { href: '/medicare-enrollment-calendar', label: 'Enrollment calendar' },
   { href: '/medicare-checklist', label: 'Checklist' },
   // "Enrollment Check" says what it answers; "Eligibility Check" was read as
   // a means test rather than a deadline lookup.

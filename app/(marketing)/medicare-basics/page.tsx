@@ -135,7 +135,16 @@ export default function MedicareBasicsPage() {
           </h2>
           <p className="mt-3 max-w-2xl text-lg text-ink-soft">
             Tap any term for a plain-English definition. These same definitions appear
-            inline throughout every guide on this site.
+            inline throughout every guide on this site. The full list, with sources, is
+            in the{' '}
+            <Link href="/medicare-glossary" className="font-semibold text-navy underline">
+              Medicare glossary
+            </Link>
+            , and every enrollment window is in the{' '}
+            <Link href="/medicare-enrollment-calendar" className="font-semibold text-navy underline">
+              enrollment calendar
+            </Link>
+            .
           </p>
 
           <ul className="mt-8 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">

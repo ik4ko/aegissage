@@ -53,6 +53,17 @@ export default function AnswersIndexPage() {
             One question per page, answered in the first paragraph. Each page lists the official
             sources it was checked against and the date it was checked.
           </p>
+          <p className="mt-4 text-lg leading-relaxed text-ink-soft">
+            Looking up a word or a date? See the{' '}
+            <Link href="/medicare-glossary" className="font-semibold text-navy underline">
+              Medicare glossary
+            </Link>{' '}
+            and the{' '}
+            <Link href="/medicare-enrollment-calendar" className="font-semibold text-navy underline">
+              enrollment calendar
+            </Link>
+            .
+          </p>
         </div>
       </section>
 
