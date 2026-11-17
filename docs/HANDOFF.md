@@ -7,7 +7,7 @@ on its Vercel preview.
 
 ## 1. Pull requests and merge order
 
-Merge in this order. #6 to #9 and #11 to #16 are stacked: each one's base is the
+Merge in this order. #6 to #9 and #11 to #17 are stacked: each one's base is the
 branch before it, so after you merge one, GitHub retargets the next to `main`.
 #10 is independent.
 
@@ -23,6 +23,7 @@ branch before it, so after you merge one, GitHub retargets the next to `main`.
 | 8 | #14 | `fable/trust-credentials` | Bylines, `/about#credentials`, `/how-we-are-paid`, `/editorial-policy`, `/accessibility`, privacy additions, credential schema |
 | 9 | #15 | `fable/nextjs-security-upgrade` | Next.js 16.4.2 to 16.4.6, the security patch. Dependency files only. |
 | 10 | #16 | `fable/zod4-upgrade` | zod 3 to 4 (security advisory), form resolver upgrade, 29 lead form validation tests, CLAUDE.md stack line |
+| 11 | #17 | `fable/partsab-reference-hub-polish` | Part A/B required (Yes / No / Not sure) on all three forms; `/medicare-glossary`, `/medicare-enrollment-calendar`, 10 more answer pages, glossary links and related answers; share cards on every page, dead source links fixed |
 | any | #10 | `fable/ai-visibility-offsite-kit` | Docs only: off-site kit, AI panel, referral list, this file |
 
 ### What to check on each preview
@@ -45,7 +46,7 @@ branch before it, so after you merge one, GitHub retargets the next to `main`.
 - `/contact`: Part A/B buttons and the "How did you find us?" list are optional and unselected. Submit a test and confirm the alert email shows both.
 
 **#11**
-- `/` and `/book`: Part A/B buttons above the consent box; the form submits with none chosen; the calendar still opens after the booking step.
+- `/` and `/book`: Part A/B buttons above the consent box; the calendar still opens after the booking step. (From #17 the question is required and the answers are Yes / No / Not sure.)
 - `/plans/new-jersey`, `/medicare-edgewater`: Medigap sentence present. `/plans/new-york`, `/medicare-philadelphia`: absent.
 
 **#12**
@@ -56,6 +57,13 @@ branch before it, so after you merge one, GitHub retargets the next to `main`.
 **#13**
 - `/partners`: read it as a practice manager would. No carrier names, no fees, no lists.
 - `docs/partners/compliance-guardrails.md`: send the questions at the bottom to Pinnacle before using any one-pager.
+
+**#17**
+- `/contact`, `/` and `/book`: leave "Do you have Medicare Part A and Part B?" blank and submit. The message "Please choose Yes, No or Not sure." appears and nothing is sent. Choose "Not sure" and it goes through.
+- `/medicare-glossary` and `/medicare-enrollment-calendar`: read every entry. They carry your name as reviewer.
+- The 10 new pages under `/answers` (list in section 9): read each one, or change `reviewed_by`.
+- Any answer page: the first mention of a term such as Part B is a link to the glossary, and "Related answers" at the bottom shows three cards.
+- Share any page link into a text message or Slack: the preview shows that page's title and its own image.
 
 **#10**
 - `docs/ai-visibility/off-site-kit.md`: profile copy now carries the TPMO sentence with 5 and 31.
@@ -81,6 +89,9 @@ branch before it, so after you merge one, GitHub retargets the next to `main`.
 | Remaining profile claims | You | Bing Places, Apple Business Connect, Yelp, BBB, Patch, medicareagentshub. Paste each URL into `profiles` in `lib/site.ts`. |
 | Wording of your two AI leads | You | For the panel questions file. |
 | Compliance questions | Pinnacle | Section 4. |
+| Read the pages in #17 | You | Glossary, enrollment calendar and 10 answer pages state things in your name. Also the Georgian and Russian words for Yes, No, Not sure and the new error message in `lib/form-strings.ts`. |
+| NJ Medigap rule for people 65 and older | You | #17 says New Jersey uses the federal 6-month window for people 65 and older, as your existing Medigap page does. I found a state source only for the under-65 rules. Confirm, or point me to the DOBI page. |
+| TPMO wording on multi-state answer pages | Pinnacle | The pages about moving between states and about NJ/NY Medigap state the Bergen counts with "in your area". Ask with question 2 in section 4. |
 | Jefferson (NJ) ready-to-sell status | You / Applied General | Marked TBD in CLAUDE.md. |
 | Gemini runner scaffold | Claude Code | Not built. Cut for time, as the order allowed. |
 | Referral rows not re-verified | You | Section 6. |
@@ -240,6 +251,7 @@ Get the link from your Google Business Profile: "Ask for reviews" → copy link.
 - Off-site kit, AI panel, 97-row referral list, this handoff (#10)
 - Next.js security upgrade to 16.4.6 (#15)
 - zod 4 upgrade and lead form validation tests (#16)
+- Part A/B required, reference hub, technical polish (#17)
 
 **Not done**
 - Partner research CSV (Priority 2d)
@@ -257,15 +269,18 @@ Get the link from your Google Business Profile: "Ask for reviews" → copy link.
 
 ## 9. "Expert team" order of Nov 16, 10pm: status
 
-Blocks 1 and 6 and the zod follow-up are built. Blocks 2 to 5 are not started.
+Blocks 1, 3, 4 and 6 and the zod follow-up are built. Blocks 2 and 5 are not started.
 
 **Block 1, done (PR #14).** Read the "statements made in your name" list at the top of that PR before merging: the byline, the AI-drafting disclosure, the compensation sentences, the Tag Manager check.
 
 **Not started. One prompt per block for Claude Code, each its own PR stacked on the last:**
 
 - **Block 2, design and accessibility.** "Read CLAUDE.md. Audit every page template against WCAG 2.1 AA: contrast, 18px+ body text, 48px tap targets, focus states, form labels and errors, no small gray text. Check each template at 375px wide and fix layout breaks. Run Lighthouse mobile on /, /about, /contact, /answers, /answers/turning-65-new-jersey, /medicare-edgewater, /medicare-bergen-county, /medicare-new-jersey, /medicare-basics and /book; record before and after scores in the PR; fix what keeps any category under 90. Then do a plain-language pass on content/answers/*.mdx for a 6th to 8th grade reading level without changing any fact, source or date."
-- **Block 3, reference hub.** "Read CLAUDE.md. Build /medicare-glossary with 40 core terms, each with an anchor, a 2 to 3 sentence definition, a medicare.gov or cms.gov source and DefinedTerm schema. Build /medicare-enrollment-calendar with every enrollment window as a rule, not a year-specific date, all sourced. Add 10 answer pages under content/answers on: Medicare while still working; COBRA and Medicare; retiree coverage; VA and Medicare; moving between NJ, NY and PA; Medigap underwriting basics in NJ and NY; what to bring to a Medicare appointment; how to check whether a doctor is in a plan; Medicare with Medicaid; how to switch plans. Follow the build rules the content guard enforces. Link glossary terms to their anchors and give every answer page 3 related answers. Verify every source URL loads. Stop and ask about any state rule you cannot source."
-- **Block 4, technical polish.** "Add a custom 404 with links to the main sections and tap-to-call. Confirm every page type has a canonical tag and Open Graph and Twitter cards with a share image. Crawl the built site for broken internal and external links and fix them. Check alt text and image compression."
+- **Block 3, reference hub. Done Nov 16 (PR #17, stacked on #16).** `/medicare-glossary` (40 terms, anchors, DefinedTerm schema, a Medicare.gov source each), `/medicare-enrollment-calendar` (26 windows as rules, each sourced) and 10 more answer pages: `medicare-while-still-working`, `cobra-and-medicare`, `retiree-coverage-and-medicare`, `va-health-care-and-medicare`, `moving-between-new-jersey-new-york-pennsylvania`, `medigap-underwriting-new-jersey-new-york`, `what-to-bring-to-a-medicare-appointment`, `how-to-check-if-a-doctor-is-in-a-medicare-plan`, `medicare-and-medicaid-together`, `how-to-switch-medicare-plans`. Glossary terms link automatically in answer pages and every answer page names 3 related answers (the build enforces it). All 50 source URLs load. Three points I could not fully source are listed in the PR and in section 2.
+- **Block 4, technical polish. Done Nov 16 (PR #17).** Every one of the 93 pages has a canonical tag and its own Open Graph and Twitter card with a share image. Five dead Medicare.gov source links replaced. The 404 page already existed with section links and tap-to-call; it gained three links. One image on the site: alt text present, served as AVIF, source recompressed with identical pixels. `npm run check:links` checks external links by hand. Not done in Block 4: Lighthouse and a by-eye check at phone width; those belong to Block 2.
+- **Part A/B change. Done Nov 16 (PR #17).** Required on all three forms, answers Yes / No / Not sure. Old four-choice answers from a page left open are mapped on the server. Stored rows keep the old words.
 - **Block 5, partner research CSV.** Prompt is in section 8.
 - **Block 6, Next.js security upgrade. Done Nov 16 (PR #15, stacked on #14).** `next` and `eslint-config-next` 16.4.2 to 16.4.6; nothing else changed. Advisory GHSA-mfr8-8qww-v76h covers 16.3.0 to 16.4.4. Typecheck, lint, tests, build (three clean runs) and the site crawl (76 URLs, 81 internal links) pass.
-- **Follow-up to Block 6, zod. Done Nov 16 (PR #16, stacked on #15).** zod 3.25 to 4.6.7 and `@hookform/resolvers` 3.10 to 5.9.2. Required fields, visitor-facing messages, the optional Part A/B question, consent rules and `scoreLead()` inputs are unchanged, checked against a 716-input baseline recorded under zod 3. `scripts/test-lead-forms.mjs` (29 checks) is in `npm test` and CI. Also fixed: the CRM prohibited-field guard never matched the camelCase keys `medicareNumber` and `dateOfBirth`. `npm audit --omit=dev` is at 0. The booking and capture schemas now live in `lib/validations/`. Not checked: the forms in a real browser against Supabase; submit each once on the preview. Stack the next block on `fable/zod4-upgrade`.
+- **Follow-up to Block 6, zod. Done Nov 16 (PR #16, stacked on #15).** zod 3.25 to 4.6.7 and `@hookform/resolvers` 3.10 to 5.9.2. Required fields, visitor-facing messages, the optional Part A/B question, consent rules and `scoreLead()` inputs are unchanged, checked against a 716-input baseline recorded under zod 3. `scripts/test-lead-forms.mjs` (29 checks) is in `npm test` and CI. Also fixed: the CRM prohibited-field guard never matched the camelCase keys `medicareNumber` and `dateOfBirth`. `npm audit --omit=dev` is at 0. The booking and capture schemas now live in `lib/validations/`. Not checked: the forms in a real browser against Supabase; submit each once on the preview.
+
+**Left after #17:** Block 2 (design and accessibility audit, Lighthouse, plain-language pass) and Block 5 (partner research CSV), each as its own PR stacked on `fable/partsab-reference-hub-polish`. The Gemini runner scaffold from section 8 is also still not built.
