@@ -237,6 +237,16 @@ export function isOutOfAreaRoute(path: string): boolean {
   return path.startsWith('/plans/') && path !== '/plans/new-jersey';
 }
 
+/**
+ * True when the fallback counts must name their area instead of saying "in
+ * your area": every route about another place, and every answer page. Answer
+ * pages are read by people anywhere (many arrive from AI search), so the
+ * Bergen figures always say "in Bergen County, NJ" there (Erekle, Nov 16 2026).
+ */
+export function usesFallbackScope(path: string): boolean {
+  return isOutOfAreaRoute(path) || path.startsWith('/answers/');
+}
+
 function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {
   const count = tpmoCountsByArea[key];
   return count ? { ...count, key, label: TPMO_AREAS[key] } : null;
@@ -247,7 +257,8 @@ function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {
  *
  *  - areas mapped to the route that have a count → those
  *  - otherwise the fallback area, if it has a count; on a route about
- *    another place it carries `scope`, so the sentence names Bergen County
+ *    another place, or an answer page, it carries `scope`, so the sentence
+ *    names Bergen County
  *  - otherwise [] → the caller renders the count-free wording
  */
 export function tpmoAreasFor(pathname: string | null): ResolvedTpmoArea[] {
@@ -260,7 +271,7 @@ export function tpmoAreasFor(pathname: string | null): ResolvedTpmoArea[] {
 
   const fallback = resolve(TPMO_FALLBACK_AREA);
   if (!fallback) return [];
-  return [isOutOfAreaRoute(path) ? { ...fallback, scope: TPMO_FALLBACK_SCOPE } : fallback];
+  return [usesFallbackScope(path) ? { ...fallback, scope: TPMO_FALLBACK_SCOPE } : fallback];
 }
 
 /** 'YYYY-MM' or 'YYYY-MM-DD' → "November 2026" / "November 15, 2026". */
