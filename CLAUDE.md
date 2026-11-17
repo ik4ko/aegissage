@@ -23,7 +23,8 @@ Audience: 65+ and their adult children. iPad/Safari, reading glasses.
 - Fallback rule: a page about a place with no count of its own (New York
   City, Philadelphia, other state pages) states the Bergen County figures
   and says "in Bergen County, NJ" in place of "in your area". Never let a
-  page imply Bergen numbers apply somewhere else.
+  page imply Bergen numbers apply somewhere else. Every /answers/ page
+  follows the same rule ("in Bergen County, NJ"), whatever its topic.
 - Never imply Medicare affiliation, endorsement, or being sent by Medicare.
 - Never state or imply eligibility, approval, savings, $0 premium, or a
   specific benefit before a licensed review. No "you qualify" anywhere.
