@@ -301,3 +301,21 @@ The stack (#6 to #17) is merged and live. #13 (partners) is still a draft and wa
 4. **Content calendar (docs PR, can share a PR with item 2).** 4 weeks of drafts: Google Business Profile, Nextdoor business page, LinkedIn and Facebook, 2 posts a week each. Each post links to one specific page (answer pages, glossary, calendar, town pages). Short, calm, for readers 64+, no hype, no plan or carrier names, no "best", and the TPMO sentence wherever CMS requires it (ask Pinnacle whether profile posts count; question 6a in section 4). Include 4 posts about Georgian and Russian help.
 
 Tools that helped with Block 2: a 375px sweep with axe-core over every sitemap URL, and mobile Lighthouse, both run against `next build` + `next start` on port 3200. Rerun them after the town pages.
+
+### Later on Nov 17 (after a computer crash): items 1 to 4 above are built
+
+The PC crashed mid-session. Nothing was lost: the tree was clean and #18 and #19 were already pushed. Then:
+
+- **Town pages:** branch `town-pages`, pushed, **PR not opened yet** (`gh` was logged out after the crash). Covers all 14 towns, each with its own copy, local help read on official pages (with the URL and date on the page), and 3 related answers.
+  - **TPMO:** Hudson towns map to a new `hudson-nj` area with a `null` count. They, Brooklyn and Queens state the Bergen counts "in Bergen County, NJ".
+  - **New test:** `npm run test:locations`. It caps overlap between any two location pages at 30%; the highest now is 22.1%.
+  - **Not verified, so left out:** the Weehawken library, the Queens library branches, and Social Security office addresses (each page links ssa.gov/locator instead).
+  - **Questions for Erekle are in the PR:** where he meets in person, the site-wide `areaServed` list, and a Hudson recount.
+  - **`next build` could not run locally** (out of memory after the crash). Check CI on the PR.
+- **Block 5:** branch `block5/partner-research`, pushed, PR not opened. `docs/ai-visibility/partner-research-2026-11.csv` has 111 rows, all from official lists: 61 Bergen senior programs and 29 Bergen assisted living homes (Bergen County Key Services Guide 2024), plus 21 NYC Aging centers in Brighton Beach, Sheepshead Bay, Rego Park and Forest Hills (NYC Open Data).
+  - **The 48 rows:** 8 are now verified, with two phone numbers corrected. 40 still have only directory listings and say how to confirm them. None was dropped.
+  - **Not done:** senior-focused primary care practices, and Hudson senior living and municipal programs (no official list found).
+- **#13 partners:** main merged into `fable/partners` and `/partners` given a share card. Still a draft, not merged.
+- **Content calendar:** branch `docs/content-calendar`, pushed, PR not opened. `docs/ai-visibility/content-calendar-4-weeks.md` has 32 posts, 4 of them about Georgian and Russian help. It includes the TPMO sentence pending Pinnacle question 6a.
+
+**Windows note:** Git for Windows checks files out with CRLF. `scripts/test-glossary.mjs` failed on Windows only; the fix is in the town-pages branch.
