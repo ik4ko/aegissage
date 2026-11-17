@@ -4,7 +4,7 @@ Consumer Medicare brokerage site for one licensed independent agent.
 NOT a SaaS product. Never use: dashboard, seats, pricing tiers, sign in,
 book of business, upload your roster, plan-switch detection.
 
-Stack: Next.js 15 App Router, TypeScript, Supabase, Vercel.
+Stack: Next.js 16 App Router (16.4.6), React 19, TypeScript, zod 4, Supabase, Vercel.
 Audience: 65+ and their adult children. iPad/Safari, reading glasses.
 18px+ body, 44px+ tap targets, high contrast, plain language, no urgency tactics.
 

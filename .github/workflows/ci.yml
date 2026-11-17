@@ -54,6 +54,12 @@ jobs:
       - name: Digest logic tests
         run: npm run test:digest
 
+      # Lead form validation: required fields, visitor-facing messages, the
+      # optional Part A/B question, consent rules, and that no form accepts a
+      # Medicare number, SSN or date of birth.
+      - name: Lead form validation tests
+        run: npm run test:forms
+
       - name: Production build
         run: npm run build
         env:

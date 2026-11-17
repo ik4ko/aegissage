@@ -48,7 +48,7 @@ export const contactSchema = z
     /** Optional quiz answers attached to a submission from the quiz. */
     context: z.record(z.string(), z.string()).optional(),
     consent: z.literal(true, {
-      errorMap: () => ({ message: 'Please check the box so I know it is okay to contact you.' }),
+      error: 'Please check the box so I know it is okay to contact you.',
     }),
     /**
      * Standalone SMS permission.
