@@ -173,6 +173,12 @@
     @apply font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep;
   }
 
+  /* Links in article lists (sources lists in guides): vertical padding on an
+     inline link grows its tap area to 48px+ without changing line spacing. */
+  .article-body :where(ul:not([class]), ol:not([class])) > li > a {
+    padding-block: 0.6875rem;
+  }
+
   /* A link that stands alone on its line (a sources list, a lookup list):
      same look as an article link, with a 48px tap target. */
   .link-row {
