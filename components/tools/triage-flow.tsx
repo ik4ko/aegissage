@@ -110,7 +110,7 @@ function TriageQuestion<T extends string>({ heading, options, onChoose, back }: 
         {back ? <button type="button" onClick={back} className="inline-flex min-h-touch shrink-0 items-center gap-1 text-base font-semibold text-white/75 hover:text-white"><ArrowLeft className="h-4 w-4" aria-hidden="true" />Back</button> : null}
       </div>
       <div className="mt-6 grid gap-3 sm:grid-cols-3">
-        {options.map((option) => <button key={option.value} type="button" onClick={() => onChoose(option.value)} className="group min-h-[5.25rem] rounded-2xl border-2 border-white/20 bg-white/5 p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-ember hover:bg-white/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30"><span className="block text-lg font-semibold">{option.label}</span>{option.hint ? <span className="mt-1 block text-sm text-white/60">{option.hint}</span> : null}</button>)}
+        {options.map((option) => <button key={option.value} type="button" onClick={() => onChoose(option.value)} className="group min-h-[5.25rem] rounded-2xl border-2 border-white/20 bg-white/5 p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-ember hover:bg-white/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white"><span className="block text-lg font-semibold">{option.label}</span>{option.hint ? <span className="mt-1 block text-sm text-white/60">{option.hint}</span> : null}</button>)}
       </div>
     </div>
   );

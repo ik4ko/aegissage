@@ -154,7 +154,9 @@ export default function MedicareBasicsPage() {
           <ul className="mt-8 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
             {terms.map(([key, entry]) => (
               <li key={key} className="flex min-h-touch items-center border-b border-line/70">
-                <GlossaryTerm k={key}>{entry.term}</GlossaryTerm>
+                <GlossaryTerm k={key} className="min-h-touch w-full">
+                  {entry.term}
+                </GlossaryTerm>
               </li>
             ))}
           </ul>

@@ -62,7 +62,7 @@ export default function NotFound() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="inline-flex min-h-touch items-center text-base text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
+                  className="inline-flex min-h-touch min-w-touch items-center justify-center px-1 text-base text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
                 >
                   {item.label}
                 </Link>
@@ -76,7 +76,7 @@ export default function NotFound() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="inline-flex min-h-touch items-center text-base text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
+                  className="inline-flex min-h-touch min-w-touch items-center justify-center px-1 text-base text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
                 >
                   {item.label}
                 </Link>
@@ -85,7 +85,7 @@ export default function NotFound() {
             <li>
               <Link
                 href="/plans"
-                className="inline-flex min-h-touch items-center text-base text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
+                className="inline-flex min-h-touch min-w-touch items-center justify-center px-1 text-base text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
               >
                 Plans by state
               </Link>
@@ -93,7 +93,7 @@ export default function NotFound() {
             <li>
               <Link
                 href="/contact"
-                className="inline-flex min-h-touch items-center text-base text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
+                className="inline-flex min-h-touch min-w-touch items-center justify-center px-1 text-base text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
               >
                 Contact
               </Link>

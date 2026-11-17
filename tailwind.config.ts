@@ -65,8 +65,9 @@ const config: Config = {
         display: ['var(--font-display)', 'Georgia', 'serif'],
       },
       fontSize: {
-        // Senior-friendly scale. `base` is 19px, not 16px.
-        sm: ['1rem', { lineHeight: '1.6' }],
+        // Senior-friendly scale. `base` is 19px, not 16px. `sm` is the floor:
+        // 18px, so no text on the site renders smaller (Block 2, Nov 2026).
+        sm: ['1.125rem', { lineHeight: '1.6' }],
         base: ['1.1875rem', { lineHeight: '1.7' }],
         lg: ['1.3125rem', { lineHeight: '1.65' }],
         xl: ['1.5rem', { lineHeight: '1.5' }],

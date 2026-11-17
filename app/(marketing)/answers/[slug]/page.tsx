@@ -110,7 +110,7 @@ export default async function AnswerPage({ params }: { params: Promise<Params> }
             <ul>
               {sources.map((source) => (
                 <li key={source.url}>
-                  <a href={source.url} target="_blank" rel="noopener noreferrer">
+                  <a href={source.url} target="_blank" rel="noopener noreferrer" className="link-row">
                     {source.title}
                   </a>
                 </li>

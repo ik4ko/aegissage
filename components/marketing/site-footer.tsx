@@ -71,7 +71,7 @@ export function SiteFooter() {
                   href={LANGUAGE_PAGE_PATHS[locale]}
                   hrefLang={HTML_LANG[locale]}
                   lang={HTML_LANG[locale]}
-                  className="text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
+                  className="inline-flex min-h-touch items-center text-navy underline decoration-line underline-offset-4 hover:decoration-navy"
                 >
                   {locale === 'en'
                     ? 'Help in Georgian and Russian'

@@ -110,7 +110,7 @@ export default function AboutPage() {
                 <Languages className="h-5 w-5 text-sage" aria-hidden="true" />
                 <Link
                   href="/medicare-help-georgian-russian"
-                  className="underline decoration-line underline-offset-4 hover:decoration-navy"
+                  className="inline-flex min-h-touch items-center underline decoration-line underline-offset-4 hover:decoration-navy"
                 >
                   {LANGUAGE_LIST}
                 </Link>
@@ -223,7 +223,12 @@ export default function AboutPage() {
           <ul>
             {advisor.licenseLookup.map((lookup) => (
               <li key={lookup.href}>
-                <a href={lookup.href} rel="noopener noreferrer" target="_blank">
+                <a
+                  href={lookup.href}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className="link-row"
+                >
                   {lookup.label}
                 </a>
               </li>
@@ -341,7 +346,7 @@ export default function AboutPage() {
               <li key={state.code}>
                 <Link
                   href={`/plans/${state.slug}`}
-                  className="flex min-h-touch items-center rounded-xl border-2 border-line bg-cream px-4 text-base font-semibold text-ink-soft transition-colors hover:border-navy/50 hover:text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/30"
+                  className="flex min-h-touch items-center rounded-xl border-2 border-line bg-cream px-4 text-base font-semibold text-ink-soft transition-colors hover:border-navy/50 hover:text-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
                 >
                   {state.name}
                 </Link>

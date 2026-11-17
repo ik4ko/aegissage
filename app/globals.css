@@ -47,7 +47,8 @@
   /* A single, consistent focus ring. Never remove it — the primary audience
      includes keyboard and switch users. */
   :focus-visible {
-    @apply outline-none ring-4 ring-navy/30;
+    outline: 3px solid theme('colors.navy.DEFAULT');
+    outline-offset: 3px;
   }
 
   ::selection {
@@ -60,6 +61,20 @@
 
   p {
     text-wrap: pretty;
+  }
+
+  /* A long word or link never pushes a page sideways at 375px. */
+  h1, h2, h3, h4, p, li, dd, dt, label {
+    overflow-wrap: break-word;
+  }
+
+  /*
+    Grid children default to min-width: auto and grow to their longest
+    unbreakable content, which pushed the location, state and home hero
+    columns 8 to 23px past a 375px screen. min-width: 0 lets them shrink.
+  */
+  .grid > * {
+    min-width: 0;
   }
 }
 
@@ -156,6 +171,12 @@
 
   .article-body :where(a:not([class])) {
     @apply font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep;
+  }
+
+  /* A link that stands alone on its line (a sources list, a lookup list):
+     same look as an article link, with a 48px tap target. */
+  .link-row {
+    @apply inline-flex min-h-touch items-center font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep;
   }
 
   .article-body :where(ul:not([class])) {

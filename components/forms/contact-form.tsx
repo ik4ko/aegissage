@@ -313,7 +313,7 @@ export function ContactForm({
         >
           <select
             id={`${source}-topic`}
-            className="h-14 w-full rounded-xl border-2 border-line bg-paper px-4 text-base text-ink focus-visible:border-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/25"
+            className="h-14 w-full rounded-xl border-2 border-line bg-paper px-4 text-base text-ink focus-visible:border-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
             defaultValue=""
             {...register('topic')}
           >
@@ -374,7 +374,7 @@ export function ContactForm({
         >
           <select
             id={`${source}-found-via`}
-            className="h-14 w-full rounded-xl border-2 border-line bg-paper px-4 text-base text-ink focus-visible:border-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy/25"
+            className="h-14 w-full rounded-xl border-2 border-line bg-paper px-4 text-base text-ink focus-visible:border-navy focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
             defaultValue=""
             {...register('foundVia')}
           >
@@ -405,7 +405,11 @@ export function ContactForm({
                     checked={field.value === true}
                     onBlur={field.onBlur}
                     onCheckedChange={(checked) => field.onChange(checked === true ? true : undefined)}
-                    aria-describedby={`${source}-consent-detail`}
+                    aria-describedby={
+                      errors.consent
+                        ? `${source}-consent-detail ${source}-consent-error`
+                        : `${source}-consent-detail`
+                    }
                     aria-invalid={Boolean(errors.consent)}
                   />
                 )}
@@ -512,7 +516,7 @@ export function ContactForm({
           </p>
 
           {errors.consent ? (
-            <p className="mt-3 text-sm font-semibold text-ember-deep" role="alert">
+            <p id={`${source}-consent-error`} className="mt-3 text-sm font-semibold text-ember-deep" role="alert">
               {err(errors.consent.message)}
             </p>
           ) : null}
