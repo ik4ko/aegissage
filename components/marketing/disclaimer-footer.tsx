@@ -32,7 +32,8 @@ import { TpmoDisclaimer, tpmoVariantFor } from './tpmo-disclaimer';
  *      against the advisor's actual contracts. Placeholder counts previously
  *      shipped here and were removed; <TpmoDisclaimer /> now throws rather
  *      than render an unverified one.
- *   3. The 1-800-MEDICARE + medicare.gov + SHIP referrals are present.
+ *   3. The Medicare.gov and 1-800-MEDICARE referrals are present (CY2027 wording;
+ *      the SHIP referral was removed from 422.2267(e)(41) by FR 2026-06600).
  *   4. The non-government-entity statement is present.
  *   5. Nothing here promises, guarantees or ranks benefits.
  *   6. The counted variant is the default on every route (Nov 15 2026).

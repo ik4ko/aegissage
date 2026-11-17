@@ -18,7 +18,7 @@ Drafts for Erekle to edit and post by hand. 32 posts: 2 a week on each of 4 chan
 
 Pinnacle hasn't yet said whether profile and social posts count as marketing material (question 6a in HANDOFF section 4). **Until they answer, add this to every post that mentions Medicare Advantage, Part D, plans or enrollment**, which is every post below except those marked *(no TPMO line needed: no plan or enrollment content)*. Copy the two numbers from the site footer the day you post. Never type them from memory, because they change each October.
 
-> Aegis Sage is not connected with or endorsed by the United States government or the federal Medicare program. We do not offer every plan available in your area. Currently we represent {organizations} organizations which offer {products} products in Bergen County, NJ. Please contact Medicare.gov, 1-800-MEDICARE (TTY 1-877-486-2048), or your local State Health Insurance Program (SHIP) to get information on all of your options.
+> Aegis Sage is not connected with or endorsed by the United States government or the federal Medicare program. We do not offer every plan available in your area. Currently we represent {organizations} organizations which offer {products} products in Bergen County, NJ. Please contact Medicare.gov or 1-800-MEDICARE to get information on all of your options.
 
 Google Business Profile posts allow 1,500 characters. The sentence fits under every GBP draft here.
 

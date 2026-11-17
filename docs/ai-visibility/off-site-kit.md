@@ -33,7 +33,7 @@ Aegis Sage · Erekle Niniashvili, licensed insurance broker, Edgewater NJ. Medic
 **TPMO sentence (Bergen County recount of 2026-11-16).** Append this to the long description. The numbers must match `tpmoCountsByArea['bergen-nj']` in `lib/site.ts`; if you change 31 to 26 there, change it here and on every profile where you pasted it:
 
 ```
-We do not offer every plan available in your area. Currently we represent 5 organizations which offer 31 products in your area. Please contact Medicare.gov, 1-800-MEDICARE, or your local State Health Insurance Program to get information on all of your options.
+We do not offer every plan available in your area. Currently we represent 5 organizations which offer 31 products in your area. Please contact Medicare.gov or 1-800-MEDICARE to get information on all of your options.
 ```
 
 These are Bergen County figures. A profile aimed at New York City or Philadelphia should not carry them until those counties are recounted. Google's description limit is 750 characters; with the TPMO sentence the long description is over that, so on Google use the long description up to "aegissage.com." and then the TPMO sentence. Ask Pinnacle whether a profile description counts as marketing material that needs the disclaimer at all; if it does not, the long description above stands as written.
