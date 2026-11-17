@@ -75,6 +75,8 @@ export async function POST(req: Request) {
     source: payload.source,
     answers: payload.context ?? null,
     turns65: payload.context?.turns65 ?? null,
+    foundVia: payload.foundVia || null,
+    partsAB: payload.partsAB || null,
     now: new Date(),
   });
 
@@ -143,7 +145,7 @@ export async function POST(req: Request) {
     preferred_contact: payload.preferredContact,
     message: payload.message || null,
     source: payload.source,
-    context: payload.context ?? null,
+    context: contextWithAnswers(payload),
     consent: true,
     consent_text_version: consentTextVersion,
     user_agent: req.headers.get('user-agent')?.slice(0, 500) ?? null,
@@ -289,7 +291,7 @@ export async function POST(req: Request) {
         cannot ride along into a key named for attribution.
       */
       const bookingContext: Record<string, string> = {
-        ...extractAttribution(payload.context),
+        ...extractAttribution(contextWithAnswers(payload)),
         source: payload.source,
         at: now,
       };
@@ -523,7 +525,7 @@ export async function POST(req: Request) {
     topic: payload.topic ?? null,
     message: payload.message || null,
     sourcePage: payload.source,
-    attribution: extractAttribution(payload.context),
+    attribution: extractAttribution(contextWithAnswers(payload)),
     consent: {
       reply: true,
       replyAt: now,
@@ -589,9 +591,35 @@ const ATTRIBUTION_KEYS = [
   'landing',
   'referrer',
   'firstTouchDate',
+  // AI visibility (lib/ai-sources.ts): each is one token from a fixed list.
+  'aiSource',
+  'foundVia',
+  'partsAB',
+  'locale',
 ];
 
-function extractAttribution(context: Record<string, string> | undefined): Record<string, string> {
+/**
+ * The stored `context`, with the two optional fixed-list answers folded in.
+ *
+ * They live in `context` rather than in columns of their own so that adding
+ * them needs no migration: `contacts.context` is already JSON, and the form
+ * is the site's primary conversion path, which must never depend on
+ * migration ordering (see the migration-tolerant write above).
+ */
+function contextWithAnswers(payload: {
+  context?: Record<string, string>;
+  foundVia?: string;
+  partsAB?: string;
+}): Record<string, string> | null {
+  const context: Record<string, string> = { ...(payload.context ?? {}) };
+  if (payload.foundVia) context.foundVia = payload.foundVia;
+  if (payload.partsAB) context.partsAB = payload.partsAB;
+  return Object.keys(context).length > 0 ? context : null;
+}
+
+function extractAttribution(
+  context: Record<string, string> | null | undefined,
+): Record<string, string> {
   if (!context) return {};
   const out: Record<string, string> = {};
   for (const key of ATTRIBUTION_KEYS) {

@@ -28,7 +28,13 @@
  */
 export const CONSENT_TEXT_VERSIONS = {
   /** components/forms/contact-form.tsx — separated reply/SMS/marketing boxes. */
-  contactForm: 'contact-form-2026-07',
+  /*
+    2026-11: the consent sentence now names "Erekle Niniashvili of Aegis
+    Sage" in full (it previously said "Erekle"), and the form asks about
+    Part A and Part B. New wording, new version; rows recorded under 2026-07
+    keep the version they were given under.
+  */
+  contactForm: 'contact-form-2026-11',
   /** components/forms/deadline-capture.tsx — single email-only consent box. */
   homepageCapture: 'homepage-capture-2026-08',
   /**

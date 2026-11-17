@@ -62,4 +62,26 @@ check('AEP boundary Dec 7 inclusive',
 check('AEP boundary Dec 8 excluded',
   scoreLead({ topic: 'I want to review my current coverage', now: new Date('2026-12-08T00:00:00Z') }), 'C');
 
+// ── Attribution answers never change a grade ───────────────────────────────
+// `foundVia` and `partsAB` travel with the score's inputs but must not move it.
+for (const foundVia of ['chatgpt', 'claude', 'perplexity', 'gemini', 'google', 'referral', 'other']) {
+  check(`foundVia=${foundVia} leaves C alone`, scoreLead({ foundVia, now: NOW }), 'C');
+  check(`foundVia=${foundVia} leaves A alone`, scoreLead({ foundVia, bookingStatus: 'intent', now: NOW }), 'A');
+}
+for (const partsAB of ['both', 'one', 'not-yet', 'not-sure']) {
+  check(`partsAB=${partsAB} leaves C alone`, scoreLead({ partsAB, now: NOW }), 'C');
+}
+
+// ── AI referrer classification ─────────────────────────────────────────────
+const { classifyAiSource } = await import('../lib/ai-sources.ts');
+check('chatgpt.com referrer', classifyAiSource('chatgpt.com'), 'chatgpt');
+check('chatgpt utm_source', classifyAiSource(undefined, 'chatgpt.com'), 'chatgpt');
+check('claude.ai referrer', classifyAiSource('claude.ai'), 'claude');
+check('www.perplexity.ai referrer', classifyAiSource('www.perplexity.ai'), 'perplexity');
+check('gemini.google.com referrer', classifyAiSource('gemini.google.com'), 'gemini');
+check('copilot referrer', classifyAiSource('copilot.microsoft.com'), 'copilot');
+check('plain Google search is not an AI source', classifyAiSource('www.google.com'), null);
+check('lookalike host is not matched', classifyAiSource('notchatgpt.com.example.org'), null);
+check('nothing captured', classifyAiSource(undefined, undefined), null);
+
 console.log(`\n✓ ${passed} lead-scoring checks passed.`);

@@ -43,6 +43,15 @@ export type LeadScoreInput = {
   answers?: Record<string, string> | null;
   /** "YYYY-MM" from the homepage capture band's optional 65th-birthday field. */
   turns65?: string | null;
+  /**
+   * Recorded with the score's inputs so they travel with it; NEITHER changes
+   * the grade today. `foundVia` is where the person says they found the site
+   * and must never rank one lead above another. `partsAB` is whether they
+   * already have Part A and Part B. If Erekle later wants either to affect
+   * urgency, that is a scoring change to make deliberately, with a test.
+   */
+  foundVia?: string | null;
+  partsAB?: string | null;
   /** When the submission arrived. Injected, never read from a global clock. */
   now: Date;
 };
