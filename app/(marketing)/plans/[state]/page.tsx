@@ -5,6 +5,7 @@ import { CtaBand } from '@/components/marketing/cta-band';
 import { TrustBar } from '@/components/marketing/trust-bar';
 import { GlossaryTerm } from '@/components/marketing/glossary-term';
 import { ContactForm } from '@/components/forms/contact-form';
+import { MedigapLine } from '@/components/marketing/medigap-line';
 import { ArticleCard } from '@/components/marketing/article-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -144,6 +145,7 @@ export default async function StatePage({ params }: { params: Promise<Params> })
               where you live, ask me and I will pull it up with you — or check every option
               yourself at medicare.gov.
             </p>
+            <MedigapLine state={state.code} />
 
             <div className="not-prose mt-10 flex flex-wrap gap-3">
               <Button asChild size="lg">

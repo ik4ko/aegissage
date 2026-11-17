@@ -13,6 +13,8 @@ import { advisor } from '@/lib/site';
 import { trackContactSubmit, trackFormStart, trackFormSubmit } from '@/lib/analytics';
 import { getAttribution } from '@/lib/attribution';
 import { HOMEPAGE_CAPTURE_SOURCE } from '@/lib/consent';
+import { PARTS_AB } from '@/lib/ai-sources';
+import { PartsABField } from './parts-ab-field';
 
 /**
  * ══════════════════════════════════════════════════════════════════════════
@@ -87,6 +89,8 @@ const captureSchema = z.object({
   consent: z.literal(true, {
     errorMap: () => ({ message: 'Please check the box so I know it is okay to email you.' }),
   }),
+  /** Optional. Enrollment status only: never a Medicare number or a date of birth. */
+  partsAB: z.enum(PARTS_AB).or(z.literal('')).optional(),
   /** Honeypot. Real people leave it empty; the API returns a plain 200. */
   website: z.string().max(200).optional(),
 });
@@ -113,6 +117,7 @@ export function DeadlineCapture() {
     register,
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm<CaptureInput>({
     resolver: zodResolver(captureSchema),
@@ -122,6 +127,7 @@ export function DeadlineCapture() {
       zip: '',
       turns65: '',
       website: '',
+      partsAB: '',
       // Unticked. A pre-checked consent box is not consent.
       consent: false as unknown as true,
     },
@@ -153,6 +159,7 @@ export function DeadlineCapture() {
           // Explicit, not merely omitted. This form never collects SMS
           // consent and must never appear to.
           consentSms: false,
+          partsAB: values.partsAB || '',
           source: SOURCE,
           website: values.website,
           context: {
@@ -282,6 +289,8 @@ export function DeadlineCapture() {
             />
           </Field>
         </div>
+
+        <PartsABField registration={register('partsAB')} selected={watch('partsAB')} />
 
         {/*
           Consent sits ABOVE the submit button and is visible before anything
