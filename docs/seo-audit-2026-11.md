@@ -10,10 +10,38 @@ Run against production (https://www.aegissage.com) after the town pages (#20) we
 | Titles, descriptions, canonicals | Every page has a title, description and self-canonical, and exactly one H1. 1 duplicate title, 29 titles that Google will cut off, 18 descriptions over 160 characters. |
 | Structured data | 15 types in use, no JSON parse errors. One real error: the FAQ schema on `/medicare-checklist` describes 4 questions that are not on the page. |
 | Name, phone, URL | Consistent everywhere: "Aegis Sage", `+15512029079` / (551) 202-9079, `https://www.aegissage.com`, Edgewater NJ. No stray or old phone number found. |
-| Speed and accessibility | See the Lighthouse table. |
+| Speed and accessibility | Lighthouse: accessibility, best practices and SEO 100 on every page tested. Performance 100 on desktop, 94 to 99 on mobile. CLS 0 everywhere. |
 | **AI and search visibility** | **aegissage.com and Erekle's name appeared in none of the 20 test questions, including a search for the brand name itself.** This is the biggest problem, and it is not a technical block. It is a new domain with almost no other sites linking to it. |
 
-{{LIGHTHOUSE}}
+## 1. Speed, accessibility and Core Web Vitals
+
+The PageSpeed Insights API refused requests without a key (HTTP 429: the shared daily quota was used up). These are the same Lighthouse 12.8 tests PageSpeed runs, run from this PC against production, one page at a time. They are **lab** numbers. **Field** Core Web Vitals (real Chrome users) need a free API key for PageSpeed or CrUX: see L3.
+
+Mobile is a mid-range phone on a slowed 4G connection. TBT (total blocking time) is the lab stand-in for INP.
+
+| Page | Mobile perf | Mobile LCP | Mobile CLS | Mobile TBT | Desktop perf | Desktop LCP | Accessibility | Best practices | SEO |
+|---|---|---|---|---|---|---|---|---|---|
+| / | 98 | 2.0 s | 0 | 120 ms | 100 | 0.6 s | 100 | 100 | 100 |
+| /about | 95 (runs: 81, 96, 95) | 4.7 s | 0 | 130 ms | 100 | 0.6 s | 100 | 100 | 100 |
+| /contact | 83 (runs: 83, 96, 83) | 4.4 s | 0 | 120 ms | 100 | 0.5 s | 100 | 100 | 100 |
+| /book | 95 | 2.9 s | 0 | 110 ms | 100 | 0.6 s | 100 | 100 | 66 (noindex on purpose) |
+| /medicare-glossary | 97 | 2.4 s | 0 | 110 ms | 100 | 0.5 s | 100 | 100 | 100 |
+| /medicare-enrollment-calendar | 97 | 2.3 s | 0 | 130 ms | 100 | 0.5 s | 100 | 100 | 100 |
+| /answers/turning-65-new-jersey | 94 | 2.9 s | 0 | 130 ms | 100 | 0.6 s | 100 | 100 | 100 |
+| /answers/medigap-new-jersey | 94 | 2.9 s | 0 | 120 ms | 100 | 0.6 s | 100 | 100 | 100 |
+| /answers/medicare-help-new-york-city | 95 | 2.6 s | 0 | 170 ms | 100 | 0.6 s | 100 | 100 | 100 |
+| /answers/how-to-check-if-a-doctor-is-in-a-medicare-plan | 96 | 2.6 s | 0 | 140 ms | 100 | 0.6 s | 100 | 100 | 100 |
+| /answers/medicare-enrollment-periods-explained | 94 | 2.8 s | 0 | 170 ms | 100 | 0.5 s | 100 | 100 | 100 |
+| /medicare-jersey-city | 94 | 2.9 s | 0 | 130 ms | 100 | 0.6 s | 100 | 100 | 100 |
+| /medicare-hackensack | 95 | 2.7 s | 0 | 150 ms | 100 | 0.6 s | 100 | 100 | 100 |
+| /medicare-brooklyn | 99 | 1.4 s | 0 | 120 ms | 100 | 0.6 s | 100 | 100 | 100 |
+
+What this says:
+- **Accessibility, best practices and SEO are 100 on every page tested.** `/book` scores 66 on SEO only because it is `noindex`, which is deliberate.
+- **Desktop performance is 100 everywhere.** Mobile is 94 to 99. The first runs of `/about` (81) and `/contact` (83) were noise from a busy PC. On re-runs both scored 95 to 96, and the slow element (the intro paragraph) is not animated or late-loading.
+- **Core Web Vitals in the lab:** LCP 1.4 to 2.9 s on mobile (good is under 2.5 s; a few answer pages sit just over), CLS 0 everywhere, TBT 110 to 170 ms.
+- **Largest remaining cost:** about 120 to 160 KB of JavaScript that isn't used on first load, and the Google Analytics tag (one ~95 ms task about 3.5 s in). Both are small. Not worth changing alone.
+
 
 ## 2. Structured data
 
