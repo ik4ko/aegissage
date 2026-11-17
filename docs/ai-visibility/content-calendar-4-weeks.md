@@ -70,8 +70,8 @@ For HR teams and anyone leaving a job after 65: COBRA does not extend the window
 **LinkedIn, Fri:** *Link: /how-we-are-paid* *(no TPMO line needed: no plan or enrollment content)*
 People often ask how an independent broker is paid. Insurance companies pay me when someone enrolls. My clients pay nothing, and premiums are the same whether you use a broker or not. I wrote down exactly how it works.
 
-**Facebook, Wed:** *Link: /ru* *(Georgian/Russian post 2 of 4)*
-For families in Brooklyn, Queens and New Jersey: I can explain Medicare in Russian. Many parents understand the rules better in Russian, and their children can join the same call in English. The page in Russian is linked below.
+**Facebook, Wed:** *Link: /medicare-help-georgian-russian (switch to /ru once the Russian page passes native review and loses its draft banner)* *(Georgian/Russian post 2 of 4)*
+For families in Brooklyn, Queens and New Jersey: I can explain Medicare in Russian. Many parents understand the rules better in Russian, and their children can join the same call in English. The page below explains how it works.
 
 **Facebook, Sat:** *Link: /medicare-glossary#network*
 What does "network" mean in Medicare? It's the doctors, hospitals and pharmacies a plan works with. With Original Medicare, any doctor who accepts Medicare can see you. With Medicare Advantage, the network matters. Two plain sentences on the glossary page.
@@ -84,8 +84,8 @@ The fall window closes December 7 each year. If you are in a Medicare Advantage 
 **GBP, Thu:** *Link: /medicare-hackensack* *(after town PR; until then /medicare-bergen-county)*
 Free Medicare counseling is close by in Hackensack. Bergen County's SHIP counselors work at One Bergen County Plaza and do not sell insurance. If you would rather compare plans with a licensed broker, you can call me too. Both kinds of help are on this page.
 
-**Nextdoor, Tue:** *Link: /ka* *(Georgian/Russian post 3 of 4)*
-Neighbors who speak Georgian: I am Georgian and I help with Medicare in Georgian, Russian and English. If a parent or grandparent needs Medicare explained, please share this page with them.
+**Nextdoor, Tue:** *Link: /medicare-help-georgian-russian (switch to /ka once the Georgian page passes native review and loses its draft banner)* *(Georgian/Russian post 3 of 4)*
+Neighbors who speak Georgian: I am Georgian and I help with Medicare in Georgian, Russian and English. If a parent or grandparent needs Medicare explained, please share this page with them. A Georgian version is coming.
 
 **Nextdoor, Sat:** *Link: /answers/turning-65-new-jersey*
 Turning 65 in the new year? Your first sign-up window is seven months long: three months before your birthday month, that month, and three after. This page puts the New Jersey steps in order.
