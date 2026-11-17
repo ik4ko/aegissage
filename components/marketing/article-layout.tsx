@@ -27,6 +27,7 @@ export function ArticleLayout({
   backLabel,
   afterBody,
   afterColumn,
+  relatedHeading = 'Read next',
 }: {
   article: Article;
   related: Article[];
@@ -36,6 +37,8 @@ export function ArticleLayout({
   afterBody?: React.ReactNode;
   /** Rendered in the same column after `afterBody`, outside prose styling. */
   afterColumn?: React.ReactNode;
+  /** Heading over the related cards. */
+  relatedHeading?: string;
 }) {
   return (
     <>
@@ -121,7 +124,7 @@ export function ArticleLayout({
             <ShareBar path={article.href} title={article.title} />
 
             <Reveal className="article-body mt-10">
-              <Mdx source={article.body} />
+              <Mdx source={article.body} glossaryLinks={article.collection === 'answers'} />
             </Reveal>
 
             {afterBody}
@@ -143,7 +146,7 @@ export function ArticleLayout({
         <section className="border-t border-line bg-paper">
           <div className="container py-14 sm:py-16">
             <h2 className="font-display text-2xl font-bold tracking-[-0.02em] text-ink sm:text-3xl">
-              Read next
+              {relatedHeading}
             </h2>
             <RevealGroup className="mt-8 grid gap-5 md:grid-cols-3">
               {related.map((item) => (
