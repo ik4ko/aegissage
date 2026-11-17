@@ -277,7 +277,15 @@ export function isOutOfAreaRoute(path: string): boolean {
 export function usesFallbackScope(path: string): boolean {
   // /medicare-questions is a hub of short answers read by people anywhere,
   // like the answer pages, so it follows the same rule (Nov 17 2026).
-  return isOutOfAreaRoute(path) || path.startsWith('/answers/') || path === '/medicare-questions';
+  // /for-organizations pages (Nov 17 2026) are read by organizations across
+  // New Jersey, New York City and Philadelphia, so they follow the same rule.
+  return (
+    isOutOfAreaRoute(path) ||
+    path.startsWith('/answers/') ||
+    path === '/medicare-questions' ||
+    path === '/for-organizations' ||
+    path.startsWith('/for-organizations/')
+  );
 }
 
 function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {

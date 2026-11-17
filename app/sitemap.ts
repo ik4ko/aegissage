@@ -7,6 +7,7 @@ import { LANGUAGE_PAGE_PATHS, publishedLocales } from '@/lib/language-pages';
 import { GLOSSARY_REVIEWED } from '@/lib/medicare-glossary';
 import { CALENDAR_REVIEWED } from '@/lib/enrollment-calendar';
 import { QUESTIONS_REVIEWED } from '@/lib/medicare-questions';
+import { ORG_HUB_PATH, orgAudiences } from '@/lib/organizations';
 /*
   Imported for its side effect: runs every build-time guard and throws one
   combined report if any of them find a problem.
@@ -143,5 +144,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...locations, ...articles, ...states];
+  const organizations: MetadataRoute.Sitemap = [
+    { url: `${site.url}${ORG_HUB_PATH}`, changeFrequency: 'monthly', priority: 0.8 },
+    ...orgAudiences.map((a) => ({
+      url: `${site.url}${ORG_HUB_PATH}/${a.slug}`,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+  ];
+
+  return [...staticPages, ...locations, ...articles, ...states, ...organizations];
 }
