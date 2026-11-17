@@ -320,10 +320,20 @@ The PC crashed mid-session. Nothing was lost: the tree was clean and #18 and #19
 
 **Windows note:** Git for Windows checks files out with CRLF. `scripts/test-glossary.mjs` failed on Windows only; the fix is in the town-pages branch.
 
-### Nov 17 evening: SEO, AI and voice session (in progress)
-
-- **Merged today:** #20 town pages. **Waiting for Erekle's "go":** #23 Hudson count (6 orgs / 39 products, CI green).
-- **Open, CI green:** #24 audit (`docs/seo-audit-2026-11.md`), #25 SEO fixes (checklist FAQ visible, `seo_title`/`seo_description`, `/plans` title, `/contact` content, sitemap dates).
-- **In progress on `seo/voice-search` (pushed, no PR yet):** done so far: the Text button behind `features.textButton` and Speakable schema. Still to do: rewrite the 52 town H2s and 94 answer H2s as spoken questions, each answered first in 40–50 words (measure with a script; keep facts, sources and dates), the `/medicare-questions` hub (30 Q&As, FAQPage schema, links to deep pages, including the IRMAA calculator and the Philadelphia and VA answers for audit M5), then open the PR.
-- **Not started:** Block 4 off-site kit docs (Apple Business Connect, Yelp, Bing Places, BBB, Nextdoor, medicareagentshub). Hours: CLAUDE.md says no office hours anywhere, so listings say "by appointment". Ask before publishing hours. Then Block 5: refresh llms.txt and About.
-- **Audit headline:** aegissage.com appeared in 0 of 20 test searches, including the brand name. Erekle's by-hand list: Search Console and Bing Webmaster (section 7), the medicareagentshub listing, native review of `/ka` and `/ru`, a PageSpeed/CrUX API key for field data.
+### Nov 17 evening: SEO, AI and voice session (done, waiting for review)
+
+Every PR below passes CI and has a Vercel preview. Nothing is merged without Erekle's "go".
+
+- **#23** Hudson TPMO count (6 organizations, 39 products in your area on the 6 Hudson town pages).
+- **#24** audit, `docs/seo-audit-2026-11.md`. The site never appeared in 20 test searches, including its own name. Technical health is good.
+- **#25** fixes: checklist FAQ now visible, `seo_title`/`seo_description` on 28 pages, `/plans` title, `/contact` content, honest sitemap dates.
+- **#26** voice: 146 H2s rewritten as spoken questions with 40–50 word answers (17 towns, 20 answer pages), Speakable schema, the `/medicare-questions` hub (30 Q&As), and the Text button behind `features.textButton`.
+- **#27** off-site kit: what each listing feeds, Nextdoor steps, hours set to "by appointment" pending Erekle's decision.
+- **#28** `llms.txt` and About refresh. Merge after #26: `llms.txt` links `/medicare-questions`. After #26, add the hub link to the About page.
+
+**Erekle's by-hand list:**
+- Verify Google Search Console and Bing Webmaster Tools (section 7), submit the sitemap, and request indexing.
+- Claim the listings in #27, medicareagentshub first.
+- Native review of `/ka` (Erekle) and `/ru` (a fluent reviewer).
+- Get a free PageSpeed/CrUX API key for real-user Core Web Vitals.
+- Recheck Bergen for MA-only plans (currently 31).
