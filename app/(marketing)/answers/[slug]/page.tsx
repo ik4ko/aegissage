@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { ArticleLayout, articleJsonLd } from '@/components/marketing/article-layout';
+import {
+  ArticleLayout,
+  articleJsonLd,
+  reviewedByAdvisor,
+} from '@/components/marketing/article-layout';
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { ContactForm } from '@/components/forms/contact-form';
 import { JsonLd } from '@/components/seo/json-ld';
@@ -115,7 +119,8 @@ export default async function AnswerPage({ params }: { params: Promise<Params> }
             {article.review_date ? (
               <p>
                 Checked against these sources on {formatDate(article.review_date)} by{' '}
-                {article.reviewed_by}, {advisor.credential}. Medicare rules and dollar amounts
+                {article.reviewed_by}
+                {reviewedByAdvisor(article) ? `, ${advisor.credential}` : ''}. Medicare rules and dollar amounts
                 change every year; confirm anything that affects a decision at medicare.gov or by
                 calling {compliance.medicarePhone}.
               </p>
