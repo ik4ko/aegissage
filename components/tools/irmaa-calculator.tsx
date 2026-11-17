@@ -338,7 +338,13 @@ export function IrmaaCalculator() {
           {IRMAA_YEAR} brackets · {FILING_STATUS_LABELS[filing]}
         </p>
 
-        <div className="mt-4 overflow-x-auto">
+        {/* Focusable so keyboard users can scroll the table sideways on a phone. */}
+        <div
+          className="mt-4 overflow-x-auto rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-navy"
+          tabIndex={0}
+          role="region"
+          aria-label="IRMAA brackets table"
+        >
           <table className="w-full min-w-[30rem] border-collapse text-left text-base">
             <caption className="sr-only">
               {IRMAA_YEAR} IRMAA brackets for {FILING_STATUS_LABELS[filing]}, showing the income
