@@ -488,7 +488,7 @@ export const locationLandings: LocationLanding[] = [
   {
     slug: 'cliffside-park',
     metaDescription:
-      'Medicare help in Cliffside Park, NJ — one of the most densely populated towns in the state, with one of its largest 65-and-over populations. Plain-English guidance.',
+      'Medicare help in Cliffside Park, NJ, one of the most densely populated towns in the state, with a large 65-and-over population. Plain-English guidance.',
     name: 'Cliffside Park',
     shortName: 'Cliffside Park',
     region: 'Cliffside Park, NJ',
