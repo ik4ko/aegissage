@@ -7,7 +7,7 @@ on its Vercel preview.
 
 ## 1. Pull requests and merge order
 
-Merge in this order. #6 to #9 and #11 to #13 are stacked: each one's base is the
+Merge in this order. #6 to #9 and #11 to #14 are stacked: each one's base is the
 branch before it, so after you merge one, GitHub retargets the next to `main`.
 #10 is independent.
 
@@ -20,6 +20,7 @@ branch before it, so after you merge one, GitHub retargets the next to `main`.
 | 5 | #11 | `fable/ai-visibility-forms-medigap` | Part A/B on homepage capture and booking step, Medigap line (NJ only), Sheet writer notes |
 | 6 | #12 | `fable/ai-visibility-discoverability` | robots.txt crawler allow-list, "Aegis Sage Medicare" + "Erekle Niniashvili" in titles, H1s, descriptions and schema, IndexNow |
 | 7 | #13 (draft) | `fable/partners` | `/partners` page, four partner one-pagers, compliance guardrails. Hold for Pinnacle. |
+| 8 | #14 | `fable/trust-credentials` | Bylines, `/about#credentials`, `/how-we-are-paid`, `/editorial-policy`, `/accessibility`, privacy additions, credential schema |
 | any | #10 | `fable/ai-visibility-offsite-kit` | Docs only: off-site kit, AI panel, referral list, this file |
 
 ### What to check on each preview
@@ -249,3 +250,17 @@ Get the link from your Google Business Profile: "Ask for reviews" → copy link.
 - "Read docs/HANDOFF.md. Build the partner research CSV described in the open items: public information only, a `verified` column, no invented rows. Open a PR against main."
 - "Upgrade Next.js to the patched release, run typecheck, lint, test, build and validate, and open a PR. Do not change anything else."
 - "Read docs/HANDOFF.md section 2. Scaffold the Gemini runner, disabled by default, with a README on enabling it at no cost. Open a PR."
+
+## 9. "Expert team" order of Nov 16, 10pm: status
+
+Only Block 1 was built. Blocks 2 to 6 were not started; the session ran out of room.
+
+**Block 1, done (PR #14).** Read the "statements made in your name" list at the top of that PR before merging: the byline, the AI-drafting disclosure, the compensation sentences, the Tag Manager check.
+
+**Not started. One prompt per block for Claude Code, each its own PR stacked on the last:**
+
+- **Block 2, design and accessibility.** "Read CLAUDE.md. Audit every page template against WCAG 2.1 AA: contrast, 18px+ body text, 48px tap targets, focus states, form labels and errors, no small gray text. Check each template at 375px wide and fix layout breaks. Run Lighthouse mobile on /, /about, /contact, /answers, /answers/turning-65-new-jersey, /medicare-edgewater, /medicare-bergen-county, /medicare-new-jersey, /medicare-basics and /book; record before and after scores in the PR; fix what keeps any category under 90. Then do a plain-language pass on content/answers/*.mdx for a 6th to 8th grade reading level without changing any fact, source or date."
+- **Block 3, reference hub.** "Read CLAUDE.md. Build /medicare-glossary with 40 core terms, each with an anchor, a 2 to 3 sentence definition, a medicare.gov or cms.gov source and DefinedTerm schema. Build /medicare-enrollment-calendar with every enrollment window as a rule, not a year-specific date, all sourced. Add 10 answer pages under content/answers on: Medicare while still working; COBRA and Medicare; retiree coverage; VA and Medicare; moving between NJ, NY and PA; Medigap underwriting basics in NJ and NY; what to bring to a Medicare appointment; how to check whether a doctor is in a plan; Medicare with Medicaid; how to switch plans. Follow the build rules the content guard enforces. Link glossary terms to their anchors and give every answer page 3 related answers. Verify every source URL loads. Stop and ask about any state rule you cannot source."
+- **Block 4, technical polish.** "Add a custom 404 with links to the main sections and tap-to-call. Confirm every page type has a canonical tag and Open Graph and Twitter cards with a share image. Crawl the built site for broken internal and external links and fix them. Check alt text and image compression."
+- **Block 5, partner research CSV.** Prompt is in section 8.
+- **Block 6, Next.js security upgrade.** Prompt is in section 8. Do this one first: it is a security notice.
