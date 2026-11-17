@@ -89,6 +89,21 @@ export function ArticleLayout({
                   {article.title}
                 </h1>
 
+                {/*
+                  Byline on every guide and answer page. It links to the
+                  credentials section so a reader can verify the license.
+                  "Written and reviewed by" is a statement of fact: a page
+                  carries it only because its frontmatter names him as
+                  `reviewed_by`. Do not show it for anyone else's name.
+                */}
+                <p className="mt-4 text-base text-ink-soft" data-byline>
+                  Written and reviewed by{' '}
+                  <Link href="/about#credentials" className="font-semibold text-navy underline">
+                    {advisor.name}
+                  </Link>
+                  , licensed insurance broker{advisor.npn ? `, NPN ${advisor.npn}` : ''}
+                </p>
+
                 <p className="mt-5 text-xl leading-relaxed text-ink-soft">
                   {article.description}
                 </p>
@@ -171,6 +186,11 @@ export function articleJsonLd(
     author: { '@id': `${site.url}#advisor`, url: `${site.url}/about` },
     publisher: { '@id': `${site.url}#organization` },
     articleSection: article.category,
-    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url,
+      reviewedBy: { '@id': `${site.url}#advisor` },
+      lastReviewed: schemaDate(article.review_date ?? article.updated),
+    },
   };
 }

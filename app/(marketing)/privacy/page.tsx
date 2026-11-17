@@ -62,7 +62,16 @@ export default function PrivacyPage() {
               <strong>Anonymous usage measurements.</strong> Page views and events such as
               &ldquo;someone reached step 3 of the eligibility check&rdquo; are recorded
               without any personal information. Your quiz answers are never sent to the
-              analytics service.
+              analytics service. The analytics service is Google Analytics 4, loaded
+              through Google Tag Manager. To deliver its script, Google receives your IP
+              address and basic details about your browser and device, and it may set
+              cookies. Google&rsquo;s own privacy policy covers what it does with them.
+            </li>
+            <li>
+              <strong>Two optional questions on the forms.</strong> Whether you have
+              Medicare Part A and Part B, and how you found this site. Both are optional
+              and stored with your message. The forms never ask for a Medicare number, a
+              Social Security number, a date of birth or anything about your health.
             </li>
           </ul>
 

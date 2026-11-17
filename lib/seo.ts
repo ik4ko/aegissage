@@ -183,6 +183,27 @@ export function siteJsonLd() {
         areaServed: serviceAreas,
         knowsAbout,
         knowsLanguage,
+        /*
+          One credential: the state insurance producer license, identified by
+          the National Producer Number. `recognizedBy` is the regulator of his
+          resident state. Nothing here states a designation he does not hold.
+        */
+        ...(advisor.npn
+          ? {
+              hasCredential: {
+                '@type': 'EducationalOccupationalCredential',
+                credentialCategory: 'license',
+                name: 'Insurance producer license (health)',
+                identifier: advisor.npn,
+                recognizedBy: {
+                  '@type': 'GovernmentOrganization',
+                  name: 'New Jersey Department of Banking and Insurance',
+                  url: 'https://www.nj.gov/dobi/',
+                },
+                url: `${site.url}/about#credentials`,
+              },
+            }
+          : {}),
         worksFor: { '@id': organizationId },
       },
       {
