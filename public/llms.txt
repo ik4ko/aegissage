@@ -109,3 +109,6 @@ The number of organizations and products Aegis Sage represents differs by county
 - [How I am paid](https://www.aegissage.com/how-we-are-paid): paid by insurance companies on enrollment, no cost to the client, no change to premiums.
 - [Editorial policy](https://www.aegissage.com/editorial-policy): government sources, yearly review, corrections.
 - [Accessibility](https://www.aegissage.com/accessibility)
+
+## For organizations
+- [Partner information](https://www.aegissage.com/partners): how medical groups, senior living communities, town senior programs, elder law firms and employers can point people to Erekle for plan-neutral Medicare education. No fees, no lists.

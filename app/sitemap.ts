@@ -45,6 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/how-we-are-paid`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${site.url}/editorial-policy`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${site.url}/accessibility`, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${site.url}/partners`, changeFrequency: 'monthly', priority: 0.9 },
     {
       url: `${site.url}/tools/eligibility-check`,
       changeFrequency: 'monthly',

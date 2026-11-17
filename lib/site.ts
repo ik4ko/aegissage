@@ -469,6 +469,7 @@ export const nav = [
   { href: '/how-we-are-paid', label: 'How I am paid' },
   { href: '/editorial-policy', label: 'Editorial policy' },
   { href: '/accessibility', label: 'Accessibility' },
+  { href: '/partners', label: 'For organizations' },
 ] as const;
 
 /**
