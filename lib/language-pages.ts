@@ -114,7 +114,7 @@ const languageNames: Record<PageLocale, string> = {
 };
 
 const en: LanguagePage = {
-  metaTitle: 'Medicare help in Georgian and Russian — Edgewater, NJ',
+  metaTitle: 'Medicare help in Georgian and Russian, Edgewater',
   metaDescription:
     'Erekle Niniashvili, a licensed insurance broker in Edgewater, NJ, explains Medicare in Georgian, Russian and English. Bergen, Hudson, NYC, Philadelphia.',
   badge: 'Georgian · Russian · English',

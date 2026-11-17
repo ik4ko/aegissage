@@ -18,7 +18,7 @@ import { breadcrumbJsonLd } from '@/lib/seo';
 // ~150 chars: Google truncates a search-result description around there.
 const LANGUAGES = advisor.languages.map((language) => language.name);
 const LANGUAGE_LIST = `${LANGUAGES.slice(0, -1).join(', ')} and ${LANGUAGES[LANGUAGES.length - 1]}`;
-const DESCRIPTION = `${advisor.name} of ${site.searchName}, licensed independent insurance broker in ${advisor.basedIn}. Medicare and Medicaid only, in ${LANGUAGE_LIST}, for people 65+ and anyone with Parts A and B.`;
+const DESCRIPTION = `${advisor.name} of ${site.searchName}: licensed independent insurance broker in ${advisor.basedIn}. Medicare help in ${LANGUAGE_LIST}.`;
 const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent(`Meet ${advisor.name}`)}` +
   `&kicker=${encodeURIComponent('The person behind the phone number')}` +

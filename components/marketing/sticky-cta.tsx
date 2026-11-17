@@ -1,7 +1,7 @@
 'use client';
 
-import { Phone } from 'lucide-react';
-import { advisor, contactHrefs } from '@/lib/site';
+import { MessageSquareText, Phone } from 'lucide-react';
+import { advisor, contactHrefs, features } from '@/lib/site';
 import { trackContactIntent } from '@/lib/analytics';
 
 /**
@@ -27,6 +27,14 @@ import { trackContactIntent } from '@/lib/analytics';
  *     so the label had to degrade to "Call Erekle" below `sm`. Full width is
  *     ~350px at 390px and ~280px at 320px, so the number now renders in full
  *     at every supported width and the responsive label split is gone.
+ *
+ * ── Text, back by request (Nov 17 2026) ───────────────────────────────────
+ * Erekle asked for Text next to Call on phones, behind `features.textButton`
+ * (default on). Call keeps the full number; Text is a compact second button
+ * (icon + "Text", about 78px) so the number still fits: at 320px the row is
+ * about 300px wide, 214px for Call + 8px gap + 78px for Text. The note
+ * "Texting is fine..." sits under the call/text buttons in the page body, not
+ * in this bar, so the bar keeps its 69px height and the 84px reserve holds.
  *
  * ── Height, and the space reserved for it ─────────────────────────────────
  * 10px + 48px + 10px + 1px border = 69px, above the 56px floor, with a 48px
@@ -60,7 +68,7 @@ export function StickyCta() {
       className="fixed inset-x-0 bottom-0 z-40 border-t border-navy-deep/20 bg-navy-deep/95 backdrop-blur-sm md:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="container p-2.5">
+      <div className={features.textButton ? 'container flex gap-2 p-2.5' : 'container p-2.5'}>
         <a
           href={contactHrefs.tel}
           onClick={() => trackContactIntent('call', 'sticky-cta')}
@@ -76,11 +84,22 @@ export function StickyCta() {
             This bar is navy-deep, and `ring-navy/30` over it is effectively
             invisible — a focus indicator that cannot be seen is not one.
           */
-          className="flex h-touch w-full items-center justify-center gap-2 rounded-xl bg-ember px-5 text-base font-semibold text-white transition-colors hover:bg-ember-deep active:translate-y-px focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/80"
+          className="flex h-touch w-full min-w-0 flex-1 items-center justify-center gap-2 rounded-xl bg-ember px-5 text-base font-semibold text-white transition-colors hover:bg-ember-deep active:translate-y-px focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/80"
         >
           <Phone className="h-5 w-5 shrink-0" aria-hidden="true" />
           <span className="whitespace-nowrap">Call {advisor.phone}</span>
         </a>
+        {features.textButton ? (
+          <a
+            href={contactHrefs.sms}
+            onClick={() => trackContactIntent('text', 'sticky-cta')}
+            aria-label={`Text ${advisor.name} at ${advisor.phone}`}
+            className="flex h-touch shrink-0 items-center justify-center gap-1.5 rounded-xl border-2 border-white/70 px-3 text-base font-semibold text-white transition-colors hover:bg-white/10 active:translate-y-px focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/80"
+          >
+            <MessageSquareText className="h-5 w-5 shrink-0" aria-hidden="true" />
+            <span>Text</span>
+          </a>
+        ) : null}
       </div>
     </aside>
   );

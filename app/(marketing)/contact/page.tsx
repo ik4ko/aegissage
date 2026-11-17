@@ -69,6 +69,49 @@ export default function ContactPage() {
           />
         </div>
       </section>
+
+      {/*
+        What happens after you get in touch. Added Nov 17 2026 (SEO audit M4):
+        the page had 96 words, and "how do I reach a Medicare broker, and what
+        happens then" is a question people ask out loud.
+      */}
+      <section className="border-t border-line bg-paper">
+        <div className="container py-14 sm:py-16">
+          <div className="article-body mx-auto max-w-[68ch]">
+            <h2>What happens when you get in touch</h2>
+            <p>
+              You reach me, {advisor.name}, not a call center. If I miss your call, I call
+              you back. There is no fee to talk, and talking does not sign you up for anything.
+            </p>
+            <h3>How we can talk</h3>
+            <p>
+              By phone at {advisor.phone}, by text, or by email at {advisor.email}. I meet
+              people in person in Bergen and Hudson counties in New Jersey. For New York City
+              and Philadelphia, we talk by phone or video call. I speak English, Georgian and
+              Russian, and a family member is always welcome to join.
+            </p>
+            <h3>What to have ready</h3>
+            <p>
+              Your ZIP code, a list of the doctors you want to keep, and your medicines with
+              their doses. If you got a letter from Medicare or your plan, keep it nearby. You
+              will never need to give me your Social Security number or bank details to get
+              an answer.
+            </p>
+            <h3>Before we talk about specific plans</h3>
+            <p>
+              Medicare rules require me to ask your permission before we discuss specific
+              plans. It is called a Scope of Appointment, and it only records which kinds of
+              coverage you want to hear about. You can say no, and you can stop at any time.
+            </p>
+            <h3>Free help that is not me</h3>
+            <p>
+              Your state&rsquo;s SHIP office gives free, neutral Medicare counseling, and
+              1-800-MEDICARE (1-800-633-4227) answers questions every day. I am happy to point
+              you to either one.
+            </p>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

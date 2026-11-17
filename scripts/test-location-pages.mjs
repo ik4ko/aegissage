@@ -32,7 +32,7 @@ registerHooks({
 });
 
 const { locationLandings } = await import('../lib/locations.ts');
-const { ROUTE_TPMO_AREAS, usesFallbackScope } = await import('../lib/tpmo.ts');
+const { ROUTE_TPMO_AREAS, usesFallbackScope, tpmoAreasFor } = await import('../lib/tpmo.ts');
 
 const MAX_OVERLAP = 0.3;
 const N = 6;
@@ -119,7 +119,15 @@ for (const town of towns) {
       assert.ok(!(path in ROUTE_TPMO_AREAS), 'a Bergen town uses the Bergen count as its own');
     } else {
       assert.ok(path in ROUTE_TPMO_AREAS, 'outside Bergen County: add to ROUTE_TPMO_AREAS');
-      assert.ok(usesFallbackScope(path), 'must state the Bergen counts "in Bergen County, NJ"');
+      assert.ok(usesFallbackScope(path), 'a route outside Bergen must never say "in your area" with Bergen numbers');
+      // With its own recount the page states its own area's numbers; without
+      // one it states Bergen's, scoped "in Bergen County, NJ". Never unscoped Bergen.
+      const areas = tpmoAreasFor(path);
+      assert.ok(areas.length > 0, 'no counts resolved');
+      for (const area of areas) {
+        if (area.key === 'bergen-nj') assert.equal(area.scope, 'Bergen County, NJ', 'Bergen numbers must be scoped');
+        else assert.ok(ROUTE_TPMO_AREAS[path].includes(area.key), `unexpected area ${area.key}`);
+      }
     }
   });
 }
