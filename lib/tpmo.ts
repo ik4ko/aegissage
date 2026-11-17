@@ -87,6 +87,10 @@ const HAND_AUTHORED_ZIP_ROUTES = [
   */
   '/turning-65-bergen-county',
   '/medicare-coverage-review',
+  // Language pages (lib/language-pages.ts) render <ContactForm />.
+  '/medicare-help-georgian-russian',
+  '/ka',
+  '/ru',
 ] as const;
 
 /**

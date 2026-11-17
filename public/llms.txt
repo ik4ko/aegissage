@@ -43,6 +43,7 @@ Medicare Advantage and Part D plan availability is set by CMS at the county leve
 - [Medicare in New Jersey](https://www.aegissage.com/medicare-new-jersey): why New Jersey's 21 counties behave as 21 plan markets, and how New Jersey's federal-clock Medigap window differs from New York's.
 - [Medicare in New York City](https://www.aegissage.com/medicare-new-york-city): the five boroughs as five New York counties, and New York's unusual continuous guaranteed-issue Medigap rule.
 - [Medicare in Philadelphia](https://www.aegissage.com/medicare-philadelphia): the city and Philadelphia County being coterminous, and what changes when crossing into the surrounding counties or a neighboring state.
+- [Medicare help in Georgian and Russian](https://www.aegissage.com/medicare-help-georgian-russian): who the Georgian- and Russian-language help is for, when to sign up, the rule for people who have worked in the United States for less than 10 years, help paying Medicare costs, and the right to an interpreter through 1-800-MEDICARE. Translations of the same page are at /ka (Georgian) and /ru (Russian) once each has passed native review.
 - [About](https://www.aegissage.com/about): who Erekle Niniashvili is, how he works, his NPN, languages and the current licensing information.
 - [Contact](https://www.aegissage.com/contact): phone, text, email, and contact form.
 - [YouTube](https://www.youtube.com/@65MAPD): Medicare videos from Erekle.

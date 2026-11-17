@@ -43,6 +43,13 @@ export const CONSENT_TEXT_VERSIONS = {
    * quietly says the wrong thing.
    */
   bookingInterstitial: 'booking-interstitial-2026-08',
+  /*
+    Georgian and Russian forms (lib/form-strings.ts). Their consent sentence
+    names "Erekle Niniashvili (Aegis Sage)" in full and is shown together with
+    its English original, so they are distinct texts with their own versions.
+  */
+  contactFormKa: 'contact-form-ka-2026-11',
+  contactFormRu: 'contact-form-ru-2026-11',
 } as const;
 
 /**
@@ -69,5 +76,7 @@ export const BOOKING_SOURCE = 'booking-interstitial';
 export function consentTextVersionFor(source: string): string {
   if (source === HOMEPAGE_CAPTURE_SOURCE) return CONSENT_TEXT_VERSIONS.homepageCapture;
   if (source === BOOKING_SOURCE) return CONSENT_TEXT_VERSIONS.bookingInterstitial;
+  if (source === 'language-ka') return CONSENT_TEXT_VERSIONS.contactFormKa;
+  if (source === 'language-ru') return CONSENT_TEXT_VERSIONS.contactFormRu;
   return CONSENT_TEXT_VERSIONS.contactForm;
 }
