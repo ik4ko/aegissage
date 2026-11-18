@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Clock, Phone } from 'lucide-react';
+import { ArrowRight, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ContactActions } from './contact-actions';
 import { AdvisorAvatar } from './trust-bar';
@@ -31,18 +31,26 @@ export function Hero() {
         className="pointer-events-none absolute inset-x-0 -top-40 h-[36rem] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(18,62,99,0.10),transparent_70%)]"
       />
 
-      <div className="container relative py-14 sm:py-20 lg:py-24">
+      {/*
+        pt-6 on phones (was 56px): the empty band between the header and the
+        eyebrow pushed the headline down the first screen at 375px.
+      */}
+      <div className="container relative pb-14 pt-6 sm:py-20 lg:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
           <div>
             {/*
-              Derived from lib/states.ts, never hardcoded. This read "23 more
-              states" as a literal, which happened to be right only while the
-              list held 26 entries — it would have quietly gone wrong the first
-              time a licence was added or dropped.
+              Never wraps. Under 375px the short "Medicare broker" version shows;
+              from 375px up the full text (Erekle, Nov 17 2026). Measured at 375px: the
+              column is 335px; this text at 18px, weight 500, -0.02em is 330px.
+              Capitals and wide tracking only from `sm` up, where it fits. The
+              non-breaking space keeps "·" from ever starting a line. The
+              licensed-state count lives in the paragraph below.
             */}
-            <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
-              <Clock className="h-4 w-4" aria-hidden="true" />
-              Independent · NJ · NY · PA and {licensedStates.length - 3} more states
+            <p className="text-sm font-medium tracking-[-0.02em] text-ember-deep sm:font-semibold sm:uppercase sm:tracking-[0.14em]">
+              <span className="min-[375px]:hidden">Medicare broker{'\u00a0'}· Edgewater, NJ</span>
+              <span className="hidden min-[375px]:inline">
+                Independent Medicare broker{'\u00a0'}· Edgewater, NJ
+              </span>
             </p>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl lg:text-6xl">
@@ -51,24 +59,34 @@ export function Hero() {
                 "Aegis Sage" alone collides with an unrelated company.
               */}
               <span className="mb-3 block font-sans text-lg font-semibold tracking-normal text-ink-soft sm:text-xl">
-                {site.searchName} · {advisor.name}
+                {/* Non-breaking space before "·": a wrap never starts a line with it. */}
+                {`${site.searchName}\u00a0· ${advisor.name}`}
               </span>
               Medicare is not complicated.
               <span className="block text-navy">It is just badly explained.</span>
             </h1>
 
             {/*
-              Local focus and the wider licence are two different facts, and
-              running them together confused both. The eyebrow above advertises
-              the full licensed-state count while this sentence used to name
-              four areas as the whole service area.
+              Trust line on the first screen at 375px. "Free" describes the
+              broker's help, not a plan benefit (CLAUDE.md). The Georgian and
+              Russian words carry their own lang so screen readers switch voice.
+            */}
+            <p className="mt-4 text-lg font-semibold text-ink">
+              Free help{'\u00a0'}· No cost to you{'\u00a0'}· English,{' '}
+              <span lang="ka">ქართული</span>, <span lang="ru">Русский</span>
+            </p>
+
+            {/*
+              Local focus and the wider licence are two different facts. The
+              eyebrow names the home town; this sentence carries the
+              licensed-state count.
             */}
             {/*
               Kept to roughly five seconds of skimming. The longer version of
               who he is and where he works lives on /about, which this page
               links to twice.
             */}
-            <p className="mt-6 max-w-xl text-lg text-ink-soft sm:text-xl">
+            <p className="mt-4 max-w-xl text-lg text-ink-soft sm:text-xl">
               I am {advisor.firstName}, an independent Medicare broker in New Jersey. I
               explain deadlines, doctors, prescriptions, and plan trade-offs in plain
               English — without pressure. Licensed in {licensedStates.length} states.
