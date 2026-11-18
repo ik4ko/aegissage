@@ -20,6 +20,7 @@ import { Reveal, RevealGroup, RevealItem } from '@/components/motion/reveal';
 import { CountUp } from '@/components/motion/count-up';
 import { TriageFlow } from '@/components/tools/triage-flow';
 import { DeadlineCapture } from '@/components/forms/deadline-capture';
+import { PlanEndingLinks } from '@/components/marketing/plan-ending-links';
 import { Button } from '@/components/ui/button';
 import { getArticles, getLatestNews } from '@/lib/content';
 import { locationLandings } from '@/lib/locations';
@@ -116,6 +117,13 @@ export default function HomePage() {
       <section className="container -mt-4 pb-4">
         <Reveal>
           <TrustBar />
+        </Reveal>
+      </section>
+
+      {/* ── Plan-ending letters (2027 non-renewals; lib/plan-endings.ts) ── */}
+      <section className="container pt-10">
+        <Reveal className="mx-auto max-w-3xl">
+          <PlanEndingLinks />
         </Reveal>
       </section>
 

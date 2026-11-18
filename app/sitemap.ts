@@ -7,6 +7,7 @@ import { LANGUAGE_PAGE_PATHS, publishedLocales } from '@/lib/language-pages';
 import { GLOSSARY_REVIEWED } from '@/lib/medicare-glossary';
 import { CALENDAR_REVIEWED } from '@/lib/enrollment-calendar';
 import { QUESTIONS_REVIEWED } from '@/lib/medicare-questions';
+import { planEndingPages } from '@/lib/plan-endings';
 /*
   Imported for its side effect: runs every build-time guard and throws one
   combined report if any of them find a problem.
@@ -46,6 +47,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/editorial-policy`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${site.url}/accessibility`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${site.url}/partners`, changeFrequency: 'monthly', priority: 0.9 },
+    // Plan-ending pages (lib/plan-endings.ts), dated by their source check.
+    ...planEndingPages.map((page) => ({
+      url: `${site.url}/${page.slug}`,
+      lastModified: new Date(`${page.reviewed}T12:00:00Z`),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    })),
     {
       url: `${site.url}/tools/eligibility-check`,
       changeFrequency: 'monthly',

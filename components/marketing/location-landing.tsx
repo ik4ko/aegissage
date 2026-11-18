@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { CtaBand } from './cta-band';
 import { ContactActions } from './contact-actions';
 import { ContactForm } from '@/components/forms/contact-form';
+import { PlanEndingLinks } from '@/components/marketing/plan-ending-links';
 import { MedigapLine } from './medigap-line';
 import { TrustBar } from './trust-bar';
 import { Badge } from '@/components/ui/badge';
@@ -233,6 +234,8 @@ export function LocationLandingPage({ location }: { location: LocationLanding })
                 </ul>
               </>
             ) : null}
+
+            <PlanEndingLinks newJersey={location.inState === 'New Jersey'} className="mt-10" />
 
             <MedigapLine state={location.inState} />
 
