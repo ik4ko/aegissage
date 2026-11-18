@@ -86,6 +86,23 @@ export default async function OrgAudiencePage({ params }: { params: Promise<Para
 
       <section className="container py-12 sm:py-16">
         <div className="article-body max-w-[68ch]">
+          {a.why ? (
+            <>
+              <h2>{a.why.heading}</h2>
+              {a.why.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+              ))}
+              {a.why.source ? (
+                <p>
+                  Source:{' '}
+                  <a href={a.why.source.url} target="_blank" rel="noopener noreferrer">
+                    {a.why.source.title}
+                  </a>
+                </p>
+              ) : null}
+            </>
+          ) : null}
+
           <h2>What I do</h2>
           <ul>
             {a.whatIDo.map((line) => (
@@ -114,6 +131,17 @@ export default async function OrgAudiencePage({ params }: { params: Promise<Para
               <p data-spoken-answer="">{item.answer}</p>
             </div>
           ))}
+
+          {a.forwardEmail ? (
+            <>
+              <h2>An email you can forward to your team</h2>
+              <p>Copy it as it is, or edit it. It names no insurance company.</p>
+              <div className="not-prose rounded-2xl border-2 border-line bg-white p-6">
+                <p className="text-base font-semibold text-ink">Subject: {a.forwardEmail.subject}</p>
+                <div className="mt-4 whitespace-pre-line text-lg leading-relaxed text-ink">{a.forwardEmail.body}</div>
+              </div>
+            </>
+          ) : null}
 
           <h2>Read more</h2>
           <ul>

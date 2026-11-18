@@ -51,12 +51,12 @@ export default async function OrgSheetPage({ params }: { params: Promise<Params>
           </p>
         </div>
 
-        <article className="rounded-2xl border-2 border-navy/20 bg-white p-8 print:rounded-none print:border-0 print:p-0">
+        <article data-print-sheet="" className="rounded-2xl border-2 border-navy/20 bg-white p-8 print:rounded-none print:border-0 print:p-0">
           <p className="text-base font-semibold uppercase tracking-[0.12em] text-ember-deep">Medicare Help Partner · {a.kicker}</p>
-          <h1 className="mt-2 font-display text-3xl font-bold leading-tight text-ink">{a.h1}</h1>
-          <p className="mt-4 text-lg leading-relaxed text-ink">{a.answer}</p>
+          <h1 className="mt-2 font-display text-3xl font-bold leading-tight text-ink print:text-[20pt]">{a.h1}</h1>
+          <p className="mt-4 text-lg leading-relaxed text-ink print:mt-2 print:text-[11.5pt] print:leading-snug">{a.answer}</p>
 
-          <ul className="mt-5 grid gap-2 text-lg text-ink sm:grid-cols-2 print:grid-cols-2">
+          <ul className="mt-5 grid gap-2 text-lg text-ink sm:grid-cols-2 print:mt-3 print:grid-cols-2 print:gap-1 print:text-[11pt]">
             {a.sheet.map((line) => (
               <li key={line} className="flex gap-2">
                 <span aria-hidden="true" className="font-bold text-ember-deep">✓</span>
@@ -65,22 +65,26 @@ export default async function OrgSheetPage({ params }: { params: Promise<Params>
             ))}
           </ul>
 
-          <h2 className="mt-6 font-display text-xl font-bold text-ink">How it works</h2>
-          <ol className="mt-2 list-decimal space-y-1 pl-6 text-base leading-relaxed text-ink">
+          {a.sheetNote ? (
+            <p className="mt-5 rounded-xl border-2 border-line p-4 text-base font-semibold leading-relaxed text-ink print:mt-3 print:p-2 print:text-[10.5pt] print:leading-snug">{a.sheetNote}</p>
+          ) : null}
+
+          <h2 className="mt-6 font-display text-xl font-bold text-ink print:mt-3 print:text-[13pt]">How it works</h2>
+          <ol className="mt-2 list-decimal space-y-1 pl-6 text-base leading-relaxed text-ink print:space-y-0 print:text-[10.5pt] print:leading-snug">
             {a.steps.map((line) => (
               <li key={line}>{line}</li>
             ))}
           </ol>
 
-          <h2 className="mt-6 font-display text-xl font-bold text-ink">What I do not do</h2>
-          <ul className="mt-2 list-disc space-y-1 pl-6 text-base leading-relaxed text-ink">
+          <h2 className="mt-6 font-display text-xl font-bold text-ink print:mt-3 print:text-[13pt]">What I do not do</h2>
+          <ul className="mt-2 list-disc space-y-1 pl-6 text-base leading-relaxed text-ink print:space-y-0 print:text-[10.5pt] print:leading-snug">
             {a.whatIDont.slice(0, 4).map((line) => (
               <li key={line}>{line}</li>
             ))}
           </ul>
 
-          <div className="mt-6 break-inside-avoid rounded-xl bg-navy-soft p-5 print:bg-transparent print:p-0">
-            <p className="font-display text-2xl font-bold text-navy-deep">{advisor.name}</p>
+          <div className="mt-6 break-inside-avoid rounded-xl bg-navy-soft p-5 print:mt-3 print:bg-transparent print:p-0 print:text-[10.5pt] [&_p]:print:text-[10.5pt]">
+            <p className="font-display text-2xl font-bold text-navy-deep print:!text-[14pt]">{advisor.name}</p>
             <p className="text-lg text-ink">
               Licensed insurance broker · NPN {advisor.npn} · Edgewater, NJ
             </p>

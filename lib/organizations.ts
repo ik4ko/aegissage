@@ -36,6 +36,12 @@ export type OrgAudience = {
   sheet: string[];
   formType: (typeof ORGANIZATION_TYPES)[number]['value'];
   related: { href: string; label: string }[];
+  /** Optional "why this matters now" section, under the direct answer. */
+  why?: { heading: string; paragraphs: string[]; source?: { title: string; url: string } };
+  /** Optional short paragraph printed on the one-page sheet. */
+  sheetNote?: string;
+  /** Optional email the reader can forward inside their organization. */
+  forwardEmail?: { subject: string; body: string };
 };
 
 export const ORG_HUB_PATH = '/for-organizations';
@@ -393,6 +399,94 @@ export const orgAudiences: OrgAudience[] = [
       { href: '/answers/medicare-while-still-working', label: 'Still working at 65' },
       { href: '/answers/cobra-and-medicare', label: 'COBRA and Medicare' },
       { href: '/answers/retiree-coverage-and-medicare', label: 'Retiree coverage and Medicare' },
+    ],
+  },
+  {
+    slug: 'plan-endings',
+    metaTitle: '2027 plan endings: patient access and billing',
+    description:
+      'For hospital patient access, financial counselors and medical billing companies: free, plan-neutral help for patients whose Medicare plan ends in 2027.',
+    kicker: 'Hospital patient access and billing companies',
+    h1: 'When a patient’s Medicare Advantage plan ends, give them one number to call',
+    answer:
+      'Some patients’ Medicare Advantage plans end December 31, 2026. In January that shows up as eligibility and claim problems. Your counselors can give those patients my number. I help each patient who asks, at no cost, compare coverage that includes their doctors. No fees, no lists, no steering.',
+    why: {
+      heading: 'Why this matters to your team in January',
+      paragraphs: [
+        'When a Medicare Advantage plan is not renewed, the member keeps Medicare but loses that plan on December 31. A patient who does nothing has Original Medicare from January 1, with no drug coverage. A patient who chooses late, up to February 28, 2027, gets new coverage from the first of the following month.',
+        'For your team that can mean January and February visits registered to a plan that no longer covers the patient, eligibility checks that do not match the card the patient shows, and patients surprised at the pharmacy counter.',
+        'Patients also ask your counselors which plan to pick. Your staff should not have to answer that. I can, plan-neutrally, with Original Medicare as one of the choices.',
+      ],
+      source: {
+        title: 'Special Enrollment Periods (plan contract not renewed) — Medicare.gov',
+        url: 'https://www.medicare.gov/basics/get-started-with-medicare/get-more-coverage/joining-a-plan/special-enrollment-periods',
+      },
+    },
+    whatIDo: [
+      'Explain the patient’s plan-ending letter, the dates, and what happens if they do nothing.',
+      'Check, for each plan offered in their county, whether their doctors, hospital and prescriptions are included, before they choose.',
+      'Explain Original Medicare and the Medigap rights that open when a plan ends, alongside Medicare Advantage options.',
+      'Point patients to Medicare and their state SHIP when that fits better.',
+      'Work in English, Georgian and Russian, by phone, text or in person.',
+    ],
+    whatIDont: [
+      'I do not charge your organization or the patient. I am paid by the insurance company only if a patient enrolls through me.',
+      'I do not pay referral fees or give gifts or meals, and I accept nothing of value.',
+      'I do not take patient lists, schedules, records or account information, and I will not accept them.',
+      'I do not steer patients to any insurance company, including the ones your organization contracts with.',
+      'I do not handle claims, appeals or billing.',
+    ],
+    steps: [
+      'Your counselor or billing representative tells the patient that a licensed broker helps with plan-ending letters at no cost, and gives them the printed sheet or my number.',
+      'The patient decides whether to contact me. Nothing is sent from your office.',
+      'Before we talk about specific plans, the patient agrees to a Scope of Appointment and I record it. It can be the same day.',
+      'I compare what is offered for their doctors and prescriptions, including staying with Original Medicare. The patient decides.',
+    ],
+    faq: [
+      {
+        question: 'Can our financial counselors give patients a broker’s number?',
+        answer:
+          'Yes, if nothing of value changes hands and no patient information is shared. Counselors can say a licensed broker helps at no cost and give the number. The patient chooses whether to call.',
+      },
+      {
+        question: 'What happens to a patient whose plan ends and who does nothing?',
+        answer:
+          'They keep Medicare. From January 1, 2027 they have Original Medicare, Part A and Part B, with no drug coverage until they join a drug plan. They can still choose new coverage until February 28, 2027.',
+      },
+      {
+        question: 'Will you favor the plans our hospital is in network with?',
+        answer:
+          'No. I check whether each patient’s own doctors and hospital are in a plan’s network, because that is what patients ask. I favor no company and receive nothing from your organization.',
+      },
+      {
+        question: 'Can you talk to a group of patients about plan endings?',
+        answer:
+          'Yes. I give educational talks on plan-ending letters with no plan names and no applications. One-on-one help afterward starts with a Scope of Appointment, which can be the same day.',
+      },
+    ],
+    sheet: [
+      'Help for patients whose Medicare Advantage plan ends in 2027',
+      'Doctors and prescriptions checked before they choose',
+      'No fees either way, no patient lists, no steering',
+      'English, Georgian and Russian',
+    ],
+    sheetNote:
+      'Plans that are not renewed end December 31, 2026. A patient who does nothing has Original Medicare from January 1 with no drug coverage. Patients can choose new coverage until February 28, 2027.',
+    forwardEmail: {
+      subject: 'A place to send patients whose Medicare plan is ending',
+      body: [
+        'Team,',
+        'Some of our Medicare Advantage patients have letters saying their plan ends December 31, 2026. A patient who does nothing has Original Medicare from January 1 with no drug coverage, and we may see eligibility and claim problems in January.',
+        'When a patient asks which plan to choose, we can give them a neutral place to go. Erekle Niniashvili is a licensed insurance broker in Edgewater who helps patients at no cost, checks their doctors and prescriptions before they choose, and favors no company. He works in English, Georgian and Russian.',
+        'We send him nothing. The patient calls (551) 202-9079 or visits aegissage.com/for-organizations/plan-endings. Calling this number will direct you to a licensed insurance agent.',
+        'No fees or anything of value change hands either way.',
+      ].join('\n\n'),
+    },
+    formType: 'billing',
+    related: [
+      { href: '/answers/medicare-advantage-plan-ending-non-renewal-letter', label: 'What a plan-ending letter means' },
+      { href: '/answers/how-to-check-if-a-doctor-is-in-a-medicare-plan', label: 'How to check if a doctor is in a plan' },
+      { href: '/medicare-questions', label: '30 Medicare questions, answered plainly' },
     ],
   },
 ];
