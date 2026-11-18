@@ -47,6 +47,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/editorial-policy`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${site.url}/accessibility`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${site.url}/partners`, changeFrequency: 'monthly', priority: 0.9 },
+    // Flyers under /workshops/flyer are noindex and stay out of the sitemap.
+    { url: `${site.url}/workshops`, changeFrequency: 'weekly', priority: 0.9 },
     // Plan-ending pages (lib/plan-endings.ts), dated by their source check.
     ...planEndingPages.map((page) => ({
       url: `${site.url}/${page.slug}`,

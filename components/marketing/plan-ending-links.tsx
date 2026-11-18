@@ -43,6 +43,11 @@ export function PlanEndingLinks({
             </Link>
           </li>
         ))}
+        <li>
+          <Link href="/workshops" className={linkClass}>
+            Free workshops on plan-ending letters
+          </Link>
+        </li>
         {showGeneral ? (
           <li>
             <Link href={PLAN_ENDING_ANSWER_HREF} className={linkClass}>

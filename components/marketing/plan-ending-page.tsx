@@ -98,6 +98,20 @@ export function PlanEndingTemplate({ page }: { page: PlanEndingPage }) {
               </Link>
             </p>
 
+            <h2>Prefer to hear it in a group?</h2>
+            <p>
+              I give free one-hour educational talks on plan-ending letters at libraries and
+              community centers, in English, Georgian and Russian. No plans are sold there.
+            </p>
+            <p className="not-prose">
+              <Link
+                href="/workshops"
+                className="inline-flex min-h-touch items-center font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep"
+              >
+                See workshop dates
+              </Link>
+            </p>
+
             <h2>Sources</h2>
             <ul>
               {page.sources.map((source) => (

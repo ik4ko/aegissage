@@ -118,6 +118,15 @@
       page-break-inside: avoid;
     }
 
+    /*
+      Workshop flyers carry their own copy of the TPMO disclaimer inside the
+      page (components/marketing/workshop-flyer.tsx), so the sitewide block
+      is dropped on paper there and the flyer fits one page.
+    */
+    body:has([data-print-flyer]) section[aria-label='Medicare marketing disclaimer'] {
+      display: none !important;
+    }
+
     a[href^='http']::after {
       content: ' (' attr(href) ')';
       font-size: 0.75em;

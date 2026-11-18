@@ -395,3 +395,55 @@ export function faqJsonLd(items: { question: string; answer: string }[]) {
     })),
   };
 }
+
+/**
+ * One educational session (/workshops). Location is the host venue by name,
+ * town and state only: no street address or postal code in schema anywhere
+ * on this site. Organizer and performer point at the sitewide nodes.
+ */
+export function workshopEventJsonLd(options: {
+  url: string;
+  id: string;
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  venue: string;
+  town: string;
+  state: string;
+  inLanguage: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'EducationEvent',
+    '@id': `${options.url}#${options.id}`,
+    name: options.name,
+    description: options.description,
+    startDate: options.startDate,
+    endDate: options.endDate,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    isAccessibleForFree: true,
+    inLanguage: options.inLanguage,
+    url: options.url,
+    location: {
+      '@type': 'Place',
+      name: options.venue,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: options.town,
+        addressRegion: options.state,
+        addressCountry: 'US',
+      },
+    },
+    organizer: { '@id': organizationId },
+    performer: { '@id': advisorId },
+    offers: {
+      '@type': 'Offer',
+      price: 0,
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: options.url,
+    },
+  };
+}
