@@ -289,12 +289,21 @@ const FALLBACK_SCOPE_ROUTES: ReadonlySet<string> = new Set([
   // Aetna letters reach people in every state.
   '/braven-health-plan-ending-2027',
   '/aetna-medicare-plan-ending-2027',
+  // Workshops (Nov 18 2026): sessions in several towns and counties, and the
+  // printable flyers that carry their own copy of the disclaimer.
+  '/workshops',
+  '/workshops/flyer',
 ]);
 
 export function usesFallbackScope(path: string): boolean {
   // /medicare-questions is a hub of short answers read by people anywhere,
   // like the answer pages, so it follows the same rule (Nov 17 2026).
-  return isOutOfAreaRoute(path) || path.startsWith('/answers/') || FALLBACK_SCOPE_ROUTES.has(path);
+  return (
+    isOutOfAreaRoute(path) ||
+    path.startsWith('/answers/') ||
+    path.startsWith('/workshops/flyer/') ||
+    FALLBACK_SCOPE_ROUTES.has(path)
+  );
 }
 
 function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {

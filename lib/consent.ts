@@ -54,6 +54,8 @@ export const CONSENT_TEXT_VERSIONS = {
     names "Erekle Niniashvili (Aegis Sage)" in full and is shown together with
     its English original, so they are distinct texts with their own versions.
   */
+  /** components/forms/workshop-rsvp-form.tsx — workshop RSVP (Nov 18 2026). */
+  workshopRsvp: 'workshop-rsvp-2026-11',
   contactFormKa: 'contact-form-ka-2026-11',
   contactFormRu: 'contact-form-ru-2026-11',
 } as const;
@@ -79,7 +81,11 @@ export const BOOKING_SOURCE = 'booking-interstitial';
  * through to the default and inherit a version describing wording it never
  * showed anyone.
  */
+/** `source` recorded for workshop RSVPs (app/api/workshop-rsvp). */
+export const WORKSHOP_RSVP_SOURCE = 'workshop-rsvp';
+
 export function consentTextVersionFor(source: string): string {
+  if (source === WORKSHOP_RSVP_SOURCE) return CONSENT_TEXT_VERSIONS.workshopRsvp;
   if (source === HOMEPAGE_CAPTURE_SOURCE) return CONSENT_TEXT_VERSIONS.homepageCapture;
   if (source === BOOKING_SOURCE) return CONSENT_TEXT_VERSIONS.bookingInterstitial;
   if (source === 'language-ka') return CONSENT_TEXT_VERSIONS.contactFormKa;

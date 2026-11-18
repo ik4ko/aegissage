@@ -71,6 +71,11 @@ jobs:
       - name: Plan-ending page tests
         run: npm run test:plan-endings
 
+      # Workshops: session config window, RSVP form rules (Part A/B, consent,
+      # no Medicare number / SSN / DOB), Event schema without an address.
+      - name: Workshop tests
+        run: npm run test:workshops
+
       - name: Production build
         run: npm run build
         env:
