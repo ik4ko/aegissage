@@ -39,14 +39,18 @@ export function Hero() {
         <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
           <div>
             {/*
-              One line at 375px (Nov 17 2026). Measured on the live page: the
+              Never wraps. Under 375px the short "Medicare broker" version shows;
+              from 375px up the full text (Erekle, Nov 17 2026). Measured at 375px: the
               column is 335px; this text at 18px, weight 500, -0.02em is 330px.
               Capitals and wide tracking only from `sm` up, where it fits. The
               non-breaking space keeps "·" from ever starting a line. The
               licensed-state count lives in the paragraph below.
             */}
             <p className="text-sm font-medium tracking-[-0.02em] text-ember-deep sm:font-semibold sm:uppercase sm:tracking-[0.14em]">
-              Independent Medicare broker{'\u00a0'}· Edgewater, NJ
+              <span className="min-[375px]:hidden">Medicare broker{'\u00a0'}· Edgewater, NJ</span>
+              <span className="hidden min-[375px]:inline">
+                Independent Medicare broker{'\u00a0'}· Edgewater, NJ
+              </span>
             </p>
 
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.03em] text-ink sm:text-5xl lg:text-6xl">
