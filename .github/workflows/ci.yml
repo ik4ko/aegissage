@@ -66,6 +66,11 @@ jobs:
       - name: Reference hub tests
         run: npm run test:glossary
 
+      # Plan-ending pages: 40-50 word answers, the key dates, cited sources,
+      # no counts or urgency words, counted TPMO scoped to Bergen County.
+      - name: Plan-ending page tests
+        run: npm run test:plan-endings
+
       - name: Production build
         run: npm run build
         env:
