@@ -336,4 +336,22 @@ Every PR below passes CI and has a Vercel preview. Nothing is merged without Ere
 - Claim the listings in #27, medicareagentshub first.
 - Native review of `/ka` (Erekle) and `/ru` (a fluent reviewer).
 - Get a free PageSpeed/CrUX API key for real-user Core Web Vitals.
-- Recheck Bergen for MA-only plans (currently 31).
+- Recheck Bergen for MA-only plans (currently 31).
+
+### Nov 17 night: merges, CY2027 TPMO wording, partners, organization pages
+
+- **Merged, each with green CI:**
+  - #23 Hudson count, #24 audit, #25 SEO fixes, #26 voice search (with 47 duplicate sentences trimmed), #27 off-site kit, #28 llms/About, #19 Block 2 (merged with main; 8 conflicts resolved), #21 partner research, #22 content calendar.
+  - #29 TPMO CY2027 wording: 42 CFR 422.2267(e)(41), FR 2026-06600, SHIP referral removed, checked on eCFR.
+  - #13 partners: organization request form (email plus a "Partner Requests" Sheet tab via a signed Apps Script webhook; setup in `docs/partners/partner-requests-sheet.md`), plus the CY2027 SOA and event rules.
+- **CY2027 rules** are recorded in CLAUDE.md, with sources:
+  - no 48-hour SOA wait (the SOA is still agreed and recorded first; same day is fine)
+  - no 12-hour gap between events
+  - no SOA needed for educational events
+- **Open, waiting for Erekle's "go":**
+  - **#30** `/for-organizations`: hub, six audience pages, printable sheets.
+  - **#31** inbound targets CSV (20 rows, 5 verified).
+  - **#32** LinkedIn kit.
+- **To do by hand:**
+  - Add the Vercel env vars `PARTNER_REQUESTS_WEBHOOK_URL` and `PARTNER_REQUESTS_WEBHOOK_SECRET` after deploying the Apps Script.
+  - Send one test request from the preview.
