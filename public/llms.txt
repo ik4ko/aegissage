@@ -111,4 +111,11 @@ The number of organizations and products Aegis Sage represents differs by county
 - [Accessibility](https://www.aegissage.com/accessibility)
 
 ## For organizations
-- [Partner information](https://www.aegissage.com/partners): how medical groups, senior living communities, town senior programs, elder law firms and employers can point people to Erekle for plan-neutral Medicare education. No fees, no lists.
+- [For organizations](https://www.aegissage.com/for-organizations): how billing teams, medical groups, new practices, senior living communities, community programs and employers can point people to Erekle for plan-neutral Medicare education and help. No fees in either direction, no lists, no patient or resident information.
+- [Billing and revenue cycle teams](https://www.aegissage.com/for-organizations/billing-teams): a free place to send patients with Medicare coverage questions, at the patient's request.
+- [Senior-focused medical groups](https://www.aegissage.com/for-organizations/medical-groups): patient education talks and plan-neutral help keeping their doctors.
+- [New clinics and practices](https://www.aegissage.com/for-organizations/new-practices): a Medicare resource for patients from the first day.
+- [Senior living and assisted living](https://www.aegissage.com/for-organizations/senior-living): education days and same-day one-on-one help after a recorded Scope of Appointment.
+- [Town senior programs and community organizations](https://www.aegissage.com/for-organizations/community-programs): Medicare talks in English, Georgian or Russian.
+- [Employers and HR](https://www.aegissage.com/for-organizations/employers): Medicare help for employees turning 65 and retirees.
+- [Partner information and rules](https://www.aegissage.com/partners): the compliance rules for talks and help days.

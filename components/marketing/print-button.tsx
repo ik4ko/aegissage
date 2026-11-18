@@ -12,7 +12,7 @@ import { trackResourceUse } from '@/lib/analytics';
  * interactive element on an otherwise fully static page, so it is the only
  * client component on it.
  */
-export function PrintButton({ resource }: { resource: string }) {
+export function PrintButton({ resource, label = 'Print this checklist' }: { resource: string; label?: string }) {
   return (
     <Button
       type="button"
@@ -25,7 +25,7 @@ export function PrintButton({ resource }: { resource: string }) {
       }}
     >
       <Printer className="h-5 w-5" aria-hidden="true" />
-      Print this checklist
+      {label}
     </Button>
   );
 }
