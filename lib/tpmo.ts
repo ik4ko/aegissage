@@ -91,6 +91,9 @@ const HAND_AUTHORED_ZIP_ROUTES = [
   '/medicare-help-georgian-russian',
   '/ka',
   '/ru',
+  // Plan-ending pages (lib/plan-endings.ts) render <ContactForm />.
+  '/braven-health-plan-ending-2027',
+  '/aetna-medicare-plan-ending-2027',
 ] as const;
 
 /**
@@ -274,10 +277,24 @@ export function isOutOfAreaRoute(path: string): boolean {
  * pages are read by people anywhere (many arrive from AI search), so the
  * Bergen figures always say "in Bergen County, NJ" there (Erekle, Nov 16 2026).
  */
+/**
+ * Pages read by people across several counties or states that are not about
+ * one place: the Bergen figures name Bergen County on these, as on the answer
+ * pages. Literal paths, not imports, so this file stays small in the client
+ * bundle (see the note on ZIP_ROUTES above).
+ */
+const FALLBACK_SCOPE_ROUTES: ReadonlySet<string> = new Set([
+  '/medicare-questions',
+  // Plan-ending pages (Nov 18 2026): Braven covered all 21 NJ counties, and
+  // Aetna letters reach people in every state.
+  '/braven-health-plan-ending-2027',
+  '/aetna-medicare-plan-ending-2027',
+]);
+
 export function usesFallbackScope(path: string): boolean {
   // /medicare-questions is a hub of short answers read by people anywhere,
   // like the answer pages, so it follows the same rule (Nov 17 2026).
-  return isOutOfAreaRoute(path) || path.startsWith('/answers/') || path === '/medicare-questions';
+  return isOutOfAreaRoute(path) || path.startsWith('/answers/') || FALLBACK_SCOPE_ROUTES.has(path);
 }
 
 function resolve(key: TpmoAreaKey): ResolvedTpmoArea | null {

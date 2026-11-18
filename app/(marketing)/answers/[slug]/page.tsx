@@ -7,6 +7,8 @@ import {
 } from '@/components/marketing/article-layout';
 import { ContactActions } from '@/components/marketing/contact-actions';
 import { ContactForm } from '@/components/forms/contact-form';
+import { PlanEndingLinks } from '@/components/marketing/plan-ending-links';
+import { PLAN_ENDING_ANSWER_HREF } from '@/lib/plan-endings';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getArticle, getArticles, getRelatedAnswers } from '@/lib/content';
 import { faqJsonLd, speakableJsonLd } from '@/lib/seo';
@@ -101,6 +103,14 @@ export default async function AnswerPage({ params }: { params: Promise<Params> }
         backLabel="All Medicare answers"
         afterBody={
           <div className="article-body mt-10">
+            {/*
+              The general non-renewal answer links to the company-specific
+              plan-ending pages. The company names appear only in these link
+              labels, rendered by the template, not in the answer copy.
+            */}
+            {article.href === PLAN_ENDING_ANSWER_HREF ? (
+              <PlanEndingLinks showGeneral={false} className="mb-10" />
+            ) : null}
             {faq.length > 0 ? (
               <>
                 <h2>Common questions</h2>
