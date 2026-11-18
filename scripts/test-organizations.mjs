@@ -36,9 +36,9 @@ const ok = (label, fn) => {
   try { fn(); console.log(`  ok    ${label}`); } catch (e) { failures += 1; console.error(`  FAIL  ${label}\n        ${e.message}`); }
 };
 
-ok('six audiences with unique slugs', () => {
-  assert.equal(orgAudiences.length, 6);
-  assert.equal(new Set(orgAudiences.map((a) => a.slug)).size, 6);
+ok('seven audiences with unique slugs', () => {
+  assert.equal(orgAudiences.length, 7);
+  assert.equal(new Set(orgAudiences.map((a) => a.slug)).size, 7);
 });
 
 for (const a of orgAudiences) {
@@ -65,6 +65,14 @@ for (const a of orgAudiences) {
     assert.ok(a.metaTitle.length + ' · Aegis Sage'.length <= 60, `${a.metaTitle.length} chars`);
     assert.ok(a.description.length <= 160, `description ${a.description.length} chars`);
   });
+  if (a.forwardEmail) {
+    ok(`${a.slug}: forward email is about 120 words, has the licensed-agent notice and no banned wording`, () => {
+      const w = words(a.forwardEmail.body);
+      assert.ok(w >= 100 && w <= 140, `email ${w} words`);
+      assert.match(a.forwardEmail.body, /Calling this number will direct you to a licensed insurance agent\./);
+      assert.doesNotMatch(a.forwardEmail.body + (a.sheetNote ?? '') + (a.why?.paragraphs.join(' ') ?? ''), BANNED);
+    });
+  }
   ok(`${a.slug}: four sheet lines, a valid form type and links that exist`, () => {
     assert.equal(a.sheet.length, 4);
     assert.ok(ORGANIZATION_TYPES.some((t) => t.value === a.formType), a.formType);

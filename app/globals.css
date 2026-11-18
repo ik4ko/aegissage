@@ -118,6 +118,28 @@
       page-break-inside: avoid;
     }
 
+    /*
+      Organization sheets rely on the sitewide disclaimer block for the TPMO
+      text, so it stays, made compact so the sheet fits one page.
+    */
+    body:has([data-print-sheet]) section[aria-label='Medicare marketing disclaimer'] {
+      background: #fff !important;
+      color: #1f2937 !important;
+      border-top: 1px solid #ccc;
+    }
+    body:has([data-print-sheet]) section[aria-label='Medicare marketing disclaimer'] * {
+      color: #1f2937 !important;
+      font-size: 9pt !important;
+      line-height: 1.35 !important;
+    }
+    body:has([data-print-sheet]) section[aria-label='Medicare marketing disclaimer'] > div {
+      padding-top: 6pt !important;
+      padding-bottom: 0 !important;
+    }
+    body:has([data-print-sheet]) section[aria-label='Medicare marketing disclaimer'] > div > * + * {
+      margin-top: 4pt !important;
+    }
+
     a[href^='http']::after {
       content: ' (' attr(href) ')';
       font-size: 0.75em;
