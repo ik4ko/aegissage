@@ -67,9 +67,8 @@ export default function Page() {
             </p>
             <p>
               You can see every plan available where you live, including ones I do not
-              offer, at <a href="https://www.medicare.gov/plan-compare/">Medicare.gov</a>,
-              by calling 1-800-MEDICARE, or through your State Health Insurance Assistance
-              Program, which gives free counseling and sells nothing.
+              offer, at <a href="https://www.medicare.gov/plan-compare/">Medicare.gov</a> or
+              by calling 1-800-MEDICARE.
             </p>
 
             <h2>What I never do</h2>
