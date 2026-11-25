@@ -134,9 +134,15 @@ export function ArticleLayout({
           <div className="mx-auto max-w-[68ch]">
             <ShareBar path={article.href} title={article.title} />
 
-            <Reveal className="article-body mt-10">
+            {/*
+              Not wrapped in <Reveal>. Reveal waits until 15% of the element
+              is on screen, and a long article body is taller than the
+              viewport can ever show 15% of, so it stayed invisible. Reading
+              content always renders visible.
+            */}
+            <div className="article-body mt-10">
               <Mdx source={article.body} glossaryLinks={article.collection === 'answers'} />
-            </Reveal>
+            </div>
 
             {afterBody}
 
