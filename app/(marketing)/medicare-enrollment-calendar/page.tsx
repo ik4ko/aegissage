@@ -232,8 +232,7 @@ export default function MedicareEnrollmentCalendarPage() {
             It cannot tell you which window applies to you. That depends on your birthday, your
             coverage and what has changed. Social Security decides Part A and Part B sign-up
             questions, and Medicare can confirm plan enrollment windows at{' '}
-            {compliance.medicarePhone}. Your State Health Insurance Assistance Program gives free
-            counseling.
+            {compliance.medicarePhone}.
           </p>
           <p>
             Related: <Link href="/answers/medicare-enrollment-periods-explained">enrollment periods explained</Link>,{' '}

@@ -62,6 +62,8 @@ export type ArticleFrontmatter = {
   /** Ordering within the Medicare Basics hub. Lower comes first. */
   order?: number;
   featured?: boolean;
+  /** Blog only: show the short review-request form at the end of the article. */
+  review_form?: boolean;
   /**
    * `answers` collection only (content/answers/*.mdx). Enforced by
    * lib/content-guard.ts: an answer page must carry `source_url`,

@@ -49,8 +49,8 @@ const PHRASES = glossaryTerms
   .sort((a, b) => b.phrase.length - a.phrase.length);
 
 /**
- * Short all-capital terms (HMO, PPO, SHIP, COBRA, IRMAA) match case-exactly,
- * so the verb "ship" is never linked. Everything else ignores case.
+ * Short all-capital terms (HMO, PPO, COBRA, IRMAA) match case-exactly,
+ * so the snake "cobra" is never linked. Everything else ignores case.
  */
 function patternFor(phrase: string): RegExp {
   const caseExact = /^[A-Z]{3,6}$/.test(phrase);

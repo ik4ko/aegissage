@@ -102,16 +102,6 @@ export const resources: Resource[] = [
     approved: true,
   },
   {
-    title: 'State Health Insurance Assistance Program (SHIP)',
-    category: 'State assistance',
-    description:
-      'Free, unbiased Medicare counseling run by your state. They sell nothing and are not paid by any insurance company.',
-    url: 'https://www.shiphelp.org',
-    affiliate: false,
-    reviewed: '2026-07-27',
-    approved: true,
-  },
-  {
     title: 'Medicare Rights Center',
     category: 'Consumer advocacy',
     description:

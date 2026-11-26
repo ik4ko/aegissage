@@ -1,7 +1,7 @@
 /**
  * /medicare-questions (lib/medicare-questions.ts). Checks the rules at the top
  * of that file so a later edit cannot quietly break them:
- * exactly 30 questions, unique anchors, answers of at most 50 words that end
+ * exactly 29 questions, unique anchors, answers of at most 50 words that end
  * in a full stop, an official source for each, and a deep link that exists.
  */
 import assert from 'node:assert/strict';
@@ -47,9 +47,9 @@ const ok = (label, fn) => {
   }
 };
 
-ok('exactly 30 questions with unique anchors', () => {
-  assert.equal(allQuestions.length, 30);
-  assert.equal(new Set(allQuestions.map((q) => q.id)).size, 30);
+ok('exactly 29 questions with unique anchors', () => {
+  assert.equal(allQuestions.length, 29);
+  assert.equal(new Set(allQuestions.map((q) => q.id)).size, 29);
   for (const q of allQuestions) assert.match(q.id, /^[a-z0-9-]+$/, q.id);
 });
 

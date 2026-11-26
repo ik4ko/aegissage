@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { ArticleLayout, articleJsonLd } from '@/components/marketing/article-layout';
 import { JsonLd } from '@/components/seo/json-ld';
 import { getArticle, getArticles, getRelated } from '@/lib/content';
+import { ReviewRequestForm } from '@/components/forms/review-request-form';
 import { faqJsonLd } from '@/lib/seo';
 import { site } from '@/lib/site';
 
@@ -114,6 +115,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<Para
             </div>
           ) : undefined
         }
+        afterColumn={article.review_form ? <ReviewRequestForm className="mt-12" /> : undefined}
       />
     </>
   );

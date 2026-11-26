@@ -10,7 +10,7 @@ import { advisor, site } from '@/lib/site';
 import { formatDate } from '@/lib/utils';
 
 /**
- * /medicare-questions: 30 spoken-style questions, each answered in a few
+ * /medicare-questions: 29 spoken-style questions, each answered in a few
  * plain sentences and linked to the deeper page (lib/medicare-questions.ts).
  *
  * Built for voice and AI answers: every question is its own heading with a
@@ -25,10 +25,10 @@ const H1 = 'Medicare questions, answered out loud';
 export const metadata: Metadata = pageMetadata({
   title: 'Medicare questions, answered in plain words',
   description:
-    'Thirty short answers to the Medicare questions people ask most: signing up, changing plans, Medigap, costs and where to get help. Each links to the full answer.',
+    'Twenty-nine short answers to the Medicare questions people ask most: signing up, changing plans, Medigap, costs and where to get help. Each links to the full answer.',
   path: PATH,
   kicker: 'Medicare questions',
-  shareTitle: '30 Medicare questions, answered plainly',
+  shareTitle: '29 Medicare questions, answered plainly',
 });
 
 const pageUrl = `${site.url}${PATH}`;
@@ -58,7 +58,7 @@ export default function MedicareQuestionsPage() {
               {H1}
             </h1>
             <p className="mt-5 text-xl leading-relaxed text-ink-soft">
-              Thirty questions people ask about Medicare, each answered in a few plain sentences.
+              Twenty-nine questions people ask about Medicare, each answered in a few plain sentences.
               Every answer links to a longer page and to the official source it was checked
               against. Nothing here names a plan or an insurance company.
             </p>

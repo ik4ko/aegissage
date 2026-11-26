@@ -38,27 +38,11 @@ import { advisor, site } from './site';
 // ── Shared local resources (official pages read Nov 17 2026) ─────────────
 const CHECKED = '2026-11-17';
 
-const BERGEN_SHIP: LocalResource = {
-  name: 'Bergen County SHIP: free Medicare counseling',
-  what: 'Trained counselors who do not sell insurance. Run by the Bergen County Division of Senior Services in Hackensack.',
-  phone: '201-336-7413',
-  url: 'https://www.nj.gov/humanservices/doas/assistance/medicare/offices.shtml',
-  checked: CHECKED,
-};
-
 const BERGEN_AGING: LocalResource = {
   name: 'Bergen County Division of Senior Services',
   what: 'The county office on aging for every Bergen County town.',
   phone: '201-336-7400',
   url: 'https://www.nj.gov/humanservices/doas/assistance/county-offices',
-  checked: CHECKED,
-};
-
-const HUDSON_SHIP: LocalResource = {
-  name: 'Hudson County SHIP: free Medicare counseling',
-  what: 'Trained counselors who do not sell insurance. Run by the Hudson County Department of Aging and Veterans Affairs in Jersey City.',
-  phone: '201-369-4313, ext. 4259',
-  url: 'https://www.nj.gov/humanservices/doas/assistance/medicare/offices.shtml',
   checked: CHECKED,
 };
 
@@ -554,14 +538,8 @@ export const locationLandings: LocationLanding[] = [
     inState: 'New Jersey',
     headline: 'Hackensack is the county seat. A lot of free Medicare help is already in town.',
     intro:
-      'Hackensack is the seat of Bergen County government. The county’s free Medicare counselors work out of One Bergen County Plaza, right in the city. So if you live here, two kinds of help are close by: free, neutral counseling from the county, and a licensed broker you can call to compare plans.',
+      'Hackensack is the seat of Bergen County government, and the county’s office on aging is right in the city. If you want someone to compare plans against your doctors and drugs, you can call a licensed broker.',
     sections: [
-      {
-        heading: 'Should I call SHIP or a broker first?',
-        paragraphs: [
-          'Either is fine, and many people use both. Bergen County’s SHIP counselors in Hackensack explain Medicare and help with problems, and they sell nothing. A licensed broker like me can compare the plans sold in Bergen County against your doctors and drugs, and help you enroll.',
-        ],
-      },
       {
         heading: 'Is the plan menu in Hackensack different from other Bergen towns?',
         paragraphs: [
@@ -577,7 +555,6 @@ export const locationLandings: LocationLanding[] = [
       },
     ],
     questions: [
-      'Should I see a SHIP counselor first, or call a broker?',
       'Is the plan menu in Hackensack different from the rest of Bergen County?',
       'I am moving out of Bergen County. When can I change my plan?',
       'Can someone check that my doctors take the plan I am looking at?',
@@ -585,7 +562,6 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'Hackensack' },
     localHelp: [
-      BERGEN_SHIP,
       BERGEN_AGING,
       SSA_LOCATOR,
       library(
@@ -647,7 +623,6 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'Englewood' },
     localHelp: [
-      BERGEN_SHIP,
       BERGEN_AGING,
       SSA_LOCATOR,
       library(
@@ -707,7 +682,6 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'Teaneck' },
     localHelp: [
-      BERGEN_SHIP,
       BERGEN_AGING,
       SSA_LOCATOR,
       library(
@@ -767,7 +741,6 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'Paramus' },
     localHelp: [
-      BERGEN_SHIP,
       BERGEN_AGING,
       SSA_LOCATOR,
       library(
@@ -827,7 +800,6 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'Fair Lawn' },
     localHelp: [
-      BERGEN_SHIP,
       BERGEN_AGING,
       SSA_LOCATOR,
       library(
@@ -868,7 +840,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Is there help paying Medicare costs in New Jersey?',
         paragraphs: [
-          'Yes, for people with lower incomes. Extra Help lowers drug costs, and Medicare Savings Programs can pay the Part B premium. The rules depend on income and savings and change each year. The county SHIP office can help you apply for free, and so can I.',
+          'Yes, for people with lower incomes. Extra Help lowers drug costs, and Medicare Savings Programs can pay the Part B premium. The rules depend on income and savings and change each year. I can help you apply.',
         ],
       },
       {
@@ -887,7 +859,6 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'Palisades Park' },
     localHelp: [
-      BERGEN_SHIP,
       BERGEN_AGING,
       SSA_LOCATOR,
       library(
@@ -935,7 +906,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'How do I reach a Medicare broker in Jersey City?',
         paragraphs: [
-          `Call or text me at ${PHONE}. I work with people across Hudson County by phone or in person, in English, Georgian or Russian. Free, neutral counseling is also available in Jersey City through the Hudson County SHIP office listed on this page.`,
+          `Call or text me at ${PHONE}. I work with people across Hudson County by phone or in person, in English, Georgian or Russian.`,
         ],
       },
     ],
@@ -948,7 +919,6 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'Jersey City, Hudson County' },
     localHelp: [
-      HUDSON_SHIP,
       HUDSON_AGING,
       {
         name: 'Jersey City Division of Senior Affairs',
@@ -1010,7 +980,6 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'Hoboken, Hudson County' },
     localHelp: [
-      HUDSON_SHIP,
       HUDSON_AGING,
       SSA_LOCATOR,
       library(
@@ -1052,7 +1021,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Is there help with Medicare costs if money is tight?',
         paragraphs: [
-          'Yes. Extra Help lowers drug costs, Medicare Savings Programs can pay the Part B premium, and New Jersey Medicaid can help with more. You apply based on income and savings. The county SHIP counselors can help you apply for free, and I can point you to programs.',
+          'Yes. Extra Help lowers drug costs, Medicare Savings Programs can pay the Part B premium, and New Jersey Medicaid can help with more. You apply based on income and savings. I can point you to programs.',
         ],
       },
       {
@@ -1071,7 +1040,6 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'Union City, Hudson County' },
     localHelp: [
-      HUDSON_SHIP,
       HUDSON_AGING,
       SSA_LOCATOR,
       library(
@@ -1132,7 +1100,6 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'West New York, Hudson County' },
     localHelp: [
-      HUDSON_SHIP,
       HUDSON_AGING,
       SSA_LOCATOR,
       library(
@@ -1193,7 +1160,6 @@ export const locationLandings: LocationLanding[] = [
     ],
     context: { Location: 'North Bergen, Hudson County' },
     localHelp: [
-      HUDSON_SHIP,
       HUDSON_AGING,
       SSA_LOCATOR,
       library(
@@ -1258,7 +1224,7 @@ export const locationLandings: LocationLanding[] = [
       'I have retiree coverage from a New York job. How does it work with Medicare?',
     ],
     context: { Location: 'Weehawken, Hudson County' },
-    localHelp: [HUDSON_SHIP, HUDSON_AGING, SSA_LOCATOR],
+    localHelp: [HUDSON_AGING, SSA_LOCATOR],
     relatedAnswers: [
       'how-to-check-if-a-doctor-is-in-a-medicare-plan',
       'moving-between-new-jersey-new-york-pennsylvania',

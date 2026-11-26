@@ -474,15 +474,6 @@ export const glossaryTerms: GlossaryTerm[] = [
       url: `${M}/basics/get-started-with-medicare/medicare-basics/working-past-65/cobra-coverage`,
     },
   },
-  {
-    slug: 'ship',
-    term: 'SHIP',
-    alsoCalled: ['State Health Insurance Assistance Program'],
-    match: ['State Health Insurance Assistance Program', 'SHIP'],
-    definition:
-      'A State Health Insurance Assistance Program gives people with Medicare and their families free, personal counseling. Counselors help with choosing a plan, reviewing coverage, understanding costs, applying for Extra Help and filing a complaint or an appeal. SHIPs are not connected to any insurance company or health plan.',
-    source: { title: 'Contact Medicare', url: `${M}/talk-to-someone` },
-  },
 ];
 
 export function getGlossaryTerm(slug: string): GlossaryTerm | undefined {

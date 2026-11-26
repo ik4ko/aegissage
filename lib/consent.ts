@@ -56,6 +56,13 @@ export const CONSENT_TEXT_VERSIONS = {
   */
   contactFormKa: 'contact-form-ka-2026-11',
   contactFormRu: 'contact-form-ru-2026-11',
+  /*
+    components/forms/review-request-form.tsx — the short form at the end of an
+    article (Nov 26 2026). Wording: "You can call me about a free Medicare
+    review." (required) and "You can text me about a free Medicare review."
+    (optional, with the SMS detail line).
+  */
+  articleReview: 'article-review-form-2026-11',
 } as const;
 
 /**
@@ -70,6 +77,8 @@ export const HOMEPAGE_CAPTURE_SOURCE = 'homepage-deadline-capture';
 /** `source` posted by the /book interstitial. Shared for the same reason. */
 export const BOOKING_SOURCE = 'booking-interstitial';
 
+export const ARTICLE_REVIEW_SOURCE = 'article-review-form';
+
 /**
  * The consent wording version for a submission's `source`.
  *
@@ -82,6 +91,7 @@ export const BOOKING_SOURCE = 'booking-interstitial';
 export function consentTextVersionFor(source: string): string {
   if (source === HOMEPAGE_CAPTURE_SOURCE) return CONSENT_TEXT_VERSIONS.homepageCapture;
   if (source === BOOKING_SOURCE) return CONSENT_TEXT_VERSIONS.bookingInterstitial;
+  if (source === ARTICLE_REVIEW_SOURCE) return CONSENT_TEXT_VERSIONS.articleReview;
   if (source === 'language-ka') return CONSENT_TEXT_VERSIONS.contactFormKa;
   if (source === 'language-ru') return CONSENT_TEXT_VERSIONS.contactFormRu;
   return CONSENT_TEXT_VERSIONS.contactForm;

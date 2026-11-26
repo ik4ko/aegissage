@@ -112,7 +112,7 @@ Do not publish this list or derive a count from it; counts come from the recount
 - No fake reviews, no review incentives, no undisclosed forum posting.
 
 ## Reference hub (glossary, enrollment calendar, linking)
-- /medicare-glossary reads lib/medicare-glossary.ts: 40 terms, each 2 to 3
+- /medicare-glossary reads lib/medicare-glossary.ts: 39 terms, each 2 to 3
   plain sentences with a medicare.gov or cms.gov source. No dollar amounts,
   no years. Never change a term's `slug`; it is a public anchor.
 - /medicare-enrollment-calendar reads lib/enrollment-calendar.ts. Every

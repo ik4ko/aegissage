@@ -106,9 +106,8 @@ export default function ContactPage() {
             </p>
             <h3>Free help that is not me</h3>
             <p>
-              Your state&rsquo;s SHIP office gives free, neutral Medicare counseling, and
               1-800-MEDICARE (1-800-633-4227) answers questions every day. I am happy to point
-              you to either one.
+              you to it.
             </p>
           </div>
         </div>

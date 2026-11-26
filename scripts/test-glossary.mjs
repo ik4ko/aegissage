@@ -4,7 +4,7 @@
  *
  * Checks the rules written at the top of lib/medicare-glossary.ts and
  * lib/enrollment-calendar.ts, so a later edit cannot quietly break them:
- * 40 sourced terms of 2 to 3 sentences, windows written as rules with no
+ * 39 sourced terms of 2 to 3 sentences, windows written as rules with no
  * year in them, official sources only, no carrier names, and auto-linking
  * that links each term once and never inside a heading or an existing link.
  */
@@ -52,12 +52,12 @@ const ISO = /^\d{4}-\d{2}-\d{2}$/;
 
 console.log('\nGlossary');
 
-ok('has exactly 40 terms with unique anchors', () => {
-  assert.equal(glossaryTerms.length, 40);
+ok('has exactly 39 terms with unique anchors', () => {
+  assert.equal(glossaryTerms.length, 39);
   const slugs = glossaryTerms.map((entry) => entry.slug);
   assert.equal(new Set(slugs).size, slugs.length);
   for (const slug of slugs) assert.match(slug, /^[a-z][a-z0-9-]*$/, slug);
-  assert.equal(new Set(glossaryTerms.map((entry) => entry.term.toLowerCase())).size, 40);
+  assert.equal(new Set(glossaryTerms.map((entry) => entry.term.toLowerCase())).size, 39);
 });
 
 ok('every definition is 2 to 3 sentences', () => {
@@ -189,10 +189,10 @@ ok('leaves headings, existing links, code and components alone', () => {
 ok('matches whole words, and capital-letter terms only in capitals', () => {
   const tree = autolinkForTest({
     type: 'root',
-    children: [paragraph(text('They ship the card. Part Bs are not a thing. Call your SHIP about an HMO.'))],
+    children: [paragraph(text('A cobra is a snake. Part Bs are not a thing. Ask about COBRA and an HMO.'))],
   });
   assert.deepEqual(links(tree), [
-    ['/medicare-glossary#ship', 'SHIP'],
+    ['/medicare-glossary#cobra', 'COBRA'],
     ['/medicare-glossary#hmo', 'HMO'],
   ]);
 });
