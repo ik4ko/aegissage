@@ -9,10 +9,12 @@ import {
   ClipboardList,
   Compass,
   MessageCircleQuestion,
+  Pill,
 } from 'lucide-react';
 import { Hero } from '@/components/marketing/hero';
 import { TrustBar } from '@/components/marketing/trust-bar';
 import { CtaBand } from '@/components/marketing/cta-band';
+import { ContactActions } from '@/components/marketing/contact-actions';
 import { ArticleCard } from '@/components/marketing/article-card';
 import { NewsCard } from '@/components/marketing/news-card';
 import { SocialLinks } from '@/components/marketing/social-links';
@@ -117,6 +119,88 @@ export default function HomePage() {
         <Reveal>
           <TrustBar />
         </Reveal>
+      </section>
+
+      {/* ── Two ways to start ─────────────────────────────────────────── */}
+      {/*
+        Two kinds of visitor, two honest next steps. The left card is for
+        someone who wants a date or a plain answer and is not ready to talk
+        about plans: it asks for nothing. The right card is for someone who
+        wants their doctors and prescriptions checked: call, book or text.
+        No form here on purpose; the forms elsewhere on the site keep their
+        own consent wording.
+      */}
+      <section className="container py-12 sm:py-14" aria-labelledby="two-ways-heading">
+        <Reveal className="max-w-2xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-ember-deep">
+            Start where you are
+          </p>
+          <h2
+            id="two-ways-heading"
+            className="mt-3 font-display text-3xl font-bold tracking-[-0.03em] text-ink sm:text-4xl"
+          >
+            Two ways to start. Neither one obligates you to anything.
+          </h2>
+        </Reveal>
+
+        <div className="mt-8 grid gap-5 lg:grid-cols-2">
+          <Reveal className="h-full">
+            <div className="flex h-full flex-col rounded-2xl border border-line bg-paper p-7 shadow-card">
+              <span className="grid h-12 w-12 place-items-center rounded-xl bg-navy-soft text-navy">
+                <CalendarClock className="h-6 w-6" aria-hidden="true" />
+              </span>
+              <h3 className="mt-5 font-display text-2xl font-bold tracking-[-0.02em] text-ink">
+                &ldquo;I just need a date or a quick answer.&rdquo;
+              </h3>
+              <p className="mt-3 text-lg leading-relaxed text-ink-soft">
+                Read at your own pace. No form, no phone number to give, nobody calling you
+                back. Each page names the official Medicare source it was checked against.
+              </p>
+              <ul className="mt-5 grid gap-2 text-lg">
+                {[
+                  { href: '/medicare-enrollment-calendar', label: 'Every enrollment window and when it opens' },
+                  { href: '/tools/eligibility-check', label: 'Which deadline applies to me?' },
+                  { href: '/medicare-questions', label: '30 common questions, answered briefly' },
+                  { href: '/answers', label: 'One question per page, in more depth' },
+                ].map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="inline-flex min-h-touch items-center gap-2 font-semibold text-navy underline decoration-ember decoration-2 underline-offset-4 hover:text-navy-deep"
+                    >
+                      {link.label}
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+
+          <Reveal className="h-full">
+            <div className="flex h-full flex-col rounded-2xl border border-line bg-paper p-7 shadow-card">
+              <span className="grid h-12 w-12 place-items-center rounded-xl bg-navy-soft text-navy">
+                <Pill className="h-6 w-6" aria-hidden="true" />
+              </span>
+              <h3 className="mt-5 font-display text-2xl font-bold tracking-[-0.02em] text-ink">
+                &ldquo;I want help checking my doctors and prescriptions.&rdquo;
+              </h3>
+              <p className="mt-3 text-lg leading-relaxed text-ink-soft">
+                Call, book a time or text me. I start by listening: who you see, what you
+                take, and what matters to you. Then we look at your options together and
+                talk through the trade-offs. There is no cost to you, and you never have to
+                enroll in anything.
+              </p>
+              <ContactActions
+                where="home-two-ways"
+                layout="stack"
+                size="lg"
+                includeEmail={false}
+                className="mt-6"
+              />
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       {/* ── Lead capture ──────────────────────────────────────────────── */}
@@ -246,6 +330,11 @@ export default function HomePage() {
             <p className="mt-4 text-lg leading-relaxed text-ink-soft">
               I am independent, which means no carrier tells me what to recommend. And I am
               one person, which means the number on this page is my number.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-ink-soft">
+              I learned to do this carefully by helping my mother when she was new to
+              Medicare: her doctors first, then her medications, then her options side by
+              side. I still work the same way, and it starts with listening.
             </p>
             <Button asChild variant="navy" size="lg" className="mt-8">
               <Link href="/about">Read my story →</Link>
