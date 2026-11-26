@@ -344,7 +344,7 @@ export default function AboutPage() {
             sentences each, and the{' '}
             <Link href="/medicare-enrollment-calendar">enrollment calendar</Link> lists every
             window and when it opens. For the short version, the{' '}
-            <Link href="/medicare-questions">29 Medicare questions</Link> page answers each
+            <Link href="/medicare-questions">28 Medicare questions</Link> page answers each
             one in a few sentences. Each one names the official source it was checked
             against.
           </p>

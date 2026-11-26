@@ -54,14 +54,6 @@ const HUDSON_AGING: LocalResource = {
   checked: CHECKED,
 };
 
-const NYC_HIICAP: LocalResource = {
-  name: 'HIICAP: free Medicare counseling in New York City',
-  what: 'Free, private counseling from NYC Aging. Call Aging Connect and ask for HIICAP.',
-  phone: '212-244-6469',
-  url: 'https://www.nyc.gov/site/dfta/services/health-insurance-assistance.page',
-  checked: CHECKED,
-};
-
 /*
   ssa.gov answers automated requests with 403, so this page was confirmed
   through ssa.gov's own search listing ("Field Office Locator"), not read
@@ -529,7 +521,7 @@ export const locationLandings: LocationLanding[] = [
   {
     slug: 'hackensack',
     metaDescription:
-      'Medicare help in Hackensack, NJ, the Bergen County seat. Where the free county counselors are, and what to bring when you call Erekle.',
+      'Medicare help in Hackensack, NJ, the Bergen County seat. Local help nearby, and what to bring when you call Erekle.',
     name: 'Hackensack',
     shortName: 'Hackensack',
     region: 'Hackensack, NJ',
@@ -879,7 +871,7 @@ export const locationLandings: LocationLanding[] = [
   {
     slug: 'jersey-city',
     metaDescription:
-      'Medicare help in Jersey City, NJ. Free Hudson County counseling, help with costs, and Medicare with Medicaid, explained plainly.',
+      'Medicare help in Jersey City, NJ. Help with costs, and Medicare with Medicaid, explained plainly.',
     name: 'Jersey City',
     shortName: 'Jersey City',
     region: 'Jersey City, NJ',
@@ -887,9 +879,9 @@ export const locationLandings: LocationLanding[] = [
     parentSlug: 'new-jersey',
     county: 'Hudson County',
     inState: 'New Jersey',
-    headline: 'Jersey City: Medicare help in Hudson County, starting with the free kind.',
+    headline: 'Jersey City: Medicare help in Hudson County, explained plainly.',
     intro:
-      'Jersey City is the seat of Hudson County. Both the county’s free Medicare counselors and the city’s Division of Senior Affairs are here. If you have Medicare and Medicaid, or need help with costs, start with them. If you want to compare plans and enroll, you can call me.',
+      'Jersey City is the seat of Hudson County, and the city’s Division of Senior Affairs is here. If you have Medicare and Medicaid, or need help with costs, it is a good place to start. If you want to compare plans and enroll, you can call me.',
     sections: [
       {
         heading: 'Are Medicare plans in Jersey City the same as in Bergen County?',
@@ -913,7 +905,6 @@ export const locationLandings: LocationLanding[] = [
     questions: [
       'Are the plans in Jersey City the same as in Bergen County?',
       'I have Medicare and Medicaid. Can I change my plan?',
-      'Where can I get free Medicare counseling in Hudson County?',
       'Is there help paying my Medicare premiums?',
       'Can you help me in Russian or Georgian?',
     ],
@@ -1236,7 +1227,7 @@ export const locationLandings: LocationLanding[] = [
   {
     slug: 'brooklyn',
     metaDescription:
-      'Medicare help in Brooklyn, in English and Russian. Brighton Beach and Sheepshead Bay: New York Medigap rules, Medicaid, free counseling.',
+      'Medicare help in Brooklyn, in English and Russian. Brighton Beach and Sheepshead Bay: New York Medigap rules and Medicaid.',
     name: 'Brooklyn',
     shortName: 'Brooklyn',
     region: 'Brooklyn, NY',
@@ -1271,12 +1262,10 @@ export const locationLandings: LocationLanding[] = [
       'Can we do the whole Medicare call in Russian?',
       'Can I buy Medigap in New York at any age or time?',
       'I have Medicare and Medicaid. Which plans can I join?',
-      'Where can I get free Medicare counseling in Brooklyn?',
       'My mother lives in Brighton Beach and I live in New Jersey. Can I help her by phone?',
     ],
     context: { Location: 'Brooklyn (Kings County), New York' },
     localHelp: [
-      NYC_HIICAP,
       SSA_LOCATOR,
       library(
         'Brighton Beach Library',
@@ -1307,7 +1296,7 @@ export const locationLandings: LocationLanding[] = [
   {
     slug: 'queens',
     metaDescription:
-      'Medicare help in Queens, in English and Russian, for Forest Hills and Rego Park. Moving, doctors, and free counseling.',
+      'Medicare help in Queens, in English and Russian, for Forest Hills and Rego Park. Moving and checking your doctors.',
     name: 'Queens',
     shortName: 'Queens',
     region: 'Queens, NY',
@@ -1342,11 +1331,10 @@ export const locationLandings: LocationLanding[] = [
       'Can you explain Medicare to my mother in Russian?',
       'I am moving from Rego Park to Brooklyn. Does my plan change?',
       'How do I check that my Russian-speaking doctor is in a plan?',
-      'Where can I get free Medicare counseling in Queens?',
       'Which keeps my doctors: Original Medicare or Medicare Advantage?',
     ],
     context: { Location: 'Queens (Queens County), New York' },
-    localHelp: [NYC_HIICAP, SSA_LOCATOR],
+    localHelp: [SSA_LOCATOR],
     relatedAnswers: [
       'medicare-help-new-york-city',
       'moved-medicare-new-jersey-new-york',
