@@ -132,11 +132,11 @@ export function ReviewRequestForm({ className }: { className?: string }) {
           <input id={`${source}-website`} tabIndex={-1} autoComplete="off" {...register('website')} />
         </div>
 
-        <Field id={`${source}-name`} label="Name" error={errors.name?.message}>
+        <Field id={`${source}-name`} label="Name" required error={errors.name?.message}>
           <Input id={`${source}-name`} autoComplete="name" invalid={Boolean(errors.name)} {...register('name')} />
         </Field>
 
-        <Field id={`${source}-zip`} label="ZIP code" error={errors.zip?.message}>
+        <Field id={`${source}-zip`} label="ZIP code" required error={errors.zip?.message}>
           <Input
             id={`${source}-zip`}
             inputMode="numeric"
@@ -147,7 +147,7 @@ export function ReviewRequestForm({ className }: { className?: string }) {
           />
         </Field>
 
-        <Field id={`${source}-phone`} label="Phone" error={errors.phone?.message}>
+        <Field id={`${source}-phone`} label="Phone" required error={errors.phone?.message}>
           <Input id={`${source}-phone`} type="tel" autoComplete="tel" invalid={Boolean(errors.phone)} {...register('phone')} />
         </Field>
 
