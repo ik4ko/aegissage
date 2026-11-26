@@ -197,10 +197,10 @@ ok('matches whole words, and capital-letter terms only in capitals', () => {
   ]);
 });
 
-ok('all 20 answer pages name three related answers that exist', () => {
+ok('all 24 answer pages name three related answers that exist', () => {
   const dir = new URL('../content/answers/', import.meta.url);
   const files = fs.readdirSync(dir).filter((name) => name.endsWith('.mdx'));
-  assert.equal(files.length, 20);
+  assert.equal(files.length, 24);
   const slugs = new Set(files.map((name) => name.replace(/\.mdx$/, '')));
   for (const file of files) {
     // Normalise CRLF: Git for Windows (core.autocrlf) checks the LF files out with CRLF.

@@ -99,7 +99,7 @@ function library(
   return { name, what: where, phone, url, checked: CHECKED };
 }
 
-/** Erekle's public phone. In person: Bergen and Hudson only. NYC: phone or video (Nov 17 2026). */
+/** Erekle's public phone. In person: within about an hour of Edgewater, NYC included. Philadelphia: phone or video (Nov 26 2026). */
 const PHONE = advisor.phone;
 
 export type LocationSection = {
@@ -535,8 +535,9 @@ export const locationLandings: LocationLanding[] = [
      Same rules as above, plus: every local service named on a page sits in
      `localHelp` with the official page it came from and the date it was
      read. No hospital, clinic, plan or carrier is named. Erekle meets people in
-     person in Bergen and Hudson counties; New York City (and Philadelphia)
-     is by phone or video only (Erekle, Nov 17 2026). Body text must stay under 30%
+     person within about an hour of Edgewater, New York City included;
+     Philadelphia and farther is by phone or video (Erekle, Nov 26 2026,
+     superseding the Nov 17 "NYC by phone or video only" rule). Body text must stay under 30%
      overlap with every other location page (scripts/test-location-pages.mjs).
      ════════════════════════════════════════════════════════════════════════ */
 
@@ -1284,7 +1285,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'Can I get help with Medicare in Russian in Brooklyn?',
         paragraphs: [
-          'Yes. I speak Russian, and we can do the whole call in Russian, or part in English and part in Russian if your children join. Medicare words like deductible and network are easier to understand in the language you think in. I work by phone or video.',
+          'Yes. I speak Russian, and we can do the whole call in Russian, or part in English and part in Russian if your children join. Medicare words like deductible and network are easier to understand in the language you think in. We can talk by phone or video, or meet in person if that is easier.',
         ],
       },
       {
@@ -1296,7 +1297,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'What if I have both Medicare and Medicaid in Brooklyn?',
         paragraphs: [
-          `Then there are special plans for people with both, and extra chances to change plans during the year. Call or text me at ${PHONE}, and we will check what you have now before changing anything. For Brooklyn, I work by phone or video call.`,
+          `Then there are special plans for people with both, and extra chances to change plans during the year. Call or text me at ${PHONE}, and we will check what you have now before changing anything. In Brooklyn we can talk by phone or video call, or meet in person.`,
         ],
       },
     ],
@@ -1367,7 +1368,7 @@ export const locationLandings: LocationLanding[] = [
       {
         heading: 'How can I get Medicare help in Russian in Queens?',
         paragraphs: [
-          `Call or text me at ${PHONE} and say whether you want to talk in Russian or English. If a son or daughter helps you with Medicare, they can join the call. I help people in Queens by phone or video call, and there is no fee.`,
+          `Call or text me at ${PHONE} and say whether you want to talk in Russian or English. If a son or daughter helps you with Medicare, they can join the call. I help people in Queens by phone, by video call or in person, and there is no fee.`,
         ],
       },
     ],

@@ -38,6 +38,14 @@ export type ArticleFrontmatter = {
   /** ISO date, YYYY-MM-DD. A date in the past fails the build. */
   expires_on: string;
   /**
+   * News only, optional. ISO date, YYYY-MM-DD: the last day the item appears
+   * in the homepage "What is worth knowing this week" strip. For time-bound
+   * items such as "Open Enrollment ends December 7". The item's own page and
+   * the /news index keep it until `expires_on`. Evaluated when the site is
+   * built, so the strip updates on the next build after this date.
+   */
+  show_until?: string;
+  /**
    * Whether the piece makes a plan-specific claim — a premium, a benefit, a
    * star rating, a named carrier or an enrollment figure.
    *
@@ -154,9 +162,22 @@ export function getAllArticles(): Article[] {
   ];
 }
 
-/** Most recent news items, newest first. */
+/** True while a news item is still inside its `show_until` window (UTC days). */
+export function isShowing(article: Article, now = new Date()): boolean {
+  const raw = article.show_until as unknown;
+  if (!raw) return true;
+  const text = raw instanceof Date ? raw.toISOString().slice(0, 10) : String(raw).trim();
+  return now.toISOString().slice(0, 10) <= text;
+}
+
+/** Most recent news items still inside their `show_until` window, time-bound items first. */
 export function getLatestNews(limit = 3): Article[] {
-  return getArticles('news').slice(0, limit);
+  // Time-bound items (those with `show_until`) lead while they are showing;
+  // everything else keeps newest-first order. Array.sort is stable.
+  return getArticles('news')
+    .filter((item) => isShowing(item))
+    .sort((a, b) => Number(Boolean(b.show_until)) - Number(Boolean(a.show_until)))
+    .slice(0, limit);
 }
 
 /**
