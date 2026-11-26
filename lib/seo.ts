@@ -54,7 +54,7 @@ const bergenCountyTowns = [
   'Fair Lawn',
 ];
 
-/** Hudson County towns with their own page (Nov 17 2026). Erekle meets people in person in Bergen and Hudson. */
+/** Hudson County towns with their own page (Nov 17 2026). Erekle meets people in person within about an hour of Edgewater (Nov 26 2026). */
 const hudsonCountyTowns = [
   'Jersey City',
   'Hoboken',

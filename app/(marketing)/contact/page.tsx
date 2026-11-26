@@ -86,8 +86,9 @@ export default function ContactPage() {
             <h3>How we can talk</h3>
             <p>
               By phone at {advisor.phone}, by text, or by email at {advisor.email}. I meet
-              people in person in Bergen and Hudson counties in New Jersey. For New York City
-              and Philadelphia, we talk by phone or video call. I speak English, Georgian and
+              people in person within about an hour of Edgewater, which includes Bergen and
+              Hudson counties and New York City. Farther than that, including Philadelphia, we
+              talk by phone or video call. I speak English, Georgian and
               Russian, and a family member is always welcome to join.
             </p>
             <h3>What to have ready</h3>

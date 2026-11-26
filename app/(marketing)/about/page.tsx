@@ -13,7 +13,7 @@ import { JsonLd } from '@/components/seo/json-ld';
 import { advisor, site } from '@/lib/site';
 import { licensedStates } from '@/lib/states';
 import { locationLandings } from '@/lib/locations';
-import { breadcrumbJsonLd } from '@/lib/seo';
+import { breadcrumbJsonLd, faqJsonLd } from '@/lib/seo';
 
 // ~150 chars: Google truncates a search-result description around there.
 const LANGUAGES = advisor.languages.map((language) => language.name);
@@ -23,6 +23,50 @@ const OG_IMAGE =
   `${site.url}/api/og?title=${encodeURIComponent(`Meet ${advisor.name}`)}` +
   `&kicker=${encodeURIComponent('The person behind the phone number')}` +
   `&subtitle=${encodeURIComponent(`${advisor.credential} · ${advisor.basedIn}`)}`;
+
+/*
+  Common questions, shown on the page and used for the FAQPage schema from
+  the same array so the two cannot drift. Every answer is a fact Erekle gave
+  (paid by commission, not every plan, how he checks doctors and drugs,
+  in person within about an hour of Edgewater: Nov 26 2026). No plan or
+  carrier names, no counts other than the disclaimer's own.
+*/
+const FAQ: { question: string; answer: string }[] = [
+  {
+    question: 'How is your help paid for?',
+    answer:
+      'You do not pay me anything. If you enroll in a plan through me, the insurance company pays me a commission. Your premium is the same whether you enroll through me, through a call center or on your own.',
+  },
+  {
+    question: 'Do I have to enroll in anything?',
+    answer:
+      'No. You can ask questions, compare options and decide to keep what you have. That is a perfectly good outcome, and it costs you nothing.',
+  },
+  {
+    question: 'Do you offer every Medicare plan?',
+    answer:
+      'No. I work with some of the organizations that offer plans, not all of them, and the disclosure at the bottom of every page says how many. If a plan I do not offer looks like a better fit, I will tell you. You can always see every option at Medicare.gov or by calling 1-800-MEDICARE.',
+  },
+  {
+    question: 'How do you check my doctors and prescriptions?',
+    answer:
+      'Before we look at any plan, we write down every doctor you see and every medication you take, with the dose. I check each doctor against each plan’s network and each medication against each plan’s drug list. Then we look at the plans side by side and talk through the trade-offs.',
+  },
+  {
+    question: 'What areas do you serve?',
+    answer: `I am licensed in ${advisor.licensedStates.length} states and can help anywhere I am licensed by phone or video. Most of the people I work with live in Bergen and Hudson counties in New Jersey, New York City and Philadelphia.`,
+  },
+  {
+    question: 'Can we meet in person?',
+    answer:
+      'Yes, within about an hour of Edgewater, which includes Bergen and Hudson counties and New York City. I can come to your home, a library or wherever is easiest, and a family member is welcome. Farther than that, including Philadelphia, we talk by phone or video call. Before we discuss specific plans, Medicare requires me to ask you to agree to a short Scope of Appointment form.',
+  },
+  {
+    question: 'Which languages do you speak?',
+    answer:
+      'English, Georgian and Russian. Georgian is my native language. If your children help you with Medicare, we can mix languages so everyone follows.',
+  },
+];
 
 export const metadata: Metadata = {
   title: { absolute: `${advisor.name} | ${site.searchName}, ${advisor.basedInTown} NJ` },
@@ -57,6 +101,7 @@ export default function AboutPage() {
         lib/seo.ts (same @id), so "the About page" and "the licensed producer"
         resolve to one entity instead of two.
       */}
+      <JsonLd data={faqJsonLd(FAQ)} />
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -155,8 +200,11 @@ export default function AboutPage() {
             Erekle's own account, given by him directly. Every fact below came
             from him: the country of origin, the 2000 arrival, Edgewater, the
             agency job alongside independent work for family, and that this is
-            his second year. Do not embellish it and do not add detail he has
-            not given.
+            his second year. The paragraph about his mother is his own account
+            (Nov 26 2026): first time on Medicare, her doctors and where she
+            lives, her medications, plans compared side by side, the one that
+            fit chosen, going into her third year on it and happy with it.
+            Do not embellish it and do not add detail he has not given.
 
             "Georgia" is stated as the country every time it appears. GA is one
             of the 26 licensed states, so an unqualified "I am from Georgia"
@@ -176,6 +224,13 @@ export default function AboutPage() {
             taught me the most. When it is someone you love, you do not skim the summary —
             you sit down and go through every plan available to them until you actually
             know which one fits.
+          </p>
+          <p>
+            The clearest example is my mother. When she was new to Medicare, we went through
+            it together, one step at a time. First her doctors and where she lives, then
+            every medication she takes. Then we put the plans available to her side by side
+            and picked the one that fit what she actually needed. She is going into her
+            third year on that plan, and she has been happy with it.
           </p>
           <p>
             That is the same process I use for you. It is the only one I trust, because it
@@ -241,8 +296,8 @@ export default function AboutPage() {
 
           <h2>Who I work with</h2>
           <p>
-            Medicare and Medicaid, and only that. If you are 65 or older, or you already
-            have Medicare Parts A and B at any age, you are who I help. That is all I do —
+            Medicare, and Medicaid for people who also have Medicare. If you are 65 or
+            older, or you already have Medicare Parts A and B at any age, you are who I help. That is all I do —
             I am not selling you another kind of insurance alongside it.
           </p>
 
@@ -285,10 +340,11 @@ export default function AboutPage() {
           <h2>How I actually work</h2>
           <ul>
             <li>
-              <strong>By phone, by video, or in person.</strong> In Bergen and Hudson
-              counties I can come to you, and if you would rather do this at your own
-              kitchen table than on the phone, say so. For New York City and Philadelphia we
-              talk by phone or video call.
+              <strong>By phone, by video, or in person.</strong> Within about an hour of
+              Edgewater, which includes Bergen and Hudson counties and New York City, I can
+              come to you. If you would rather do this at your own kitchen table than on the
+              phone, say so. Farther than that, including Philadelphia, we talk by phone or
+              video call.
             </li>
             <li>
               <strong>Your doctors and your prescriptions come first.</strong> Before
@@ -320,6 +376,23 @@ export default function AboutPage() {
           </ul>
 
         </Reveal>
+      </section>
+
+      {/* ── Common questions ──────────────────────────────────────────── */}
+      <section className="border-t border-line bg-cream" aria-labelledby="faq">
+        <div className="container py-14 sm:py-16">
+          <Reveal className="mx-auto max-w-[68ch] article-body">
+            <h2 id="faq" className="scroll-mt-28">
+              Common questions
+            </h2>
+            {FAQ.map((item) => (
+              <div key={item.question}>
+                <h3>{item.question}</h3>
+                <p>{item.answer}</p>
+              </div>
+            ))}
+          </Reveal>
+        </div>
       </section>
 
       {/* ── Licensing ─────────────────────────────────────────────────── */}
