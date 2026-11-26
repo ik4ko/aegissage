@@ -1,7 +1,7 @@
 /**
  * /medicare-questions (lib/medicare-questions.ts). Checks the rules at the top
  * of that file so a later edit cannot quietly break them:
- * exactly 30 questions, unique anchors, answers of at most 50 words that end
+ * exactly 28 questions, unique anchors, answers of at most 50 words that end
  * in a full stop, an official source for each, and a deep link that exists.
  */
 import assert from 'node:assert/strict';
@@ -24,7 +24,7 @@ registerHooks({
 const { allQuestions, QUESTIONS_REVIEWED } = await import('../lib/medicare-questions.ts');
 const { glossaryTerms } = await import('../lib/medicare-glossary.ts');
 
-const OFFICIAL = /^https:\/\/(www\.)?(medicare\.gov|cms\.gov|ssa\.gov|va\.gov|nj\.gov|nyc\.gov|aging\.ny\.gov|pa\.gov)\//;
+const OFFICIAL = /^https:\/\/(www\.)?(medicare\.gov|cms\.gov|ssa\.gov|va\.gov|nj\.gov|nyc\.gov|aging\.ny\.gov|dfs\.ny\.gov|pa\.gov)\//;
 const BANNED = /\b(best|top|#1|you qualify|\$0|free plan)\b/i;
 const glossarySlugs = new Set(glossaryTerms.map((t) => t.slug));
 
@@ -47,9 +47,9 @@ const ok = (label, fn) => {
   }
 };
 
-ok('exactly 30 questions with unique anchors', () => {
-  assert.equal(allQuestions.length, 30);
-  assert.equal(new Set(allQuestions.map((q) => q.id)).size, 30);
+ok('exactly 28 questions with unique anchors', () => {
+  assert.equal(allQuestions.length, 28);
+  assert.equal(new Set(allQuestions.map((q) => q.id)).size, 28);
   for (const q of allQuestions) assert.match(q.id, /^[a-z0-9-]+$/, q.id);
 });
 

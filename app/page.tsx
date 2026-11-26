@@ -160,7 +160,7 @@ export default function HomePage() {
                 {[
                   { href: '/medicare-enrollment-calendar', label: 'Every enrollment window and when it opens' },
                   { href: '/tools/eligibility-check', label: 'Which deadline applies to me?' },
-                  { href: '/medicare-questions', label: '30 common questions, answered briefly' },
+                  { href: '/medicare-questions', label: '28 common questions, answered briefly' },
                   { href: '/answers', label: 'One question per page, in more depth' },
                 ].map((link) => (
                   <li key={link.href}>

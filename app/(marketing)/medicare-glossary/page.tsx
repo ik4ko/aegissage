@@ -20,10 +20,10 @@ import { formatDate } from '@/lib/utils';
  * Server-rendered in full: nothing here needs JavaScript to be read.
  */
 
-const TITLE = 'Medicare glossary: 40 terms in plain language';
+const TITLE = 'Medicare glossary: 39 terms in plain language';
 const H1 = 'Medicare glossary';
 const DESCRIPTION =
-  'Forty Medicare terms explained in two or three plain sentences each, from Part A to SHIP. Every definition links to the official source it was checked against.';
+  'Thirty-nine Medicare terms explained in two or three plain sentences each, from Part A to COBRA. Every definition links to the official source it was checked against.';
 
 export const metadata: Metadata = pageMetadata({
   title: TITLE,

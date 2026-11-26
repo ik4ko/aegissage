@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Mail, MessageSquareText, Phone } from 'lucide-react';
-import { advisor, compliance, contactHrefs, nav, site } from '@/lib/site';
+import { Mail, MessageSquareText, Phone, Star } from 'lucide-react';
+import { advisor, compliance, contactHrefs, nav, profiles, site } from '@/lib/site';
 import { planStates } from '@/lib/states';
 import { getLocationLanding, locationLandings } from '@/lib/locations';
 import { ShieldMark } from './site-header';
@@ -127,6 +127,17 @@ export function SiteFooter() {
                 Email {advisor.firstName}
               </a>
             </li>
+            <li>
+              <a
+                href={profiles.googleBusinessProfile}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-h-touch items-center gap-2.5 text-base text-ink-soft hover:text-navy"
+              >
+                <Star className="h-5 w-5 shrink-0" aria-hidden="true" />
+                Read reviews on Google
+              </a>
+            </li>
           </ul>
 
           {/*
@@ -201,7 +212,11 @@ export function SiteFooter() {
 
       <div className="border-t border-line">
         <p className="container py-6 text-sm text-ink-faint">
-          © {new Date().getFullYear()} {site.name}. {advisor.name}, {advisor.credential}.
+          © {new Date().getFullYear()} {site.name} · {advisor.name}, {advisor.credential} ·{' '}
+          {advisor.basedInTown}, {advisor.basedInRegion} ·{' '}
+          <a href={contactHrefs.tel} className="hover:text-navy hover:underline">
+            {advisor.phone}
+          </a>
         </p>
       </div>
     </footer>

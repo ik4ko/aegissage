@@ -170,7 +170,6 @@ const en: LanguagePage = {
       heading: 'Your right to an interpreter',
       paragraphs: [
         'You do not have to rely on me or on a family member. Medicare itself offers interpreters at no cost: call 1-800-MEDICARE (1-800-633-4227) and ask for an interpreter in your language. The line is open 24 hours a day, 7 days a week, except some federal holidays. TTY users can call 1-877-486-2048.',
-        'New Jersey also offers Medicare counseling at no cost through its State Health Insurance Assistance Program (SHIP).',
       ],
       sources: ['languages', 'njsave'],
     },
@@ -280,7 +279,6 @@ const ka: LanguagePage = {
       heading: 'თქვენი უფლება თარჯიმანზე',
       paragraphs: [
         'არ ხართ ვალდებული, მხოლოდ ჩემზე ან ოჯახის წევრზე იყოთ დამოკიდებული. თავად Medicare გთავაზობთ თარჯიმანს უფასოდ: დარეკეთ 1-800-MEDICARE (1-800-633-4227) და მოითხოვეთ თარჯიმანი თქვენს ენაზე. ხაზი მუშაობს დღე-ღამეში 24 საათი, კვირაში 7 დღე, ზოგიერთი ფედერალური დღესასწაულის გარდა. TTY-ის მომხმარებლებს შეუძლიათ დარეკონ 1-877-486-2048.',
-        'ნიუ-ჯერსი ასევე გთავაზობთ უფასო კონსულტაციას Medicare-ის საკითხებზე შტატის ჯანმრთელობის დაზღვევის დახმარების პროგრამის (SHIP) მეშვეობით.',
       ],
       sources: ['languages', 'njsave'],
     },
@@ -391,7 +389,6 @@ const ru: LanguagePage = {
       heading: 'Ваше право на переводчика',
       paragraphs: [
         'Вам не обязательно полагаться только на меня или на члена семьи. Сама программа Medicare бесплатно предоставляет переводчиков: позвоните по номеру 1-800-MEDICARE (1-800-633-4227) и попросите переводчика на ваш язык. Линия работает круглосуточно, 7 дней в неделю, кроме некоторых федеральных праздников. Пользователи TTY могут звонить по номеру 1-877-486-2048.',
-        'В Нью-Джерси также можно бесплатно получить консультацию по Medicare через Государственную программу помощи по медицинскому страхованию (SHIP).',
       ],
       sources: ['languages', 'njsave'],
     },

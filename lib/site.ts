@@ -69,6 +69,8 @@ export const advisor = {
    * Consumers must still treat `''` as "not published" and render nothing.
    */
   npn: '21599052',
+  /** New Jersey resident producer license number (Erekle, Nov 26 2026). */
+  njLicense: '3003674370',
   /**
    * Where the advisor is based, at town granularity.
    *

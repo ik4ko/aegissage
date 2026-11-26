@@ -10,7 +10,7 @@ import { ContactForm } from '@/components/forms/contact-form';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { JsonLd } from '@/components/seo/json-ld';
-import { advisor, site } from '@/lib/site';
+import { advisor, profiles, site } from '@/lib/site';
 import { licensedStates } from '@/lib/states';
 import { locationLandings } from '@/lib/locations';
 import { breadcrumbJsonLd, faqJsonLd } from '@/lib/seo';
@@ -133,7 +133,9 @@ export default function AboutPage() {
               I am a licensed independent insurance broker based in {advisor.basedIn}{' '}
               ({advisor.basedInCounty}). I work mostly with people in{' '}
               {site.serviceArea}, in {LANGUAGE_LIST}, and I am licensed in{' '}
-              {licensedStates.length} states. If you landed here from a video, this is the
+              {licensedStates.length} states. I do free one-on-one Medicare reviews, for Medicare
+              Advantage and Medicare Supplement, and if the plan you have is the best fit, I will
+              tell you to stay on it. If you landed here from a video, this is the
               page where you decide whether I am worth your time. Fair enough — here is the
               honest version.
             </p>
@@ -238,7 +240,7 @@ export default function AboutPage() {
           </p>
 
           <PullQuote attribution={`${advisor.name}, ${advisor.credential}`}>
-            I go through your options the same way I went through them for my own family.
+            I put my own mom on her plan, and I treat every client the same way.
           </PullQuote>
 
           <p>
@@ -255,7 +257,7 @@ export default function AboutPage() {
           <ul>
             <li>
               <strong>License.</strong> Licensed insurance broker. My resident license is in
-              New Jersey.
+              New Jersey, license number {advisor.njLicense}.
             </li>
             <li>
               <strong>National Producer Number (NPN).</strong> {advisor.npn}
@@ -289,6 +291,16 @@ export default function AboutPage() {
               </li>
             ))}
           </ul>
+          <p>
+            <a
+              href={profiles.googleBusinessProfile}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-row"
+            >
+              Read reviews on Google
+            </a>
+          </p>
           <p>
             See also <Link href="/how-we-are-paid">how I am paid</Link> and the{' '}
             <Link href="/editorial-policy">editorial policy</Link> for this site.
@@ -328,11 +340,11 @@ export default function AboutPage() {
           <p>
             Most questions have a plain answer already written down. The{' '}
             <Link href="/answers">Medicare answers</Link> take one question per page, the{' '}
-            <Link href="/medicare-glossary">glossary</Link> explains 40 terms in two or three
+            <Link href="/medicare-glossary">glossary</Link> explains 39 terms in two or three
             sentences each, and the{' '}
             <Link href="/medicare-enrollment-calendar">enrollment calendar</Link> lists every
             window and when it opens. For the short version, the{' '}
-            <Link href="/medicare-questions">30 Medicare questions</Link> page answers each
+            <Link href="/medicare-questions">28 Medicare questions</Link> page answers each
             one in a few sentences. Each one names the official source it was checked
             against.
           </p>

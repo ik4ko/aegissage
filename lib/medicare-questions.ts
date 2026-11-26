@@ -1,5 +1,5 @@
 /**
- * /medicare-questions: 30 short, spoken-style Medicare questions.
+ * /medicare-questions: 28 short, spoken-style Medicare questions.
  *
  * ── Rules for this file ───────────────────────────────────────────────────
  *  1. Each answer is what a person would want read aloud by a voice
@@ -196,7 +196,7 @@ export const questionGroups: { heading: string; questions: SpokenQuestion[] }[] 
           'Yes. New York requires Medigap companies to sell to you all year, whatever your health. New Jersey does not work that way after your first six months, so the rules change if you move across the river.',
         href: '/answers/medigap-underwriting-new-jersey-new-york',
         hrefLabel: 'Medigap underwriting in New Jersey and New York',
-        source: { title: 'HIICAP: Medicare Supplement Insurance (New York State Office for the Aging)', url: 'https://aging.ny.gov/system/files/documents/2026/03/hiicap-notebook-mod-7-medicare-supplement-insurance-medigap-2026_0.pdf' },
+        source: { title: 'Medicare Insurance Coverage Information for Consumers (New York State Department of Financial Services)', url: 'https://www.dfs.ny.gov/consumers/health_insurance/information_for_medicare_beneficiaries' },
       },
     ],
   },
@@ -207,7 +207,7 @@ export const questionGroups: { heading: string; questions: SpokenQuestion[] }[] 
         id: 'help-paying',
         question: 'Is there help paying for Medicare?',
         answer:
-          'Yes, for people with limited income and savings. Medicare Savings Programs can pay the Part B premium, and Extra Help lowers drug costs. Your state Medicaid office or your SHIP counselor can help you apply.',
+          'Yes, for people with limited income and savings. Medicare Savings Programs can pay the Part B premium, and Extra Help lowers drug costs. Your state Medicaid office can help you apply.',
         href: '/answers/extra-help-medicare-savings-programs-new-jersey',
         hrefLabel: 'Help paying Medicare costs in New Jersey',
         source: { title: 'Medicare Savings Programs', url: `${M}/basics/costs/help/medicare-savings-programs` },
@@ -277,28 +277,10 @@ export const questionGroups: { heading: string; questions: SpokenQuestion[] }[] 
     heading: 'Getting help',
     questions: [
       {
-        id: 'free-counseling-new-jersey',
-        question: 'Where can I get free Medicare counseling in New Jersey?',
-        answer:
-          'From SHIP, the State Health Insurance Assistance Program. Trained counselors in every county give free, neutral help and do not sell insurance. Call NJ SHIP at 1-800-792-8820, or your county’s office on aging.',
-        href: '/medicare-bergen-county',
-        hrefLabel: 'Local help in Bergen County',
-        source: { title: 'State Health Insurance Assistance Program (SHIP)', url: 'https://www.nj.gov/humanservices/doas/services/q-z/ship/' },
-      },
-      {
-        id: 'help-new-york-city',
-        question: 'Where can I get free Medicare help in New York City?',
-        answer:
-          'From HIICAP, run by NYC Aging. Its counselors give free, private Medicare help. Call Aging Connect at 212-244-6469 and ask for HIICAP.',
-        href: '/answers/medicare-help-new-york-city',
-        hrefLabel: 'Medicare help in Brooklyn, Queens and New York City',
-        source: { title: 'Health Insurance Assistance (NYC Aging)', url: 'https://www.nyc.gov/site/dfta/services/health-insurance-assistance.page' },
-      },
-      {
         id: 'help-philadelphia',
         question: 'Where can I get Medicare help in Philadelphia?',
         answer:
-          'Pennsylvania offers free Medicare counseling through PA MEDI, and help paying for prescriptions through PACE and PACENET for people who qualify by income. Philadelphia is its own county for Medicare plans.',
+          'Pennsylvania offers help paying for prescriptions through PACE and PACENET for people who qualify by income. Philadelphia is its own county for Medicare plans.',
         href: '/answers/medicare-help-philadelphia',
         hrefLabel: 'Medicare help in Philadelphia',
         source: { title: 'PACE program (Pennsylvania Department of Aging)', url: 'https://www.pa.gov/agencies/aging/aging-programs-and-services/pace-program' },
@@ -325,7 +307,7 @@ export const questionGroups: { heading: string; questions: SpokenQuestion[] }[] 
         id: 'check-an-agent',
         question: 'How do I know a Medicare agent is trustworthy?',
         answer:
-          'Check the agent’s license with your state, ask how they are paid, and ask which companies they work with. A good agent never pressures you, never asks for your Medicare number before you are ready, and tells you about free SHIP counseling.',
+          'Check the agent’s license with your state, ask how they are paid, and ask which companies they work with. A good agent never pressures you, never asks for your Medicare number before you are ready.',
         href: '/answers/how-to-choose-medicare-agent-bergen-hudson-county',
         hrefLabel: 'How to choose and check a Medicare agent',
         source: { title: 'Plan marketing rules', url: `${M}/health-drug-plans/health-plans/your-coverage-options/plan-marketing-rules` },
