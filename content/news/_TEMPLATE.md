@@ -43,6 +43,7 @@ every file at once, so you fix them in one pass rather than one per rebuild.
 | `reviewed_by` | yes | Who checked it for compliance before it went live. |
 | `status` | yes | Must be exactly `approved`. Anything else fails the build. |
 | `expires_on` | yes | `YYYY-MM-DD`. Once this date passes, **the build starts failing** — see below. |
+| `show_until` | no | `YYYY-MM-DD`. Last day the item shows in the homepage strip (for "ends December 7"-type items). Must not be later than `expires_on`. Read at build time: the strip changes on the first build after this date. |
 | `category` | yes | The chip on the card. See suggested set below. |
 | `makes_plan_claim` | no | `true` if the piece makes a plan-specific claim. Then `source_url` **and** `review_date` are both required. |
 | `source_url` | conditional | One `https://` URL backing the claim. Required when `makes_plan_claim: true`. |

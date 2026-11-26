@@ -262,6 +262,20 @@ function checkFile(relPath: string, failures: Failure[]): void {
     add(`expires_on "${shown(data.expires_on)}" is not a valid ISO date (YYYY-MM-DD)`);
   }
 
+  /*
+    `show_until` (optional): the last day a short-lived news item appears on
+    the homepage strip. It never fails the build by passing; it only has to
+    be a real date that falls on or before `expires_on`.
+  */
+  if (!isBlank(data.show_until)) {
+    const showUntil = parseIsoDate(data.show_until);
+    if (!showUntil) {
+      add(`show_until "${shown(data.show_until)}" is not a valid ISO date (YYYY-MM-DD)`);
+    } else if (expiresOn && showUntil.getTime() > expiresOn.getTime()) {
+      add(`show_until (${shown(data.show_until)}) is later than expires_on (${shown(data.expires_on)})`);
+    }
+  }
+
   if (published && updated && updated.getTime() < published.getTime()) {
     add(
       `updated (${shown(data.updated)}) is earlier than published (${shown(data.published)})`,
