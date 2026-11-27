@@ -293,7 +293,8 @@ export const profiles = {
   yelp: '',
   bbb: '',
   patch: '',
-  medicareAgentsHub: '',
+  /* Erekle's public listing, confirmed live Nov 27 2026. */
+  medicareAgentsHub: 'https://medicareagentshub.com/agents/erekle-niniashvili',
 } as const;
 
 /**
@@ -311,10 +312,11 @@ const nonBlank = (urls: readonly string[]) => urls.filter((url) => url.trim().le
 /** Agency profiles: Organization and InsuranceAgency `sameAs`. */
 export const publicProfiles: string[] = nonBlank(Object.values(profiles));
 
-/** Person `sameAs`: his own profiles plus his MyMedicareBroker agent page. */
+/** Person `sameAs`: his own profiles plus his agent pages on the two directories. */
 export const personPublicProfiles: string[] = nonBlank([
   ...Object.values(personProfiles),
   profiles.myMedicareBroker,
+  profiles.medicareAgentsHub,
 ]);
 
 /**
